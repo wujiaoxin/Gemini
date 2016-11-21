@@ -1,0 +1,108 @@
+{extend name="public/base"/}
+{block name="body"}
+<div id="myCarousel" class="carousel slide">
+	<ol class="carousel-indicators">
+		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		<li data-target="#myCarousel" data-slide-to="1"></li>
+		<li data-target="#myCarousel" data-slide-to="2"></li>
+	</ol>
+	<div class="carousel-inner">
+		<div class="item active" style="background:#dde2e8;">
+			<img src="__IMG__/slide1.png" alt="第一张">
+		</div>
+		<div class="item" style="background:#F5E4DC;">
+			<img src="__IMG__/slide2.png" alt="第二张">
+		</div>
+		<div class="item" style="background:#DE2A2D;">
+			<img src="__IMG__/slide3.png" alt="第三张">
+		</div>
+	</div>
+	<a href="#myCarousel" data-slide="prev" class="carousel-control left">
+		<span class="glyphicon glyphicon-chevron-left"></span>
+	</a>
+	<a href="#myCarousel" data-slide="next" class="carousel-control right">
+		<span class="glyphicon glyphicon-chevron-right"></span>
+	</a>
+</div>
+
+<div class="tab1">
+	<div class="container">
+		<h2 class="tab-h2">「为什么选择VP贷」</h2>
+		<p class="tab-p">简单强大的风控审核系统，让汽车分期更方便，更快捷</p>
+		<div class="row">			
+			<div class="col-md-6 col">
+				<div class="media">
+					<div class="media-left">
+						<img src="__IMG__/tab1-3.png" class="media-object" alt="">
+					</div>
+					<div class="media-body">
+						<h4 class="media-heading">15分钟极速放款</h4>
+						<p>轻松申请、高效审批、快速放款。最高可申请200000额度分期垫资。</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col">
+				<div class="media">
+					<div class="media-left">
+						<img src="__IMG__/tab1-4.png" class="media-object" alt="">
+					</div>
+					<div class="media-body">
+						<h4 class="media-heading">7×24小时服务</h4>
+						<p>一对一专属客户服务；专业客服团队提供7*24小时不间断技术服务，快速响应客户需求。</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col">
+				<div class="media">
+					<div class="media-left">
+						<img src="__IMG__/tab1-1.png" class="media-object" alt="">
+					</div>
+					<div class="media-body">
+						<h4 class="media-heading">基于阿里金融云</h4>
+						<p>依托阿里云ECS/RDS/OSS服务，提供可靠的系统服务。将传统车贷服务标准化，简单化，高效化</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col">
+				<div class="media">
+					<div class="media-left">
+						<img src="__IMG__/tab1-2.png" class="media-object" alt="">
+					</div>
+					<div class="media-body">
+						<h4 class="media-heading">安全可靠</h4>
+						<p>提供的稳健的安全策略，包括备份恢复，容错，防止恶意攻击登陆，保证系统安全，可靠，稳定的运行。</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+	//轮播自动播放
+	$('#myCarousel').carousel({
+		//自动4秒播放
+		interval : 3000,
+	});
+
+	//设置文字垂直居中，谷歌浏览器加载图片的顺序问题，导致高度无法获取
+	$(window).load(function () {
+		$('.text').eq(0).css('margin-top', ($('.auto').eq(0).height() - $('.text').eq(0).height()) / 2 + 'px');
+	});
+	
+
+	$(window).resize(function () {
+		$('.text').eq(0).css('margin-top', ($('.auto').eq(0).height() - $('.text').eq(0).height()) / 2 + 'px');
+	});
+
+	$(window).load(function () {
+		$('.text').eq(1).css('margin-top', ($('.auto').eq(1).height() - $('.text').eq(1).height()) / 2 + 'px');
+	});
+
+	$(window).resize(function () {
+		$('.text').eq(1).css('margin-top', ($('.auto').eq(1).height() - $('.text').eq(1).height()) / 2 + 'px');
+	});
+</script>
+{/block}
