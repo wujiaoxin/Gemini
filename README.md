@@ -3,11 +3,14 @@
 
 ## 安装
 
+新手建议使用XMAPP环境,将Gemini解压到`xmapp/htdocs/`文件夹即可。
+
 访问网址：http://网址/install
 
-> 系统必须开启伪静态
+> 系统必须开启伪静态;
+> 默认缓存路径为`../../../thinkphp/data/`,安装前先建立该文件夹或修改根目录下`index.php`中`RUNTIME_PATH`参数。
 
-## SentCMS特性包括：
+## Gemini特性包括：
 * 全新的路由体系，完美的路由解决方案
 * 全新的系统架构，采用thinkphp5.0内核框架
 * 完善而健全的会员体系
