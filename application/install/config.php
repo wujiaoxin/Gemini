@@ -8,9 +8,9 @@ return array(
 		'__IMG__'              => BASE_PATH . '/application/admin/static/images',
 		'__CSS__'              => BASE_PATH . '/application/admin/static/css',
 		'__JS__'               => BASE_PATH . '/application/admin/static/js',
-		'__COMPANY__'          => '南昌腾速科技有限公司',
-		'__NAME__'             => 'SentCMS网站管理系统',
-		'__COMPANY_WEBSITE__' => 'www.tensent.cn',
-		'__WEBSITE__' => 'www.sentcms.cn',
+		'__COMPANY__'          => '杭州互纳科技有限公司',
+		'__NAME__'             => 'Gemini系统',
+		'__COMPANY_WEBSITE__' => 'www.vpdai.com',
+		'__WEBSITE__' => 'www.vpdai.com',
 	),
 );
