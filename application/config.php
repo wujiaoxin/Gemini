@@ -21,7 +21,9 @@ return array(
 	'base_url'          => BASE_PATH,
 	'url_route_on'      => true,
 	'url_common_param'  => false,
-
+	'url_domain_deploy' =>  true,//域名部署路由功能
+	//\think\Route::domain('api','api'),
+	\think\Route::domain('api','api'),
 	'template'          => array(
 		'taglib_build_in' => 'cx,com\Sent',
 	),

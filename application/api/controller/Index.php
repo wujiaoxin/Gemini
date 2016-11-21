@@ -8,10 +8,13 @@
 // +----------------------------------------------------------------------
 
 namespace app\api\controller;
-use app\common\controller\User;
+use think\Request;
 
-class Index extends Api{
-
+class Index {
+	
 	public function index(){
+		return json("API index");
 	}
+	
 }
+

@@ -141,6 +141,31 @@ class User extends Base{
 			return false;
 		}
 	}
+	/**
+	 * 用户手机注册
+	 * @param  integer $user 用户信息数组
+	 */
+	function registerByMobile($mobile, $password, $repassword, $isautologin = true){
+		$data['username'] = $mobile;
+		$data['salt'] = rand_string(6);		
+		$data['password'] = $password;
+		$data['repassword'] = $repassword;
+		$data['mobile'] = $mobile;
+		$result = $this->validate(true)->save($data);
+		if ($result) {
+			$data['uid'] = $this->data['uid'];
+			$this->extend()->save($data);
+			if ($isautologin) {
+				$this->autoLogin($this->data);
+			}
+			return $result;
+		}else{
+			if (!$this->getError()) {
+				$this->error = "注册失败！";
+			}
+			return false;
+		}
+	}
 
 	/**
 	 * 自动登录用户
