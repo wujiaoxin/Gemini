@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>
+        登录手机贷     </title>
+    <link href="/Public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">
+
+    <script type="text/javascript">
+        var appPath = "/mobile";
+        var publicPath = "/Public";
+        var redirect_uri = "";
+        function onBack(){
+        	window.location.href = "/index.php";
+        }
+        function onHome(){
+        	window.location.href = appPath;
+        }
+        function consumeBack(){
+        	window.location.href = "";
+        }
+        function onBackByUrl(url){
+        	window.location.href = url;
+        }
+        var qlMark = 0;
+    </script>
+    
+</head>
+<body>
+    
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:onHome();" class="link icon-only back">
+                            <i class="icon icon-back"></i>
+                        </a>
+                    </div>
+                    <div class="center blue-color">个人中心</div>
+                    <div class="right">
+                        <a href="#" class="link icon-only"> 
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="Password" class="page">
+					 <div class="page-content jobPage">
+						<h2>欢迎回来：{$user['username']}</h2>
+						<div class="content-block">
+                                <button id="logou"  onclick="goToUrl('{:url('mobile/user/logout')}')"  class="button button-big button-fill dpblue" style="width:100%">退出登录</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading"></div>
+    <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+    
+    <script type="text/javascript" src="/Public/wap/js/md5.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/user.js"></script>
+    
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var error = "";
+                if(error){
+                    ui_alert('手机贷老户请直接登录');
+                }
+            });
+
+            var redirect = '';
+        </script>
+    
+
+</body>
+</html>

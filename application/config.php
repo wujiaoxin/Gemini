@@ -88,8 +88,9 @@ return array(
 		'driver'   => 'Local',
 	),
 	'session'           => array(
-		'prefix'     => 'sent',
+		'prefix'     => 'gemini',
 		'type'       => '',
+		//'domain'	=> '*.vpdai.com',
 		'auto_start' => true,
 	),
 

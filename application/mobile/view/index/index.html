@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-汽车分期专家</title>
+    <link href="/Public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">
+
+    <script type="text/javascript">
+        var appPath = "/index.php";
+        var publicPath = "/Public";
+        var redirect_uri = "";
+        function onBack(){
+        	window.location.href = "/";
+        }
+        function onHome(){
+        	window.location.href = appPath;
+        }
+        function consumeBack(){
+        	window.location.href = "";
+        }
+        function onBackByUrl(url){
+        	window.location.href = url;
+        }
+        var qlMark = 0;
+    </script>
+    
+</head>
+<body>
+    
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="#" class="link icon-only">
+                            <img src="/Public/wap/images/logo.png" height="100%"/>
+                        </a>
+                    </div>
+                    <div class="right">
+                        <a class="link icon-only mylink" href="#" id="hyyqLink">
+                            <img src="/Public/wap/images/invite.png" height="100%"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="pages navbar-through toolbar-through">
+                <div data-page="appHome" class="page">
+                    <div class="page-content">
+                        <div class="swiper-container no-margin mtop swiper">
+                            <div class="swiper-wrapper">
+                                                                            <div class="swiper-slide"><a data-url='/res.mobp2p.com/data/activity/sjd/millionOpenUp/index.html?channel=microsite' class="myhref"><img
+                                                    src="/Public/wap/images/3981741_infoservice_bannerpic_14780567529466.png"/></a></div>
+                                                                                        <div class="swiper-slide"><a data-url='/invite/hyyq?channel=microsite' class="myhref"><img
+                                                    src="/Public/wap/images/3981741_infoservice_bannerpic_14780813319147.png"/></a></div>
+                                                                                        <div class="swiper-slide"><a data-url='/sjd-newact.mobanker.com/act/banner/ssd.html?channel=microsite' class="myhref"><img
+                                                    src="/Public/wap/images/3981741_infoservice_bannerpic_14780813148000.png"/></a></div>
+                                                                        </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                        <div class="secdiv-con">
+                                                            <div class="user-tx">
+                                    <img src="/Public/wap/images/user.png" width="100%"/>
+                                </div>
+                                <div class="secdiv-left">
+                                    <span class="left">您好，</span><a href="#" onclick="goToUrl('{:url('mobile/user/index')}')" class="yellow left">{$welcomeText}</a>
+                                </div>                            
+								<div class="secdiv-right blue-color tc">
+									<a href="#" onclick="goToUrl('{:url('mobile/user/index')}')"> 会员中心<img
+                                        src="/Public/wap/images/right.png" class="right-ico ml5"/></a>
+								</div>
+                        </div>
+                        <div class="deal-item dqjk-item bor-radius clearfix">
+                                <div class="deal-ico">
+                                    <img src="/Public/wap/images/danqi.png" width="100%"/>
+                                </div>
+                                <div class="deal-item-con bor-radius">
+                                    <div class="deal-item-tit">
+                                        汽车垫资
+                                    </div>
+                                    <div class="deal-item-intro">
+                                        垫资额度
+                                    </div>
+                                    <div class="index-ed-data zi-color">
+                                        ￥10000-200000                                    </div>
+                                    <a href="javascript:toBorrowSingle(1);"
+                                       class="a-btn bor-radius qbg-btn blue">去申请</a>
+                                </div>
+                            </div>
+                                                    <div class="deal-item xjfq-item bor-radius clearfix">
+                                <div class="deal-ico">
+                                    <img src="/Public/wap/images/xjfq.png" width="100%"/>
+                                </div>
+                                <div class="deal-item-con bor-radius">
+                                    <div class="deal-item-tit">
+                                        车抵贷
+                                    </div>
+                                    <div class="deal-item-intro">
+                                        信用额度
+                                    </div>
+                                    <div class="index-ed-data zi-color">
+                                        ￥3000-500000                                    </div>
+                                    <a href="javascript:toBorrowMultiple(1);" class="a-btn bor-radius qbg-btn dpblue">去借款</a>
+                                </div>
+                            </div>
+                                                    <div class="footer clearfix">
+                            <div class="footer-link">
+                                <a class="mylink" href="#"><img src="/Public/wap/images/bluewarn.png"/><span><b>关于我们</b></span></a>
+                            </div>
+                            <p class="fz6 gay-color">©2016 杭州互纳科技有限公司</p>
+                            <p class="fz6 gay-color">浙ICP备16040927号</p>
+							<!--
+                            <p class="tc" style="padding-top:10px;">
+                               <a class="mylink" style="color:#555" href="/index.php/industry/index.html">更多资讯</a>
+                            </p>-->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading"></div>
+    <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+    
+    <script type="text/javascript">
+        modules.swiper();
+        //复制
+        function copymobp2p() {
+            window.clipboardData.setData('text', "mobp2p");
+            ui.tip("已复制好，可贴粘。");
+        }
+        $(function () {
+            $('.deal-item').each(function () {
+                var $this = $(this);
+                itemCate($this, 'item-yuqi', 'deal-status-yuqi')
+            });
+
+
+        });
+        function itemCate(obj, className, addClassName) {
+            var flag = obj.find('*').hasClass(className);
+            if (flag) {
+                obj.addClass(addClassName);
+            }
+        }
+    </script>
+
+</body>
+</html>

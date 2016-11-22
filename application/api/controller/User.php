@@ -48,7 +48,8 @@ class User extends Base {
 		$data = ['name' => 'thinkphp', 'status' => '1'];
 		
 		//"Content-Type: image/png"
-        return json($data)->code(201)->header(['Content-Type' => 'text/json']);
+       // return json($data)->code(201)->header(['Content-Type' => 'text/json']);
+	   return $data;
 	}
 
 	
@@ -65,7 +66,7 @@ class User extends Base {
 		}		
 		$this->checkVerify($verify);		
 		//创建注册用户
-		$uid = $model->registerByMobile($mobile, !$password,!$repassword , false);
+		$uid = $model->registerByMobile($mobile, $password,$repassword , false);
 
 		if (0 < $uid) {
 			$userinfo = array('nickname' => $mobile, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
@@ -82,7 +83,14 @@ class User extends Base {
 	}
 	
 	public function login() {
-		return json('login');
+		
+		$date["old"] = session('name');
+		session('name',time());
+		$date["new"] = session('name');
+		
+		
+		//dump(session_id());verify_code
+		return json($date);
 	}
 		
  	/**
@@ -91,8 +99,11 @@ class User extends Base {
 	 * @author 郭平平 <molong@tensent.cn>
 	 */
 	public function getverify($id = 1) {
+		//header("Content-Type: image/png");
 		$verify = new \org\Verify(array('length' => 4));
 		$verify->entry($id);		
+		
+		
 		//return header("Content-Type: image/png");
 		//header("Content-Type: image/png");
 		return json('')->header(['Content-Type' => 'image/png']);//hehe

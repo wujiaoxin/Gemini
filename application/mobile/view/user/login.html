@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>
+        登录     </title>
+    <link href="/Public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">
+
+    <script type="text/javascript">
+        var appPath = "/mobile";
+        var publicPath = "/Public";
+        var redirect_uri = "";
+        function onBack(){
+        	window.location.href = "/index.php";
+        }
+        function onHome(){
+        	window.location.href = appPath;
+        }
+        function consumeBack(){
+        	window.location.href = "";
+        }
+        function onBackByUrl(url){
+        	window.location.href = url;
+        }
+        var qlMark = 0;
+    </script>
+    
+</head>
+<body>
+    
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:onHome();" class="link icon-only back">
+                            <i class="icon icon-back"></i>
+                        </a>
+                    </div>
+                    <div class="center blue-color">用户登录</div>
+                    <div class="right">
+                        <a href="#" class="link icon-only"> 
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="Password" class="page">
+                    <div class="page-content jobPage">
+                        <form id="login-form" class="list-block mt10" method="post" onsubmit="return doLoginPost();">
+                            <ul class="clearfix">
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner register-inner">
+                                            <div class="item-title label">账号</div>
+                                            <div class="item-input">
+                                                <input type="tel" id="username" name="username" value="" maxlength="11" placeholder="手机号">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner register-inner">
+                                            <div class="item-title label">密码</div>
+                                            <div class="item-input register-inner">
+                                                <input type="password" id="password" name="password" maxlength="10"
+                                                       placeholder="您的登录密码">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="content-block">
+                                <button type="submit" id="login" class="button button-big button-fill dpblue" style="width:100%">登录</button>
+                            </div>
+                            <div class="clearfix pr15 fz6" style="margin-top:-10px;">
+                                <a class="right blue-color" href="javascript:goToUrl('{:url('mobile/user/reset')}');">忘记密码？</a>
+                            </div>
+                            <div class="content-block">
+                                <a class="button button-big wb" href="javascript:goToUrl('{:url('mobile/user/register')}');">还没有账号？立即注册</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading"></div>
+    <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+    
+    <script type="text/javascript" src="/Public/wap/js/md5.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/user.js"></script>
+    
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var error = "";
+                if(error){
+                    ui_alert('手机贷老户请直接登录');
+                }
+            });
+
+            var redirect = '';
+        </script>
+    
+
+</body>
+</html>
