@@ -58,14 +58,15 @@ class Index extends Base {
 			return json($data);
 		}		
 		$smsCode = rand(1000,9999);
-		$smsMsg = '验证码:' . $smsCode;
+		$smsMsg = '您的验证码为:' . $smsCode;
 		
 		//$rc = true;
 		$rc = $this->sendSms($phone,$smsMsg);
 		if($rc){
+			session('smsPhone',$phone);
 			session('smsCode',$smsCode);
 			$resp['code'] = 1;
-			$resp['msg'] = '发送成功'.$smsCode;			
+			$resp['msg'] = '发送成功'.$smsCode;//fixed:方便调试，发布需删除
 		}		
 		return json($resp);
 	}

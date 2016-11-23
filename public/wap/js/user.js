@@ -6,28 +6,6 @@ function doRefreshVerfiy() {
     }
 }
 
-function toProtocolRegister() {
-    window.location.href = appPath + "/Protocol/register.html";
-}
-function toProtocolPrivacyPolicy() {
-    window.location.href = appPath + "/Protocol/privacy_policy.html";
-}
-
-function toUserRegister() {
-    window.location.href = appPath+"/User/register.html";
-}
-function toUserLogin() {
-    window.location.href = appPath + "/User/login.html";
-}
-
-function toUserFindPassword() {
-    var phone = $("#userName").val();
-    if (phone) {
-        phone = "/phone/" + phone;
-    }
-    window.location.href = appPath+"/User/forget_password" + phone;
-}
-
 var countdown = 30;
 function settime() {
     if (countdown == 0) {
@@ -60,7 +38,7 @@ function doLoginPost(){
     } else{
         var param = {
             "username": phone,
-			"password": password,
+			"password": password
            // "password": hex_md5(password),
         };
         $("#login").attr("disabled", "disabled");
@@ -81,7 +59,7 @@ function doLoginPost(){
     }
     return false;
 }
-function doBindLoginPost(){
+function doBindLoginPost(){//TODO:bind wechat openid
 
     var phone = $.trim($('#userName').val());
     var smsCode = $.trim($("#smsCode").val());
@@ -112,7 +90,7 @@ function doBindLoginPost(){
                     if( typeof(resp.data.redirectUrl) == 'string'){
                         window.location.href = resp.data.redirectUrl;
                     }else{
-                        window.location.href = appPath + "/Main/index.html";
+                        window.location.href = "/mobie/index/index.html";
                     }
                 } else {
                     ajaxAlertMsg(resp);
@@ -177,65 +155,6 @@ function doRegisterPost() {
     return false;
 }
 
-function RegdownloadPost(phone,smsCode,password){
-    if(!$(".agreeag input[type='checkbox']").is(":checked")){
-        ui_alert("请勾选确认阅读相关协议！");
-        return false;
-    }
-    var isAndroid = navigator.userAgent.match(/linux/i)||navigator.userAgent.match(/android/i)||navigator.platform.match(/android/i) ? true : false;
-    var isIos = navigator.userAgent.match(/(ipod|ipad|iphone)/i) ? true : false;
-    var param = {
-        "userName": phone,
-        "smsCode": smsCode,
-        "password": hex_md5(password)
-    };
-    ajax_jquery({
-        url: appPath + '/User/ajax_register?t=' + Math.random(),
-        data: param,
-        async:true,
-        success: function (resp) {
-            if(resp.status==1 && resp.error=='00000000'){
-                var msg ='';
-                $("#submit").css("background","#ccc");
-                $("#submit").attr("disabled", "true");
-                if(isWeiXin()){
-                    msg = "注册成功！请下载手机贷APP借款！";
-                    ui_alert(msg,function(){
-                        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.shcc.microcredit';
-                    });
-                }else if(isIos){
-                    msg = "注册成功！请下载手机贷APP借款！";
-                    ui_alert(msg,function(){
-                        location.href = 'https://itunes.apple.com/cn/app/id1061036160?mt=8';
-                    });
-                }else{
-                    msg = "注册成功，2s后会自动下载手机贷,登录即可借款！";
-                    setTimeout(function(){
-                        location.href = 'http://shoujidai-app.oss-cn-hangzhou.aliyuncs.com/android/feed-android.apk';
-                    },2000);
-                    newalert(msg);
-                }
-
-            }else{
-                var msg = resp.msg?resp.msg:'注册失败，请下载手机贷APP注册借款！';
-                if(isWeiXin()){
-                    ui_alert(msg,function(){
-                        location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.shcc.microcredit';
-                    });
-                }else if(isIos){
-                    ui_alert(msg,function(){
-                        location.href = 'https://itunes.apple.com/cn/app/id1061036160?mt=8';
-                    });
-                }else{
-                    setTimeout(function(){
-                        location.href = 'http://shoujidai-app.oss-cn-hangzhou.aliyuncs.com/android/feed-android.apk';
-                    },2000);
-                    ui_alert(msg);
-                }
-            }
-        }
-    });
-}
 
 function isWeiXin(){
     var ua = window.navigator.userAgent.toLowerCase();
@@ -248,7 +167,7 @@ function isWeiXin(){
 function newalert(msg){
 
     var mymodel = myApp.modal({
-        title: '<div class="close-btn"><img src="' + publicPath + '/wap/images/x.png" width="20"/></div>',
+        title: '<div class="close-btn"><img src="/public/wap/images/x.png" width="20"/></div>',
         text: msg
     });
     $(".modal-inner").css({"padding-top":"50px","padding-bottom":"50px"});
@@ -257,7 +176,7 @@ function newalert(msg){
     });
 }
 function doResetPasswordPost() {
-    var phone = $.trim($('#userName').val());
+    var phone = $.trim($('#username').val());
     var smsCode = $.trim($("#smsCode").val());
     var newPassword = $("#password").val();
     var idcard  = $("#idcard").val();
@@ -276,19 +195,20 @@ function doResetPasswordPost() {
         ui_alert("请输入正确的身份证后四位!");
     } else {
         var param = {
-            "userName": phone,
+            "username": phone,
             "smsCode": smsCode,
-            "newPassword": hex_md5(newPassword),
+            //"newPassword": hex_md5(newPassword),
+			"newPassword": newPassword,
             "idcard": idcard
         };
 
         ajax_jquery({
-            url: appPath + '/User/ajax_reset_password?t=' + Math.random(),
+            url: 'reset?t=' + Math.random(),
             data: param,
             success: function (resp) {
-                if (resp.status == "1" && resp.error == "00000000") {
+                if (resp.code == "1") {
                     ui_alert("修改成功", function () {
-                        window.location.href = appPath + '/User/login';
+                        window.location.href = 'login';
                     });
                 } else {
                     if (typeof(resp.msg) == 'string' && resp.msg != '') {
@@ -344,6 +264,7 @@ function sendBindSmsCode(type) {
 }
 
 function sendSmsCode(send_code, type) {
+
     var phone = $.trim($('#username').val());
     var verifycode = $.trim($("#rvalicode").val());
 
@@ -353,7 +274,7 @@ function sendSmsCode(send_code, type) {
     } else if (!validatePhoneNumber(phone)) {
         ui_alert("请输入正确的手机号!");
         return;
-    } else if (verifycode == "" && qlMark == 0 && send_code!='resetphonecode') {
+    } else if (verifycode == "" && send_code!='resetphonecode') {
         ui_alert("请输入图形验证码");
         return;
     } else {
@@ -363,15 +284,11 @@ function sendSmsCode(send_code, type) {
             "send_code": send_code,
             "send_type": type
         };
-		/*
-		if(1){
-            $(".none-box").show();
-            $(".is_realname").val(1);
-			
-			//$("#smsCode").val("1234");
-        }
-        settime();*/
 		
+		if (type == "voice") {					//TODO:record phone num
+			 ui_alert("请稍后再试或联系客服");
+			 return;
+		}		
 		
         ajax_jquery({
             url: '/mobile/index/sendSmsCode?t=' + Math.random(),
@@ -381,8 +298,8 @@ function sendSmsCode(send_code, type) {
                     if (type == "voice") {
                         ui_alert('验证码将以电话形式通知到您，请注意接听', null, '获取语音验证码');
                     } else if (type == "sms") {  
-                    	$(".none-box").show();
-                    	$(".is_realname").val(1);
+                    	//$(".none-box").show();
+                    	//$(".is_realname").val(1);
                         settime();
                     }
                 } else {

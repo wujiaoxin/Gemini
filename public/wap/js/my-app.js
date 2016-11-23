@@ -49,7 +49,7 @@ $$(".myhref").on(even, function () {
 });
 function ui_alert(msg, fn, title, btn) {
     var mymodel = myApp.modal({
-        title: title ? title + '<div class="close-btn"><img src="' + publicPath + '/wap/images/x.png" width="20"/></div>' : '<div class="close-btn"><img src="' + publicPath + '/wap/images/x.png" width="20"/></div>',
+        title: title ? title + '<div class="close-btn"><img src="/public/wap/images/x.png" width="20"/></div>' : '<div class="close-btn"><img src="/public/wap/images/x.png" width="20"/></div>',
         text: msg,
         buttons: [
             {
@@ -121,7 +121,7 @@ function ajax_jquery(options) {
     } else {
     }
     var options_default = {
-        url: '/demo/ajax_test',
+        url: '/mobile/index',
         type: 'POST',
         dataType: 'json',
         beforeSend: ajaxLoading(),
@@ -145,14 +145,14 @@ function ajaxLoading() {
 }
 
 function ajaxAlertMsg(resp, ok_msg, fn) {
-    if (resp.status == "1" && resp.error == "00000000") {
+    if (resp.code == "1" ) {
         var message = ok_msg ? ok_msg : (resp.msg ? resp.msg : '成功');
         ui_alert(message, fn);
-    } else if (resp.error == '75000015') {
+    } else if (resp.code == '75000015') {
         //var message = resp.msg ? resp.msg : '您还未登录，请先登录';
         var message = '您还未登录，请先登录';
         ui_alert(message, function () {
-            window.location.href = appPath + "/User/login"; //如果超时就处理 ，指定要跳转的页面
+            window.location.href = "login"; //如果超时就处理 ，指定要跳转的页面
         },'','去登录');
     } else {
         var message = resp.msg ? resp.msg : '系统错误，请联系客服';
@@ -173,7 +173,7 @@ function _ajax_error(XMLHttpRequest, textStatus, errorThrown) {
     var session_status = XMLHttpRequest.getResponseHeader("Session-Status"); //通过XMLHttpRequest取得响应头，Session-Status，
     if (session_status == 'TimeOut') {
         ui_alert('登录超时，请重新登录', function () {
-            window.location.href = appPath + "/User/logout"; //如果超时就处理 ，指定要跳转的页面
+            window.location.href = "/mobile/user/logout"; //如果超时就处理 ，指定要跳转的页面
         });
     } else if (session_status == 'Empty') {
         ui_error('权限限制，请联系管理员');
@@ -387,7 +387,7 @@ function toBorrowMultiple(flag) {
                 } else if (resp.data.borrow_status == 4 || resp.data.borrow_status == 7) {
                     location.href = appPath + '/BorrowMultiple/index.html';
                 } else if (resp.data.borrow_status == 0 && typeof(flag) != 'undefined' && flag == 1) {
-                    var write_info = '<div class="simg zmbg"><img src="' + publicPath + '/wap/images/icon-write_green.png" width="100%"/></div>' +
+                    var write_info = '<div class="simg zmbg"><img src="/public/wap/images/icon-write_green.png" width="100%"/></div>' +
                         '<b>补充资料</b><br/>' +
                         '尊敬的用户，请先填写现金分期专属资料，才能享受3000-10000的大额现金分期服务。';
                     ui_alert(write_info, function () {
@@ -395,7 +395,7 @@ function toBorrowMultiple(flag) {
                     }, '', "去填写");
                     $(".modal-button").css({"background": "#fff", "color": "#666"});
                 } else if (resp.data.borrow_status == 16 && typeof(flag) != 'undefined' && flag == 1) {
-                    var write_info = '<div class="simg qbg"><img src="' + publicPath + '/wap/images/icon-write_blue.png" width="100%"/></div>' +
+                    var write_info = '<div class="simg qbg"><img src="/public/wap/images/icon-write_blue.png" width="100%"/></div>' +
                         '<b>填写资料</b><br/>' +
                         '尊敬的用户，请先填写申请资料';
                     ui_alert(write_info, function () {
@@ -409,7 +409,7 @@ function toBorrowMultiple(flag) {
                     resp.data.borrow_status == 34 ||
                     resp.data.borrow_status == 35 ||
                     resp.data.borrow_status == 36) && typeof(flag) != 'undefined' && flag == 1) {
-                    var write_info = '<div class="simg zmbg"><img src="' + publicPath + '/wap/images/icon-write_green.png" width="100%"/></div>' +
+                    var write_info = '<div class="simg zmbg"><img src="/public/wap/images/icon-write_green.png" width="100%"/></div>' +
                         '<b>资料过期</b><br/>' + resp.data.borrow_msg;
                     ui_alert(write_info, function () {
                         if(resp.data.borrow_status == 31){
@@ -454,7 +454,7 @@ function toBorrowSingle(flag) {
                 } else if (resp.data.borrow_status == 4 || resp.data.borrow_status == 7) {
                     location.href = appPath + '/BorrowSingle/index.html';
                 } else if (resp.data.borrow_status == 0 && typeof(flag) != 'undefined' && flag == 1) {
-                    var write_info = '<div class="simg qbg"><img src="' + publicPath + '/wap/images/icon-write_blue.png" width="100%"/></div>' +
+                    var write_info = '<div class="simg qbg"><img src="/public/wap/images/icon-write_blue.png" width="100%"/></div>' +
                         '<b>填写资料</b><br/>' +
                         '尊敬的用户，请先填写申请资料。';
                     ui_alert(write_info, function () {
@@ -469,7 +469,7 @@ function toBorrowSingle(flag) {
                     resp.data.borrow_status == 34 ||
                     resp.data.borrow_status == 35 ||
                     resp.data.borrow_status == 36) && typeof(flag) != 'undefined' && flag == 1) {
-                    var write_info = '<div class="simg zmbg"><img src="' + publicPath + '/wap/images/icon-write_green.png" width="100%"/></div>' +
+                    var write_info = '<div class="simg zmbg"><img src="/public/wap/images/icon-write_green.png" width="100%"/></div>' +
                         '<b>资料过期</b><br/>' + resp.data.borrow_msg;
                     ui_alert(write_info, function () {
                         if(resp.data.borrow_status == 31){
@@ -693,12 +693,15 @@ function toHotApp() {
     }
 }
 
-function toCallPhone() {
+function toCallPhone(phoneNum) {
+	if(phoneNum == null){
+		phoneNum = '0571-87813085';
+	}
     var u = navigator.userAgent;
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('iPhone') > -1) {//手机
-        window.location.href = "tel:021-80203636";
+        window.location.href = "tel:"+phoneNum;
     } else {
-        ui_alert('021-80203636');
+        ui_alert(phoneNum);
     }
 }
 function toLogout() {

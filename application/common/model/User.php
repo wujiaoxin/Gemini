@@ -233,8 +233,12 @@ class User extends Base{
 	public function editpw($data, $is_reset = false){
 		$uid = $is_reset ? $data['uid'] : session('user_auth.uid');
 		if (!$is_reset) {
+			
 			//后台修改用户时可修改用户密码时设置为true
-			$this->checkPassword($uid,$data['oldpassword']);
+			$result = $this->checkPassword($uid,$data['oldpassword']);
+			if(!$result){
+				return false;
+			}
 
 			$validate = $this->validate('member.password');
 			if (false === $validate) {
@@ -246,13 +250,24 @@ class User extends Base{
 
 		return $this->save($data, array('uid'=>$uid));
 	}
+	
+	public function resetpw($mobile,$passwd){
+		$validate = $this->validate('member.password');
+		if (false === $validate) {
+			return false;
+		}
+		$data['password'] = $passwd;
+		$data['salt'] = rand_string(6);
+		return $this->save($data, array('mobile'=>$mobile));
+	}
+
 
 	protected function checkPassword($uid,$password){
+		
 		if (!$uid || !$password) {
 			$this->error = '原始用户UID和密码不能为空';
 			return false;
-		}
-
+		}	
 		$user = $this->where(array('uid'=>$uid))->find();
 		if (md5($password.$user['salt']) === $user['password']) {
 			return true;
@@ -261,6 +276,23 @@ class User extends Base{
 			return false;
 		}
 	}
+	/*
+	protected function getUid($mobile){
+		
+		if (!$mobile) {
+			$this->error = '手机号不能为空';
+			return false;
+		}	
+		$user = $this->where(array('mobile'=>$mobile))->find();
+		if($user){
+			return $user['uid'];
+		}else{
+			$this->error = '用户不存在';
+			return false;
+		}
+
+	}
+	*/
 
 	public function extend(){
 		return $this->hasOne('MemberExtend', 'uid');

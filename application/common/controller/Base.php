@@ -164,6 +164,7 @@ class Base extends \think\Controller {
 	protected function sendSms($mobile, $content){
         $uid = '161110_hwj_hnkj';
         $pwd = 'me1989';
+		//TODO: move to config module；
         $http = 'http://61.174.50.42:8080/sms/ylSend3.do';
         if (empty($uid) || empty($pwd)) {
             return '管理员还未配置短信信息，请联系管理员配置';

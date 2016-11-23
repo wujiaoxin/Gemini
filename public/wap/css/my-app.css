@@ -1,6 +1,6 @@
-body{letter-spacing:1px; color:#333; font-family: '微软雅黑'}
+body{letter-spacing:1px; color:#333; font-family: "Microsoft Yahei","SimHei","Heiti SC"}
 ul{padding:0; margin:0; list-style-type: none;}
-@font-face {font-family: 'PingFang'; src: url('PingFang Regular.ttf') format('truetype')}
+/*@font-face {font-family: 'PingFang'; src: url('PingFang Regular.ttf') format('truetype')}*/
 .wb{background: #fff;}
 a{text-decoration: none; color:#3e9de8;}
 .them-color{color:#3bc2f5}
@@ -50,10 +50,10 @@ img{border:none;}
 .discount-ico{vertical-align: middle; width:0.7rem; margin-right:5px; margin-top: -3px;}
 .right-ico{vertical-align: middle; width:0.3rem;}
 .user-tx{width:1.8rem; height: 1.8rem; border-radius: 50%; overflow: hidden; position: absolute; left:0; top:0.1rem;border:2px #fff solid; background: #fff;}
-.secdiv-left{background:url("../images/bt_letfbg.png") no-repeat 0 0; font-family: "黑体"; letter-spacing:1px; background-size:100%; width:55%; height: 100%; float: left; font-size: 0.7rem;}
+.secdiv-left{background:url("../images/bt_letfbg.png") no-repeat 0 0; font-family: "SimHei","Heiti SC"; letter-spacing:1px; background-size:100%; width:55%; height: 100%; float: left; font-size: 0.7rem;}
 .secdiv-left span{ text-indent: 1.2rem;}
 .secdiv-left a{width:3.2rem;white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow:hidden;}
-.secdiv-right{background: #fff; width:45%; height: 100%; float: right; font-family: "黑体"; box-shadow: 2px 1px 3px rgba(59,197,247,.3);}
+.secdiv-right{background: #fff; width:45%; height: 100%; float: right; font-family: "SimHei","Heiti SC"; box-shadow: 2px 1px 3px rgba(59,197,247,.3);}
 .item-span-label{width:4.5rem; display: inline-block; text-align: right; margin-right: 15px;}
 .yellow{color:yellow;}
 .deal-item{padding:0.5rem; position: relative; margin:0.5rem 0.5rem;}

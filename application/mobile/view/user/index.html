@@ -7,32 +7,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <meta http-equiv="pragma" content="no-cache">
-    <title>
-        登录手机贷     </title>
+    <title>个人中心</title>
     <link href="/Public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">
-
-    <script type="text/javascript">
-        var appPath = "/mobile";
-        var publicPath = "/Public";
-        var redirect_uri = "";
-        function onBack(){
-        	window.location.href = "/index.php";
-        }
-        function onHome(){
-        	window.location.href = appPath;
-        }
-        function consumeBack(){
-        	window.location.href = "";
-        }
-        function onBackByUrl(url){
-        	window.location.href = url;
-        }
-        var qlMark = 0;
-    </script>
-    
+    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">    
 </head>
 <body>
     
@@ -41,27 +20,102 @@
             <div class="navbar wb">
                 <div class="navbar-inner">
                     <div class="left">
-                        <a href="javascript:onHome();" class="link icon-only back">
+                        <a href="javascript:goToUrl('{:url('mobile/index/index')}');" class="link icon-only">
                             <i class="icon icon-back"></i>
                         </a>
                     </div>
                     <div class="center blue-color">个人中心</div>
-                    <div class="right">
-                        <a href="#" class="link icon-only"> 
+                    <!--<div class="right">
+                        <a href="javascript:toUserMessage();" class="link icon-only ">
+                            <img src="/Public/wap/images/message.png" height="40%"/>
                         </a>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <div class="pages navbar-through">
-                <div data-page="Password" class="page">
-					 <div class="page-content jobPage">
-						<h2>欢迎回来：{$user['username']}</h2>
-						<div class="content-block">
-                                <button id="logou"  onclick="goToUrl('{:url('mobile/user/logout')}')"  class="button button-big button-fill dpblue" style="width:100%">退出登录</button>
+                <div data-page="dqassess" class="page">
+                    <div class="page-content">
+                        <div class="user-info-tcon dpblue clearfix">
+                            <div class="user-info-tl left">
+                               <div class="user-face left rela"  >
+                                    <a id="myAvatar" >
+                                        <img src="/Public/wap/images/user.png" width="100%"/>
+                                    </a>  
+                                    <input id="uploadFile"  type="file" tabindex="1" accept="image/*"/>
+                                </div>
+                                <div class="user-info-t left">
+                                    <h2></h2>
+                                    <p>{$user['username']}</p>
+									<p><b class="fz7" >杭州宝荣4S店</b></p>
+                                </div>
+                            </div>
+                            <div class="user-info-rig right">
+                            <!--    <p class="gt-color">所属车商</p>
+                                <p><b class="fz7" id="a">杭州宝荣4S店</b></p>
+								-->
+                            </div>
+                        </div>
+						<!--
+                        <div class="user-item-con clearfix">
+                            <ul>
+                                <li>
+                                    <a href="javascript:toUserCenter();">我的资料</a>
+                                </li>
+                            </ul>
+                        </div>
+						-->
+                        <div class="user-item-con clearfix">
+                            <ul>
+                                <li>
+                                    <a href="javascript:toBorrowProgress();">进度查询</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:toBorrowRecord();">历史记录</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="user-item-con clearfix">
+                            <ul>
+                                <li>
+                                    <a href="javascript:goToUrl('{:url('mobile/user/editpwd')}')">更改密码</a>
+                                </li>
+								<!--
+                                <li>
+                                    <a href="javascript:toUpdatePhone();">更改手机号</a>
+                                </li>
+								-->
+                            </ul>
+                        </div>
+                        <div class="user-item-con clearfix">
+                            <ul>
+                                <li>
+                                    <a href="javascript:toCallPhone();">
+                                        联系客服
+                                        <span class="right"><span class="vm">0571-87813085</span><img class="cg-right-ico" src="/Public/wap/images/right.png" /></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+						<!--
+                        <div class="user-item-con clearfix">
+                            <ul>
+                                <li>
+                                    <a href="javascript:toHotApp();">精品推荐</a>
+                                </li>
+                            </ul>
+                        </div>-->
+                        <div class="content-block">
+                            <a class="button button-big button-raised butcom-css dpblue"
+                               href="javascript:goToUrl('{:url('mobile/user/logout')}')">退出登录</a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+  	<div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
         </div>
     </div>
 
@@ -70,20 +124,47 @@
     <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
     
-    <script type="text/javascript" src="/Public/wap/js/md5.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/user.js"></script>
-    
-        <script type="text/javascript">
-            $(document).ready(function () {
-                var error = "";
-                if(error){
-                    ui_alert('手机贷老户请直接登录');
+<script type="text/javascript" src="/Public/wap/js/LocalResizeIMG.js"></script>
+<script type="text/javascript" src="/Public/wap/js/mobileBUGFix.mini.js"></script>
+<script type="text/javascript">
+$(function(){
+ /*   var a = "3000-10000";
+    var b = "1000-5000";
+    $("#a").html(a);
+    $("#b").html(b);
+	*/
+});
+/*
+$('#uploadFile').localResizeIMG({
+    width: 480,
+    success: function (result) {
+    	$("#loading").show();
+    	
+        var img = new Image();
+        img.src = result.base64;
+      
+        $('#myAvatar').html(img);
+        var img_v = result.clearBase64;
+        //开始上传文件
+        var param = {
+            "picFile": img_v,
+        };
+        ajax_jquery({
+            url: appPath + '/UserInfo/ajax_set_avatar?t=' + Math.random(),
+            data: param,
+            async: true,
+            success: function (resp) {
+                if (resp.status == "1" && resp.error == "00000000") {
+                    ui_alert("上传头像成功!");
+                }else{
+                    ajaxAlertMsg(resp);
                 }
-            });
-
-            var redirect = '';
-        </script>
-    
+            }
+        });
+        return false;
+    }
+});*/
+</script>
 
 </body>
 </html>

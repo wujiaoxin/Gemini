@@ -8,32 +8,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <meta http-equiv="pragma" content="no-cache">
-    <title>
-        找回密码     </title>
+    <title>找回密码</title>
     <link href="/Public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">
-
-    <script type="text/javascript">
-        var appPath = "/mobile";
-        var publicPath = "/Public";
-        var redirect_uri = "";
-        function onBack(){
-        	window.location.href = "/index.php";
-        }
-        function onHome(){
-        	window.location.href = appPath;
-        }
-        function consumeBack(){
-        	window.location.href = "";
-        }
-        function onBackByUrl(url){
-        	window.location.href = url;
-        }
-        var qlMark = 0;
-    </script>
-    
+    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">   
 </head>
 <body>
     
@@ -62,7 +41,7 @@
                                     <div class="item-content">
                                         <div class="item-inner register-inner">
                                             <div class="item-input">
-                                                <input type="tel" id="userName" name="userName" value="" placeholder="输入手机号"  onkeyup='this.value=this.value.replace(/\D/gi,"")'  maxlength="11">
+                                                <input type="tel" id="username" name="username" value="" placeholder="输入手机号"  onkeyup='this.value=this.value.replace(/\D/gi,"")'  maxlength="11">
                                             </div>
                                         </div>
                                     </div>
@@ -73,7 +52,7 @@
                                             <div class="item-input rel">
                                                 <input type="text" id="rvalicode" name="rvalicode" maxlength="4" placeholder="输入图形验证码">
                                                 <a href="javascript:;" class="auth-Code">
-													<img src="{:url('user/index/verify')}"  name="verify" id="verify" height="100%"  onclick="doRefreshVerfiy()"/> 
+													<img src="{:url('mobile/index/verify')}"  name="verify" id="verify" height="100%"  onclick="doRefreshVerfiy()"/> 
                                                 </a>
                                             </div>
                                         </div>
@@ -93,12 +72,12 @@
                             <div class="borrow-det-item tr">
                                 <a class="blue-bg fz6 pr15" onclick="sendRestPasswordSmsCode('voice')" href="javascript:void(0);">收不到验证码?</a>
                             </div>
-                            <ul class="clearfix none-box" style="margin-bottom:10px;">
+                            <ul class="clearfix none-box" style="margin-bottom:10px; display:none;">
                                 <li>
                                     <div class="item-content">
                                         <div class="item-inner">
                                             <div class="item-input">
-												 <input type="text" id="idcard" name="idcard" maxlength="4"
+												 <input type="text" id="idcard" name="idcard" maxlength="4" value='1234'
                                                        placeholder="请输入本人身份证号后4位">
 													<input type="hidden" class="is_realname" value="0">                                            		
                                             </div>
@@ -131,10 +110,8 @@
     <div id="loading"></div>
     <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
-    
+    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>    
     <script src="/Public/wap/js/md5.js"></script>
     <script src="/Public/wap/js/user.js"></script>
-
 </body>
 </html>
