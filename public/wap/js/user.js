@@ -363,28 +363,26 @@ function sendSmsCode(send_code, type) {
             "send_code": send_code,
             "send_type": type
         };
+		/*
 		if(1){
             $(".none-box").show();
             $(".is_realname").val(1);
 			
-			 $("#smsCode").val("1234");
+			//$("#smsCode").val("1234");
         }
-        settime();
-		/*
+        settime();*/
+		
+		
         ajax_jquery({
-            url: appPath + '/Public/ajax_send_sms?t=' + Math.random(),
+            url: '/mobile/index/sendSmsCode?t=' + Math.random(),
             data: param,
-            success: function (resp) {
-            
-                if (resp.status == "1" && resp.error == "00000000") {
+            success: function (resp) {            
+                if (resp.code == "1") {
                     if (type == "voice") {
                         ui_alert('验证码将以电话形式通知到您，请注意接听', null, '获取语音验证码');
-                    } else if (type == "sms") {
-                        
-                        if(resp.data.is_realname==1){
-                    		$(".none-box").show();
-                    		$(".is_realname").val(1);
-                    	}
+                    } else if (type == "sms") {  
+                    	$(".none-box").show();
+                    	$(".is_realname").val(1);
                         settime();
                     }
                 } else {
@@ -396,7 +394,7 @@ function sendSmsCode(send_code, type) {
                     }
                 }
             }
-        });*/
+        });
     }
     //return false;
 }

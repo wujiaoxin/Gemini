@@ -44,7 +44,21 @@ class User extends Base {
 				$data["msg"] = '用户名或者密码不能为空！';
 				return json($data);
 			}
-			//TODO：check smsCode
+			
+			if (!$smsCode) {
+				$data["code"] = 0;
+				$data["msg"] = '短信验证码不能为空！';
+				return json($data);
+			}
+			
+			$realSmsCode = session('smsCode');
+			if($realSmsCode != $smsCode){
+				$data["code"] = 0;
+				$data["msg"] = '短信验证码错误！';
+				return json($data);
+			}
+
+			
 			$user = model('User');
 			$uid = $user->registerByMobile($username, $password, $password , false);
 			if ($uid > 0) {
