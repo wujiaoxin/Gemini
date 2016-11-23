@@ -7,30 +7,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <meta http-equiv="pragma" content="no-cache">
     <title>VP贷-汽车分期专家</title>
-    <link href="/Public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">
-
-    <script type="text/javascript">
-        var appPath = "/index.php";
-        var publicPath = "/Public";
-        var redirect_uri = "";
-        function onBack(){
-        	window.location.href = "/";
-        }
-        function onHome(){
-        	window.location.href = appPath;
-        }
-        function consumeBack(){
-        	window.location.href = "";
-        }
-        function onBackByUrl(url){
-        	window.location.href = url;
-        }
-        var qlMark = 0;
-    </script>
-    
+    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">    
 </head>
 <body>
     
@@ -131,28 +111,8 @@
     <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
-    
     <script type="text/javascript">
         modules.swiper();
-        //复制
-        function copymobp2p() {
-            window.clipboardData.setData('text', "mobp2p");
-            ui.tip("已复制好，可贴粘。");
-        }
-        $(function () {
-            $('.deal-item').each(function () {
-                var $this = $(this);
-                itemCate($this, 'item-yuqi', 'deal-status-yuqi')
-            });
-
-
-        });
-        function itemCate(obj, className, addClassName) {
-            var flag = obj.find('*').hasClass(className);
-            if (flag) {
-                obj.addClass(addClassName);
-            }
-        }
     </script>
 
 </body>

@@ -11,8 +11,12 @@ namespace app\mobile\controller;
 use app\common\controller\Base;
 
 class Index extends Base {
+	
 	public function _initialize() {
 		parent::_initialize();
+		if (!is_login() and !in_array($this->url, array('mobile/index/index', 'mobile/index/protocol', 'mobile/index/privacy', 'mobile/index/verify', 'mobile/index/sendSmsCode'))) {
+			$this->redirect('mobile/user/login');exit();
+		}		
 		if (is_login()) {
 			$user = model('User')->getInfo(session('user_auth.uid'));
 			$this->assign('user', $user);
