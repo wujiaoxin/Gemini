@@ -102,17 +102,22 @@ class User extends Base{
 				return 0; //参数错误
 		}
 
-		$user = $this->db()->where($map)->find()->toArray();
-		if(is_array($user) && $user['status']){
-			/* 验证用户密码 */
-			if(md5($password.$user['salt']) === $user['password']){
-				$this->autoLogin($user); //更新用户登录信息
-				return $user['uid']; //登录成功，返回用户ID
-			} else {
-				return -2; //密码错误
+		$user = $this->db()->where($map)->find();
+		if($user != null){
+			$user = $user->toArray();
+			if(is_array($user) && $user['status']){
+				/* 验证用户密码 */
+				if(md5($password.$user['salt']) === $user['password']){
+					$this->autoLogin($user); //更新用户登录信息
+					return $user['uid']; //登录成功，返回用户ID
+				} else {
+					return -2; //密码错误
+				}
+			}else{
+				return -1; //用户被禁用
 			}
 		} else {
-			return -1; //用户不存在或被禁用
+			return -1; //用户不存在
 		}
 	}
 
