@@ -1162,6 +1162,35 @@ CREATE TABLE `sent_link` (
 INSERT INTO `sent_link` VALUES ('1', '1', '互纳科技', 'http://www.vpdai.com', '0', '', '0', '0', '1462496026', '0', '1');
 
 -- -----------------------------
+-- Table structure for `sent_order`
+-- -----------------------------
+DROP TABLE IF EXISTS `sent_order`;
+CREATE TABLE `sent_order` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '订单标识ID',
+  `uid` int(10) NOT NULL DEFAULT '0' COMMENT '报单人用户ID ',
+  `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1:新车垫资 2：二手车垫资 3:车抵贷 4:其他订单',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '贷款人姓名',
+  `mobile` varchar(20) DEFAULT NULL COMMENT '贷款人手机号码',
+  `idcard_num` varchar(20) NOT NULL DEFAULT '' COMMENT '贷款人身份证号',
+  `idcard_face_pic` int(11) NOT NULL DEFAULT '0' COMMENT '贷款人身份证正面照片序号',
+  `idcard_back_pic` int(11) NOT NULL DEFAULT '0' COMMENT '贷款人身份证反面照片序号',
+  `driving_lic_pic` int(11) NOT NULL DEFAULT '0' COMMENT '贷款人驾照照片序号',
+  `loan_limit` int(11) NOT NULL DEFAULT '0' COMMENT '贷款额度',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '订单状态 ',
+  `finance` tinyint(1) NOT NULL DEFAULT '0' COMMENT '财务状态',
+  `addr` varchar(255) NOT NULL DEFAULT '' COMMENT '签单地址 ',
+  `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- -----------------------------
+-- Records of `sent_order`
+-- -----------------------------
+INSERT INTO `sent_order` VALUES ('1', '0', '1', '测试用户', '15879025222', '330782198907023119', '0', '0', '0', '100000', '0', '0', '0', '0', '杭州市滨江区平安银行', '无');
+
+-- -----------------------------
 -- Table structure for `sent_member`
 -- -----------------------------
 DROP TABLE IF EXISTS `sent_member`;
@@ -1308,7 +1337,7 @@ INSERT INTO `sent_menu` VALUES ('23', '插件列表', 'admin', 'usb', '6', '0', 
 INSERT INTO `sent_menu` VALUES ('24', '钩子列表', 'admin', 'code', '6', '0', 'admin/addons/hooks', '0', '', '插件管理', '0', '0');
 INSERT INTO `sent_menu` VALUES ('25', '自定义表单', 'admin', '', '5', '0', 'admin/form/index', '0', '', '运营管理', '0', '0');
 INSERT INTO `sent_menu` VALUES ('26', '伪静态规则', 'admin', '', '2', '0', 'admin/seo/rewrite', '0', '', '优化设置', '0', '0');
-
+INSERT INTO `sent_menu` VALUES ('28', '订单管理', 'admin', '', '5', '1', 'admin/order/index', '0', '', '运营管理', '0', '0');
 -- -----------------------------
 -- Table structure for `sent_model`
 -- -----------------------------
