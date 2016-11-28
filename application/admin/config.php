@@ -24,10 +24,11 @@ return array(
 		'__CSS__'    => BASE_PATH . '/application/admin/static/css',
 		'__JS__'     => BASE_PATH . '/application/admin/static/js',
 	),
-
+/*
 	'session'            => array(
 		'prefix'     => 'admin',
 		'type'       => '',
 		'auto_start' => true,
 	),
+*/
 );

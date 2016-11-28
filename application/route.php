@@ -28,7 +28,7 @@ return array(
 	'order/list'     => 'user/order/lists',
 
 	'admin/login'    => 'admin/index/login',
-	'admin/logout'   => 'admin/index/logout',
+	//'admin/logout'   => 'admin/index/logout',
 
 	// 变量传入index模块的控制器和操作方法
 	'addons/:mc/:ac' => 'index/addons/execute', // 静态地址和动态地址结合
