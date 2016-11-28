@@ -1168,6 +1168,7 @@ DROP TABLE IF EXISTS `sent_order`;
 CREATE TABLE `sent_order` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '订单标识ID',
   `uid` int(10) NOT NULL DEFAULT '0' COMMENT '报单人用户ID ',
+  `bank_uid` int(10) NOT NULL DEFAULT '0' COMMENT '银行审核人员ID ',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1:新车垫资 2：二手车垫资 3:车抵贷 4:其他订单',
   `name` varchar(30) NOT NULL DEFAULT '' COMMENT '贷款人姓名',
   `mobile` varchar(20) DEFAULT NULL COMMENT '贷款人手机号码',
@@ -1188,7 +1189,7 @@ CREATE TABLE `sent_order` (
 -- -----------------------------
 -- Records of `sent_order`
 -- -----------------------------
-INSERT INTO `sent_order` VALUES ('1', '0', '1', '测试用户', '15879025222', '330782198907023119', '0', '0', '0', '100000', '0', '0', '0', '0', '杭州市滨江区平安银行', '无');
+INSERT INTO `sent_order` VALUES ('1', '0', '0', '1', '测试用户', '15879025222', '330782198907023119', '0', '0', '0', '100000', '0', '0', '0', '0', '杭州市滨江区平安银行', '无');
 
 -- -----------------------------
 -- Table structure for `sent_member`

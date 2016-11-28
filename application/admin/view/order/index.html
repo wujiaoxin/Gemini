@@ -21,7 +21,7 @@
 						<th width="30"><input class="checkbox check-all" type="checkbox"></th>
 						<th width="60">ID</th>
 						<th>贷款人姓名</th>
-						<th>贷款人身份证</th>
+						<th>身份证号</th>
 						<th>额度</th>
 						<th>创建时间</th>
 						<th>更新时间</th>
@@ -36,8 +36,8 @@
 						<td>{$item['name']}</td>
 						<td>{$item['idcard_num']}</td>
 						<td>{$item['loan_limit']}</td>
-						<td>{$item['create_time']|date='Y-m-d',###}</td>
-						<td>{$item['update_time']|date='Y-m-d',###}</td>
+						<td>{$item['create_time']|date='Y-m-d h:s',###}</td>
+						<td>{$item['update_time']|date='Y-m-d h:s',###}</td>
 						<td>
 							{if isset($item['status'])}
 								{if $item['status']}

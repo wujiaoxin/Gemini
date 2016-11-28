@@ -10,9 +10,9 @@
 			{php}
 			$images = get_cover($value);
 			{/php}
-			<li class="affix-list-item" id="WU_FILE_0">
+			<li class="affix-list-item" id="WU_FILE_{$value}">
 				<div class="upload-file-info">
-					<span class="webuploader-pick-file-close" data-queued-id="WU_FILE_0" data-id="{$value}" data-fileurl="{$images['path']}"><i class="close"></i></span>
+					<span class="webuploader-pick-file-close" data-queued-id="WU_FILE_{$value}" data-id="{$value}" data-fileurl="{$images['path']}"><i class="close"></i></span>
 					<span class="fname"></span>
 					<span class="fsize">上传时间:{$images['create_time']|date='Y-m-d H:i:s',###}</span>
 					<div class="clearfix"></div>

@@ -88,6 +88,8 @@ class Upload {
 	}
 
 	public function delete() {
+		//TODO: remove local file & delete the database record
+		
 		$data = array(
 			'status' => 1,
 		);

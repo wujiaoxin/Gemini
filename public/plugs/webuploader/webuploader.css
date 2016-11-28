@@ -88,7 +88,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 }
 .upload-file-list-info .filebox{
 	display: block;
-	max-height: 120px;
+	max-width: 100%;
     overflow: hidden;
     margin-top: 5px;
     margin-bottom: 5px;
