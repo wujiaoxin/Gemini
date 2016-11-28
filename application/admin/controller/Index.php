@@ -49,7 +49,8 @@ class Index extends Admin {
 	public function logout() {
 		$user = model('User');
 		$user->logout();
-		$this->redirect('admin');
+		$this->redirect('admin/index/login');
+		//$this->redirect('admin');
 	}
 
 	public function clear() {

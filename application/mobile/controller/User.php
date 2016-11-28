@@ -25,7 +25,8 @@ class User extends Base {
 	}
 
 	public function index() {		
-		//$this->assign($user);		
+		//$this->assign($user);	
+		$user = model('User')->getInfo(session('user_auth.uid'));
 		return $this->fetch();
 	}
 	

@@ -264,7 +264,8 @@ CREATE TABLE `sent_auth_group` (
 -- -----------------------------
 INSERT INTO `sent_auth_group` VALUES ('1', 'admin', '1', '网站编辑', '网站编辑，针对内容进行管理', '1', '2,1');
 INSERT INTO `sent_auth_group` VALUES ('2', 'admin', '1', '网站运营', '针对网站SEO进行管理', '1', '21,20,14,12,3,19,18,17,16,15,13,1');
-
+INSERT INTO `sent_auth_group` VALUES ('5', 'admin', '', '车商销售经理', '4S店车商销售经理，负责报单', '1', '40,37,34,39,1');
+INSERT INTO `sent_auth_group` VALUES ('6', 'admin', '', '银行风控经理', '银行授信审核', '1', '39,38,35,34,1');
 -- -----------------------------
 -- Table structure for `sent_auth_group_access`
 -- -----------------------------
@@ -336,6 +337,13 @@ INSERT INTO `sent_auth_rule` VALUES ('30', 'admin', '1', 'admin/category/remove'
 INSERT INTO `sent_auth_rule` VALUES ('31', 'admin', '1', 'admin/category/merge', '栏目合并', '内容管理', '1', '');
 INSERT INTO `sent_auth_rule` VALUES ('32', 'admin', '1', 'admin/category/move', '栏目移动', '内容管理', '1', '');
 INSERT INTO `sent_auth_rule` VALUES ('33', 'admin', '1', 'admin/category/status', '栏目状态', '内容管理', '1', '');
+INSERT INTO `sent_auth_rule` VALUES ('34', 'admin', '2', 'admin/order/index', '订单管理', '订单管理', '1', '');
+INSERT INTO `sent_auth_rule` VALUES ('35', 'admin', '1', 'admin/order/edit', '订单编辑', '订单管理', '1', '');
+INSERT INTO `sent_auth_rule` VALUES ('36', 'admin', '1', 'admin/order/del', '订单删除', '订单管理', '1', '');
+INSERT INTO `sent_auth_rule` VALUES ('37', 'admin', '1', 'admin/order/add', '订单新增', '订单管理', '1', '');
+INSERT INTO `sent_auth_rule` VALUES ('38', 'admin', '1', 'admin/order/status', '订单审核', '订单管理', '1', '');
+INSERT INTO `sent_auth_rule` VALUES ('39', 'admin', '1', 'admin/user/editpwd', '修改密码', '会员管理', '1', '');
+INSERT INTO `sent_auth_rule` VALUES ('40', 'admin', '1', 'admin/upload/upload', '附件上传', '订单管理', '1', '');
 
 -- -----------------------------
 -- Table structure for `sent_category`
@@ -1218,6 +1226,10 @@ CREATE TABLE `sent_member` (
   `last_login_ip` bigint(20) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '会员状态',
+  `wechat` char(32) NOT NULL DEFAULT '' COMMENT '微信号',
+  `openid` varchar(50) DEFAULT NULL COMMENT '微信第三方ID',
+  `access_group_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '用户组id',
+  `addr` varchar(255) NOT NULL DEFAULT '' COMMENT '联系地址',
   PRIMARY KEY (`uid`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='会员表';

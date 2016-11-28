@@ -308,7 +308,7 @@
 								$('#' + qfid).remove();
 
 								if (qfid.substring(0, 7) == 'WU_FILE') {
-									//self.BDUploader.removeFile(qfid, true);//TODO:remove from queued
+									self.BDUploader.removeFile(qfid, true);//TODO:remove from queued
 								}
 								self.allowNum++;
 							} else {

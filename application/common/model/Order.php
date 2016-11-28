@@ -18,6 +18,7 @@ class Order extends \app\common\model\Base {
 
 	public $keyList = array(
 		array('name'=>'id' ,'title'=>'ID', 'type'=>'hidden'),
+		array('name'=>'bank_uid' ,'title'=>'审核银行', 'type'=>'hidden', 'value'=>'9'),
 		array('name'=>'type' ,'title'=>'订单类别', 'type'=>'select', 'option'=>array(
 			'1' => '新车垫资',
 			'2' => '二手车垫资',

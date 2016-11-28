@@ -13,8 +13,16 @@ use app\common\controller\Admin;
 class Order extends Admin {
 
 	public function index() {
-		$map = array();
-
+		//define('IS_ROOT', is_administrator());		
+		$map = '';
+		if (!IS_ROOT) {
+			$uid = session('user_auth.uid');
+			if($uid > 0){
+				$map = 'uid = '.$uid.' or bank_uid = '.$uid;
+			}else{
+				return $this->error('请重新登录');
+			}
+		}
 		$order = "id desc";
 		$list  = db('Order')->where($map)->order($order)->paginate(10);
 
@@ -32,6 +40,10 @@ class Order extends Admin {
 		$link = model('Order');
 		if (IS_POST) {
 			$data = input('post.');
+			$uid = session('user_auth.uid');
+			if($uid > 0){
+				$data['uid'] = $uid;
+			}
 			if ($data) {
 				unset($data['id']);
 				$result = $link->save($data);
