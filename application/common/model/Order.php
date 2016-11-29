@@ -26,6 +26,7 @@ class Order extends \app\common\model\Base {
 			'4' => '其他订单',
 		), 'help'=>''),
 		array('name'=>'name' ,'title'=>'贷款人姓名', 'type'=>'text', 'help'=>''),
+		array('name'=>'idcard_num' ,'title'=>'贷款人身份证号', 'type'=>'text', 'help'=>''),
 		array('name'=>'loan_limit' ,'title'=>'贷款额度', 'type'=>'text', 'help'=>''),
 		array('name'=>'idcard_face_pic' ,'title'=>'身份证正面', 'type'=>'image', 'help'=>''),
 		array('name'=>'idcard_back_pic' ,'title'=>'身份证反面', 'type'=>'image', 'help'=>''),

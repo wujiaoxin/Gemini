@@ -95,6 +95,47 @@ class Order extends Admin {
 		}
 	}
 	
+	//查看
+	public function view() {
+		$link = model('Order');
+		$id   = input('id', '', 'trim,intval');
+		$map = '';
+		if (!IS_ROOT) {
+			$uid = session('user_auth.uid');
+			if($uid > 0){
+				$map = '(uid = '.$uid.' or bank_uid = '.$uid.') and id = '.$id;
+			}else{
+				return $this->error('请重新登录');
+			}
+		}else{
+			$map = 'id = '.$id;
+		}
+		if (IS_POST) {
+			$data = input('post.');
+			if ($data) {
+				$result = $link->save($data, array('id' => $data['id']));
+				if ($result) {
+					return $this->success("修改成功！", url('Order/index'));
+				} else {
+					return $this->error("修改失败！");
+				}
+			} else {
+				return $this->error($link->getError());
+			}
+		} else {
+			//$map  = array('id' => $id);
+			$info = db('Order')->where($map)->find();
+
+			$data = array(
+				'keyList' => $link->keyList,
+				'info'    => $info,
+			);
+			$this->assign($data);
+			$this->setMeta("查看订单");
+			return $this->fetch();
+		}
+	}
+	
 	/**
 	 * 设置审核状态
 	 */

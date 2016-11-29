@@ -7,82 +7,75 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <meta http-equiv="pragma" content="no-cache">
     <title>VP贷</title>
-    <link href="/Public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">	
 	<link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
 	<script type="text/javascript">
 		var BASE_URL = ""; //根目录地址
-	</script>
-
+    </script>
 	<style type="text/css">
-		.size-25 { font-size: 25px }
-		.main-box { 
-			margin-top: 16px  
-		}
-		.main-box-title {margin-left: 6px}
-		a{text-decoration: none;}
-		.sampleImg img{
-			height: 150px;
-			width: 210px;
-		}
-		.popup-overlay.modal-overlay-visible, 
-		.preloader-indicator-overlay.modal-overlay-visible {
-			opacity: 0;
-		}
-		.main-content{
-			margin: 10px auto;
-			text-align: center; 
-		}
-		.idcard{
-			margin: 10px auto;
-		}
-		h4{
-			margin: 6px auto;
-		}
-		.main-box-body{
-			margin: 4px 16px;
-		}
+	    .main-box-title{
+            text-align: center;
+            margin: 12px auto;
+        }
+        .form-group{
+            margin-bottom:10px;
+        }
+        .picker-box{
+            margin: 0 auto;
+            padding-top: 10px;
+            width: 90%;
+            background: #FBFFFF;
+        }
 		.imgSample{
-			margin: 0 auto;
-			width: 100%;
-			text-align: center;
+			margin: auto auto;
+			width: 70%;
+            background: url('/public/wap/images/sampleImgBg.jpg');
 		}
 		.imgSample img{
-			margin: 0 auto;
 			width: 100%;
 		}
+        .picker_button{
+            width:90%;
+            margin: 0 auto;
+        }
 		.webuploader-pick {
-			background: #3e9de8;
+			color: #f2f2f2;
 			width: 90%;
 			margin-top:5px;
-			color:white;
+            background: #005eff;
+            font-size: 20px;
 		}
 		.filebox.image img{
 			width: 100%;
 		}
-		.picker_button{
-			width:100%;
-		}
-		.phone-input{
-		  padding: 0px;
-		  margin: 0;
-		  width: 92%;
-		  height: 40px;
-		  color: #666;
-		  font-size: 14px;
-		  font-family: inherit;
-		  padding-left:10px;
-		}
-		.form-group{
-			margin-bottom:10px;
-		}
-
+        .upload-file-list-info{
+            width: 90%;
+            margin: 0 auto;
+        }	
+        .form-group .control-label{
+            margin-left: 5%;
+            font-size: 14px;
+        }
+        .form-group input{
+            margin-left: 5%;
+            width: 90%;
+            color: #666;
+            height: 30px;
+            font-size: 12px;
+            font-family: inherit;
+            border-width: 1px;
+        }
+        label[class*="col-"] {
+            font-size: 10px;
+            margin:5px 5% 2px;
+            padding: 0;
+        }
 	</style>
 </head>
-<body>
-    
+<body>   
     <div class="views">
         <div class="view view-main">
             <div class="navbar wb">
@@ -97,9 +90,9 @@
             </div>
             <div class="pages navbar-through">
                 <div data-page="dqassess" class="page">						
-				<div class="page-content main-box clearfix">
+				<div class="page-content main-box clearfix bg-white">
                     <div class="main-box-title">
-                        <h4 class="col-lg-8 color-black">请上传贷款人的有效二代身份证和驾驶证</h4>
+                        <h4 class="color-black">请上传贷款人的有效二代身份证和驾驶证</h4>
                     </div>
                     <div class="main-box-body clearfix">
                     <div>
@@ -107,8 +100,8 @@
                             <input type="hidden" name="id" value=""/>
                             <input type="hidden" name="loan_limit" value="200000"/>
                                 <!-- <div class="form-group">
-                                <label class="col-lg-2 control-label">贷款额度</label>
-                                    <div class="col-lg-10 col-sm-10">
+                                <label class="control-label">贷款额度</label>
+                                    <div class="">
                                         <select class="form-control" name="loan_limit" id="loan_limit" style="width:auto;">
                                             <option value="1" >20万（含）以内</option>
                                             <option value="2" >20-50万</option>
@@ -118,8 +111,7 @@
                                     </div>
                                 </div> -->
                             <div class="form-group">
-                                <label class="col-lg-2 control-label">身份证正面照片</label>          
-                                <div class="col-lg-10 col-sm-10">
+                                <div class="col-100">
                                     <div class="picker-box">
                                         <div id="fileList_idcard_face_pic_sample" class="imgSample">
                                             <img src="/public/wap/images/idcardface.png">
@@ -127,29 +119,37 @@
                                         <input type="hidden" name="idcard_face_pic" id="field_idcard_face_pic" value="">
                                         <div id="fileList_idcard_face_pic" class="upload-file-list-info">
                                         </div>
-                                        <div id="picker_idcard_face_pic" class="picker_button">上传身份证正面照片</div>
+                                        <div id="picker_idcard_face_pic" class="picker_button">   
+                                            <span>上传身份证正面照片</span>                                    
+                                        </div>
+                                        <div class="row">
+                                            <label class="col-70">自动识别,请确认姓名、身份证号无误</label>
+                                            <label class="col-30 color-blue" id="inputModify">点击修改</label>
+                                        </div>
+                                        <label class="control-label">贷款人姓名</label>
+                                        <input type="text" name="idcard_face_pic_name" id="field_idcard_face_pic_name" value="" disabled="disabled">
+                                        <label class="control-label">贷款人身份证号</label>
+                                        <input type="text" name="idcard_face_pic_idNumber" id="field_idcard_face_pic_idNumber" value="" disabled="disabled">
                                     </div>
                                 </div>
                             </div>
-							<hr/>
                             <div class="form-group">
-                                <label class="col-lg-2 control-label">身份证反面照片</label>
-                                <div class="col-lg-10 col-sm-10">
+                                <div class="col-100">
                                     <div class="picker-box">
                                         <div id="fileList_idcard_back_pic_sample" class="imgSample">
-                                                <img src="/public/wap/images/idcardback.png">
+                                            <img src="/public/wap/images/idcardback.png">
                                         </div>
                                         <input type="hidden" name="idcard_back_pic" id="field_idcard_back_pic" value="">
                                         <div id="fileList_idcard_back_pic" class="upload-file-list-info">
                                         </div>
-                                         <div id="picker_idcard_back_pic" class="picker_button">上传身份证反面照片</div>
+                                         <div id="picker_idcard_back_pic" class="picker_button">
+                                            <span>上传身份证反面照片</span>   
+                                         </div>
                                     </div>
                                 </div>
                             </div>
-							<hr/>
                             <div class="form-group">
-                                <label class="col-lg-2 control-label">驾驶证照片</label>
-                                <div class="col-lg-10 col-sm-10">
+                                <div class="col-100">
                                     <div class="picker-box">
                                         <div id="fileList_driving_lic_pic_sample" class="imgSample">
                                             <img src="/public/wap/images/drivingLic.png">
@@ -157,20 +157,21 @@
                                         <input type="hidden" name="driving_lic_pic" id="field_driving_lic_pic" value="">
                                         <div id="fileList_driving_lic_pic" class="upload-file-list-info">
                                         </div>
-                                        <div id="picker_driving_lic_pic" class="picker_button">上传驾驶证照片</div>
+                                        <div id="picker_driving_lic_pic" class="picker_button">
+                                            <span>上传驾驶证照片</span>   
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-2 control-label">贷款人手机</label>
-                                <div class="col-lg-10 col-sm-10">
+                                <label class="control-label">贷款人手机</label>
+                                <div class="col-100">
                                     <input type="number" class="phone-input" name="mobile" id="mobile" autocomplete="false" value="" placeholder="贷款人手机，可选，仅供通知之用">
                                 </div>
                             </div>
-							<hr/>							
-                        <div class="content-block">
-                            <a class="button button-big button-raised butcom-css dpblue" href="javascript:alert('post test')">提交申请</a>
-                        </div>
+                            <div class="content-block">
+                                <a class="button button-big button-raised butcom-css dpblue" id="submit">提交申请</a>
+                            </div>
                         </form>
                     </div>
                     </div>
@@ -192,12 +193,39 @@
 	<script type="text/javascript" src="/Public/wap/js/webuploader.custom.js"></script>
 	<script type="text/javascript">
 		var uploadsize =  20;
+		function tryOCR(){
+		    var field_idcard_face_pic_id = $('#field_idcard_face_pic').val();
+            if(field_idcard_face_pic_id == ''){
+				ui_alert('请先上传身份证正面照');
+				return;
+			} 
+			ajax_jquery({
+				type: 'post',
+				url: '/mobile/open/tryOCR',
+				datatype: 'json',
+				data: {
+					"id": field_idcard_face_pic_id
+				},
+				success: function(data){
+					if(data.code == 1){
+						$('#field_idcard_face_pic_name').val(data.data.name);
+						$('#field_idcard_face_pic_idNumber').val(data.data.idcard_num);
+					}else{
+						if (typeof(data.msg) == 'string') {
+							ui_alert(data.msg);
+						}
+					}
+				}
+			});
+		}
+		
 		$(function(){
 			$("#picker_idcard_face_pic").SentUploader({
                 fileNumLimit:1,
                 uploadEvents: {
                     uploadComplete:function(file){
-                        $('#fileList_idcard_face_pic_sample').hide();
+						$('#fileList_idcard_face_pic_sample').hide();
+						tryOCR();
                     }
                 },
                 listName : 'fileList_idcard_face_pic',
@@ -245,6 +273,62 @@
             {
                 fileType: 'service',
                 filename : 'images',
+            });
+
+            $('#inputModify').click(function(){
+                $('#field_idcard_face_pic_name').removeAttr('disabled');
+                $('#field_idcard_face_pic_idNumber').removeAttr('disabled');
+                $('#field_idcard_face_pic_name').focus();                
+            });
+
+			$("#submit").click(function(){
+                var field_idcard_face_pic_id = $('#field_idcard_face_pic').val();
+                if(field_idcard_face_pic_id == ''){
+                    ui_alert('请上传身份证正面照','');
+                    return;
+                }
+                var field_idcard_back_pic_id =$('#field_idcard_back_pic').val();
+                 if(field_idcard_back_pic_id == ''){
+                    ui_alert('请上传身份证反面照','');
+                    return;
+                }
+                var field_driving_lic_pic_id =$('#field_driving_lic_pic').val();
+                 if(field_driving_lic_pic_id == ''){
+                    ui_alert('请上传驾驶证照片','');
+                    return;
+                }
+                var mobile = $('#mobile').val();//todo
+                var idcard_name = $('#field_idcard_face_pic_name').val();
+                var idcard_num = $('#field_idcard_face_pic_idNumber').val();
+                 ajax_jquery({
+                    type: 'post', // 提交方式 post
+                    url: '/api/order/add', // 需要提交的 url
+                    datatype:'json',
+                    data: {
+                        'type':1,
+                        'name':idcard_name,
+                        'idcard_num':idcard_num,
+                        'loan_limit':200000,
+                        'idcard_face_pic':field_idcard_face_pic_id,
+                        'idcard_back_pic':field_idcard_back_pic_id,
+                        'driving_lic_pic':field_driving_lic_pic_id,
+                        'status':0,
+                        'addr':'',
+                        'descr':'',
+                        'mobile':mobile
+                    },
+                    success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
+                        if(data.code == 1){
+                            ui_alert("新增订单成功!", function () {
+                                 window.location.href = '/mobile' ;            
+                             });
+                        }else{
+                            if (typeof(data.msg) == 'string') {
+                                ui_alert(data.msg);
+                            }  
+                        }
+                    }
+                }); 
             });
 		});
 	</script>  

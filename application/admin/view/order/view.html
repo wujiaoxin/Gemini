@@ -1,0 +1,56 @@
+{extend name="public/base"/}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/libs/bootstrap-editable.css">
+<style>
+img {
+	max-width: 300px;
+}
+.view-label{
+	text-align: right;
+}
+
+</style>
+{/block}
+{block name="body"}
+<div class="main-box clearfix">
+	<header class="main-box-header clearfix">
+		<div class="pull-left">
+			<h2>{$meta_title}</h2>
+		</div>
+	</header>
+	<div class="main-box-body clearfix">
+
+		<form method="post" class="form form-horizontal">
+			{volist name="keyList" id="field"}
+			{if $field['type'] eq 'image'}	
+				{php}
+					$images = get_cover($info[$field['name']]);	
+				{/php}
+			<div class="form-group">
+				<label class="col-lg-2 view-label">{$field['title']|htmlspecialchars}</label>
+				<div class="col-lg-8">
+					<img src="{$images['path']|default=''}">
+				</div>
+			</div>
+			{elseif $field['type'] eq 'text'/}
+			<div class="form-group">
+				<label class="col-lg-2 view-label">{$field['title']|htmlspecialchars}</label>
+				<div class="col-lg-8">
+					{$info[$field['name']]|default='-'}
+				</div>
+			</div>
+			{else /} 
+			{/if}			
+			{/volist}
+
+			<div class="form-group">
+				<div class="col-lg-offset-2 col-lg-10">
+					<input type="hidden" name="id" value="{$info['id']|default=''}">            
+					<button class="btn btn-danger btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+				</div>
+			</div>			
+		</form>
+
+	</div>
+</div>
+{/block}

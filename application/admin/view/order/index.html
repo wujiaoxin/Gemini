@@ -46,6 +46,7 @@
 								<a href="{:url('admin/order/status?',array('id'=>$item['id'],'status'=>'1'))}" class="ajax-get">审核</a>
 								{/if}
 							{/if}
+							<a href="{:url('view?id='.$item['id'])}">查看</a>
 							<a href="{:url('edit?id='.$item['id'])}">编辑</a>
 							<!--<a href="{:url('delete?id='.$item['id'])}" class="confirm ajax-get">删除</a>-->
 						</td>
