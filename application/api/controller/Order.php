@@ -7,14 +7,16 @@
 // | Author: molong <molong@tensent.cn> <http://www.tensent.cn>
 // +----------------------------------------------------------------------
 
-namespace app\mobile\controller;
+namespace app\api\controller;
 use app\common\controller\Base;
 
 class Order extends Base {
 	public function _initialize() {
 		parent::_initialize();
 		if (!is_login()) {
-			$this->redirect('mobile/user/login');exit();
+			$data['code'] = 0;
+			$data['msg'] = '会话已超时';
+			return json($data);exit();
 		}elseif (is_login()) {
 			$user = model('User')->getInfo(session('user_auth.uid'));
 			$this->assign('user', $user);
@@ -23,11 +25,15 @@ class Order extends Base {
 
 	public function index() {		
 		//$this->assign($user);		
-		return $this->fetch();
+		$data['code'] = 1;
+		$data['msg'] = 'ok';
+		return json($data);
 	}
 	
 	//添加
 	public function add() {
+		$resp['code'] = 0;
+		$resp['msg'] = '未知错误';
 		$link = model('Order');
 		if (IS_POST) {
 			$data = input('post.');
@@ -39,20 +45,17 @@ class Order extends Base {
 				unset($data['id']);
 				$result = $link->save($data);
 				if ($result) {
-					return $this->success("新建成功！", url('Order/index'));
+					$resp['code'] = 1;
+					$resp['msg'] = '新建成功！';
 				} else {
-					return $this->error($link->getError());
+					$resp['msg'] = $link->getError();
 				}
 			} else {
-				return $this->error($link->getError());
+				$resp['msg'] = $link->getError();
 			}
-		} else {
-			$data = array(
-				'keyList' => $link->keyList,
-			);
-			$this->assign($data);
-			$this->assign('title', '新建订单');
-			return $this->fetch('edit');
 		}
+		return json($resp);
 	}
+
+
 }
