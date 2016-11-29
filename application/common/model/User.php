@@ -150,21 +150,17 @@ class User extends Base{
 	 * 用户手机注册
 	 * @param  integer $user 用户信息数组
 	 */
-	function registerByMobile($mobile, $password, $repassword, $openid = NULL, $addr = '', $isautologin = true){
+	function registerByMobile($mobile, $password){
 		$data['username'] = $mobile;
 		$data['salt'] = rand_string(6);		
 		$data['password'] = $password;
-		$data['repassword'] = $repassword;
 		$data['mobile'] = $mobile;
-		$data['addr'] = '杭州宝荣4S店';
+		$user['uid'] = '';
 		$result = $this->validate(true)->save($data);
 		if ($result) {
-			$data['uid'] = $this->data['uid'];
-			$this->extend()->save($data);
-			if ($isautologin) {
-				$this->autoLogin($this->data);
-			}
-			return $result;
+			$user['uid'] = $this->uid;
+			$this->autoLogin($user);
+			return $this->uid;
 		}else{
 			if (!$this->getError()) {
 				$this->error = "注册失败！";

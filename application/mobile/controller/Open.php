@@ -57,7 +57,7 @@ class Open extends Base {
 			session('smsPhone',$phone);
 			session('smsCode',$smsCode);
 			$resp['code'] = 1;
-			$resp['msg'] = '发送成功'.$smsCode;//fixed:方便调试，发布需删除
+			$resp['msg'] = '发送成功';//.$smsCode;//fixed:方便调试，发布需删除
 		}		
 		return json($resp);
 	}

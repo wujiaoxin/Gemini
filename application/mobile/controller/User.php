@@ -58,11 +58,12 @@ class User extends Base {
 			$addr = '杭州宝荣4S';
 			$openid = NULL;
 			$user = model('User');
-			$uid = $user->registerByMobile($username, $password, $password, $openid, $addr, false);
+			$uid = $user->registerByMobile($username, $password);
 			if ($uid > 0) {
-				$userinfo = array('nickname' => $username, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
+				$userinfo = array('nickname' => $username, 'addr' => $addr, 'openid' => $openid, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
 				//保存信息
 				if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
+					//TODO:更新信息信息失败回滚
 					$resp["code"] = 0;
 					$resp["msg"] = '注册失败！！';
 					return json($resp);
