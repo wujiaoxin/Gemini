@@ -77,7 +77,7 @@ class Open extends Base {
         return $file_content;
     }
 	
-	public function tryOCR($id = '',$type = 'idcard'){//90
+	public function tryOCR($id = '',$type = 'idcard'){//TODO:权限校验
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 		if (!$id) {

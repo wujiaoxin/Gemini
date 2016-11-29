@@ -19,9 +19,11 @@ class Upload {
 		$config      = $this->$upload_type();
 		// 获取表单上传文件 例如上传了001.jpg
 		$file = request()->file('file');
-		$info = $file->move($config['rootPath'], true, false);
+		$info = $file->validate(['ext'=>'jpg,jpeg,png,gif'])->move($config['rootPath'], true, false);
 
 		if ($info) {
+			//if($info->getExtension() == 'php'){				
+			//}
 			$return['status'] = 1;
 			$return['info']   = $this->save($config, $upload_type, $info);
 		} else {
