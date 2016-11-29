@@ -150,12 +150,13 @@ class User extends Base{
 	 * 用户手机注册
 	 * @param  integer $user 用户信息数组
 	 */
-	function registerByMobile($mobile, $password, $repassword, $isautologin = true){
+	function registerByMobile($mobile, $password, $repassword, $openid = NULL, $addr = '', $isautologin = true){
 		$data['username'] = $mobile;
 		$data['salt'] = rand_string(6);		
 		$data['password'] = $password;
 		$data['repassword'] = $repassword;
 		$data['mobile'] = $mobile;
+		$data['addr'] = '杭州宝荣4S店';
 		$result = $this->validate(true)->save($data);
 		if ($result) {
 			$data['uid'] = $this->data['uid'];

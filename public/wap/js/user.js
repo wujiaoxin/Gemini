@@ -291,7 +291,7 @@ function sendSmsCode(send_code, type) {
 		}		
 		
         ajax_jquery({
-            url: '/mobile/index/sendSmsCode?t=' + Math.random(),
+            url: '/mobile/open/sendSmsCode?t=' + Math.random(),
             data: param,
             success: function (resp) {            
                 if (resp.code == "1") {

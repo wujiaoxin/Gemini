@@ -55,9 +55,10 @@ class User extends Base {
 				$resp["msg"] = '短信验证码错误！';
 				return json($resp);
 			}
-			
+			$addr = '杭州宝荣4S';
+			$openid = NULL;
 			$user = model('User');
-			$uid = $user->registerByMobile($username, $password, $password , false);
+			$uid = $user->registerByMobile($username, $password, $password, $openid, $addr, false);
 			if ($uid > 0) {
 				$userinfo = array('nickname' => $username, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
 				//保存信息
