@@ -277,8 +277,10 @@
 		delFile: function() {
 				var self = this;
 				var selecter = '';
+				var sampleSelecter = '';
 				if (self.options.listName) {
 					selecter = '#' + self.options.listName;
+					sampleSelecter =  '#' + self.options.listName + '_sample';
 				}
 				if (self.options.editListName) {
 					selecter += ',#' + self.options.editListName;
@@ -300,6 +302,7 @@
 									self.resetHiddenVal(furl);
 								}
 								$('#' + qfid).remove();
+								$(sampleSelecter).show();
 
 								if (qfid.substring(0, 7) == 'WU_FILE') {
 									self.BDUploader.removeFile(qfid, true);//TODO:remove from queued

@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">	
 	<link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
-    <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript">
 		var BASE_URL = ""; //根目录地址
 	</script>
@@ -55,7 +54,7 @@
 			width: 100%;
 		}
 		.webuploader-pick {
-			background: #1A81FF;
+			background: #3e9de8;
 			width: 90%;
 			margin-top:5px;
 			color:white;
@@ -65,6 +64,19 @@
 		}
 		.picker_button{
 			width:100%;
+		}
+		.phone-input{
+		  padding: 0px;
+		  margin: 0;
+		  width: 92%;
+		  height: 40px;
+		  color: #666;
+		  font-size: 14px;
+		  font-family: inherit;
+		  padding-left:10px;
+		}
+		.form-group{
+			margin-bottom:10px;
 		}
 
 	</style>
@@ -87,7 +99,7 @@
                 <div data-page="dqassess" class="page">						
 				<div class="page-content main-box clearfix">
                     <div class="main-box-title">
-                        <h4 class="col-lg-8 color-black">请拍摄并上传贷款人的有效二代身份证和驾驶证</h4>
+                        <h4 class="col-lg-8 color-black">请上传贷款人的有效二代身份证和驾驶证</h4>
                     </div>
                     <div class="main-box-body clearfix">
                     <div>
@@ -109,7 +121,7 @@
                                 <label class="col-lg-2 control-label">身份证正面照片</label>          
                                 <div class="col-lg-10 col-sm-10">
                                     <div class="picker-box">
-                                        <div id="idcardFace" class="imgSample">
+                                        <div id="fileList_idcard_face_pic_sample" class="imgSample">
                                             <img src="/public/wap/images/idcardface.png">
                                         </div>
                                         <input type="hidden" name="idcard_face_pic" id="field_idcard_face_pic" value="">
@@ -117,33 +129,6 @@
                                         </div>
                                         <div id="picker_idcard_face_pic" class="picker_button">上传身份证正面照片</div>
                                     </div>
-                                    <script type="text/javascript">
-                                        uploadsize =  20;
-                                        $(function(){
-                                            $("#picker_idcard_face_pic").SentUploader({
-                                                    fileNumLimit:1,
-                                                    uploadEvents: {
-                                                        uploadComplete:function(file){
-                                                            $('#idcardFace').hide();
-                                                        }
-                                                    },
-                                                    listName : 'fileList_idcard_face_pic',
-                                                    hiddenName: 'field_idcard_face_pic',
-                                                    hiddenValType:1,
-                                                    fileSingleSizeLimit:uploadsize*1024*1024,
-                                                    closeX:true
-                                                },
-                                                {
-                                                    fileType: 'service',
-                                                    filename : 'images',
-                                                });
-                                            $(".webuploader-pick-file-close").on('click',function(){
-												$('#idcardFace').show();
-                                            });
-                                        });
-
-                                    </script>                   
-                                    <div class="help-block"></div>
                                 </div>
                             </div>
 							<hr/>
@@ -151,7 +136,7 @@
                                 <label class="col-lg-2 control-label">身份证反面照片</label>
                                 <div class="col-lg-10 col-sm-10">
                                     <div class="picker-box">
-                                        <div id="idcardBack" class="imgSample">
+                                        <div id="fileList_idcard_back_pic_sample" class="imgSample">
                                                 <img src="/public/wap/images/idcardback.png">
                                         </div>
                                         <input type="hidden" name="idcard_back_pic" id="field_idcard_back_pic" value="">
@@ -159,27 +144,6 @@
                                         </div>
                                          <div id="picker_idcard_back_pic" class="picker_button">上传身份证反面照片</div>
                                     </div>
-                                    <script type="text/javascript">
-                                        uploadsize =  20;
-                                        $(function(){
-                                            $("#picker_idcard_back_pic").SentUploader({
-                                                    fileNumLimit:1,
-                                                    uploadEvents: {
-                                                        uploadComplete:function(file){}
-                                                    },
-                                                    listName : 'fileList_idcard_back_pic',
-                                                    hiddenName: 'field_idcard_back_pic',
-                                                    hiddenValType:1,
-                                                    fileSingleSizeLimit:uploadsize*1024*1024,
-                                                    closeX:true
-                                                },
-                                                {
-                                                    fileType: 'service',
-                                                    filename : 'images',
-                                                });
-                                        });
-                                    </script>                  
-                                    <div class="help-block"></div>
                                 </div>
                             </div>
 							<hr/>
@@ -187,55 +151,26 @@
                                 <label class="col-lg-2 control-label">驾驶证照片</label>
                                 <div class="col-lg-10 col-sm-10">
                                     <div class="picker-box">
-                                        <div id="divingLic" class="imgSample">
+                                        <div id="fileList_driving_lic_pic_sample" class="imgSample">
                                             <img src="/public/wap/images/drivingLic.png">
                                         </div>
                                         <input type="hidden" name="driving_lic_pic" id="field_driving_lic_pic" value="">
                                         <div id="fileList_driving_lic_pic" class="upload-file-list-info">
                                         </div>
-                                        <div id="picker_driving_lic_pic" class="picker_button">上传图片</div>
+                                        <div id="picker_driving_lic_pic" class="picker_button">上传驾驶证照片</div>
                                     </div>
-                                    <script type="text/javascript">
-                                        uploadsize =  20;
-                                        $(function(){
-                                            $("#picker_driving_lic_pic").SentUploader({
-                                                    fileNumLimit:1,
-                                                    uploadEvents: {
-                                                        uploadComplete:function(file){
-                                                            $('#drivingLic').hide();
-                                                        }
-                                                    },
-                                                    listName : 'fileList_driving_lic_pic',
-                                                    hiddenName: 'field_driving_lic_pic',
-                                                    hiddenValType:1,
-                                                    fileSingleSizeLimit:uploadsize*1024*1024,
-                                                    closeX:true
-                                                },
-                                                {
-                                                    fileType: 'service',
-                                                    filename : 'images',
-                                                });
-                                        });
-                                    </script>                   
-                                    <div class="help-block"></div>
                                 </div>
                             </div>
-							<hr/>
                             <div class="form-group">
                                 <label class="col-lg-2 control-label">贷款人手机</label>
                                 <div class="col-lg-10 col-sm-10">
-                                    <input type="text" class="form-control" name="mobile" id="mobile" autocomplete="false" value="">
-                                <div class="help-block">可选，仅供通知之用</div>
+                                    <input type="number" class="phone-input" name="mobile" id="mobile" autocomplete="false" value="" placeholder="贷款人手机，可选，仅供通知之用">
                                 </div>
                             </div>
 							<hr/>							
-                            <div class="form-group">
-                                <div class="col-lg-offset-2 col-lg-10">
-                                    <input type="hidden" name="id" value="">            
-                                    <button class="btn btn-success submit-btn ajax-post" type="submit" target-form="form-horizontal">确 定</button>
-                                    <button class="btn btn-danger btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
-                                </div>
-                            </div>
+                        <div class="content-block">
+                            <a class="button button-big button-raised butcom-css dpblue" href="javascript:alert('post test')">提交申请</a>
+                        </div>
                         </form>
                     </div>
                     </div>
@@ -249,55 +184,70 @@
             <div id="dialogMain"></div>
         </div>
     </div>
-
     <div id="loading"></div>
-
+	<script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
-
 	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
 	<script type="text/javascript" src="/Public/wap/js/webuploader.custom.js"></script>
-
-<script type="text/javascript">
-
-$(function(){
- /*   var a = "3000-10000";
-    var b = "1000-5000";
-    $("#a").html(a);
-    $("#b").html(b);
-	*/
-});
-/*
-$('#uploadFile').localResizeIMG({
-    width: 480,
-    success: function (result) {
-    	$("#loading").show();
-    	
-        var img = new Image();
-        img.src = result.base64;
-      
-        $('#myAvatar').html(img);
-        var img_v = result.clearBase64;
-        //开始上传文件
-        var param = {
-            "picFile": img_v,
-        };
-        ajax_jquery({
-            url: appPath + '/UserInfo/ajax_set_avatar?t=' + Math.random(),
-            data: param,
-            async: true,
-            success: function (resp) {
-                if (resp.status == "1" && resp.error == "00000000") {
-                    ui_alert("上传头像成功!");
-                }else{
-                    ajaxAlertMsg(resp);
-                }
-            }
-        });
-        return false;
-    }
-});*/
-</script>
+	<script type="text/javascript">
+		var uploadsize =  20;
+		$(function(){
+			$("#picker_idcard_face_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+                        $('#fileList_idcard_face_pic_sample').hide();
+                    }
+                },
+                listName : 'fileList_idcard_face_pic',
+                hiddenName: 'field_idcard_face_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+												
+			$("#picker_idcard_back_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+							$('#fileList_idcard_back_pic_sample').hide();
+					}
+                },
+                listName : 'fileList_idcard_back_pic',
+                hiddenName: 'field_idcard_back_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+												
+			$("#picker_driving_lic_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+                        $('#fileList_driving_lic_pic_sample').hide();
+                    }
+                },
+                listName : 'fileList_driving_lic_pic',
+                hiddenName: 'field_driving_lic_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+		});
+	</script>  
 
 </body>
 </html>
