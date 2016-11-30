@@ -163,7 +163,7 @@ function create_tables($db, $prefix = ''){
 	$sql = explode(";\n", $sql);
 
 	//替换表前缀
-	$orginal = 'sent_';
+	$orginal = 'gemini_';
 	$sql = str_replace(" `{$orginal}", " `{$prefix}", $sql);
 
 	//开始安装
@@ -215,7 +215,7 @@ function update_tables($db, $prefix = ''){
 	$sql = explode(";\n", $sql);
 
 	//替换表前缀
-	$sql = str_replace(" `sent_", " `{$prefix}", $sql);
+	$sql = str_replace(" `gemini_", " `{$prefix}", $sql);
 
 	//开始安装
 	show_msg('开始升级数据库...');
