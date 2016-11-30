@@ -1,0 +1,142 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">
+    <script>
+		var BASE_URL = ""; //根目录地址
+    </script>
+	<style type="text/css">
+	.main-box-title{
+		text-align:center;
+	}
+	.content-block{
+		margin: 5px 0;
+		padding: 4px  16px;
+	}
+	.imgSample{
+		width: 90%;
+		margin:0 auto;
+	}
+	.imgSample img{
+		width:100%;
+		
+	}
+	</style>
+</head>
+<body>   
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back"></i>
+                        </a>
+                    </div>
+                    <div class="center blue-color">查看订单</div>
+                    <!--<div class="right">
+                        <a href="javascript:toUserMessage();" class="link icon-only ">
+                            <img src="/Public/wap/images/message.png" height="40%"/>
+                        </a>
+                    </div>-->
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="dqassess" class="page">						
+					<div class="page-content main-box clearfix">
+						<div class="main-box-title">
+							<h4 class="color-black">贷款人信息及证件照</h4>
+						</div>
+						<div class="content-block row bg-white no-gutter">
+							<div class='col-30'>姓名</div>
+							<div class='col-60'>{$info['name']}</div>
+						</div>
+						<div class="content-block row bg-white no-gutter">
+							<div class='col-30'>身份证号</div>
+							<div class='col-60'>{$info['idcard_num']}</div>
+						</div>
+						<div class="content-block row bg-white no-gutter">
+							<div class='col-30'>贷款额度</div>
+							<div class='col-60'>{$info['loan_limit']}</div>
+						</div>
+						<div class="content-block row bg-white no-gutter">
+							<div class='col-30'>联系方式</div>
+							<div class='col-60'>{$info['mobile']}</div>
+						</div>
+						<div class="content-block row bg-white no-gutter">
+							<div class='col-30'>审核状态</div>
+							<div class='col-60'>{$info['status']}</div>
+						</div>
+						<div class="content-block row bg-white no-gutter">
+							<div class='col-30'>申请时间</div>
+							<div class='col-60'>{$info['create_time'|date='Y-m-d h:s',###]}</div>
+						</div>
+						 <div class="content-block row bg-white no-gutter">
+							<div class='col-30'>面签地址</div>
+							<div class='col-60'>{$info['addr']}</div>
+						</div>
+						<div class="content-block-title">身份证正面照</div>
+						<div class="content-block">
+						  <div class="content-block-inner">
+								<div class="picker-box">
+									<div class="imgSample">
+									{php}
+										$idcard_face_pic = get_cover($info['idcard_face_pic']);										
+									{/php}
+									<img src="{$idcard_face_pic['path']|default=''}" />
+									</div>
+								</div>
+						  </div>
+						</div>
+						<div class="content-block-title">身份证反面照</div>
+						<div class="content-block">
+						  <div class="content-block-inner">
+								<div class="picker-box">
+									<div class="imgSample">
+									{php}
+										$idcard_back_pic = get_cover($info['idcard_back_pic']);										
+									{/php}
+									<img src="{$idcard_back_pic['path']|default=''}" />
+									</div>
+								</div>
+						  </div>
+						</div>
+						<div class="content-block-title">驾驶证正副页</div>
+						<div class="content-block">
+							<div class="content-block-inner">
+								<div class="picker-box">
+									<div id="fileList_driving_lic_pic_sample" class="imgSample">
+									{php}
+										$driving_lic_pic = get_cover($info['driving_lic_pic']);										
+									{/php}
+									<img src="{$driving_lic_pic['path']|default=''}" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="content-block">						
+							<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/edit.html');">修改资料</a>
+						</div>
+						<div class="content-block">
+							<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/edit.html');">补充资料</a>
+						</div>
+				
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+</body>
+</html>

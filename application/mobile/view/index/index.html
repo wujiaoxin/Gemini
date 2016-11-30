@@ -24,7 +24,7 @@
                         </a>
                     </div>
                     <div class="right">
-                        <a class="link icon-only mylink" href="#" id="hyyqLink">
+                        <a class="link icon-only mylink" href="#" onclick="ui_alert('活动即将上线')" id="hyyqLink">
                             <img src="/Public/wap/images/invite.png" height="100%"/>
                         </a>
                     </div>
@@ -42,20 +42,19 @@
                             <div class="swiper-pagination"></div>
                         </div>
                         <div class="secdiv-con">
-                                                            <div class="user-tx">
-                                    <img src="/Public/wap/images/user.png" width="100%"/>
-                                </div>
-                                <div class="secdiv-left">
-                                    <span class="left">您好，</span><a href="#" onclick="goToUrl('{:url('mobile/user/index')}')" class="yellow left">{$welcomeText}</a>
-                                </div>                            
-								<div class="secdiv-right blue-color tc">
-									<a href="#" onclick="goToUrl('{:url('mobile/user/index')}')"> 会员中心<img
-                                        src="/Public/wap/images/right.png" class="right-ico ml5"/></a>
-								</div>
+                            <div class="user-tx">
+                                <img src="/Public/wap/images/user.png" width="100%"/>
+                            </div>
+                            <div class="secdiv-left">
+                                <span class="left">您好，</span><a href="#" onclick="goToUrl('{:url('mobile/user/index')}')" class="yellow left">{$welcomeText}</a>
+                            </div>                            
+							<div class="secdiv-right blue-color tc">
+									<a href="#" onclick="goToUrl('{:url('mobile/user/index')}')"> 会员中心<img src="/Public/wap/images/right.png" class="right-ico ml5"/></a>
+							</div>
                         </div>
                         <div class="deal-item dqjk-item bor-radius clearfix">
                                 <div class="deal-ico">
-                                    <img src="/Public/wap/images/danqi.png" width="100%"/>
+                                    <img src="/public/wap/images/danqi.png" width="100%"/>
                                 </div>
                                 <div class="deal-item-con bor-radius">
                                     <div class="deal-item-tit">
@@ -69,8 +68,20 @@
                                     <a href="javascript:goToUrl('{:url('mobile/order/add')}');"
                                        class="a-btn bor-radius qbg-btn blue">去申请</a>
                                 </div>
-                            </div>
-                                                    <div class="deal-item xjfq-item bor-radius clearfix">
+                        </div>
+						<!--
+						<div class="deal-status deal-item bor-radius clearfix">
+                                <div class="deal-item-con bor-radius">
+                                    <div class="deal-item-tit">
+                                        汽车垫资
+                                    </div>
+									<div class="deal-item-stintro">
+										系统正在争分夺秒的审核您的资料，请耐心等待。<p><a href="javascript:void();"class="blue-color right">进度详情>></a></p>
+									</div>
+                                </div>
+						</div>  
+						-->						
+                        <div class="deal-item xjfq-item bor-radius clearfix">
                                 <div class="deal-ico">
                                     <img src="/Public/wap/images/xjfq.png" width="100%"/>
                                 </div>
@@ -79,14 +90,15 @@
                                         车抵贷
                                     </div>
                                     <div class="deal-item-intro">
-                                        信用额度
+                                        贷款额度
                                     </div>
                                     <div class="index-ed-data zi-color">
-                                        ￥3000-500000                                    </div>
-                                    <a href="javascript:toBorrowMultiple(1);" class="a-btn bor-radius qbg-btn dpblue">去借款</a>
+                                        ￥3000-500000
+									</div>
+                                    <a href="javascript:ui_alert('即将上线');" class="a-btn bor-radius qbg-btn dpblue">去借款</a>
                                 </div>
-                            </div>
-                                                    <div class="footer clearfix">
+                        </div>
+                        <div class="footer clearfix">
                             <div class="footer-link">
                                 <a class="mylink" href="#"><img src="/Public/wap/images/bluewarn.png"/><span><b>关于我们</b></span></a>
                             </div>
@@ -97,7 +109,6 @@
                                <a class="mylink" style="color:#555" href="/index.php/industry/index.html">更多资讯</a>
                             </p>-->
                         </div>
-
                     </div>
                 </div>
             </div>
