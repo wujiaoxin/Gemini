@@ -262,10 +262,8 @@ CREATE TABLE `sent_auth_group` (
 -- -----------------------------
 -- Records of `sent_auth_group`
 -- -----------------------------
-INSERT INTO `sent_auth_group` VALUES ('1', 'admin', '1', '网站编辑', '网站编辑，针对内容进行管理', '1', '2,1');
-INSERT INTO `sent_auth_group` VALUES ('2', 'admin', '1', '网站运营', '针对网站SEO进行管理', '1', '21,20,14,12,3,19,18,17,16,15,13,1');
-INSERT INTO `sent_auth_group` VALUES ('5', 'admin', '', '车商销售经理', '4S店车商销售经理，负责报单', '1', '40,37,34,39,1');
-INSERT INTO `sent_auth_group` VALUES ('6', 'admin', '', '银行风控经理', '银行授信审核', '1', '39,38,35,34,1');
+INSERT INTO `sent_auth_group` VALUES ('1', 'admin', '', '车商销售经理', '4S店车商销售经理，负责报单', '1', '40,37,34,39,1');
+INSERT INTO `sent_auth_group` VALUES ('2', 'admin', '', '银行风控经理', '银行授信审核', '1', '39,38,35,34,1');
 -- -----------------------------
 -- Table structure for `sent_auth_group_access`
 -- -----------------------------
@@ -1175,6 +1173,7 @@ INSERT INTO `sent_link` VALUES ('1', '1', '互纳科技', 'http://www.vpdai.com'
 DROP TABLE IF EXISTS `sent_order`;
 CREATE TABLE `sent_order` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '订单标识ID',
+  `sn` varchar(32) NOT NULL DEFAULT ''  COMMENT '订单编号',
   `uid` int(10) NOT NULL DEFAULT '0' COMMENT '报单人用户ID ',
   `bank_uid` int(10) NOT NULL DEFAULT '0' COMMENT '银行审核人员ID ',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1:新车垫资 2：二手车垫资 3:车抵贷 4:其他订单',
@@ -1197,7 +1196,8 @@ CREATE TABLE `sent_order` (
 -- -----------------------------
 -- Records of `sent_order`
 -- -----------------------------
-INSERT INTO `sent_order` VALUES ('1', '0', '0', '1', '测试用户', '15879025222', '330782198907023119', '0', '0', '0', '100000', '0', '0', '0', '0', '杭州市滨江区平安银行', '无');
+INSERT INTO `sent_order` VALUES ('1','2016111201000', '0', '0', '1', '测试用户', '15879025222', '330782198907023119', '0', '0', '0', '100000', '0', '0', '0', '0', '杭州市滨江区平安银行', '无');
+
 
 -- -----------------------------
 -- Table structure for `sent_member`

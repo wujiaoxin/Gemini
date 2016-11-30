@@ -113,6 +113,7 @@ class User extends Admin {
 	public function auth() {
 		$access = model('AuthGroupAccess');
 		$group  = model('AuthGroup');
+		$user = model('User');
 		if (IS_POST) {
 			$uid = input('uid', '', 'trim,intval');
 			$access->where(array('uid' => $uid))->delete();
@@ -123,11 +124,13 @@ class User extends Admin {
 					$add = array(
 						'uid'      => $uid,
 						'group_id' => $group_id,
+						'access_group_id' => $group_id,
 					);
 					$access->save($add);
+					$user->update($add);
 				}
 			}
-			return $this->success("设置成功！");
+			return $this->success("设置成功！",url('admin/user/index'));
 		} else {
 			$uid  = input('id', '', 'trim,intval');
 			$row  = $group::select();

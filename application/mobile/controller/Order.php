@@ -56,6 +56,7 @@ class Order extends Base {
 			}
 			if ($data) {
 				unset($data['id']);
+				$data['sn'] = $link->build_order_sn();
 				$result = $link->save($data);
 				if ($result) {
 					return $this->success("新建成功！", url('Order/index'));

@@ -18,6 +18,7 @@ class Order extends \app\common\model\Base {
 
 	public $keyList = array(
 		array('name'=>'id' ,'title'=>'ID', 'type'=>'hidden'),
+		array('name'=>'sn' ,'title'=>'订单编号', 'type'=>'hidden'),
 		array('name'=>'bank_uid' ,'title'=>'审核银行', 'type'=>'hidden', 'value'=>'9'),
 		array('name'=>'type' ,'title'=>'订单类别', 'type'=>'select', 'option'=>array(
 			'1' => '新车垫资',
@@ -35,6 +36,7 @@ class Order extends \app\common\model\Base {
 		array('name'=>'addr' ,'title'=>'签单地址', 'type'=>'text', 'help'=>''),
 		array('name'=>'descr' ,'title'=>'备注信息', 'type'=>'textarea', 'help'=>'')
 	);
+	
 
     protected $auto = array('update_time');
 
@@ -44,7 +46,13 @@ class Order extends \app\common\model\Base {
 		'driving_lic_pic'  => 'integer',
 	);
 	
-	protected function build_order_sn(){
+	public function build_order_sn(){
 		return date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
-	}	
+	}
+	/*
+	public function extend(){
+		return $this->hasOne('OrderExtend', 'uid');
+	}
+	*/
+	
 }

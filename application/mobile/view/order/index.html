@@ -44,17 +44,14 @@
                     <div class="page-content">
 					    <div class="history-log">
 						<!--
-                            <div class="no-result">
-								<img src="/public/wap/images/record.png"/>
-								<p>暂无历史记录</p>
-                            </div>
+                            <div class='no-result'><img src='/public/wap/images/record.png' /><p>暂无订单记录</p></div>
 						-->
 							<ul id="orderList">
-							{volist name="list" id="item"}
+							{volist name="list" id="item" empty="<div class='no-result'><img src='/public/wap/images/record.png' /><p>暂无订单记录</p></div>"}
 								<li data="{$item['id']}">
 								  <!-- <a href="javascript:goToUrl('/mobile/order/view?id={$item['id']}');">-->
 										<div class="orderInfo">
-											<div class="order-id">订单编号:{$item['create_time']|date='Ymd',###}00{$item['id']}</div>										
+											<div class="order-id">订单编号:{$item['sn']}</div>										
 											<div class="order-name">贷款人:{$item['name']}</div>
 											<div class="order-date">{$item['create_time']|date='Y-m-d h:s',###}</div>										
 										</div>
