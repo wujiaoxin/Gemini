@@ -16,7 +16,8 @@
 	.order-id{width:100%; height: 24px; line-height: 24px;color:#666;font-size:12px;}
 	.order-name{width:100%; height: 24px; line-height: 24px;}
 	.order-date{width:100%; height: 24px; line-height: 24px; color:#666;font-size:12px;}
-	.right{height:72px; line-height: 72px;}
+	.orderInfo{float:left;}
+	.orderStatus{float:right;height:72px; line-height: 72px;}
 	</style>	
 </head>
 <body>
@@ -48,25 +49,28 @@
 								<p>暂无历史记录</p>
                             </div>
 						-->
-							<ul>
+							<ul id="orderList">
 							{volist name="list" id="item"}
-								<li>
-								   <a href="javascript:goToUrl('/mobile/order/view?id={$item['id']}');">
-										<span class="left">
-											<div class="order-id">订单编号:{$item['id']}</div>										
+								<li data="{$item['id']}">
+								  <!-- <a href="javascript:goToUrl('/mobile/order/view?id={$item['id']}');">-->
+										<div class="orderInfo">
+											<div class="order-id">订单编号:{$item['create_time']|date='Ymd',###}00{$item['id']}</div>										
 											<div class="order-name">贷款人:{$item['name']}</div>
 											<div class="order-date">{$item['create_time']|date='Y-m-d h:s',###}</div>										
-										</span>
-										<span class="right">
+										</div>
+										<div class="orderStatus">
 									{if isset($item['status'])}
-										{if $item['status']}
-											审核通过
-										{else/}
-											银行审核中
+										{if $item['status'] == 1}
+											<span class="blue-color">审核通过</span>
+										{elseif $item['status'] == 2/}
+											<span class="red">审核未通过</span>	
+										{else /}
+											<span class="blue-color">银行审核中</span>									
 										{/if}
 									{/if}
-										<img class="cg-right-ico" src="/public/wap/images/right.png" /></span>
-									</a>
+										<img class="cg-right-ico" src="/public/wap/images/right.png" />
+										</div>
+								<!--	</a>-->
 								</li>
 							{/volist}
 							<!--
@@ -98,5 +102,14 @@
     <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+	<script>
+	$(function(){
+		$("#orderList").on("click", "li", function(){
+			var id = $(this).attr("data");
+			goToUrl('/mobile/order/view?id=' + id);
+		});
+	});
+	
+	</script>
 </body>
 </html>

@@ -73,8 +73,16 @@
 							<div class='col-60'>{$info['mobile']}</div>
 						</div>
 						<div class="content-block row bg-white no-gutter">
-							<div class='col-30'>审核状态</div>
-							<div class='col-60'>{$info['status']}</div>
+							<div class='col-30'>订单状态</div>
+							<div class='col-60'>
+							{if isset($info['status'])}
+								{if $info['status'] == 0}
+								审核中
+								{else/}
+								审核通过
+								{/if}
+							{/if}
+							</div>
 						</div>
 						<div class="content-block row bg-white no-gutter">
 							<div class='col-30'>申请时间</div>

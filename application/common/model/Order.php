@@ -43,4 +43,8 @@ class Order extends \app\common\model\Base {
 		'idcard_back_pic'  => 'integer',
 		'driving_lic_pic'  => 'integer',
 	);
+	
+	protected function build_order_sn(){
+		return date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+	}	
 }

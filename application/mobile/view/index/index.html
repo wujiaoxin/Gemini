@@ -24,7 +24,7 @@
                         </a>
                     </div>
                     <div class="right">
-                        <a class="link icon-only mylink" href="#" onclick="ui_alert('活动即将上线')" id="hyyqLink">
+                        <a class="link icon-only mylink" href="#" onclick="ui_alert('活动内测中,即将上线')">
                             <img src="/Public/wap/images/invite.png" height="100%"/>
                         </a>
                     </div>
@@ -35,21 +35,20 @@
                     <div class="page-content">
                         <div class="swiper-container no-margin mtop swiper">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide"><a data-url='#' class="myhref"><img src="/Public/wap/images/3981741_infoservice_bannerpic_14780567529466.png"/></a></div>
-								<div class="swiper-slide"><a data-url='#' class="myhref"><img src="/Public/wap/images/3981741_infoservice_bannerpic_14780813319147.png"/></a></div>
-                                <div class="swiper-slide"><a data-url='#' class="myhref"><img src="/Public/wap/images/3981741_infoservice_bannerpic_14780813148000.png"/></a></div>
-                            </div>
+                                <div class="swiper-slide"><a data-url='#' class="myhref"><img src="/Public/wap/images/1.png"/></a></div>
+								<div class="swiper-slide"><a data-url='#' class="myhref"><img src="/Public/wap/images/2.png"/></a></div>
+                           </div>
                             <div class="swiper-pagination"></div>
                         </div>
-                        <div class="secdiv-con">
+                        <div class="secdiv-con" onclick="goToUrl('{:url('mobile/user/index')}')" >
                             <div class="user-tx">
                                 <img src="/Public/wap/images/user.png" width="100%"/>
                             </div>
                             <div class="secdiv-left">
-                                <span class="left">您好，</span><a href="#" onclick="goToUrl('{:url('mobile/user/index')}')" class="yellow left">{$welcomeText}</a>
+                                <span class="left">您好，</span><a href="#" class="yellow left">{$welcomeText}</a>
                             </div>                            
 							<div class="secdiv-right blue-color tc">
-									<a href="#" onclick="goToUrl('{:url('mobile/user/index')}')"> 会员中心<img src="/Public/wap/images/right.png" class="right-ico ml5"/></a>
+									<a href="#"> 会员中心<img src="/Public/wap/images/right.png" class="right-ico ml5"/></a>
 							</div>
                         </div>
                         <div class="deal-item dqjk-item bor-radius clearfix">
@@ -58,13 +57,14 @@
                                 </div>
                                 <div class="deal-item-con bor-radius">
                                     <div class="deal-item-tit">
-                                        汽车垫资
+                                        按揭垫资
                                     </div>
                                     <div class="deal-item-intro">
                                         垫资额度
                                     </div>
                                     <div class="index-ed-data zi-color">
-                                        ￥10000-200000                                    </div>
+                                        ￥50000-500000
+									</div>
                                     <a href="javascript:goToUrl('{:url('mobile/order/add')}');"
                                        class="a-btn bor-radius qbg-btn blue">去申请</a>
                                 </div>
@@ -93,9 +93,9 @@
                                         贷款额度
                                     </div>
                                     <div class="index-ed-data zi-color">
-                                        ￥3000-500000
+                                        ￥10000-500000
 									</div>
-                                    <a href="javascript:ui_alert('即将上线');" class="a-btn bor-radius qbg-btn dpblue">去借款</a>
+                                    <a href="javascript:ui_alert('车抵贷业务内测中,即将上线');" class="a-btn bor-radius qbg-btn dpblue">去借款</a>
                                 </div>
                         </div>
                         <div class="footer clearfix">
