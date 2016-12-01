@@ -30,6 +30,9 @@
 		width:100%;
 		
 	}
+	.list-block ul{
+		padding:0 20px;
+	}
 	</style>
 </head>
 <body>   
@@ -133,24 +136,31 @@
 								</div>
 							</div>
 						</div>
+						<div class="list-block">
+						  <ul>
+							<li>
+							  <label class="label-radio item-content">
+								<!-- Checked by default -->
+								<input type="radio" name="examine_status" value="1" checked="checked">
+								<div class="item-inner">
+								  <div class="item-title">审核通过</div>
+								</div>
+							  </label>
+							</li>
+							<li>
+							  <label class="label-radio item-content">
+								<input type="radio" name="examine_status" value="2">
+								<div class="item-inner">
+								  <div class="item-title">审核拒绝</div>
+								</div>
+							  </label>
+							</li>
+						  </ul>
+						</div>  
+						<div class="content-block">
+							<a class="button button-big button-raised butcom-css dpblue" href="javascript:examine({$info['id']});">提交审核</a>
+						</div>
 						
-					
-						{if isset($info['status'])}
-							{if $info['status'] == 0}
-							<div class="content-block">
-								<a class="button button-big button-raised butcom-css bg-red" href="javascript:goToUrl('/mobile/order/del.html');">撤销订单</a>
-							</div>
-							{elseif $info['status'] == 2/}
-							<div class="content-block">
-								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/edit.html');">补充资料</a>
-							</div>	
-							{else /}
-							<div class="content-block">
-								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/edit.html');">上传首付资料</a>
-							</div>
-							{/if}
-						{/if}
-							
 					</div>
                 </div>
             </div>
@@ -159,5 +169,29 @@
     <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+	<script>
+		function examine(id){
+			var status = $('input[name="examine_status"]').filter(':checked').val();
+			var param = {
+				"id": id,
+				"status": status
+			};
+			ajax_jquery({
+				url: '/mobile/order/examine?t=' + Math.random(),
+				data: param,
+				success: function (resp) {
+					if(resp.code == 1){
+						ui_alert("提交成功!", function () {
+							 window.location.href = '/mobile/order' ;            
+						 });
+					}else{
+						if (typeof(resp.msg) == 'string') {
+							ui_alert(resp.msg);
+						}  
+					}
+				}
+			});
+		}
+	</script>
 </body>
 </html>

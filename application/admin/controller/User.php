@@ -49,7 +49,7 @@ class User extends Admin {
 			$uid = $model->register($data['username'], $data['password'], $data['repassword'], $data['email'], false);
 
 			if (0 < $uid) {
-				$userinfo = array('nickname' => $data['username'], 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
+				$userinfo = array('nickname' => $data['username'],'mobile' => $data['mobile'], 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
 				/*保存信息*/
 				if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 					return $this->error('用户添加失败！', '');

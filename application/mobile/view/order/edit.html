@@ -67,6 +67,7 @@
             font-size: 12px;
             font-family: inherit;
             border-width: 1px;
+			padding-left: 10px;
         }
         label[class*="col-"] {
             font-size: 10px;
@@ -98,18 +99,8 @@
                     <div>
                         <form method="post" class="form form-horizontal">
                             <input type="hidden" name="id" value=""/>
-                            <input type="hidden" name="loan_limit" value="200000"/>
-                                <!-- <div class="form-group">
-                                <label class="control-label">贷款额度</label>
-                                    <div class="">
-                                        <select class="form-control" name="loan_limit" id="loan_limit" style="width:auto;">
-                                            <option value="1" >20万（含）以内</option>
-                                            <option value="2" >20-50万</option>
-                                            <option value="3" >50万以上</option>
-                                        </select>
-                                    <div class="help-block"></div>
-                                    </div>
-                                </div> -->
+							<input type="hidden" name="bank_uid" id="bank_uid" value="3"/><!--TODO 选择银行-->
+
                             <div class="form-group">
                                 <div class="col-100">
                                     <div class="picker-box">
@@ -163,7 +154,13 @@
                                     </div>
                                 </div>
                             </div>
+
+							
                             <div class="form-group">
+                                <label class="control-label">贷款额度</label>
+                                <div class="col-100">
+                                    <input type="number" class="phone-input" name="loan_limit" id="loan_limit" autocomplete="false" value="200000" placeholder="贷款额度">
+                                </div>							
                                 <label class="control-label">贷款人手机</label>
                                 <div class="col-100">
                                     <input type="number" class="phone-input" name="mobile" id="mobile" autocomplete="false" value="" placeholder="贷款人手机，可选，仅供通知之用">
@@ -298,6 +295,8 @@
                     return;
                 }
                 var mobile = $('#mobile').val();//todo
+				var bank_uid = $('#bank_uid').val();//todo
+				var loan_limit = $('#loan_limit').val();//todo
                 var idcard_name = $('#field_idcard_face_pic_name').val();
                 var idcard_num = $('#field_idcard_face_pic_idNumber').val();
                  ajax_jquery({
@@ -307,8 +306,9 @@
                     data: {
                         'type':1,
                         'name':idcard_name,
+						'bank_uid': bank_uid,
                         'idcard_num':idcard_num,
-                        'loan_limit':200000,
+                        'loan_limit':loan_limit,
                         'idcard_face_pic':field_idcard_face_pic_id,
                         'idcard_back_pic':field_idcard_back_pic_id,
                         'driving_lic_pic':field_driving_lic_pic_id,

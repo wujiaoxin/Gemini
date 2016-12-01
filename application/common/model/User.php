@@ -136,7 +136,7 @@ class User extends Base{
 			if ($isautologin) {
 				$this->autoLogin($this->data);
 			}
-			return $result;
+			return $data['uid'];
 		}else{
 			if (!$this->getError()) {
 				$this->error = "注册失败！";
@@ -186,6 +186,7 @@ class User extends Base{
 		$auth = array(
 			'uid'             => $user['uid'],
 			'username'        => $user['username'],
+			'role'            => $user['access_group_id'],
 			'last_login_time' => $user['last_login_time'],
 		);
 

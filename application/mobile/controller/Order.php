@@ -40,6 +40,13 @@ class Order extends Base {
 		$this->assign($data);
 		return $this->fetch();
 	}
+	
+	
+	public function carinfo() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
+	
 	public function progress() {
 		//$this->assign($user);		
 		return $this->fetch();
@@ -81,6 +88,7 @@ class Order extends Base {
 		$id   = input('id', '', 'trim,intval');
 		$map = '';
 		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
 		if($uid > 0){
 			$map = '(uid = '.$uid.' or bank_uid = '.$uid.') and id = '.$id;
 		}else{
@@ -100,15 +108,50 @@ class Order extends Base {
 				return $this->error($link->getError());
 			}
 		} else {
-			//$map  = array('id' => $id);
 			$info = db('Order')->where($map)->find();
-
 			$data = array(
 				'keyList' => $link->keyList,
 				'info'    => $info,
+				'role'    => $role,
 			);
-			$this->assign($data);
-			return $this->fetch();
+			$this->assign($data);			
+			if($role == 2){//银行审核
+				return $this->fetch('examine');				
+			}else{
+				return $this->fetch();
+			}
+			
 		}
 	}
+	
+	//审核API
+	public function examine() {//TODO:权限控制&status id过滤
+		$link = model('Order');
+		$id   = input('id', '', 'trim,intval');
+		$map = '';
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if($uid > 0){
+			$map = '(bank_uid = '.$uid.') and id = '.$id;
+		}else{
+			return $this->error('请重新登录');
+		}
+		if (IS_POST) {
+			$data = input('post.');
+			if ($data) {
+				$result = $link->save($data, array('id' => $data['id']));
+				if ($result) {
+					return $this->success("提交成功！", url('Order/index'));
+				} else {
+					return $this->error("提交失败！");
+				}
+			} else {
+				return $this->error($link->getError());
+			}
+		} else {
+
+			
+		}
+	}
+	
 }

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">	
+	<link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
+	<script type="text/javascript">
+		var BASE_URL = ""; //根目录地址
+    </script>
+	<style type="text/css">
+	    .main-box-title{
+            text-align: center;
+            margin: 12px auto;
+        }
+        .form-group{
+            margin-bottom:10px;
+        }
+        .picker-box{
+            margin: 0 auto;
+            padding-top: 10px;
+            width: 90%;
+            background: #FBFFFF;
+        }
+		.imgSample{
+			margin: auto auto;
+			width: 90%;
+            /*background: url('/public/wap/images/sampleImgBg.jpg');*/
+		}
+		.imgSample img{
+			width: 100%;
+		}
+        .picker_button{
+            width:90%;
+            margin: 0 auto;
+        }
+		.webuploader-pick {
+			color: #f2f2f2;
+			width: 90%;
+			margin-top:5px;
+            background: #005eff;
+            font-size: 20px;
+		}
+		.filebox.image img{
+			width: 100%;
+		}
+        .upload-file-list-info{
+            width: 90%;
+            margin: 0 auto;
+        }	
+        .form-group .control-label{
+            margin-left: 5%;
+            font-size: 14px;
+        }
+        .form-group input{
+            margin: 5px 5% 10px;
+            width: 90%;
+            color: #666;
+            height: 24px;
+            font-size: 16px;
+            font-family: inherit;
+            border-width: 1px;
+        }
+        label[class*="col-"] {
+            font-size: 16px;
+            margin:5px 5% 2px;
+            padding: 0;
+        }
+        .optional-box{
+            border: 1px dashed green;
+        }
+	</style>
+</head>
+<body>   
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back"></i>
+                        </a>
+                    </div>
+                    <div class="center blue-color">垫资申请</div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="dqassess" class="page">						
+				<div class="page-content main-box clearfix bg-white">
+                    <div class="main-box-title">
+                        <h4 class="color-black">请如实提交相关购车资料</h4>
+                    </div>
+                    <div class="main-box-body clearfix">
+                    <div>
+                        <form method="post" class="form form-horizontal">
+                            <div class="form-group">
+                                <div class="col-100">
+                                    <div class="picker-box">
+                                        <label class="control-label">购车金额</label>
+                                        <input type="number" name="purchase_amount" id="purchase_amount" value=""/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-100">
+                                    <div class="picker-box">
+                                        <label class="control-label">车辆合格证</label>
+                                        <div id="vehicle_QC_sample" class="imgSample">
+                                            <img src="/public/wap/images/vqc_pic.jpg">
+                                        </div>
+                                        <input type="hidden" name="vehicle_QC" id="field_vehicle_QC_pic" value="">
+                                        <div id="fileList_vehicle_QC_pic" class="upload-file-list-info">
+                                        </div>
+                                        <div id="picker_vehicle_QC_pic" class="picker_button">   
+                                            <span>上传车辆合格证照片</span>                                    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-100">
+                                    <div class="picker-box">
+                                    <label class="control-label">购车发票</label>
+                                        <div id="invoice_sample" class="imgSample">
+                                            <img src="/public/wap/images/invoice.jpg">
+                                        </div>
+                                        <input type="hidden" name="invoice_pic" id="field_invoice_pic" value="">
+                                        <div id="fileList_invoice_pic" class="upload-file-list-info">
+                                        </div>
+                                         <div id="picker_invoice_pic" class="picker_button">
+                                            <span>上传购车发票照片</span>   
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-100">
+                                    <div class="picker-box">
+                                        <label class="control-label">首付凭证</label>
+                                        <div id="down_payment_sample" class="imgSample">
+                                            <img src="/public/wap/images/down_payment.jpg">
+                                        </div>
+                                        <input type="hidden" name="down_payment_pic" id="field_down_payment_pic" value="">
+                                        <div id="fileList_down_payment_pic" class="upload-file-list-info">
+                                        </div>
+                                        <div id="picker_down_payment_pic" class="picker_button">
+                                            <span>上传首付凭证照片</span>   
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-100">
+                                    <div class="picker-box">
+                                        <label class="control-label">车辆保单</label>
+                                        <div id="car_insurance_sample" class="imgSample">
+                                            <img src="/public/wap/images/car_insurance.jpg">
+                                        </div>
+                                        <input type="hidden" name="car_insurance_pic" id="field_car_insurance_pic" value="">
+                                        <div id="fileList_car_insurance_pic" class="upload-file-list-info">
+                                        </div>
+                                        <div id="picker_car_insurance_pic" class="picker_button">
+                                            <span>上传车辆保单照片</span>   
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <div class="col-100">
+                                    <p class="control-label color-blue">可选内容，请尽量填写</p>
+                                    <div class="picker-box optional-box">
+                                        <label class="control-label">购车日期</label>
+                                        <input type="date" name="purchase_date" id="purchase_date" value=""/>
+                                        <label class="control-label">汽车品牌</label>
+                                        <input type="text" name="car_brand" id="car_brand" value=""/>
+                                        <label class="control-label">车型</label>
+                                        <input type="text" name="car_type" id="car_type" value=""/>
+                                        <label class="control-label">车辆颜色</label>
+                                        <input type="text" name="car_color" id="car_color" value=""/>
+                                        <label class="control-label">车架号</label>
+                                        <input type="text" name="car_VIN" id="car_VIN" value=""/>
+                                        <label class="control-label">保险公司</label>
+                                        <input type="text" name="insurance_comp" id="insurance_comp"/>
+                                        <label class="control-label">保单号</label>
+                                        <input type="text" name="insurance_numb" id="insurance_numb"/>
+                                    </div>
+                            <div class="content-block">
+                                <a class="button button-big button-raised butcom-css dpblue" id="submit">一键垫资</a>
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+  	<div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
+        </div>
+    </div>
+    <div id="loading"></div>
+	<script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
+	<script type="text/javascript" src="/Public/wap/js/webuploader.custom.js"></script>
+	<script type="text/javascript">
+		var uploadsize =  20;		
+		$(function(){
+			$("#picker_vehicle_QC_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+						$('#vehicle_QC_sample').hide();
+                    }
+                },
+                listName : 'fileList_vehicle_QC_pic',
+                hiddenName: 'field_vehicle_QC_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+												
+			$("#picker_invoice_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+							$('#invoice_sample').hide();
+					}
+                },
+                listName : 'fileList_invoice_pic',
+                hiddenName: 'field_invoice_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+												
+			$("#picker_down_payment_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+                        $('#down_payment_sample').hide();
+                    }
+                },
+                listName : 'fileList_down_payment_pic',
+                hiddenName: 'field_down_payment_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+
+            $("#picker_car_insurance_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+                        $('#car_insurance_sample').hide();
+                    }
+                },
+                listName : 'fileList_car_insurance_pic',
+                hiddenName: 'field_car_insurance_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+
+      
+
+			$("#submit").click(function(){
+                var purchase_amount = $('#purchase_amount').val();
+                if(purchase_amount == ''){
+                    ui_alert('请填写购车金额');
+                    return;
+                }
+                var field_vehicle_QC_pic_id = $('#field_vehicle_QC_pic').val();
+                if(field_vehicle_QC_pic_id == ''){
+                    ui_alert('请上传车辆合格证照片');
+                    return;
+                }
+                var field_invoice_pic_id =$('#field_invoice_pic').val();
+                 if(field_invoice_pic_id == ''){
+                    ui_alert('请上传购车发票照片');
+                    return;
+                }
+                var field_down_payment_pic_id =$('#field_down_payment_pic').val();
+                 if(field_down_payment_pic_id == ''){
+                    ui_alert('请上传首付凭证照片');
+                    return;
+                }
+                var field_car_insurance_pic_id =$('#field_car_insurance_pic').val();
+                 if(field_car_insurance_pic_id == ''){
+                    ui_alert('请上传车辆保单照片');
+                    return;
+                }
+
+                var car_brand = $('#car_brand').val();
+                var car_type = $('#car_type').val();
+                var car_color = $('#car_color').val();
+                var car_VIN = $('#car_VIN').val();
+                var insurance_comp = $('#insurance_comp').val();
+                var car_brand = $('#insurance_numb').val();
+                var purchase_date = $('#purchase_date').val();
+                 ajax_jquery({
+                    type: 'post', // 提交方式 post
+                    url: '', // 需要提交的 url
+                    datatype:'json',
+                    data: {
+                        '': purchase_amount,
+                        '': field_vehicle_QC_pic_id,
+                        '': field_invoice_pic_id,
+                        '': field_down_payment_pic_id,
+                        '': field_car_insurance_pic_id,
+                        '': car_brand,
+                        '': car_type,
+                        '': car_color,
+                        '': car_VIN,
+                        '': insurance_comp,
+                        '': car_brand,
+                    },
+                    success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
+                        if(data.code == 1){
+                            ui_alert("垫资申请成功!", function () {
+                                 window.location.href = '/mobile' ;            
+                             });
+                        }else{
+                            if (typeof(data.msg) == 'string') {
+                                ui_alert(data.msg);
+                            }  
+                        }
+                    }
+                }); 
+            });
+		});
+	</script>  
+
+</body>
+</html>
