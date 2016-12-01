@@ -26,10 +26,9 @@ class Index extends Base {
 		$welcomeText='请登录';
 		if (is_login()) {
 			$user = model('User')->getInfo(session('user_auth.uid'));
-			$welcomeText = $user['username'];
+			$welcomeText = $user['nickname'];
 		}
 		$this->assign('welcomeText', $welcomeText);
 		return $this->fetch();
-	}
-	
+	}	
 }
