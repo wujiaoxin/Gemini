@@ -399,8 +399,8 @@ CREATE TABLE `gemini_category` (
 -- Records of gemini_category
 -- ----------------------------
 INSERT INTO `gemini_category` VALUES ('1', 'news', '新闻动态', '0', '0', '10', '', '', '', '', '', '', '', '', '2', '2,1', '0', '0', '1', '0', '0', '1', 'null', '1379474947', '1463561497', '1', '0', '');
-INSERT INTO `gemini_category` VALUES ('2', 'company_news', '国内新闻', '1', '1', '10', '', '', '', '', '', '', '', '2,3', '2', '2,1,3', '0', '1', '1', '0', '1', '1', '', '1379475028', '1386839751', '1', '0', '');
-INSERT INTO `gemini_category` VALUES ('3', '', '国外新闻', '1', '2', '10', '', '', '', '', '', '', '', '', '', '', '0', '1', '1', '0', '0', '', '', '0', '0', '1', '0', '');
+INSERT INTO `gemini_category` VALUES ('2', 'company_news', '公司新闻', '1', '1', '10', '', '', '', '', '', '', '', '2,3', '2', '2,1,3', '0', '1', '1', '0', '1', '1', '', '1379475028', '1386839751', '1', '0', '');
+INSERT INTO `gemini_category` VALUES ('3', 'industry_dynamics', '行业动态', '1', '2', '10', '', '', '', '', '', '', '', '', '', '', '0', '1', '1', '0', '0', '', '', '0', '0', '1', '0', '');
 
 -- ----------------------------
 -- Table structure for `gemini_channel`
@@ -429,7 +429,8 @@ CREATE TABLE `gemini_channel` (
 -- Records of gemini_channel
 -- ----------------------------
 INSERT INTO `gemini_channel` VALUES ('1', '0', '网站首页', 'index/index/index', '1', 'home', '', '', '', 'home', '1379475111', '1464490544', '1', '0');
-INSERT INTO `gemini_channel` VALUES ('2', '0', '新闻资讯', 'article/list/1', '1', 'article', '', '', '', 'article', '1379475111', '1464490544', '1', '0');
+INSERT INTO `gemini_channel` VALUES ('2', '0', '新闻资讯', 'article/list/1', '1', 'list-alt', '', '', '', 'article', '1379475111', '1479906337', '1', '0');
+INSERT INTO `gemini_channel` VALUES ('3', '0', '联系我们', '/index/content/detail/model_id/4/id/1.html', '1', 'envelope', '', '', '', '', '1479906310', '1479906310', '1', '0');
 
 -- ----------------------------
 -- Table structure for `gemini_config`
@@ -1408,7 +1409,6 @@ CREATE TABLE `gemini_order` (
 -- ----------------------------
 -- Records of gemini_order
 -- ----------------------------
-INSERT INTO `gemini_order` VALUES ('999', '2016111201000', '0', '0', '1', '测试用户', '15879025222', '330782198907023119', '0', '0', '0', '100000', '0', '0', '0', '0', '杭州市滨江区平安银行', '无');
 
 -- ----------------------------
 -- Table structure for `gemini_page`
@@ -1429,6 +1429,7 @@ CREATE TABLE `gemini_page` (
 -- ----------------------------
 -- Records of gemini_page
 -- ----------------------------
+INSERT INTO `gemini_page` VALUES ('1', '0', '联系我们', '4', '0', '<h2 style=\"font-family: \" helvetica=\"\" line-height:=\"\" color:=\"\" margin-top:=\"\" margin-bottom:=\"\" font-size:=\"\" white-space:=\"\"><br/></h2><p style=\"margin-top: 0px; margin-bottom: 10px; color: rgb(69, 69, 69); font-family: \" helvetica=\"\" font-size:=\"\" white-space:=\"\">公司网址：www.vpdai.com</p><p style=\"margin-top: 0px; margin-bottom: 10px; color: rgb(69, 69, 69); font-family: \" helvetica=\"\" font-size:=\"\" white-space:=\"\">办公地址：浙江省杭州市西湖区教工路18号欧美中心C1407</p><p style=\"margin-top: 0px; margin-bottom: 10px; color: rgb(69, 69, 69); font-family: \" helvetica=\"\" font-size:=\"\" white-space:=\"\">客服热线：4008-738-378</p><p><br/></p><p><iframe width=\"604\" height=\"525\" frameborder=\"0\" scrolling=\"no\" marginheight=\"0\" marginwidth=\"0\" src=\"http://j.map.baidu.com/HcPwH\"></iframe></p>', '1479906090', '1479906260');
 
 -- ----------------------------
 -- Table structure for `gemini_picture`
