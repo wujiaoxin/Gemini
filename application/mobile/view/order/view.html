@@ -138,15 +138,15 @@
 						{if isset($info['status'])}
 							{if $info['status'] == 0}
 							<div class="content-block">
-								<a class="button button-big button-raised butcom-css bg-red" href="javascript:goToUrl('/mobile/order/del.html');">撤销订单</a>
+								<a class="button button-big button-raised butcom-css bg-red" href="javascript:goToUrl('/mobile/order');">撤销订单</a>
 							</div>
 							{elseif $info['status'] == 2/}
 							<div class="content-block">
-								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/edit.html');">补充资料</a>
+								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order');">补充资料</a>
 							</div>	
 							{else /}
 							<div class="content-block">
-								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/edit.html');">上传首付资料</a>
+								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order');">上传首付资料</a>
 							</div>
 							{/if}
 						{/if}
