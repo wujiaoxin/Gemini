@@ -459,7 +459,7 @@
 		duplicate: undefined, //去重， 根据文件名字、文件大小和最后修改时间来生成hash Key.
 		disableWidgets: undefined, //默认所有 Uploader.register 了的 widget 都会被加载，如果禁用某一部分，请通过此 option 指定黑名单。 
 		swf: 'static/js/webuploader/Uploader.swf',
-		server: BASE_URL + '/admin/upload/upload.html?flash=1', // 文件接收服务端。
+		server: BASE_URL + '/mobile/files/upload.html?flash=1', // 文件接收服务端。
 		/**
 		 * ΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔ
 		 * 以上参数是百度上传组件默认参数
@@ -472,7 +472,7 @@
 		hiddenValType: '1', //文件上传隐藏域保存的值的类型   1=保存的是file表的文件编号ID，2=保存的是文件的实际路径
 		listName: 'fileList', //文件上传完成显示列表区域id
 		editListName: 'editfileList', //文件上传完成显示列表区域id
-		delUrl: BASE_URL + '/admin/upload/delete.html',
+		delUrl: BASE_URL + '/mobile/files/delete.html',
 		separator: ',', //默认逗号
 	}
 
