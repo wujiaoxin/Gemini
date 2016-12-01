@@ -25,9 +25,10 @@
         }
         .picker-box{
             margin: 0 auto;
-            padding-top: 10px;
+            padding-top: 16px;
+            padding-bottom: 16px;
             width: 90%;
-            background: #FBFFFF;
+            background: #f5f8ff;
         }
 		.imgSample{
 			margin: auto auto;
@@ -35,7 +36,9 @@
             background: url('/public/wap/images/sampleImgBg.jpg');
 		}
 		.imgSample img{
-			width: 100%;
+			width: 88%;
+            margin: 5% 6% 3%;
+			min-height: 110px;
 		}
         .picker_button{
             width:90%;
@@ -157,13 +160,15 @@
 
 							
                             <div class="form-group">
-                                <label class="control-label">贷款额度</label>
-                                <div class="col-100">
-                                    <input type="number" class="phone-input" name="loan_limit" id="loan_limit" autocomplete="false" value="200000" placeholder="贷款额度">
-                                </div>							
-                                <label class="control-label">贷款人手机</label>
-                                <div class="col-100">
-                                    <input type="number" class="phone-input" name="mobile" id="mobile" autocomplete="false" value="" placeholder="贷款人手机，可选，仅供通知之用">
+                                <div class="picker-box">
+                                    <label class="control-label">贷款额度</label>
+                                    <div class="col-100">
+                                        <input type="number" class="phone-input" name="loan_limit" id="loan_limit" autocomplete="false" value="200000" placeholder="贷款额度">
+                                    </div>							
+                                    <label class="control-label">贷款人手机</label>
+                                    <div class="col-100">
+                                        <input type="number" class="phone-input" name="mobile" id="mobile" autocomplete="false" value="" placeholder="贷款人手机，可选，仅供通知之用">
+                                    </div>
                                 </div>
                             </div>
                             <div class="content-block">
