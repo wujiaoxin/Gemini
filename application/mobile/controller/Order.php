@@ -25,7 +25,7 @@ class Order extends Base {
 		$map = '';
 		$uid = session('user_auth.uid');
 		if($uid > 0){
-			$map = 'uid = '.$uid.' or bank_uid = '.$uid;
+			$map = '(uid = '.$uid.' or bank_uid = '.$uid.') and status > -1';
 		}else{
 			return $this->error('请重新登录');
 		}
@@ -91,7 +91,7 @@ class Order extends Base {
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
 		if($uid > 0){
-			$map = '(uid = '.$uid.' or bank_uid = '.$uid.') and id = '.$id;
+			$map = '(uid = '.$uid.' or bank_uid = '.$uid.') and id = '.$id.' and status > -1';
 		}else{
 			return $this->error('请重新登录');
 		}
@@ -126,9 +126,12 @@ class Order extends Base {
 	}
 	
 	//审核API
-	public function examine() {//TODO:权限控制&status id过滤
+	public function examine() {
 		$link = model('Order');
 		$id   = input('id', '', 'trim,intval');
+		if($id == ''){
+			return $this->error("缺少参数");
+		}
 		$map = '';
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
@@ -139,10 +142,23 @@ class Order extends Base {
 		}
 		if (IS_POST) {
 			$data = input('post.');
-			if ($data) {
-				$result = $link->save($data, array('id' => $data['id']));
+			$saveData['id'] = $id;
+			if ($data) {				
+				if($data['status'] != 1 && $data['status'] != 2 ){
+					return $this->error("非法参数");
+				}				
+				$saveData['status'] = $data['status'];				
+				if($data['status'] == 1 && isset($data['addr'])){//审核成功
+					if($data['addr'] == 2){
+						$saveData['addr'] = '银行柜台';
+					}else{
+						$saveData['addr'] = '车商门店';					
+					}					
+				}
+				$result = $link->where($map)->update($saveData);
+				//$result = $link->save($saveData, array('id' => $saveData['id']));
 				if ($result) {
-					return $this->success("提交成功！", url('Order/index'));
+					return $this->success("提交成功！");
 				} else {
 					return $this->error("提交失败！");
 				}
@@ -151,7 +167,44 @@ class Order extends Base {
 			}
 		} else {
 
-			
+		}
+	}
+	
+	
+	//撤销订单
+	public function cancel() {
+		$link = model('Order');
+		$id   = input('id', '', 'trim,intval');
+		if($id == ''){
+			return $this->error("缺少参数");
+		}
+		$map = '';
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if($uid > 0){
+			$map = '(uid = '.$uid.') and id = '.$id;
+		}else{
+			return $this->error('请重新登录');
+		}
+		if (IS_POST) {
+			$data = $link->where($map)->find();
+			$saveData['id'] = $id;
+			if ($data) {				
+				if($data['status'] != 0){
+					return $this->error("非法参数");
+				}				
+				$saveData['status'] = -1;
+				$result = $link->where($map)->update($saveData);
+				if ($result) {
+					return $this->success("提交成功！");
+				} else {
+					return $this->error("提交失败！");
+				}
+			} else {
+				return $this->error($link->getError());
+			}
+		} else {
+
 		}
 	}
 	

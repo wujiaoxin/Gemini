@@ -8,8 +8,8 @@
     <meta http-equiv="pragma" content="no-cache">
     <title>VP贷</title>
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">
     <script>
 		var BASE_URL = ""; //根目录地址
@@ -33,6 +33,10 @@
 	.list-block ul{
 		padding:0 20px;
 	}
+	span.modal-button{
+        color: #03a9f4;
+        background: white;
+    }
 	</style>
 </head>
 <body>   
@@ -138,24 +142,25 @@
 						</div>
 						<div class="list-block">
 						  <ul>
-							<li>
+						  <li>
 							  <label class="label-radio item-content">
-								<!-- Checked by default -->
-								<input type="radio" name="examine_status" value="1" checked="checked">
+								<input type="radio" name="examine_status" id="examinePass" value="1">
 								<div class="item-inner">
 								  <div class="item-title">审核通过</div>
 								</div>
 							  </label>
 							</li>
-							<li>
+						  <li>
 							  <label class="label-radio item-content">
+							  <!-- Checked by default -->
 								<input type="radio" name="examine_status" value="2">
 								<div class="item-inner">
 								  <div class="item-title">审核拒绝</div>
 								</div>
 							  </label>
+							  <input type="hidden" name="addr" id="addr" value=1 />
 							</li>
-						  </ul>
+							</ul>		 
 						</div>  
 						<div class="content-block">
 							<a class="button button-big button-raised butcom-css dpblue" href="javascript:examine({$info['id']});">提交审核</a>
@@ -170,11 +175,39 @@
     <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
 	<script>
+   $('input:radio').change(function(){
+   		if($('#examinePass').prop('checked')){
+        var modal = myApp.modal({
+            title: '请选择面签地址',
+            verticalButtons: true,
+            buttons: [
+              {
+                text: '车商门店',
+                onClick: function () {
+                    $("#addr").val(1);
+                }
+              },
+              {
+                text: '银行柜台',
+                onClick: function () {
+                    $("#addr").val(2);
+                }
+              }
+            ]
+        })
+        }
+    }); 
+		// 提交审核
 		function examine(id){
+			var addr =  $("#addr").val();
 			var status = $('input[name="examine_status"]').filter(':checked').val();
+			if(typeof(status) == "undefined"){
+				ui_alert("请审核订单");
+			}
 			var param = {
 				"id": id,
-				"status": status
+				"status": status,
+				"addr": addr
 			};
 			ajax_jquery({
 				url: '/mobile/order/examine?t=' + Math.random(),

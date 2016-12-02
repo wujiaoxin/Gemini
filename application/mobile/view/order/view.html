@@ -138,7 +138,7 @@
 						{if isset($info['status'])}
 							{if $info['status'] == 0}
 							<div class="content-block">
-								<a class="button button-big button-raised butcom-css bg-red" href="javascript:goToUrl('/mobile/order');">撤销订单</a>
+								<a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder({$info['id']});">撤销订单</a>
 							</div>
 							{elseif $info['status'] == 2/}
 							<div class="content-block">
@@ -159,5 +159,6 @@
     <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/order.js"></script>
 </body>
 </html>
