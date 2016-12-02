@@ -224,7 +224,7 @@ function doResetPasswordPost() {
 }
 
 function iCodeEmptyCheck(){
-    ui_ask('您还未输入邀请码，<br/>输入邀请码，<br/>即可获得专属抵扣券。', '直接注册', '去输入',function () {
+    ui_ask('您还未输入车商代码，<br/>输入车商代码，<br/>无需审核即可申请垫资。', '直接注册', '去输入',function () {
         $('#invite').val("");
         $('#invite').attr('data-skip', '1');
         doRegisterPost();
