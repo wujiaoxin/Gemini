@@ -65,7 +65,7 @@
                                     <div class="index-ed-data zi-color">
                                         ￥50000-500000
 									</div>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/add')}');"
+                                    <a href="javascript:goApply('{:url('mobile/order/add')}');"
                                        class="a-btn bor-radius qbg-btn blue">去申请</a>
                                 </div>
                         </div>
@@ -121,6 +121,24 @@
     <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
     <script type="text/javascript">
         modules.swiper();
+		var role = -1;
+		{if isset($user['access_group_id'])}
+		role = {$user['access_group_id']};
+		{/if}
+		
+		/*if(role == 2){			
+			goToUrl('/mobile/user/index');
+		}*/
+
+		function goApply(){
+			if(role == 0){
+				ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
+				return ;
+			}	
+			goToUrl('/mobile/order/add');
+		}
+		
+		
     </script>
 
 </body>

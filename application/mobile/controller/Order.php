@@ -52,32 +52,33 @@ class Order extends Base {
 		return $this->fetch();
 	}
 	
+	
 	//添加
 	public function add() {
-		$link = model('Order');
 		if (IS_POST) {
+			$resp['code'] = 0;
+			$resp['msg'] = '未知错误';
 			$data = input('post.');
 			$uid = session('user_auth.uid');
+			$link = model('Order');
+			$data['sn'] = $link->build_order_sn();
 			if($uid > 0){
 				$data['uid'] = $uid;
 			}
 			if ($data) {
 				unset($data['id']);
-				$data['sn'] = $link->build_order_sn();
 				$result = $link->save($data);
 				if ($result) {
-					return $this->success("新建成功！", url('Order/index'));
+					$resp['code'] = 1;
+					$resp['msg'] = '新建成功！';
 				} else {
-					return $this->error($link->getError());
+					$resp['msg'] = $link->getError();
 				}
 			} else {
-				return $this->error($link->getError());
+				$resp['msg'] = $link->getError();
 			}
+			return json($resp);
 		} else {
-			$data = array(
-				'keyList' => $link->keyList,
-			);
-			$this->assign($data);
 			$this->assign('title', '新建订单');
 			return $this->fetch('edit');
 		}

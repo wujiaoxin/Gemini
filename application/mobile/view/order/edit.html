@@ -65,17 +65,25 @@
         .form-group input{
             margin-left: 5%;
             width: 90%;
-            color: #666;
+            color: black;
             height: 30px;
-            font-size: 12px;
+            font-size: 14px;
             font-family: inherit;
             border-width: 1px;
 			padding-left: 10px;
+        }
+        input[disabled]{
+            opacity: 0.7;
         }
         label[class*="col-"] {
             font-size: 10px;
             margin:5px 5% 2px;
             padding: 0;
+        }
+
+        span.modal-button{
+            color: #03a9f4;
+            background: white;
         }
 	</style>
 </head>
@@ -89,7 +97,8 @@
                             <i class="icon icon-back"></i>
                         </a>
                     </div>
-                    <div class="center blue-color">{$title}</div>
+                    <div class="center blue-color" id="navbar_title">{$title}</div>
+                    <div class="right"></div>
                 </div>
             </div>
             <div class="pages navbar-through">
@@ -102,6 +111,7 @@
                     <div>
                         <form method="post" class="form form-horizontal">
                             <input type="hidden" name="id" value=""/>
+							<input type="hidden" name="type" id="type" value=1/>
 							<input type="hidden" name="bank_uid" id="bank_uid" value="3"/><!--TODO 选择银行-->
 
                             <div class="form-group">
@@ -188,12 +198,35 @@
         </div>
     </div>
     <div id="loading"></div>
-	<script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+	<script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
 	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
-	<script type="text/javascript" src="/Public/wap/js/webuploader.custom.js"></script>
+	<script type="text/javascript" src="/public/wap/js/webuploader.custom.js"></script>
 	<script type="text/javascript">
+    $(document).ready(function(){
+        var modal = myApp.modal({
+            title: 'VP贷-汽车金融专家',
+            text: '请选择垫资类型',
+            verticalButtons: true,
+            buttons: [
+              {
+                text: '新车垫资',
+                onClick: function () {
+                    $("#type").val(1);
+                    $("#navbar_title").text('{$title}-新车');
+                }
+              },
+              {
+                text: '二手车垫资',
+                onClick: function () {
+                    $("#type").val(2);
+                    $("#navbar_title").text('{$title}-二手车');
+                }
+              },
+            ]
+        })
+    });
 		var uploadsize =  20;
 		function tryOCR(){
 		    var field_idcard_face_pic_id = $('#field_idcard_face_pic').val();
@@ -299,6 +332,7 @@
                     ui_alert('请上传驾驶证照片','');
                     return;
                 }
+                var type= $("#type").val();
                 var mobile = $('#mobile').val();//todo
 				var bank_uid = $('#bank_uid').val();//todo
 				var loan_limit = $('#loan_limit').val();//todo
@@ -306,10 +340,10 @@
                 var idcard_num = $('#field_idcard_face_pic_idNumber').val();
                  ajax_jquery({
                     type: 'post', // 提交方式 post
-                    url: '/api/order/add', // 需要提交的 url
+                    url: '/mobile/order/add', // 需要提交的 url
                     datatype:'json',
                     data: {
-                        'type':1,
+                        'type':type,
                         'name':idcard_name,
 						'bank_uid': bank_uid,
                         'idcard_num':idcard_num,

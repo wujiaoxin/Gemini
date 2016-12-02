@@ -38,6 +38,7 @@ class Order extends Base {
 		if (IS_POST) {
 			$data = input('post.');
 			$uid = session('user_auth.uid');
+			$data['sn'] = $link->build_order_sn();
 			if($uid > 0){
 				$data['uid'] = $uid;
 			}
