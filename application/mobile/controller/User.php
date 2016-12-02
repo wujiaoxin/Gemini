@@ -55,7 +55,7 @@ class User extends Base {
 				$resp["msg"] = '短信验证码错误！';
 				return json($resp);
 			}
-			$addr = '杭州宝荣4S';
+			$addr = '待审核用户';
 			$openid = NULL;
 			$user = model('User');
 			$uid = $user->registerByMobile($username, $password);
