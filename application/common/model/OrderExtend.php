@@ -57,6 +57,7 @@ class OrderExtend extends \app\common\model\Base {
 			$data['id'] = $id;
 			$data['uid'] = $orderData['uid'];	
 			$data['bank_uid'] =  $orderData['bank_uid'];
+			$data['purchase_time'] =  time();
 			$result = $this->save($data);
 			if ($result) {
 				return $id;

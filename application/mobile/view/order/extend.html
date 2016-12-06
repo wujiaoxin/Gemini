@@ -14,6 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
 	<script type="text/javascript">
 		var BASE_URL = ""; //根目录地址
+		var order_id = {$info['id']|default=0};
 		var picList = {
 			'extend_pic_1':{'val':0},
 			'extend_pic_2':{'val':0},
@@ -21,19 +22,19 @@
 			'extend_pic_4':{'val':0},
 			'extend_pic_5':{'val':0}
 		};
-		var order_id = {$info['id']|default=0};
-		var bank_uid = {$info['bank_uid']|default=0};
 		{php}
 			for($index = 1; $index <=5; $index++){
 				if(isset($info['extend_pic_'.$index]) && $info['extend_pic_'.$index]!=0){
 					$temp = get_cover($info['extend_pic_'.$index]);
-					echo 'picList.extend_pic_'.$index.'.val='.$info['extend_pic_'.$index].';';
-					echo 'picList.extend_pic_'.$index.'.url="'.$temp["path"].'";';
-					echo 'picList.extend_pic_'.$index.'.time="'.$temp["create_time"].'";';
+					echo '			picList.extend_pic_'.$index.'.val='.$info['extend_pic_'.$index].';';
+					echo "\n";
+					echo '			picList.extend_pic_'.$index.'.url="'.$temp["path"].'";';
+					echo "\n";
+					echo '			picList.extend_pic_'.$index.'.time="'.date('Y-m-d H:i',$temp['create_time']).'";';
+					echo "\n";
 				}
 			}
 		{/php}
-		
     </script>
 	<style type="text/css">
         .main-box-title{
@@ -122,9 +123,9 @@
                         <h4 class="color-black">请如实提交相关购车资料</h4>
                     </div>
                     <div class="main-box-body clearfix">
-                    <div>
+
                         <form method="post" class="form form-horizontal">
-                            <input type="hidden" name="id" value="26"/>
+                            <input type="hidden" name="id" value="0"/>
                             <input type="hidden" name="bank_uid" value="3"/>
                             <div class="form-group">
                                 <div class="col-100 form-group-content">
@@ -137,46 +138,45 @@
 
                             <div class="form-group">
                                 <div class="col-100 form-group-content">
-                                    <div class="picker-box">
+                                    <div class="picker-box" id="box_extend_pic_3">
                                         <label class="control-label">银行放款通知单</label>
-										 <div id="fileList_lending_notice_pic_sample" class="imgSample">
-                                            <img src="/public/wap/images/lending_notice.jpg">
+										<div id="fileList_lending_notice_pic_sample" class="imgSample">
+                                            <img src="/public/wap/images/lending_notice.png">
                                         </div>
-                                        <input type="hidden" name="lending_notice" id="field_lending_notice_pic" value="75">
+                                        <input type="hidden" name="lending_notice" id="field_lending_notice_pic" value="">
                                         <div id="fileList_lending_notice_pic" class="upload-file-list-info">
-                                            <li class="affix-list-item" id="WU_FILE_10">
+                                            <li class="affix-list-item" id="WU_FILE_1">
                                                 <div class="upload-file-info">
-                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10" data-id="75" data-fileurl=""><i class="close"></i></span>
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_1" data-id="" data-fileurl=""><i class="close"></i></span>
                                                     <span class="fname"></span>
-                                                    <span class="fsize">上传时间:2016-12-04 22:48:50</span>
+                                                    <span class="fsize"></span>
                                                     <div class="clearfix"></div>
                                                 </div>
                                                 <div class="filebox image">
                                                     <img src="" class="img-responsive">
                                                 </div>
                                             </li>
-                                        </div>
-                                        </div>
+                                        </div>                                        
                                         <div id="picker_lending_notice_pic" class="picker_button">   
                                             <span>上传银行放款通知单照片</span>                                    
                                         </div>
-                                    </div>  
-                                </div>
+									</div>
+                                </div>  
                             </div>
                             <div class="form-group">
                                 <div class="col-100 form-group-content">
-                                    <div class="picker-box">
+                                    <div class="picker-box" id="box_extend_pic_4">
                                         <label class="control-label">车辆合格证</label>
                                         <div id="fileList_vehicle_QC_pic_sample" class="imgSample">
                                             <img src="/public/wap/images/vqc_pic.jpg">
                                         </div>
-                                        <input type="hidden" name="vehicle_QC" id="field_vehicle_QC_pic" value="75">
+                                        <input type="hidden" name="vehicle_QC" id="field_vehicle_QC_pic" value="">
                                         <div id="fileList_vehicle_QC_pic" class="upload-file-list-info">
-                                            <li class="affix-list-item" id="WU_FILE_10">
+                                            <li class="affix-list-item" id="WU_FILE_2">
                                                 <div class="upload-file-info">
-                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10" data-id="75" data-fileurl=""><i class="close"></i></span>
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_2" data-id="" data-fileurl=""><i class="close"></i></span>
                                                     <span class="fname"></span>
-                                                    <span class="fsize">上传时间:2016-12-04 22:48:50</span>
+                                                    <span class="fsize"></span>
                                                     <div class="clearfix"></div>
                                                 </div>
                                                 <div class="filebox image">
@@ -192,18 +192,18 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-100 form-group-content">
-                                    <div class="picker-box">
+                                    <div class="picker-box" id="box_extend_pic_2">
                                     <label class="control-label">购车发票</label>
                                         <div id="fileList_invoice_pic_sample" class="imgSample">
                                             <img src="/public/wap/images/invoice.jpg">
                                         </div>
-                                        <input type="hidden" name="invoice_pic" id="field_invoice_pic" value="76">
+                                        <input type="hidden" name="invoice_pic" id="field_invoice_pic" value="">
                                         <div id="fileList_invoice_pic" class="upload-file-list-info">
-                                            <li class="affix-list-item" id="WU_FILE_10">
+                                            <li class="affix-list-item" id="WU_FILE_3">
                                                 <div class="upload-file-info">
-                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10" data-id="76" data-fileurl=""><i class="close"></i></span>
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_3" data-id="" data-fileurl=""><i class="close"></i></span>
                                                     <span class="fname"></span>
-                                                    <span class="fsize">上传时间:2016-12-04 22:48:50</span>
+                                                    <span class="fsize"></span>
                                                     <div class="clearfix"></div>
                                                 </div>
                                                 <div class="filebox image">
@@ -219,18 +219,18 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-100 form-group-content">
-                                    <div class="picker-box">
+                                    <div class="picker-box" id="box_extend_pic_1">
                                         <label class="control-label">首付凭证</label>
                                         <div id="fileList_down_payment_pic_sample" class="imgSample">
                                             <img src="/public/wap/images/down_payment.jpg">
                                         </div>
-                                        <input type="hidden" name="down_payment_pic" id="field_down_payment_pic" value="77">
+                                        <input type="hidden" name="down_payment_pic" id="field_down_payment_pic" value="">
                                         <div id="fileList_down_payment_pic" class="upload-file-list-info">
-                                            <li class="affix-list-item" id="WU_FILE_10">
+                                            <li class="affix-list-item" id="WU_FILE_4">
                                                 <div class="upload-file-info">
-                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10" data-id="77" data-fileurl=""><i class="close"></i></span>
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_4" data-id="" data-fileurl=""><i class="close"></i></span>
                                                     <span class="fname"></span>
-                                                    <span class="fsize">上传时间:2016-12-04 22:48:50</span>
+                                                    <span class="fsize"></span>
                                                     <div class="clearfix"></div>
                                                 </div>
                                                 <div class="filebox image">
@@ -246,18 +246,18 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-100 form-group-content">
-                                    <div class="picker-box">
+                                    <div class="picker-box" id="box_extend_pic_5">
                                         <label class="control-label">车辆保单</label>
                                         <div id="fileList_car_insurance_pic_sample" class="imgSample">
                                             <img src="/public/wap/images/car_insurance.jpg">
                                         </div>
-                                        <input type="hidden" name="car_insurance_pic" id="field_car_insurance_pic" value="78">
+                                        <input type="hidden" name="car_insurance_pic" id="field_car_insurance_pic" value="">
                                         <div id="fileList_car_insurance_pic" class="upload-file-list-info">
-                                            <li class="affix-list-item" id="WU_FILE_10">
+                                            <li class="affix-list-item" id="WU_FILE_5">
                                                 <div class="upload-file-info">
-                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10" data-id="78" data-fileurl=""><i class="close"></i></span>
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_5" data-id="" data-fileurl=""><i class="close"></i></span>
                                                     <span class="fname"></span>
-                                                    <span class="fsize">上传时间:2016-12-04 22:48:50</span>
+                                                    <span class="fsize"></span>
                                                     <div class="clearfix"></div>
                                                 </div>
                                                 <div class="filebox image">
@@ -276,30 +276,32 @@
                                     <p class="control-label color-blue">可选内容，请尽量填写</p>
                                     <div class="picker-box optional-box">
                                         <label class="control-label">购车日期</label>
-                                        <input type="date" name="purchase_date" id="purchase_date" value=""/>
+                                        <input type="text" name="purchase_date" id="purchase_date" value="{$info['purchase_time'|date='Y-m-d',###]}"/>
                                         <label class="control-label">购车金额</label>
-                                        <input type="number" name="purchase_amount" id="purchase_amount" value=""/>
+                                        <input type="number" name="purchase_amount" id="purchase_amount" value="{$info['purchase_amount']|default=0}"/>
                                         <label class="control-label">汽车品牌</label>
-                                        <input type="text" name="car_brand" id="car_brand" value=""/>
+                                        <input type="text" name="car_brand" id="car_brand" value="{$info['car_brand']}"/>
                                         <label class="control-label">车型</label>
-                                        <input type="text" name="car_model" id="car_model" value=""/>
+                                        <input type="text" name="car_model" id="car_model" value="{$info['car_model']}"/>
                                         <label class="control-label">车辆颜色</label>
-                                        <input type="text" name="car_color" id="car_color" value=""/>
+                                        <input type="text" name="car_color" id="car_color" value="{$info['car_color']}"/>
                                         <label class="control-label">车架号</label>
-                                        <input type="text" name="car_VIN" id="car_VIN" value=""/>
+                                        <input type="text" name="car_VIN" id="car_VIN" value="{$info['car_VIN']}"/>
                                         <label class="control-label">保险公司</label>
-                                        <input type="text" name="insurance_comp" id="insurance_comp"/>
+                                        <input type="text" name="insurance_comp" id="insurance_comp" value="{$info['insurance_comp']}"/>
                                         <label class="control-label">保单号</label>
-                                        <input type="text" name="insurance_id" id="insurance_id"/>
+                                        <input type="text" name="insurance_id" id="insurance_id"  value="{$info['insurance_id']}"/>
                                     </div>
+								 </div>
+							</div>
                             <div class="content-block">
                                 <a class="button button-big button-raised butcom-css dpblue" id="submit">一键垫资</a>
                             </div>
                         </form>
-                    </div>
+
                     </div>
                 </div>
-            </div>
+				</div>
             </div>
         </div>
     </div>
@@ -315,6 +317,36 @@
 	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
 	<script type="text/javascript" src="/Public/wap/js/webuploader.custom.js"></script>
 	<script type="text/javascript">
+	var calendarDefault = myApp.calendar({
+		input: '#purchase_date',
+	});
+	
+	function dateToUnixTime(str){
+		//var str ="2013-01-01 00:00:00";
+		str = str +' 00:00:00';
+		str = str.replace(/-/g,"/");
+		var date = new Date(str); 
+		var humanDate = new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate(),date.getHours(),date.getMinutes(), date.getSeconds())); 
+		console.log(humanDate.getTime()/1000 - 8*60*60);
+		return humanDate.getTime()/1000 - 8*60*60;
+	}
+
+    $(document).ready(function(){
+        for(var i = 1;i <= 5 ; i++){
+                var picObj = eval('picList.extend_pic_' + i);
+                if(picObj.val){
+                    $('#box_extend_pic_'+i).children('.imgSample').hide();
+                    $('#box_extend_pic_'+i).children('input').val(picObj.val);
+                    $('#box_extend_pic_'+i).find('span.webuploader-pick-file-close').attr(
+                        {'data-fileurl':picObj.url,'data-id':picObj.val});
+                     $('#box_extend_pic_'+i).find('span.fsize').html('上传时间:'+picObj.time)
+                    $('#box_extend_pic_'+i).find('.filebox').children('img').attr('src',picObj.url);
+                }else {
+                    $('#box_extend_pic_'+i).find('.imgSample').show();
+                    $('#box_extend_pic_'+i).find('.upload-file-list-info > li').remove();
+                }
+            }
+        });
 		var uploadsize =  20;		
 		$(function(){
             $("#picker_lending_notice_pic").SentUploader({
@@ -410,8 +442,6 @@
       
 
 			$("#submit").click(function(){
-				console.log("hehe");
-			
                 var loan_amounts = $('#loan_amounts').val();
                 if(loan_amounts == ''){
                     ui_alert('请填写垫资金额');
@@ -442,17 +472,15 @@
                     ui_alert('请上传车辆保单照片');
                     return;
                 }
-                var id = $('input[name="id"]').val();
-                var bank_uid = $('input[name="bank_uid"]').val();
+                var id = order_id; //$('input[name="id"]').val();
                 var car_brand = $('#car_brand').val();
                 var car_model = $('#car_model').val();
                 var car_color = $('#car_color').val();
                 var car_VIN = $('#car_VIN').val();
                 var insurance_comp = $('#insurance_comp').val();
                 var insurance_id = $('#insurance_id').val();
-                var purchase_time = $('#purchase_date').val();
+                var purchase_time = dateToUnixTime($('#purchase_date').val());
 				var purchase_amount = $('#purchase_amount').val();
-				console.log("ready");
 
                  ajax_jquery({
                     type: 'post', // 提交方式 post
@@ -460,7 +488,6 @@
                     datatype:'json',
                     data: {
                         'id': id,
-                        'bank_uid': bank_uid,
                         'car_brand': car_brand,
                         'car_model': car_model,
                         'car_color': car_color,
