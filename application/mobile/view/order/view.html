@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <meta http-equiv="pragma" content="no-cache">
-    <title>VP贷</title>
+    <title>VP贷-汽车分期专家</title>
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
@@ -88,7 +88,7 @@
 						</div>
 						<div class="content-block row bg-white no-gutter">
 							<div class='col-30'>申请时间</div>
-							<div class='col-60'>{$info['create_time'|date='Y-m-d h:s',###]}</div>
+							<div class='col-60'>{$info['create_time'|date='Y-m-d H:i',###]}</div>
 						</div>
 						 <div class="content-block row bg-white no-gutter">
 							<div class='col-30'>面签地址</div>
@@ -138,15 +138,15 @@
 						{if isset($info['status'])}
 							{if $info['status'] == 0}
 							<div class="content-block">
-								<a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder({$info['id']});">撤销订单</a>
+								<a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder({$info['id']})">撤销订单</a>
 							</div>
 							{elseif $info['status'] == 2/}
 							<div class="content-block">
-								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order');">补充资料</a>
+								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/supplement?id={$info['id']}')">补充资料</a>
 							</div>	
 							{else /}
 							<div class="content-block">
-								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order');">上传首付资料</a>
+								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/extend?id={$info['id']}')">上传首付资料</a>
 							</div>
 							{/if}
 						{/if}

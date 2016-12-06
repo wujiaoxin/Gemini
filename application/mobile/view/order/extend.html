@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">	
+	<link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
+	<script type="text/javascript">
+		var BASE_URL = ""; //根目录地址
+		var picList = {
+			'extend_pic_1':{'val':0},
+			'extend_pic_2':{'val':0},
+			'extend_pic_3':{'val':0},
+			'extend_pic_4':{'val':0},
+			'extend_pic_5':{'val':0}
+		};
+		var order_id = {$info['id']|default=0};
+		var bank_uid = {$info['bank_uid']|default=0};
+		{php}
+			for($index = 1; $index <=5; $index++){
+				if(isset($info['extend_pic_'.$index]) && $info['extend_pic_'.$index]!=0){
+					$temp = get_cover($info['extend_pic_'.$index]);
+					echo 'picList.extend_pic_'.$index.'.val='.$info['extend_pic_'.$index].';';
+					echo 'picList.extend_pic_'.$index.'.url="'.$temp["path"].'";';
+					echo 'picList.extend_pic_'.$index.'.time="'.$temp["create_time"].'";';
+				}
+			}
+		{/php}
+		
+    </script>
+	<style type="text/css">
+        .main-box-title{
+            text-align: center;
+            margin: 12px auto;
+        }
+        .form-group{
+            margin-bottom:10px;
+        }
+        .picker-box{
+            margin: 0 auto;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            width: 90%;
+            background: #f5f8ff;
+        }
+        .imgSample{
+            margin: auto auto;
+            width: 70%;
+            background: url('/public/wap/images/sampleImgBg.jpg');
+        }
+        .imgSample img{
+            width: 88%;
+            margin: 5% 6% 3%;
+            min-height: 110px;
+        }
+        .picker_button{
+            width:90%;
+            margin: 0 auto;
+        }
+        .webuploader-pick {
+            color: #f2f2f2;
+            width: 90%;
+            margin-top:5px;
+            background: #005eff;
+            font-size: 20px;
+        }
+        .filebox.image img{
+            width: 100%;
+        }
+        .upload-file-list-info{
+            width: 90%;
+            margin: 0 auto;
+        }   
+        .form-group .control-label{
+            margin-left: 5%;
+            font-size: 14px;
+        }
+        .form-group input{
+            margin-left: 5%;
+            width: 90%;
+            color: black;
+            height: 30px;
+            font-size: 14px;
+            font-family: inherit;
+            border-width: 1px;
+            padding-left: 10px;
+        }
+        label.form-group-content{
+            font-size: 10px;
+            margin:5px 5% 2px;
+            padding: 0;
+        }
+        .optional-box{
+            border: 1px dashed green;
+        }
+	</style>
+</head>
+<body>   
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back"></i>
+                        </a>
+                    </div>
+                    <div class="center blue-color">垫资申请</div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="dqassess" class="page">						
+				<div class="page-content main-box clearfix bg-white">
+                    <div class="main-box-title">
+                        <h4 class="color-black">请如实提交相关购车资料</h4>
+                    </div>
+                    <div class="main-box-body clearfix">
+                    <div>
+                        <form method="post" class="form form-horizontal">
+                            <input type="hidden" name="id" value="26"/>
+                            <input type="hidden" name="bank_uid" value="3"/>
+                            <div class="form-group">
+                                <div class="col-100 form-group-content">
+                                    <div class="picker-box">
+                                        <label class="control-label">贷款金额</label>
+                                        <input type="number" name="loan_amounts" id="loan_amounts" value="{$info['loan_amounts']|default=''}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-100 form-group-content">
+                                    <div class="picker-box">
+                                        <label class="control-label">银行放款通知单</label>
+										 <div id="fileList_lending_notice_pic_sample" class="imgSample">
+                                            <img src="/public/wap/images/lending_notice.jpg">
+                                        </div>
+                                        <input type="hidden" name="lending_notice" id="field_lending_notice_pic" value="75">
+                                        <div id="fileList_lending_notice_pic" class="upload-file-list-info">
+                                            <li class="affix-list-item" id="WU_FILE_10">
+                                                <div class="upload-file-info">
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10" data-id="75" data-fileurl=""><i class="close"></i></span>
+                                                    <span class="fname"></span>
+                                                    <span class="fsize">上传时间:2016-12-04 22:48:50</span>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="filebox image">
+                                                    <img src="" class="img-responsive">
+                                                </div>
+                                            </li>
+                                        </div>
+                                        </div>
+                                        <div id="picker_lending_notice_pic" class="picker_button">   
+                                            <span>上传银行放款通知单照片</span>                                    
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-100 form-group-content">
+                                    <div class="picker-box">
+                                        <label class="control-label">车辆合格证</label>
+                                        <div id="fileList_vehicle_QC_pic_sample" class="imgSample">
+                                            <img src="/public/wap/images/vqc_pic.jpg">
+                                        </div>
+                                        <input type="hidden" name="vehicle_QC" id="field_vehicle_QC_pic" value="75">
+                                        <div id="fileList_vehicle_QC_pic" class="upload-file-list-info">
+                                            <li class="affix-list-item" id="WU_FILE_10">
+                                                <div class="upload-file-info">
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10" data-id="75" data-fileurl=""><i class="close"></i></span>
+                                                    <span class="fname"></span>
+                                                    <span class="fsize">上传时间:2016-12-04 22:48:50</span>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="filebox image">
+                                                    <img src="" class="img-responsive">
+                                                </div>
+                                            </li>
+                                        </div>
+                                        <div id="picker_vehicle_QC_pic" class="picker_button">   
+                                            <span>上传车辆合格证照片</span>                                    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-100 form-group-content">
+                                    <div class="picker-box">
+                                    <label class="control-label">购车发票</label>
+                                        <div id="fileList_invoice_pic_sample" class="imgSample">
+                                            <img src="/public/wap/images/invoice.jpg">
+                                        </div>
+                                        <input type="hidden" name="invoice_pic" id="field_invoice_pic" value="76">
+                                        <div id="fileList_invoice_pic" class="upload-file-list-info">
+                                            <li class="affix-list-item" id="WU_FILE_10">
+                                                <div class="upload-file-info">
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10" data-id="76" data-fileurl=""><i class="close"></i></span>
+                                                    <span class="fname"></span>
+                                                    <span class="fsize">上传时间:2016-12-04 22:48:50</span>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="filebox image">
+                                                    <img src="" class="img-responsive">
+                                                </div>
+                                            </li>
+                                        </div>
+                                         <div id="picker_invoice_pic" class="picker_button">
+                                            <span>上传购车发票照片</span>   
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-100 form-group-content">
+                                    <div class="picker-box">
+                                        <label class="control-label">首付凭证</label>
+                                        <div id="fileList_down_payment_pic_sample" class="imgSample">
+                                            <img src="/public/wap/images/down_payment.jpg">
+                                        </div>
+                                        <input type="hidden" name="down_payment_pic" id="field_down_payment_pic" value="77">
+                                        <div id="fileList_down_payment_pic" class="upload-file-list-info">
+                                            <li class="affix-list-item" id="WU_FILE_10">
+                                                <div class="upload-file-info">
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10" data-id="77" data-fileurl=""><i class="close"></i></span>
+                                                    <span class="fname"></span>
+                                                    <span class="fsize">上传时间:2016-12-04 22:48:50</span>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="filebox image">
+                                                    <img src="" class="img-responsive">
+                                                </div>
+                                            </li>
+                                        </div>
+                                        <div id="picker_down_payment_pic" class="picker_button">
+                                            <span>上传首付凭证照片</span>   
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-100 form-group-content">
+                                    <div class="picker-box">
+                                        <label class="control-label">车辆保单</label>
+                                        <div id="fileList_car_insurance_pic_sample" class="imgSample">
+                                            <img src="/public/wap/images/car_insurance.jpg">
+                                        </div>
+                                        <input type="hidden" name="car_insurance_pic" id="field_car_insurance_pic" value="78">
+                                        <div id="fileList_car_insurance_pic" class="upload-file-list-info">
+                                            <li class="affix-list-item" id="WU_FILE_10">
+                                                <div class="upload-file-info">
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10" data-id="78" data-fileurl=""><i class="close"></i></span>
+                                                    <span class="fname"></span>
+                                                    <span class="fsize">上传时间:2016-12-04 22:48:50</span>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="filebox image">
+                                                    <img src="" class="img-responsive">
+                                                </div>
+                                            </li>
+                                        </div>
+                                        <div id="picker_car_insurance_pic" class="picker_button">
+                                            <span>上传车辆保单照片</span>   
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <div class="col-100 form-group-content">
+                                    <p class="control-label color-blue">可选内容，请尽量填写</p>
+                                    <div class="picker-box optional-box">
+                                        <label class="control-label">购车日期</label>
+                                        <input type="date" name="purchase_date" id="purchase_date" value=""/>
+                                        <label class="control-label">购车金额</label>
+                                        <input type="number" name="purchase_amount" id="purchase_amount" value=""/>
+                                        <label class="control-label">汽车品牌</label>
+                                        <input type="text" name="car_brand" id="car_brand" value=""/>
+                                        <label class="control-label">车型</label>
+                                        <input type="text" name="car_model" id="car_model" value=""/>
+                                        <label class="control-label">车辆颜色</label>
+                                        <input type="text" name="car_color" id="car_color" value=""/>
+                                        <label class="control-label">车架号</label>
+                                        <input type="text" name="car_VIN" id="car_VIN" value=""/>
+                                        <label class="control-label">保险公司</label>
+                                        <input type="text" name="insurance_comp" id="insurance_comp"/>
+                                        <label class="control-label">保单号</label>
+                                        <input type="text" name="insurance_id" id="insurance_id"/>
+                                    </div>
+                            <div class="content-block">
+                                <a class="button button-big button-raised butcom-css dpblue" id="submit">一键垫资</a>
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+  	<div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
+        </div>
+    </div>
+    <div id="loading"></div>
+	<script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
+	<script type="text/javascript" src="/Public/wap/js/webuploader.custom.js"></script>
+	<script type="text/javascript">
+		var uploadsize =  20;		
+		$(function(){
+            $("#picker_lending_notice_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+                        $('#fileList_lending_notice_pic_sample').hide();
+                    }
+                },
+                listName : 'fileList_lending_notice_pic',
+                hiddenName: 'field_lending_notice_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+
+			$("#picker_vehicle_QC_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+						$('#fileList_vehicle_QC_pic_sample').hide();
+                    }
+                },
+                listName : 'fileList_vehicle_QC_pic',
+                hiddenName: 'field_vehicle_QC_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+												
+			$("#picker_invoice_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+							$('#fileList_invoice_pic_sample').hide();
+					}
+                },
+                listName : 'fileList_invoice_pic',
+                hiddenName: 'field_invoice_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+												
+			$("#picker_down_payment_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+                        $('#fileList_down_payment_pic_sample').hide();
+                    }
+                },
+                listName : 'fileList_down_payment_pic',
+                hiddenName: 'field_down_payment_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+
+            $("#picker_car_insurance_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+                        $('#fileList_car_insurance_pic_sample').hide();
+                    }
+                },
+                listName : 'fileList_car_insurance_pic',
+                hiddenName: 'field_car_insurance_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+
+      
+
+			$("#submit").click(function(){
+				console.log("hehe");
+			
+                var loan_amounts = $('#loan_amounts').val();
+                if(loan_amounts == ''){
+                    ui_alert('请填写垫资金额');
+                    return;
+                }
+                 var field_lending_notice_pic_id = $('#field_lending_notice_pic').val();
+                if(field_lending_notice_pic_id == ''){
+                    ui_alert('请上传银行放款通知单');
+                    return;
+                }
+                var field_vehicle_QC_pic_id = $('#field_vehicle_QC_pic').val();
+                if(field_vehicle_QC_pic_id == ''){
+                    ui_alert('请上传车辆合格证照片');
+                    return;
+                }
+                var field_invoice_pic_id =$('#field_invoice_pic').val();
+                 if(field_invoice_pic_id == ''){
+                    ui_alert('请上传购车发票照片');
+                    return;
+                }
+                var field_down_payment_pic_id =$('#field_down_payment_pic').val();
+                 if(field_down_payment_pic_id == ''){
+                    ui_alert('请上传首付凭证照片');
+                    return;
+                }
+                var field_car_insurance_pic_id =$('#field_car_insurance_pic').val();
+                 if(field_car_insurance_pic_id == ''){
+                    ui_alert('请上传车辆保单照片');
+                    return;
+                }
+                var id = $('input[name="id"]').val();
+                var bank_uid = $('input[name="bank_uid"]').val();
+                var car_brand = $('#car_brand').val();
+                var car_model = $('#car_model').val();
+                var car_color = $('#car_color').val();
+                var car_VIN = $('#car_VIN').val();
+                var insurance_comp = $('#insurance_comp').val();
+                var insurance_id = $('#insurance_id').val();
+                var purchase_time = $('#purchase_date').val();
+				var purchase_amount = $('#purchase_amount').val();
+				console.log("ready");
+
+                 ajax_jquery({
+                    type: 'post', // 提交方式 post
+                    url: '/mobile/order/extend', // 需要提交的 url
+                    datatype:'json',
+                    data: {
+                        'id': id,
+                        'bank_uid': bank_uid,
+                        'car_brand': car_brand,
+                        'car_model': car_model,
+                        'car_color': car_color,
+                        'car_VIN': car_VIN,
+                        'insurance_comp': insurance_comp,
+                        'insurance_id': insurance_id,
+                        'loan_amounts': loan_amounts,
+                        'purchase_time': purchase_time,
+                        'purchase_amount': purchase_amount,
+                        'extend_pic_1': field_down_payment_pic_id,
+                        'extend_pic_2': field_invoice_pic_id,
+                        'extend_pic_3': field_lending_notice_pic_id,
+                        'extend_pic_4': field_vehicle_QC_pic_id,
+                        'extend_pic_5': field_car_insurance_pic_id                      
+                    },
+                    success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
+                        if(data.code == 1){
+                            ui_alert("垫资申请成功!", function () {
+                                 window.location.href = '/mobile' ;            
+                             });
+                        }else{
+                            if (typeof(data.msg) == 'string') {
+                                ui_alert(data.msg);
+                            }  
+                        }
+                    }
+                }); 
+            });
+		});
+	</script>  
+
+</body>
+</html>

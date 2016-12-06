@@ -24,11 +24,13 @@ class Order extends Base {
 	public function index() {		
 		$map = '';
 		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
 		if($uid > 0){
 			$map = '(uid = '.$uid.' or bank_uid = '.$uid.') and status > -1';
 		}else{
 			return $this->error('请重新登录');
 		}
+		
 		
 		$order = "id desc";
 		$list  = db('Order')->where($map)->order($order)->paginate(10);
@@ -55,6 +57,10 @@ class Order extends Base {
 	
 	//添加
 	public function add() {
+		$role = session('user_auth.role');
+		if($role == 2){//银行人员
+			return $this->redirect('mobile/order/index');	
+		}		
 		if (IS_POST) {
 			$resp['code'] = 0;
 			$resp['msg'] = '未知错误';
@@ -143,7 +149,7 @@ class Order extends Base {
 		if (IS_POST) {
 			$data = input('post.');
 			$saveData['id'] = $id;
-			if ($data) {				
+			if ($data && isset($data['status'])) {				
 				if($data['status'] != 1 && $data['status'] != 2 ){
 					return $this->error("非法参数");
 				}				
@@ -153,11 +159,17 @@ class Order extends Base {
 						$saveData['addr'] = '银行柜台';
 					}else{
 						$saveData['addr'] = '车商门店';					
-					}					
+					}
+					$saveData['update_time'] = time();				
 				}
 				$result = $link->where($map)->update($saveData);
+				//dump($result);
 				//$result = $link->save($saveData, array('id' => $saveData['id']));
 				if ($result) {
+					if($data['status'] == 1){//审核通过
+						$OrderExtend = model('OrderExtend');
+						$OrderExtend->addByBank($id);
+					}
 					return $this->success("提交成功！");
 				} else {
 					return $this->error("提交失败！");
@@ -207,5 +219,44 @@ class Order extends Base {
 
 		}
 	}
+	
+	//首付资料等扩展信息
+	public function extend() {
+		$OrderExtend = model('OrderExtend');
+		$id   = input('id', '', 'trim,intval');
+		$map = '';
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if($uid > 0){
+			$map = '(uid = '.$uid.' or bank_uid = '.$uid.') and id = '.$id;
+		}else{
+			return $this->error('请重新登录');
+		}
+
+		if (IS_POST) {
+			$data = input('post.');
+			$data['uid'] = $uid;
+			if ($data) {
+				$result = $OrderExtend->save($data, array('id' => $data['id']));
+				if ($result) {
+					return $this->success("修改成功！", url('Order/index'));
+				} else {
+					return $this->error("修改失败！");
+				}
+			} else {
+				return $this->error($OrderExtend->getError());
+			}
+		} else {
+			$info = db('OrderExtend')->where($map)->find();
+			$data = array(
+				'keyList' => $OrderExtend->keyList,
+				'info'    => $info,
+				'role'    => $role,
+			);
+			$this->assign($data);
+			return $this->fetch('extend');
+		}
+	}
+	
 	
 }

@@ -1411,6 +1411,71 @@ CREATE TABLE `gemini_order` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `gemini_order_extend`
+-- ----------------------------
+DROP TABLE IF EXISTS `gemini_order_extend`;
+CREATE TABLE `gemini_order_extend` (
+  `id` int(10) NOT NULL COMMENT '订单标识ID',
+  `uid` int(10) NOT NULL DEFAULT '0' COMMENT '报单人用户ID ',
+  `bank_uid` int(10) NOT NULL DEFAULT '0' COMMENT '银行审核人员ID ',
+  `car_brand` varchar(64) NOT NULL DEFAULT '' COMMENT '车辆品牌',
+  `car_model` varchar(64) NOT NULL DEFAULT '' COMMENT '车辆车型',
+  `car_color` varchar(64) NOT NULL DEFAULT '' COMMENT '车辆颜色',
+  `car_VIN` varchar(64) NOT NULL DEFAULT '' COMMENT '车架号',
+  `insurance_comp` varchar(64) NOT NULL DEFAULT '' COMMENT '保险公司',
+  `insurance_id` varchar(64) NOT NULL DEFAULT '' COMMENT '保险单号',
+  `loan_amounts` int(11) NOT NULL DEFAULT '0' COMMENT '垫资额度',
+  `purchase_time` int(10) NOT NULL DEFAULT '0' COMMENT '购车时间',
+  `purchase_amount` int(10) NOT NULL DEFAULT '0' COMMENT '购车金额',
+  `extend_pic_1` int(11) NOT NULL DEFAULT '0' COMMENT '首付凭证',
+  `extend_pic_2` int(11) NOT NULL DEFAULT '0' COMMENT '购车发票',
+  `extend_pic_3` int(11) NOT NULL DEFAULT '0' COMMENT '银行放款通知书',
+  `extend_pic_4` int(11) NOT NULL DEFAULT '0' COMMENT '车辆合格证',
+  `extend_pic_5` int(11) NOT NULL DEFAULT '0' COMMENT '车辆保单',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of gemini_order_extend
+-- ----------------------------
+
+
+-- ----------------------------
+-- Table structure for `gemini_order_car_info`
+-- ----------------------------
+DROP TABLE IF EXISTS `gemini_order_car_info`;
+CREATE TABLE `gemini_order_car_info` (
+  `id` int(10) NOT NULL COMMENT '订单标识ID',
+  `uid` int(10) NOT NULL DEFAULT '0' COMMENT '报单人用户ID ',
+  `bank_uid` int(10) NOT NULL DEFAULT '0' COMMENT '银行审核人员ID ',
+  `car_pic_1` int(11) COMMENT '车辆照片1',
+  `car_pic_2` int(11) COMMENT '车辆照片2',
+  `car_pic_3` int(11) COMMENT '车辆照片3',
+  `car_pic_4` int(11) COMMENT '车辆照片4',
+  `car_pic_5` int(11) COMMENT '车辆照片5',
+  `car_pic_6` int(11) COMMENT '车辆照片6',
+  `car_pic_7` int(11) COMMENT '车辆照片7',
+  `car_pic_8` int(11) COMMENT '车辆照片8',
+  `car_pic_9` int(11) COMMENT '车辆照片9',
+  `car_pic_10` int(11) COMMENT '车辆照片10',
+  `car_pic_11` int(11) COMMENT '车辆照片11',
+  `car_pic_12` int(11) COMMENT '车辆照片12',
+  `car_pic_13` int(11) COMMENT '车辆照片13',
+  `car_pic_14` int(11) COMMENT '车辆照片14',
+  `car_pic_15` int(11) COMMENT '车辆照片15',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of gemini_order_car_info
+-- ----------------------------
+
+
+-- ----------------------------
 -- Table structure for `gemini_page`
 -- ----------------------------
 DROP TABLE IF EXISTS `gemini_page`;

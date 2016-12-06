@@ -38,8 +38,8 @@
 						<td>{$item['name']}</td>
 						<td>{$item['idcard_num']}</td>
 						<td>{$item['loan_limit']}</td>
-						<td>{$item['create_time']|date='Y-m-d h:s',###}</td>
-						<td>{$item['update_time']|date='Y-m-d h:s',###}</td>
+						<td>{$item['create_time']|date='Y-m-d H:i',###}</td>
+						<td>{$item['update_time']|date='Y-m-d H:i',###}</td>
 						<td>
 							{if isset($item['status'])}
 								{if $item['status']}
