@@ -2,5 +2,6 @@ application/database.php
 application/install.lock
 application/upload.lock
 .idea
+*/.DS_Store
 .DS_Store    
 .DS_Store?
