@@ -85,18 +85,13 @@
         }
         .form-group input{
             margin-left: 5%;
-            width: 90%;
+            width: 86%;
             color: black;
             height: 30px;
             font-size: 14px;
             font-family: inherit;
             border-width: 1px;
             padding-left: 10px;
-        }
-        label.form-group-content{
-            font-size: 10px;
-            margin:5px 5% 2px;
-            padding: 0;
         }
         .optional-box{
             border: 1px dashed green;
@@ -123,7 +118,6 @@
                         <h4 class="color-black">请如实提交相关购车资料</h4>
                     </div>
                     <div class="main-box-body clearfix">
-
                         <form method="post" class="form form-horizontal">
                             <input type="hidden" name="id" value="0"/>
                             <input type="hidden" name="bank_uid" value="3"/>
@@ -135,7 +129,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <div class="col-100 form-group-content">
                                     <div class="picker-box" id="box_extend_pic_3">
@@ -298,7 +291,6 @@
                                 <a class="button button-big button-raised butcom-css dpblue" id="submit">一键垫资</a>
                             </div>
                         </form>
-
                     </div>
                 </div>
 				</div>
@@ -327,151 +319,93 @@
 		str = str.replace(/-/g,"/");
 		var date = new Date(str); 
 		var humanDate = new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate(),date.getHours(),date.getMinutes(), date.getSeconds())); 
-		console.log(humanDate.getTime()/1000 - 8*60*60);
 		return humanDate.getTime()/1000 - 8*60*60;
 	}
 
-    $(document).ready(function(){
-        for(var i = 1;i <= 5 ; i++){
+
+    for(var i = 1;i <= 5 ; i++){
                 var picObj = eval('picList.extend_pic_' + i);
                 if(picObj.val){
                     $('#box_extend_pic_'+i).children('.imgSample').hide();
                     $('#box_extend_pic_'+i).children('input').val(picObj.val);
                     $('#box_extend_pic_'+i).find('span.webuploader-pick-file-close').attr(
                         {'data-fileurl':picObj.url,'data-id':picObj.val});
-                     $('#box_extend_pic_'+i).find('span.fsize').html('上传时间:'+picObj.time)
+                    $('#box_extend_pic_'+i).find('span.fsize').html('上传时间:'+picObj.time)
                     $('#box_extend_pic_'+i).find('.filebox').children('img').attr('src',picObj.url);
                 }else {
                     $('#box_extend_pic_'+i).find('.imgSample').show();
                     $('#box_extend_pic_'+i).find('.upload-file-list-info > li').remove();
                 }
-            }
-        });
-		var uploadsize =  20;		
+    }
+
+		var uploadsize =  20;	
+        function btnSentUploader(picName){
+            $("#picker_" + picName + "_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+                        $("#fileList_" + picName + "_pic_sample").hide();
+                    }
+                },
+                listName : 'fileList_' + picName + '_pic',
+                hiddenName: 'field_' + picName + '_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true,
+                compress:{
+                    width: 1024,
+                    // height: 1600,
+
+                    // 图片质量，只有type为`image/jpeg`的时候才有效。
+                    quality: 90,
+
+                    // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+                    allowMagnify: false,
+
+                    // 是否允许裁剪。
+                    crop: false,
+
+                    // 是否保留头部meta信息。
+                    preserveHeaders: true,
+
+                    // 如果发现压缩后文件大小比原来还大，则使用原来图片
+                    // 此属性可能会影响图片自动纠正功能
+                    noCompressIfLarger: false,
+
+                    // 单位字节，如果图片大小小于此值，不会采用压缩。
+                    compressSize: 0
+                }
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+        };	
 		$(function(){
-            $("#picker_lending_notice_pic").SentUploader({
-                fileNumLimit:1,
-                uploadEvents: {
-                    uploadComplete:function(file){
-                        $('#fileList_lending_notice_pic_sample').hide();
-                    }
-                },
-                listName : 'fileList_lending_notice_pic',
-                hiddenName: 'field_lending_notice_pic',
-                hiddenValType:1,
-                fileSingleSizeLimit:uploadsize*1024*1024,
-                closeX:true
-            },
-            {
-                fileType: 'service',
-                filename : 'images',
-            });
-
-			$("#picker_vehicle_QC_pic").SentUploader({
-                fileNumLimit:1,
-                uploadEvents: {
-                    uploadComplete:function(file){
-						$('#fileList_vehicle_QC_pic_sample').hide();
-                    }
-                },
-                listName : 'fileList_vehicle_QC_pic',
-                hiddenName: 'field_vehicle_QC_pic',
-                hiddenValType:1,
-                fileSingleSizeLimit:uploadsize*1024*1024,
-                closeX:true
-            },
-            {
-                fileType: 'service',
-                filename : 'images',
-            });
-												
-			$("#picker_invoice_pic").SentUploader({
-                fileNumLimit:1,
-                uploadEvents: {
-                    uploadComplete:function(file){
-							$('#fileList_invoice_pic_sample').hide();
-					}
-                },
-                listName : 'fileList_invoice_pic',
-                hiddenName: 'field_invoice_pic',
-                hiddenValType:1,
-                fileSingleSizeLimit:uploadsize*1024*1024,
-                closeX:true
-            },
-            {
-                fileType: 'service',
-                filename : 'images',
-            });
-												
-			$("#picker_down_payment_pic").SentUploader({
-                fileNumLimit:1,
-                uploadEvents: {
-                    uploadComplete:function(file){
-                        $('#fileList_down_payment_pic_sample').hide();
-                    }
-                },
-                listName : 'fileList_down_payment_pic',
-                hiddenName: 'field_down_payment_pic',
-                hiddenValType:1,
-                fileSingleSizeLimit:uploadsize*1024*1024,
-                closeX:true
-            },
-            {
-                fileType: 'service',
-                filename : 'images',
-            });
-
-            $("#picker_car_insurance_pic").SentUploader({
-                fileNumLimit:1,
-                uploadEvents: {
-                    uploadComplete:function(file){
-                        $('#fileList_car_insurance_pic_sample').hide();
-                    }
-                },
-                listName : 'fileList_car_insurance_pic',
-                hiddenName: 'field_car_insurance_pic',
-                hiddenValType:1,
-                fileSingleSizeLimit:uploadsize*1024*1024,
-                closeX:true
-            },
-            {
-                fileType: 'service',
-                filename : 'images',
-            });
-
-      
-
+            btnSentUploader('lending_notice');
+            btnSentUploader('vehicle_QC');
+            btnSentUploader('invoice');
+            btnSentUploader('down_payment');
+            btnSentUploader('car_insurance');
 			$("#submit").click(function(){
                 var loan_amounts = $('#loan_amounts').val();
-                if(loan_amounts == ''){
+                if(loan_amounts < 1000 || loan_amounts > 500000){
                     ui_alert('请填写垫资金额');
                     return;
                 }
-                 var field_lending_notice_pic_id = $('#field_lending_notice_pic').val();
-                if(field_lending_notice_pic_id == ''){
-                    ui_alert('请上传银行放款通知单');
-                    return;
-                }
-                var field_vehicle_QC_pic_id = $('#field_vehicle_QC_pic').val();
-                if(field_vehicle_QC_pic_id == ''){
-                    ui_alert('请上传车辆合格证照片');
-                    return;
-                }
-                var field_invoice_pic_id =$('#field_invoice_pic').val();
-                 if(field_invoice_pic_id == ''){
-                    ui_alert('请上传购车发票照片');
-                    return;
-                }
-                var field_down_payment_pic_id =$('#field_down_payment_pic').val();
-                 if(field_down_payment_pic_id == ''){
-                    ui_alert('请上传首付凭证照片');
-                    return;
-                }
-                var field_car_insurance_pic_id =$('#field_car_insurance_pic').val();
-                 if(field_car_insurance_pic_id == ''){
-                    ui_alert('请上传车辆保单照片');
-                    return;
-                }
+                var $checkValid = $('.form-group .imgSample+input');
+                for(var index =0 ;index < 5; index++){
+                    if($checkValid[index].value == ''){
+                        ui_alert('请'+$checkValid.siblings('div.picker_button').find('span')[index].innerHTML);
+                        return;
+                    }
+                };
+
+                var field_lending_notice_pic_id = $('#field_lending_notice_pic').val();         
+                var field_vehicle_QC_pic_id = $('#field_vehicle_QC_pic').val();         
+                var field_invoice_pic_id =$('#field_invoice_pic').val();             
+                var field_down_payment_pic_id =$('#field_down_payment_pic').val();             
+                var field_car_insurance_pic_id =$('#field_car_insurance_pic').val();         
                 var id = order_id; //$('input[name="id"]').val();
                 var car_brand = $('#car_brand').val();
                 var car_model = $('#car_model').val();

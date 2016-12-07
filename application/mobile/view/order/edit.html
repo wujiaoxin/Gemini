@@ -204,29 +204,7 @@
 	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
 	<script type="text/javascript" src="/public/wap/js/webuploader.custom.js"></script>
 	<script type="text/javascript">
-    $(document).ready(function(){
-        var modal = myApp.modal({
-            title: 'VP贷-汽车金融专家',
-            text: '请选择垫资类型',
-            verticalButtons: true,
-            buttons: [
-              {
-                text: '新车垫资',
-                onClick: function () {
-                    $("#type").val(1);
-                    $("#navbar_title").text('{$title}-新车');
-                }
-              },
-              {
-                text: '二手车垫资',
-                onClick: function () {
-                    $("#type").val(2);
-                    $("#navbar_title").text('{$title}-二手车');
-                }
-              },
-            ]
-        })
-    });
+
 		var uploadsize =  20;
 		function tryOCR(){
 		    var field_idcard_face_pic_id = $('#field_idcard_face_pic').val();
@@ -252,63 +230,63 @@
 					}
 				}
 			});
-		}
+		};
+        function btnSentUploader(picName){
+            $("#picker_" + picName + "_pic").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+                        $("#fileList_" + picName + "_pic_sample").hide();
+                    }
+                },
+                listName : 'fileList_' + picName + '_pic',
+                hiddenName: 'field_' + picName + '_pic',
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true,
+                compress:{
+                    width: 1000,
+                    quality: 90,
+                    allowMagnify: false,
+                    crop: false,
+                    preserveHeaders: true,
+                    noCompressIfLarger: false,
+                    compressSize: 0
+                }
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+        };  
 		
 		$(function(){
-			$("#picker_idcard_face_pic").SentUploader({
-                fileNumLimit:1,
-                uploadEvents: {
-                    uploadComplete:function(file){
-						$('#fileList_idcard_face_pic_sample').hide();
-						tryOCR();
-                    }
-                },
-                listName : 'fileList_idcard_face_pic',
-                hiddenName: 'field_idcard_face_pic',
-                hiddenValType:1,
-                fileSingleSizeLimit:uploadsize*1024*1024,
-                closeX:true
-            },
-            {
-                fileType: 'service',
-                filename : 'images',
-            });
-												
-			$("#picker_idcard_back_pic").SentUploader({
-                fileNumLimit:1,
-                uploadEvents: {
-                    uploadComplete:function(file){
-							$('#fileList_idcard_back_pic_sample').hide();
+		
+		    var modal = myApp.modal({
+				title: 'VP贷-汽车金融专家',
+				text: '请选择垫资类型',
+				verticalButtons: true,
+				buttons: [
+				  {
+					text: '新车垫资',
+					onClick: function () {
+						$("#type").val(1);
+						$("#navbar_title").text('{$title}-新车');
 					}
-                },
-                listName : 'fileList_idcard_back_pic',
-                hiddenName: 'field_idcard_back_pic',
-                hiddenValType:1,
-                fileSingleSizeLimit:uploadsize*1024*1024,
-                closeX:true
-            },
-            {
-                fileType: 'service',
-                filename : 'images',
-            });
-												
-			$("#picker_driving_lic_pic").SentUploader({
-                fileNumLimit:1,
-                uploadEvents: {
-                    uploadComplete:function(file){
-                        $('#fileList_driving_lic_pic_sample').hide();
-                    }
-                },
-                listName : 'fileList_driving_lic_pic',
-                hiddenName: 'field_driving_lic_pic',
-                hiddenValType:1,
-                fileSingleSizeLimit:uploadsize*1024*1024,
-                closeX:true
-            },
-            {
-                fileType: 'service',
-                filename : 'images',
-            });
+				  },
+				  {
+					text: '二手车垫资',
+					onClick: function () {
+						$("#type").val(2);
+						$("#navbar_title").text('{$title}-二手车');
+					}
+				  },
+				]
+			});
+		
+            btnSentUploader('idcard_face');
+            btnSentUploader('idcard_back');
+            btnSentUploader('driving_lic');			
 
             $('#inputModify').click(function(){
                 $('#field_idcard_face_pic_name').removeAttr('disabled');
