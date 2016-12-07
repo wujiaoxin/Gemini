@@ -18,7 +18,7 @@ ul,li,ol{list-style: none; margin: 0; padding: 0;}
 .gray{background: #f8f8f8 !important;}
 .ib, .ib-li li, .ib-a a, .ib-span span,.btn,.btn input,.photo-hot li,.Article-Tool a ,.photo-list li,.photo-channel .photo-slide .change i,.photo-channel .tool .auto,.photo-channel .tool .up,.photo-channel .tool .next,.photo-cat .content h5 span.blue a,.submit{display:inline-block;zoom:1;*display:inline;}
 
-.left-nav{width: 230px; padding-bottom: 20px; display: inline-block;}
+.left-nav{ padding-bottom: 20px; display: inline-block;}
 .left-nav ul{width: 100%; border: 1px solid #efefef; border-radius: 5px; background: #ffffff;}
 .left-nav ul li{line-height: 35px; border-bottom: 1px solid #efefef;}
 .left-nav ul li a{color: #337ab7; padding: 0 15px; display: block;}
@@ -286,18 +286,18 @@ ul,li,ol{list-style: none; margin: 0; padding: 0;}
 		font-size: 16px;
 	}
 }
-.art-list{padding-bottom: 20px; width: 830px; float: right; border-radius: 5px;}
+.art-list{padding-bottom: 20px; border-radius: 5px;}
 .art-list .list{padding: 0; background: #ffffff;}
 .art-list .list li{float: left; width: 100%; padding: 10px; border-bottom: 1px solid #efefef;}
-.art-list .list li .time{float: left; border: 1px solid #efefef; border-radius: 5px; width: 80px; line-height: 35px; text-align: center;}
+.art-list .list li .time{float: left; border: 1px solid #efefef; border-radius: 5px; width: 20%; max-width: 80px; min-width: 50px; line-height: 35px; text-align: center;}
 .art-list .list li .time .day{font-size: 24px; line-height: 40px; border-bottom: 1px solid #efefef; color: #333333; font-weight: bold; display: block;}
 .art-list .list li .time .moth{font-size: 16px; color: #ffffff; line-height: 35px; background: #0583F2; border-radius: 0 0 5px 5px; display: block;}
-.art-list .list li .info{float: left; width: 730px; padding-left: 15px;}
-.art-list .list li .tit{font-size: 16px; color: #333333; padding-bottom: 5px; display: block; overflow: hidden;}
+.art-list .list li .info{float: left; width: 80%; padding-left: 15px;word-wrap:break-word; word-break:normal;}
+.art-list .list li .tit{font-size: 16px; color: #333333; padding-bottom: 5px; display: block; overflow: hidden;word-wrap:break-word; word-break:normal;}
 .art-list .list li .des{line-height: 25px; display: block; overflow: hidden;}
 
 .art-detail{border: 1px solid #efefef; border-radius: 5px; background: #ffffff;}
 .art-heading{border-bottom: 1px solid #efefef; padding: 15px;}
 .art-heading .title{font-size: 24px; color: #000000; text-align: center; padding: 10px 0;}
 .art-heading .info{text-align: center; font-size: 12px; padding: 10px 0;}
-.art-body{padding: 20px;}
+.art-body{padding: 20px;color:#3f3b3a}
