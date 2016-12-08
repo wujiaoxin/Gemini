@@ -206,7 +206,10 @@
 	<script type="text/javascript">
 
 		var uploadsize =  20;
-		function tryOCR(){
+		function tryOCR(type){
+            if(type != 'idcard_face'){
+                return;
+            }
 		    var field_idcard_face_pic_id = $('#field_idcard_face_pic').val();
             if(field_idcard_face_pic_id == ''){
 				ui_alert('请先上传身份证正面照');
@@ -237,7 +240,8 @@
                 uploadEvents: {
                     uploadComplete:function(file){
                         $("#fileList_" + picName + "_pic_sample").hide();
-                    }
+                        tryOCR(picName);
+                    },
                 },
                 listName : 'fileList_' + picName + '_pic',
                 hiddenName: 'field_' + picName + '_pic',
