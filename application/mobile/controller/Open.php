@@ -89,7 +89,7 @@ class Open extends Base {
 			$resp["msg"] = 'id不能为空';
 			return json($resp);
 		}		
-		$images_path = get_cover($id);
+		$images_path = get_order_files($id);
 		
 		if(isset($images_path['path'])){
 			$images_path = ROOT_PATH .$images_path['path'];	

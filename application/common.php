@@ -261,6 +261,28 @@ function get_cover($cover_id, $field = null) {
 	return empty($field) ? $picture : $picture[$field];
 }
 
+
+/**
+ * 获取订单文件
+ * @param int $file_id
+ * @param string $field 仅获取某字段参数
+ * @return 完整的数据  或者  指定的$field字段值
+ */
+function get_order_files($file_id, $field = null) {
+	if (empty($file_id)) {
+		return BASE_PATH . '/public/images/default.png';
+	}
+	$file = db('OrderFiles')->where(array('status' => 1, 'id' => $file_id))->find();
+	if ($field == 'path') {
+		if (!empty($file['url'])) {
+			$file['path'] = $file['url'] ? BASE_PATH . $file['url'] : BASE_PATH . '/public/images/default.png';
+		} else {
+			$file['path'] = $file['path'] ? BASE_PATH . $file['path'] : BASE_PATH . '/public/images/default.png';
+		}
+	}
+	return empty($field) ? $file : $file[$field];
+}
+
 /**
  * 获取文件
  * @param int $file_id

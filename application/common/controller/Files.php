@@ -10,14 +10,14 @@
 namespace app\common\controller;
 
 class Files {
-
 	/**
 	 * 上传控制器
 	 */
 	public function upload() {
-		$upload_type = input('get.filename', 'images', 'trim');
-		$config      = $this->$upload_type();
+		//$upload_type = input('get.filename', 'images', 'trim');
+		//$config      = $this->$upload_type();
 		// 获取表单上传文件 例如上传了001.jpg
+		$config = config('order_files_upload');
 		$file = request()->file('file');
 		$info = $file->validate(['ext'=>'jpg,jpeg,png,gif'])->move($config['rootPath'], true, false);
 
@@ -25,7 +25,7 @@ class Files {
 			//if($info->getExtension() == 'php'){				
 			//}
 			$return['status'] = 1;
-			$return['info']   = $this->save($config, $upload_type, $info);
+			$return['info']   = $this->save($config, $info);
 		} else {
 			$return['status'] = 0;
 			$return['info']   = $file->getError();
@@ -34,32 +34,20 @@ class Files {
 		echo json_encode($return);
 	}
 
-	/**
-	 * 图片上传
-	 * @var view
-	 * @access public
-	 */
-	protected function images() {
-		return config('picture_upload');
-	}
-
-	/**
-	 * 文件上传
-	 * @var view
-	 * @access public
-	 */
-	protected function attachment() {
-		return config('attachment_upload');
-	}
-
-
 	public function delete() {
-		//TODO: remove local file & delete the database record
-		
-		$data = array(
-			'status' => 1,
-		);
-		echo json_encode($data);exit();
+		//TODO: remove local file & check uid
+		$id   = input('id', '', 'trim,intval');
+		$uid  =  session('user_auth.uid');
+		$resp['status'] = 1;//TODO 标准化返回参数	
+		$data['status'] = -1;
+		if($id == ''){
+			//return $this->error("缺少参数");
+			$resp['status'] = 0;
+			$resp['info'] = "缺少参数";
+		}else{
+			$resp['code'] = db("OrderFiles")->where(array('id' => $id,'uid' => $uid))->update($data);
+		}		
+		echo json_encode($resp);
 	}
 
 	/**
@@ -67,10 +55,13 @@ class Files {
 	 * @var view
 	 * @access public
 	 */
-	public function save($config, $type, $file) {
+	public function save($config, $file) {
 		$file           = $this->parseFile($file);
 		$file['status'] = 1;
-		$dbname         = ($type == 'images') ? 'picture' : 'file';
+		$file['uid'] = session('user_auth.uid');
+		$file['storage_mode'] = 1;
+		$file['descr']  = '';
+		$dbname         = 'OrderFiles';
 		$id             = db($dbname)->insertGetId($file);
 
 		if ($id) {
@@ -80,7 +71,7 @@ class Files {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * 下载本地文件
 	 * @param  array    $file     文件信息数组

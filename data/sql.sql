@@ -1131,6 +1131,7 @@ CREATE TABLE `gemini_file` (
 -- Records of gemini_file
 -- ----------------------------
 
+
 -- ----------------------------
 -- Table structure for `gemini_hooks`
 -- ----------------------------
@@ -1474,6 +1475,28 @@ CREATE TABLE `gemini_order_car_info` (
 -- Records of gemini_order_car_info
 -- ----------------------------
 
+-- ----------------------------
+-- Table structure for `gemini_order_files`
+-- ----------------------------
+DROP TABLE IF EXISTS `gemini_order_files`;
+CREATE TABLE `gemini_order_files` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id自增',
+  `path` varchar(255) NOT NULL DEFAULT '' COMMENT '路径',
+  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '文件链接',
+  `size` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '文件大小',
+  `md5` char(32) NOT NULL DEFAULT '' COMMENT '文件md5',
+  `sha1` char(40) NOT NULL DEFAULT '' COMMENT '文件 sha1编码',
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '文件上传用户ID',
+  `storage_mode` tinyint(2) NOT NULL DEFAULT '0' COMMENT '文件保存方式: 1.local 2.OSS',
+  `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='订单文件表';
+
+-- ----------------------------
+-- Records of gemini_order_files
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `gemini_page`

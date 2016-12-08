@@ -25,7 +25,7 @@
 		{php}
 			for($index = 1; $index <=5; $index++){
 				if(isset($info['extend_pic_'.$index]) && $info['extend_pic_'.$index]!=0){
-					$temp = get_cover($info['extend_pic_'.$index]);
+					$temp = get_order_files($info['extend_pic_'.$index]);
 					echo '			picList.extend_pic_'.$index.'.val='.$info['extend_pic_'.$index].';';
 					echo "\n";
 					echo '			picList.extend_pic_'.$index.'.url="'.$temp["path"].'";';

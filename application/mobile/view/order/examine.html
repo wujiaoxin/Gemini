@@ -107,7 +107,7 @@
 								<div class="picker-box">
 									<div class="imgSample">
 									{php}
-										$idcard_face_pic = get_cover($info['idcard_face_pic']);										
+										$idcard_face_pic = get_order_files($info['idcard_face_pic']);
 									{/php}
 									<img src="{$idcard_face_pic['path']|default=''}" />
 									</div>
@@ -120,7 +120,7 @@
 								<div class="picker-box">
 									<div class="imgSample">
 									{php}
-										$idcard_back_pic = get_cover($info['idcard_back_pic']);										
+										$idcard_back_pic = get_order_files($info['idcard_back_pic']);
 									{/php}
 									<img src="{$idcard_back_pic['path']|default=''}" />
 									</div>
@@ -133,7 +133,7 @@
 								<div class="picker-box">
 									<div id="fileList_driving_lic_pic_sample" class="imgSample">
 									{php}
-										$driving_lic_pic = get_cover($info['driving_lic_pic']);										
+										$driving_lic_pic = get_order_files($info['driving_lic_pic']);
 									{/php}
 									<img src="{$driving_lic_pic['path']|default=''}" />
 									</div>

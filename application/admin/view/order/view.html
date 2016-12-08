@@ -24,7 +24,7 @@ img {
 			{volist name="keyList" id="field"}
 			{if $field['type'] eq 'image'}	
 				{php}
-					$images = get_cover($info[$field['name']]);	
+					$images = get_order_files($info[$field['name']]);
 				{/php}
 			<div class="form-group">
 				<label class="col-lg-2 view-label">{$field['title']|htmlspecialchars}</label>

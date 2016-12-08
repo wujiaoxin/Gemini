@@ -34,7 +34,7 @@ class Order extends Admin {
 		$this->setMeta("订单管理");
 		return $this->fetch();
 	}
-
+/*
 	//添加
 	public function add() {
 		$link = model('Order');
@@ -95,7 +95,7 @@ class Order extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
-	
+*/
 	//查看
 	public function view() {
 		$link = model('Order');
