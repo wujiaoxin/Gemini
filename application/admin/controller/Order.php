@@ -146,6 +146,10 @@ class Order extends Admin {
 		$map['id'] = $id;
 		$result    = $model::where($map)->setField('status', $status);
 		if (false !== $result) {
+			if($status == 1){//审核通过
+				$OrderExtend = model('OrderExtend');
+				$OrderExtend->addByBank($id);
+			}			
 			return $this->success("操作成功！");
 		} else {
 			return $this->error("操作失败！！");
