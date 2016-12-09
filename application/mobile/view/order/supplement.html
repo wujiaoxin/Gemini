@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">	
+	<link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
+	<script type="text/javascript">
+		var BASE_URL = ""; //根目录地址
+		var order_id = {$info['id']|default=0};
+
+    </script>
+	<style type="text/css">
+        .main-box-title{
+            text-align: center;
+            margin: 12px auto;
+        }
+        .form-group{
+            margin-bottom:10px;
+        }
+        .picker-box{
+            margin: 0 auto;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            width: 90%;
+            background: #f5f8ff;
+        }
+        .imgSample{
+            margin: auto auto;
+            width: 70%;
+            background: url('/public/wap/images/sampleImgBg.jpg');
+        }
+        .imgSample img{
+            width: 88%;
+            margin: 5% 6% 3%;
+            min-height: 110px;
+        }
+        .picker_button{
+            width:90%;
+            margin: 0 auto;
+        }
+        .webuploader-pick {
+            color: #f2f2f2;
+            width: 90%;
+            margin-top:5px;
+            background: #005eff;
+            font-size: 20px;
+        }
+        .filebox.image img{
+            width: 100%;
+        }
+        .upload-file-list-info{
+            width: 90%;
+            margin: 0 auto;
+        }   
+        .form-group .control-label{
+            margin-left: 5%;
+            font-size: 14px;
+        }
+        .form-group input{
+            margin-left: 5%;
+            width: 86%;
+            color: black;
+            height: 30px;
+            font-size: 14px;
+            font-family: inherit;
+            border-width: 1px;
+            padding-left: 10px;
+        }
+        .optional-box{
+            border: 1px dashed green;
+        }
+	</style>
+</head>
+<body>   
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back"></i>
+                        </a>
+                    </div>
+                    <div class="center blue-color">补充资料</div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="dqassess" class="page">						
+				<div class="page-content main-box clearfix bg-white">
+                    <div class="main-box-title">
+                        <h4 class="color-black">请如实提交相关资料证明</h4>
+                    </div>
+                    <div class="main-box-body clearfix">
+                        <form method="post" class="form form-horizontal">
+                            <input type="hidden" name="id" value="0"/>
+                            <input type="hidden" name="bank_uid" value="3"/>
+							{php}$index = 0;{/php}
+							{volist name="keyList" id="field"}
+								{if $field['type'] eq 'image'}			
+								{php}
+									$index++;
+									$images['path'] = '';
+									$images['create_time'] = 0;
+									if($info[$field['name']] != 0){
+										$images = get_order_files($info[$field['name']]);
+									}
+								{/php}
+							<div class="form-group">
+                                <div class="col-100 form-group-content">
+                                    <div class="picker-box">
+                                        <label class="control-label">{$field['title']}</label>
+										<div id="fileList_{$field['name']}_sample" class="imgSample" style="{if $info[$field['name']] != 0}display:none;{/if}">
+                                            <img src="/public/wap/images/sample/{$field['name']}.png">
+                                        </div>
+                                        <input type="hidden" name="{$field['name']}" id="field_{$field['name']}" value="{$info[$field['name']]|default=''}">
+                                        <div id="fileList_{$field['name']}" class="upload-file-list-info">
+											{if $info[$field['name']] != 0}
+											<li class="affix-list-item" id="WU_FILE_10{$index}">
+                                                <div class="upload-file-info">
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10{$index}" data-id="{$info[$field['name']]|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
+                                                    <span class="fname"></span>
+                                                    <span class="fsize">上传时间:{$images['create_time']|date='Y-m-d H:i',###}</span>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="filebox image">
+                                                    <img src="{$images['path']|default=''}" class="img-responsive">
+                                                </div>
+                                            </li>
+											{/if}
+                                        </div>
+										<div id="picker_{$field['name']}" class="picker_button">   
+                                            <span>上传{$field['title']}照片</span>                                    
+                                        </div>
+									</div>
+                                </div>  
+                            </div>	
+							{/if}
+							{/volist}
+							
+                            <div class="content-block">
+                                <a class="button button-big button-raised butcom-css dpblue" id="submit">提交审核</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+				</div>
+            </div>
+        </div>
+    </div>
+  	<div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
+        </div>
+    </div>
+    <div id="loading"></div>
+	<script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
+	<script type="text/javascript" src="/Public/wap/js/webuploader.custom.js"></script>
+	<script type="text/javascript">
+
+		var uploadsize =  20;	
+        function btnSentUploader(picName){
+            $("#picker_" + picName).SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+                        $("#fileList_" + picName + "_sample").hide();
+                    }
+                },
+                listName : 'fileList_' + picName,
+                hiddenName: 'field_' + picName,
+                hiddenValType:1,
+                fileSingleSizeLimit:uploadsize*1024*1024,
+                closeX:true,
+                compress:{
+                    width: 1024,
+                    quality: 90,
+                    allowMagnify: false,
+                    crop: false,
+                    preserveHeaders: true,
+                    noCompressIfLarger: false,
+                    compressSize: 0
+                }
+            },
+            {
+                fileType: 'service',
+                filename : 'images',
+            });
+        };	
+		$(function(){
+			for(var index = 1; index <= 10 ;index++){
+				 btnSentUploader('supplement_pic_'+index);
+			}
+
+			$("#submit").click(function(){
+				var postData = {};
+				postData["id"] = order_id;
+				for(var index = 1; index <= 10 ;index++){
+					if($('#field_supplement_pic_' + index).val()){
+						postData['supplement_pic_'+index] = $('#field_supplement_pic_' + index).val();
+					}
+				}
+                 ajax_jquery({
+                    type: 'post', // 提交方式 post
+                    url: '/mobile/order/supplement', // 需要提交的 url
+                    datatype:'json',
+                    data: postData,
+                    success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
+                        if(data.code == 1){
+                            ui_alert("补充资料提交成功!", function () {
+                                 window.location.href = '/mobile' ;            
+                             });
+                        }else{
+                            if (typeof(data.msg) == 'string') {
+                                ui_alert(data.msg);
+                            }  
+                        }
+                    }
+                }); 
+            });
+		});
+	</script>  
+
+</body>
+</html>

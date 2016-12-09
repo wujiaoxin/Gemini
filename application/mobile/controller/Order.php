@@ -204,6 +204,8 @@ class Order extends Base {
 						$OrderExtend->addByBank($id);
 						$msg = '壕，您的客户'.$realData['name'].'信息已审核通过，请您尽快登录查看';					
 					}else if($realData['status'] == 2){ //审核拒绝
+						$OrderSupplement = model('OrderSupplement');
+						$OrderSupplement->addByBank($id);
 						$msg = '壕，您的客户'.$realData['name'].'信息审核未通过，具体原因请您尽快登录查看';	
 					}
 					if(isset($realData['uid']) && $msg!= ''){
@@ -294,6 +296,44 @@ class Order extends Base {
 			);
 			$this->assign($data);
 			return $this->fetch('extend');
+		}
+	}
+	
+	//审核拒绝后补充信息
+	public function supplement() {
+		$OrderSupplement = model('OrderSupplement');
+		$id   = input('id', '', 'trim,intval');
+		$map = '';
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if($uid > 0){
+			$map = '(uid = '.$uid.' or bank_uid = '.$uid.') and id = '.$id;
+		}else{
+			return $this->error('请重新登录');
+		}
+
+		if (IS_POST) {
+			$data = input('post.');
+			$data['uid'] = $uid;
+			if ($data) {
+				$result = $OrderSupplement->save($data, array('id' => $data['id']));
+				if ($result) {
+					return $this->success("修改成功！", url('Order/index'));
+				} else {
+					return $this->error("修改失败！");
+				}
+			} else {
+				return $this->error($OrderSupplement->getError());
+			}
+		} else {
+			$info = db('OrderSupplement')->where($map)->find();
+			$data = array(
+				'keyList' => $OrderSupplement->keyList,
+				'info'    => $info,
+				'role'    => $role,
+			);
+			$this->assign($data);
+			return $this->fetch('supplement');
 		}
 	}
 	

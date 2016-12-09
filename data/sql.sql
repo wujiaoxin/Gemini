@@ -1442,6 +1442,31 @@ CREATE TABLE `gemini_order_extend` (
 -- Records of gemini_order_extend
 -- ----------------------------
 
+-- ----------------------------
+-- Table structure for `gemini_order_supplement`
+-- ----------------------------
+DROP TABLE IF EXISTS `gemini_order_supplement`;
+CREATE TABLE `gemini_order_supplement` (
+  `id` int(10) NOT NULL COMMENT '订单标识ID',
+  `uid` int(10) NOT NULL DEFAULT '0' COMMENT '报单人用户ID ',
+  `bank_uid` int(10) NOT NULL DEFAULT '0' COMMENT '银行审核人员ID ',
+  `supplement_pic_1` int(11) COMMENT '补充审核资料照片1',
+  `supplement_pic_2` int(11) COMMENT '补充审核资料照片2',
+  `supplement_pic_3` int(11) COMMENT '补充审核资料照片3',
+  `supplement_pic_4` int(11) COMMENT '补充审核资料照片4',
+  `supplement_pic_5` int(11) COMMENT '补充审核资料照片5',
+  `supplement_pic_6` int(11) COMMENT '补充审核资料照片6',
+  `supplement_pic_7` int(11) COMMENT '补充审核资料照片7',
+  `supplement_pic_8` int(11) COMMENT '补充审核资料照片8',
+  `supplement_pic_9` int(11) COMMENT '补充审核资料照片9',
+  `supplement_pic_10` int(11) COMMENT '补充审核资料照片10',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '补充资料审核状态 ',
+  `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
 
 -- ----------------------------
 -- Table structure for `gemini_order_car_info`
