@@ -21,7 +21,7 @@ class Order extends Base {
 		}
 	}
 
-	public function index() {		
+	public function index() {
 		$map = '';
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
@@ -30,19 +30,45 @@ class Order extends Base {
 		}else{
 			return $this->error('请重新登录');
 		}
-		
-		
+
 		$order = "id desc";
 		$list  = db('Order')->where($map)->order($order)->paginate(10);
-
 		$data = array(
 			'list' => $list,
-			'page' => $list->render(),
+			//'page' => $list->render(),
 		);
 		$this->assign($data);
 		return $this->fetch();
 	}
 	
+	
+	public function getOrderList($status = null) {
+		$map = '';
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		$resp['code'] = 0;
+		$resp['msg'] = '未知错误';
+		if($uid > 0){
+			$map = '(uid = '.$uid.' or bank_uid = '.$uid.')';
+		}else{
+			$resp['code'] = 0;
+			$resp['msg'] = '请重新登录';
+			return json($resp);
+		}
+		if($status == null){
+			$map = $map.' and status > -1';
+		}else{
+			$map = $map.' and status ='.(int)$status;
+		}
+		
+		$order = "id desc";
+		$list  = db('Order')->where($map)->order($order)->paginate(6);
+		
+		$resp['code'] = 1;
+		$resp['msg'] = 'OK';
+		$resp['data'] = $list;
+		return json($resp);
+	}
 	
 	public function carinfo() {
 		//$this->assign($user);		
@@ -77,6 +103,11 @@ class Order extends Base {
 				if ($result) {
 					$resp['code'] = 1;
 					$resp['msg'] = '新建成功！';
+					if(isset($data['bank_uid'])){
+						$msg = 'Boss,VP贷有单子来了,请您登录审批';
+						$this->notifiedUserbySMS($data['bank_uid'], $msg);
+					}
+					
 				} else {
 					$resp['msg'] = $link->getError();
 				}
@@ -166,9 +197,17 @@ class Order extends Base {
 				//dump($result);
 				//$result = $link->save($saveData, array('id' => $saveData['id']));
 				if ($result) {
-					if($data['status'] == 1){//审核通过
+					$realData = $link->where($map)->find();	
+					$msg = '';				
+					if($realData['status'] == 1){//审核通过
 						$OrderExtend = model('OrderExtend');
 						$OrderExtend->addByBank($id);
+						$msg = '壕，您的客户'.$realData['name'].'信息已审核通过，请您尽快登录查看';					
+					}else if($realData['status'] == 2){ //审核拒绝
+						$msg = '壕，您的客户'.$realData['name'].'信息审核未通过，具体原因请您尽快登录查看';	
+					}
+					if(isset($realData['uid']) && $msg!= ''){
+						$this->notifiedUserbySMS($realData['uid'], $msg);
 					}
 					return $this->success("提交成功！");
 				} else {
@@ -257,6 +296,18 @@ class Order extends Base {
 			return $this->fetch('extend');
 		}
 	}
+	
+	protected function notifiedUserbySMS($uid, $msg){
+		
+		$user = db('Member')->find($uid);
+		if( isset( $user['mobile'] )){
+			$this->sendSms($user['mobile'], $msg);
+		}else{
+			return false;
+		}		
+		return true;
+
+    }
 	
 	
 }
