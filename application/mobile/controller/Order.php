@@ -331,7 +331,7 @@ class Order extends Base {
 				return $this->error($OrderSupplement->getError());
 			}
 		} else {
-			$info = $OrderSupplement->where($map)->find();
+			$info = db('OrderSupplement')->where($map)->find();
 			$data = array(
 				'keyList' => $OrderSupplement->keyList,
 				'info'    => $info,
