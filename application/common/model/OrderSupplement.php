@@ -18,7 +18,7 @@ class OrderSupplement extends \app\common\model\Base {
 		array('name'=>'id' ,'title'=>'ID', 'type'=>'hidden'),
 		array('name'=>'uid' ,'title'=>'报单人用户ID', 'type'=>'hidden'),
 		array('name'=>'bank_uid' ,'title'=>'银行审核人员ID', 'type'=>'hidden', 'value'=>'9'),
-		array('name'=>'supplement_pic_1' ,'title'=>'近6个月银行流水', 'type'=>'image', 'help'=>''),
+		array('name'=>'supplement_pic_1' ,'title'=>'近6个月银行流水(有结余)', 'type'=>'image', 'help'=>''),
 		array('name'=>'supplement_pic_2' ,'title'=>'工作证明', 'type'=>'image', 'help'=>''),
 		array('name'=>'supplement_pic_3' ,'title'=>'企业营业执照', 'type'=>'image', 'help'=>''),
 		array('name'=>'supplement_pic_4' ,'title'=>'房产证编号页', 'type'=>'image', 'help'=>''),
