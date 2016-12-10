@@ -10,49 +10,77 @@
 namespace app\common\model;
 
 /**
- * 订单类
+ * 二手车订单车辆信息类
  * @author molong <molong@tensent.cn>
  */
-class Order extends \app\common\model\Base {
-	//protected $name = 'link';
+class OrderCarInfo extends \app\common\model\Base {
 
 	public $keyList = array(
 		array('name'=>'id' ,'title'=>'ID', 'type'=>'hidden'),
-		array('name'=>'sn' ,'title'=>'订单编号', 'type'=>'hidden'),
-		array('name'=>'bank_uid' ,'title'=>'审核银行', 'type'=>'hidden', 'value'=>'9'),
-		array('name'=>'type' ,'title'=>'订单类别', 'type'=>'select', 'option'=>array(
-			'1' => '新车垫资',
-			'2' => '二手车垫资',
-			'3' => '车抵贷',
-			'4' => '其他订单',
-		), 'help'=>''),
-		array('name'=>'name' ,'title'=>'贷款人姓名', 'type'=>'text', 'help'=>''),
-		array('name'=>'idcard_num' ,'title'=>'贷款人身份证号', 'type'=>'text', 'help'=>''),
-		array('name'=>'loan_limit' ,'title'=>'贷款额度', 'type'=>'text', 'help'=>''),
-		array('name'=>'idcard_face_pic' ,'title'=>'身份证正面', 'type'=>'image', 'help'=>''),
-		array('name'=>'idcard_back_pic' ,'title'=>'身份证反面', 'type'=>'image', 'help'=>''),
-		array('name'=>'driving_lic_pic' ,'title'=>'驾驶证照片', 'type'=>'image', 'help'=>''),
-		array('name'=>'status' ,'title'=>'状态', 'type'=>'select','option'=>array('1'=>'审核通过','0'=>'待审核','2'=>'审核未通过',), 'help'=>''),
-		array('name'=>'addr' ,'title'=>'签单地址', 'type'=>'text', 'help'=>''),
+		array('name'=>'uid' ,'title'=>'报单人用户ID', 'type'=>'hidden'),
+		array('name'=>'bank_uid' ,'title'=>'银行审核人员ID', 'type'=>'hidden', 'value'=>'9'),
+		array('name'=>'car_pic_1' ,'title'=>'车辆照片1', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_2' ,'title'=>'车辆照片2', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_3' ,'title'=>'车辆照片3', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_4' ,'title'=>'车辆照片4', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_5' ,'title'=>'车辆照片5', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_6' ,'title'=>'车辆照片6', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_7' ,'title'=>'车辆照片7', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_8' ,'title'=>'车辆照片8', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_9' ,'title'=>'车辆照片9', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_10' ,'title'=>'车辆照片10', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_11' ,'title'=>'车辆照片11', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_12' ,'title'=>'车辆照片12', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_13' ,'title'=>'车辆照片13', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_14' ,'title'=>'车辆照片14', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_15' ,'title'=>'车辆照片15', 'type'=>'image', 'help'=>''),
+		array('name'=>'status' ,'title'=>'补充资料审核状态', 'type'=>'select','option'=>array('1'=>'审核通过','0'=>'待审核','2'=>'审核未通过',), 'help'=>''),
 		array('name'=>'descr' ,'title'=>'备注信息', 'type'=>'textarea', 'help'=>'')
 	);
-	
 
     protected $auto = array('update_time');
 
 	protected $type = array(
-		'idcard_face_pic'  => 'integer',
-		'idcard_back_pic'  => 'integer',
-		'driving_lic_pic'  => 'integer',
+		'car_pic_1'  => 'integer',
+		'car_pic_2'  => 'integer',
+		'car_pic_3'  => 'integer',		
+		'car_pic_4'  => 'integer',
+		'car_pic_5'  => 'integer',
+		'car_pic_6'  => 'integer',
+		'car_pic_7'  => 'integer',
+		'car_pic_8'  => 'integer',
+		'car_pic_9'  => 'integer',
+		'car_pic_10'  => 'integer',
+		'car_pic_11'  => 'integer',
+		'car_pic_12'  => 'integer',
+		'car_pic_13'  => 'integer',
+		'car_pic_14'  => 'integer',
+		'car_pic_15'  => 'integer',
 	);
-	
-	public function build_order_sn(){
-		return date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+	/**
+	 * 审核通过添加附属信息单号
+	 * @param  integer $id order_id
+	 */
+	function addByBank($id){
+		$orderSupplementData = $this->find($id);
+		if($orderSupplementData == null){			
+			$order = model('Order');
+			$orderData = $order->find($id);			
+			$data['id'] = $id;
+			$data['uid'] = $orderData['uid'];	
+			$data['bank_uid'] =  $orderData['bank_uid'];
+			$result = $this->save($data);
+			if ($result) {
+				return $id;
+			}else{
+				if (!$this->getError()) {
+					$this->error = "提交失败!！";
+				}
+				return false;
+			}
+		}else{
+			return $id;
+		}
 	}
-	/*
-	public function extend(){
-		return $this->hasOne('OrderExtend', 'uid');
-	}
-	*/
-	
+
 }

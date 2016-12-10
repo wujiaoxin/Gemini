@@ -1,0 +1,27 @@
+{php}$index = 0;{/php}
+{volist name="supplementKeyList" id="field_1"}
+	{if $field_1['type'] eq 'image'}			
+	{php}
+		$index++;
+		$images['path'] = '';
+		$images['create_time'] = 0;
+		if($supplementInfo[$field_1['name']] != 0){
+			$images = get_order_files($supplementInfo[$field_1['name']]);
+		} else {
+            continue;
+        }
+
+	{/php}
+						<div class="content-block-title">{$field_1['title']}</div>
+						<div class="content-block">
+							<div class="content-block-inner">
+								<div class="picker-box">
+									<div id="fileList_{$field_1['name']}_sample" class="imgSample">
+										<img src="{$images['path']|default=''}" />
+									</div>
+								</div>
+							</div>
+						</div>	
+{/if}
+{/volist}
+                            

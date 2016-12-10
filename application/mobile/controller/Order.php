@@ -30,7 +30,7 @@ class Order extends Base {
 		}else{
 			return $this->error('请重新登录');
 		}
-
+/*
 		$order = "id desc";
 		$list  = db('Order')->where($map)->order($order)->paginate(10);
 		$data = array(
@@ -38,6 +38,7 @@ class Order extends Base {
 			//'page' => $list->render(),
 		);
 		$this->assign($data);
+*/
 		return $this->fetch();
 	}
 	
@@ -62,17 +63,12 @@ class Order extends Base {
 		}
 		
 		$order = "id desc";
-		$list  = db('Order')->where($map)->order($order)->paginate(6);
+		$list  = db('Order')->where($map)->order($order)->paginate(15);
 		
 		$resp['code'] = 1;
 		$resp['msg'] = 'OK';
 		$resp['data'] = $list;
 		return json($resp);
-	}
-	
-	public function carinfo() {
-		//$this->assign($user);		
-		return $this->fetch();
 	}
 	
 	public function progress() {
@@ -147,10 +143,14 @@ class Order extends Base {
 			}
 		} else {
 			$info = db('Order')->where($map)->find();
+			$supplementModle = model('OrderSupplement');
+			$supplement = db('OrderSupplement')->where($map)->find();
 			$data = array(
 				'keyList' => $link->keyList,
 				'info'    => $info,
 				'role'    => $role,
+				'supplementKeyList' => $supplementModle->keyList,
+				'supplementInfo' => $supplement,
 			);
 			$this->assign($data);			
 			if($role == 2){//银行审核
@@ -202,6 +202,10 @@ class Order extends Base {
 					if($realData['status'] == 1){//审核通过
 						$OrderExtend = model('OrderExtend');
 						$OrderExtend->addByBank($id);
+						if($realData['type'] == 2){//二手车
+							$OrderCarInfo = model('OrderCarInfo');
+							$OrderCarInfo->addByBank($id);
+						}
 						$msg = '壕，您的客户'.$realData['name'].'信息已审核通过，请您尽快登录查看';					
 					}else if($realData['status'] == 2){ //审核拒绝
 						$OrderSupplement = model('OrderSupplement');
@@ -318,15 +322,16 @@ class Order extends Base {
 			if ($data) {
 				$result = $OrderSupplement->save($data, array('id' => $data['id']));
 				if ($result) {
-					return $this->success("修改成功！", url('Order/index'));
+					db('Order')->where($map)->update(['status' => '0']);
+					return $this->success("提交成功！", url('Order/index'));
 				} else {
-					return $this->error("修改失败！");
+					return $this->error("提交失败！");
 				}
 			} else {
 				return $this->error($OrderSupplement->getError());
 			}
 		} else {
-			$info = db('OrderSupplement')->where($map)->find();
+			$info = $OrderSupplement->where($map)->find();
 			$data = array(
 				'keyList' => $OrderSupplement->keyList,
 				'info'    => $info,
@@ -334,6 +339,46 @@ class Order extends Base {
 			);
 			$this->assign($data);
 			return $this->fetch('supplement');
+		}
+	}
+	
+	
+	//二手车订单车辆信息
+	public function carinfo() {
+		$OrderCarInfo = model('OrderCarInfo');
+		$id   = input('id', '', 'trim,intval');
+		$map = '';
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if($uid > 0){
+			$map = '(uid = '.$uid.' or bank_uid = '.$uid.') and id = '.$id;
+		}else{
+			return $this->error('请重新登录');
+		}
+
+		if (IS_POST) {
+			$data = input('post.');
+			$data['uid'] = $uid;
+			if ($data) {
+				$result = $OrderCarInfo->save($data, array('id' => $data['id']));
+				if ($result) {
+					//db('Order')->where($map)->update(['status' => '0']);
+					return $this->success("提交成功！", url('Order/index'));
+				} else {
+					return $this->error("提交失败！");
+				}
+			} else {
+				return $this->error($OrderCarInfo->getError());
+			}
+		} else {
+			$info = db('OrderCarInfo')->where($map)->find();
+			$data = array(
+				'keyList' => $OrderCarInfo->keyList,
+				'info'    => $info,
+				'role'    => $role,
+			);
+			$this->assign($data);
+			return $this->fetch();
 		}
 	}
 	

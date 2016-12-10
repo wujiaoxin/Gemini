@@ -1402,6 +1402,7 @@ CREATE TABLE `gemini_order` (
   `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '订单状态 ',
   `finance` tinyint(1) NOT NULL DEFAULT '0' COMMENT '财务状态',
+  `reject_reason` tinyint(1) NOT NULL DEFAULT '0' COMMENT '拒绝原因',
   `addr` varchar(255) NOT NULL DEFAULT '' COMMENT '签单地址 ',
   `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`id`)

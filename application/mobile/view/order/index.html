@@ -18,89 +18,126 @@
 	.order-date{width:100%; height: 24px; line-height: 24px; color:#666;font-size:12px;}
 	.orderInfo{float:left;}
 	.orderStatus{float:right;height:72px; line-height: 72px;}
+	.infinite-scroll-preloader{text-align: center;}
 	</style>	
 </head>
 <body>
     
-    <div class="views">
-        <div class="view view-main">
-            <div class="navbar wb">
+    <div class="views tabs toolbar-fixed">
+        <div id="tab1" class="view view-main tab active">
+            <div class="navbar">
                 <div class="navbar-inner">
                     <div class="left">
                         <a href="javascript:goToUrl('/mobile/user')" class="link icon-only back">
                             <i class="icon icon-back"></i>
                         </a>
                     </div>
-                    <div class="center blue-color">订单中心</div>
-                    <!--<div class="right">
-                        <a href="javascript:toUserMessage();" class="link icon-only ">
-                            <img src="/Public/wap/images/message.png" height="40%"/>
-                        </a>
-                    </div>-->
+                    <div class="center blue-color">全部订单</div>
                 </div>
             </div>
-            <div class="pages navbar-through">
-                <div data-page="dqassess" class="page">
-                    <div class="page-content">
+            <div class="pages navbar-fixed">
+                <div data-page="home-1" class="page">
+                    <div class="page-content pull-to-refresh-content infinite-scroll" data-ptr-distance="25">
+                    	<div class="pull-to-refresh-layer">
+						    <div class="preloader"></div>
+						    <div class="pull-to-refresh-arrow"></div>
+					    </div>
 					    <div class="history-log">
-						<!--
-                            <div class='no-result'><img src='/public/wap/images/record.png' /><p>暂无订单记录</p></div>
-						-->
-							<ul id="orderList">
-							{volist name="list" id="item" empty="<div class='no-result'><img src='/public/wap/images/record.png' /><p>暂无订单记录</p></div>"}
-								<li data="{$item['id']}">
-								  <!-- <a href="javascript:goToUrl('/mobile/order/view?id={$item['id']}');">-->
-										<div class="orderInfo">
-											<div class="order-id">订单编号:{$item['sn']}</div>										
-											<div class="order-name">贷款人:{$item['name']}</div>
-											<div class="order-date">{$item['create_time']|date='Y-m-d H:i',###}</div>										
-										</div>
-										<div class="orderStatus">
-									{if isset($item['status'])}
-										{if $item['status'] == 1}
-											<span class="blue-color">审核通过</span>
-										{elseif $item['status'] == 2/}
-											<span class="red">审核未通过</span>	
-										{else /}
-											<span class="blue-color">银行审核中</span>									
-										{/if}
-									{/if}
-										<img class="cg-right-ico" src="/public/wap/images/right.png" />
-										</div>
-								<!--	</a>-->
-								</li>
-							{/volist}
-							<!--
-								<li>
-								   <a href="javascript:alert('test');">
-										<span class="left">
-											<div class="order-id">订单编号:2</div>										
-											<div class="order-name">贷款人:样例</div>
-											<div class="order-date">2016-11-20 12:12</div>										
-										</span>
-										<span class="right">审核通过<img class="cg-right-ico" src="/public/wap/images/right.png" /></span>
-									</a>
-								</li>
-								-->
+							<ul id="orderList" class="orderList">
 							</ul>
+						</div>
+						<div class="infinite-scroll-preloader">
+							<div class="preloader"></div>
 						</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-  	<div id="dialog" class="dialog">
-        <div id="dialogContent">
-            <div id="dialogMain"></div>
-        </div>
-    </div>
 
-    <div id="loading"></div>
-    <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
 	<script>
+	var orderStatus = new Array();
+	orderStatus[0] = '<span class="blue-color">银行审核中</span>';
+	orderStatus[1] = '<span class="blue-color">审核通过</span>';
+	orderStatus[2] = '<span class="red">审核未通过</span>';
+  	var loading = false;  // 加载flag
+	var current_page = 1; 
+	var status = '';
+
+	function formatDate(timeStr){
+		var now =new Date(timeStr); 
+      	var year=now.getFullYear();     
+	    var month=now.getMonth()+1;     
+	    var date=now.getDate();     
+	    var hour=now.getHours();     
+	    var minute=now.getMinutes();     
+	    var second=now.getSeconds();    
+	    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+	} ;
+ 
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html += '<li data="' + data[index].id + '">'
+						+ '<div class="orderInfo">'
+							+ '<div class="order-id">订单编号:' + data[index].sn + '</div>'				
+							+ '<div class="order-name">贷款人:' + data[index].name + '</div>'
+							+ '<div class="order-date">' + formatDate(data[index].create_time) + '</div>'
+						+ '</div>'
+						+ '<div class="orderStatus">'
+							+ orderStatus[data[index].status]
+							+ '<img class="cg-right-ico" src="/public/wap/images/right.png" />'
+						+ '</div>'
+					+ '</li>';
+			}
+		}
+		return html;
+	};
+
+	function getOrdrList(pageid,status){
+		ajax_jquery({
+			url: '/mobile/order/getOrderlist',   
+			data:{
+				page: pageid,
+				status: status
+			},
+			success: function (resp){
+				var liHtml = '';
+				loading = false;
+				current_page++;
+				if(resp.code == 1){
+					if(resp.data.total == 0){
+						liHtml = '<div class="no-result">'
+									+ '<img src="/public/wap/images/record.png"/><p>暂无订单记录</p>'
+								+ '</div>';
+					}else{
+						liHtml=tpl(resp.data.data);
+						$('#orderList').append(liHtml);								
+					};
+					if(resp.data.total <= (resp.data.per_page * resp.data.current_page)){
+					    myApp.detachInfiniteScroll($$('.infinite-scroll')); // 加载完毕，则注销无限加载事件，以防不必要的加载
+						$$('.infinite-scroll-preloader').remove(); // 删除加载提示符
+					};
+				}else{
+					if (typeof(resp.msg) == 'string') {
+						ui_alert(resp.msg);
+					}  
+				}
+			}
+		});
+	}
+	// 注册'infinite'事件处理函数
+	$$('.infinite-scroll').on('infinite', function () { 
+		if (loading) return;	// 如果正在加载，则退出 
+		loading = true;			// 设置flag
+		getOrdrList(current_page,status);
+	});
 	$(function(){
+		getOrdrList(1,status);
 		$("#orderList").on("click", "li", function(){
 			var id = $(this).attr("data");
 			goToUrl('/mobile/order/view?id=' + id);

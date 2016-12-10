@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -27,8 +27,7 @@
 		margin:0 auto;
 	}
 	.imgSample img{
-		width:100%;
-		
+		width:100%;	
 	}
 	</style>
 </head>
@@ -133,7 +132,7 @@
 								</div>
 							</div>
 						</div>
-						
+						{include file="/order/viewsupplement"}
 					
 						{if isset($info['status'])}
 							{if $info['status'] == 0}
@@ -145,6 +144,11 @@
 								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/supplement?id={$info['id']}')">补充资料</a>
 							</div>	
 							{else /}
+							{if $info['type'] == 2}
+							<div class="content-block">
+								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/carinfo?id={$info['id']}')">上传车辆资料</a>
+							</div>
+							{/if}
 							<div class="content-block">
 								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/extend?id={$info['id']}')">上传首付资料</a>
 							</div>

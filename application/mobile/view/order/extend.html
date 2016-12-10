@@ -322,7 +322,6 @@
 		return humanDate.getTime()/1000 - 8*60*60;
 	}
 
-
     for(var i = 1;i <= 5 ; i++){
                 var picObj = eval('picList.extend_pic_' + i);
                 if(picObj.val){
@@ -389,10 +388,13 @@
             btnSentUploader('car_insurance');
 			$("#submit").click(function(){
                 var loan_amounts = $('#loan_amounts').val();
-                if(loan_amounts < 1000 || loan_amounts > 500000){
+                if(loan_amounts == ''){
                     ui_alert('请填写垫资金额');
                     return;
-                }
+                }else if(loan_amounts < 1000 || loan_amounts > 500000){
+                    ui_alert('请确认垫资金额');
+                    return;
+                };
                 var $checkValid = $('.form-group .imgSample+input');
                 for(var index =0 ;index < 5; index++){
                     if($checkValid[index].value == ''){
