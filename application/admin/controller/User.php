@@ -171,7 +171,7 @@ class User extends Admin {
 			unset($map);
 			$map['password'] = $pass;
 		}
-		$list = $user::where($map)->field('uid,username,nickname,sex,email,qq,score,signature,status,salt')->find();
+		$list = $user::where($map)->field('uid,username,nickname,mobile,addr,sex,email,qq,score,signature,status,salt')->find();
 		if (!$list) {
 			return $this->error($errormsg ? $errormsg : '不存在此用户！');
 		}
