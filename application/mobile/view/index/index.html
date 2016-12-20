@@ -51,7 +51,7 @@
 									<a href="#"> 会员中心<img src="/public/wap/images/right.png" class="right-ico ml5"/></a>
 							</div>
                         </div>
-                        <div class="deal-item dqjk-item bor-radius clearfix">
+                        <div id="checkingOrder" class="deal-item dqjk-item bor-radius clearfix">
                                 <div class="deal-ico">
                                     <img src="/public/wap/images/danqi.png" width="100%"/>
                                 </div>
@@ -81,7 +81,7 @@
                                 </div>
 						</div>  
 						-->						
-                        <div class="deal-item xjfq-item bor-radius clearfix">
+                        <div id="passOrder" class="deal-item xjfq-item bor-radius clearfix">
                                 <div class="deal-ico">
                                     <img src="/public/wap/images/xjfq.png" width="100%"/>
                                 </div>
@@ -126,9 +126,50 @@
 		role = {$user['access_group_id']};
 		{/if}
 		
-		/*if(role == 2){			
-			goToUrl('/mobile/user/index');
-		}*/
+		if(role == 2){	
+			var checkingOrder = 0;
+			var passOrder = 0;		
+			ajax_jquery({
+				url: '/mobile/order/getOrderlist',   
+				data:{
+					page: 1,
+					status: 0
+				},
+				success: function(resp){
+					if(resp.code == 1){
+						checkingOrder = resp.data.total;
+						$("#checkingOrder > .deal-item-con").children(".deal-item-tit").text("未审核订单")
+							.parent().children(".deal-item-intro").empty()
+							.parent().children(".index-ed-data").text(checkingOrder + "条").css("color","red")
+							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?status=0')").text("去审核");			
+					}else{
+						if (typeof(data.msg) == 'string') {
+							ui_alert(data.msg);
+						}
+					}
+				}
+			});
+			ajax_jquery({
+				url: '/mobile/order/getOrderlist',   
+				data:{
+					page: 1,
+					status: 1
+				},
+				success: function(resp){
+					if(resp.code == 1){
+						passOrder = resp.data.total;
+						$("#passOrder > .deal-item-con").children(".deal-item-tit").text("已通过订单")
+							.parent().children(".deal-item-intro").empty()
+							.parent().children(".index-ed-data").text(passOrder + "条")
+							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?status=1')").text("查进度");			
+					}else{
+						if (typeof(data.msg) == 'string') {
+							ui_alert(data.msg);
+						}
+					}
+				}
+			});
+		}
 
 		function goApply(){
 			if(role == 0){

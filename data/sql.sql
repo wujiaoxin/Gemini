@@ -1218,6 +1218,7 @@ CREATE TABLE `gemini_member` (
   `wechat` char(32) NOT NULL DEFAULT '' COMMENT '微信号',
   `openid` varchar(50) DEFAULT NULL COMMENT '微信第三方ID',
   `access_group_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '用户组id',
+  `invite_code` varchar(32) NOT NULL DEFAULT '0' COMMENT '车商邀请码',
   `addr` varchar(255) NOT NULL DEFAULT '' COMMENT '联系地址',
   PRIMARY KEY (`uid`),
   KEY `status` (`status`)
@@ -1523,6 +1524,48 @@ CREATE TABLE `gemini_order_files` (
 -- ----------------------------
 -- Records of gemini_order_files
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `gemini_dealer`
+-- ----------------------------
+DROP TABLE IF EXISTS `gemini_dealer`;
+CREATE TABLE `gemini_dealer` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id自增',
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '企业名称',
+  `invite_code` varchar(32) NOT NULL DEFAULT '' COMMENT '邀请码',
+  `property` varchar(255) NOT NULL DEFAULT '' COMMENT '属性',
+  `city` varchar(255) NOT NULL DEFAULT '' COMMENT '城市',
+  `addr` varchar(255) NOT NULL DEFAULT '' COMMENT '地址',
+  `credit_code` varchar(64) NOT NULL DEFAULT '' COMMENT '企业信用代码',
+  `rep` varchar(255) NOT NULL DEFAULT '' COMMENT '法人代表',
+  `contacts` varchar(255) NOT NULL DEFAULT '' COMMENT '业务联系人',
+  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号',
+  `duties` varchar(255) NOT NULL DEFAULT '' COMMENT '职务',
+  `mail` varchar(255) NOT NULL DEFAULT '' COMMENT '邮箱',
+  `banks` varchar(1024) NOT NULL DEFAULT '' COMMENT '目前合作金融机构',
+  `bank_name` varchar(255) NOT NULL DEFAULT '' COMMENT '开户银行',
+  `bank_branch` varchar(255) NOT NULL DEFAULT '' COMMENT '开户网点',
+  `bank_account_name` varchar(255) NOT NULL DEFAULT '' COMMENT '开户名',
+  `bank_account_id` varchar(64) NOT NULL DEFAULT '' COMMENT '开户账号',
+  `priv_bank_name` varchar(255) NOT NULL DEFAULT '' COMMENT '私户开户银行',
+  `priv_bank_code` varchar(64) NOT NULL DEFAULT '' COMMENT '私户开户网点',
+  `priv_bank_account_name` varchar(255) NOT NULL DEFAULT '' COMMENT '私户开户名',
+  `priv_bank_account_id` varchar(64) NOT NULL DEFAULT '' COMMENT '私户开户账号',
+  `forms` varchar(255) NOT NULL DEFAULT '' COMMENT '合作内容',
+  `sales` varchar(255) NOT NULL DEFAULT '' COMMENT '月销量',
+  `ratio` varchar(255) NOT NULL DEFAULT '' COMMENT '分期比例',
+  `dealer_lic_pic` int(11) COMMENT '营业执照照片',
+  `rep_idcard_pic` int(11) COMMENT '法人身份证',
+  `contacts_pic` int(11) COMMENT '联系人名片',
+  `info_pic` int(11) COMMENT '信息表照片',
+  `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='车商信息表';
+
+-- ----------------------------
+-- Records of gemini_dealer
+-- ----------------------------
+
 
 -- ----------------------------
 -- Table structure for `gemini_page`
