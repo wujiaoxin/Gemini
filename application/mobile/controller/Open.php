@@ -19,6 +19,30 @@ class Open extends Base {
 		return "ok";
 	}
 	
+	public function dealer() {//车商申请
+		$Dealer = model('Dealer');
+		if (IS_POST) {
+			$data = input('post.');
+			if ($data) {
+				$saveData['mobile'] = $data["mobile"];
+				$saveData['name'] = $data["name"];
+				$saveData['contacts'] = $data["contacts"];
+				$saveData['invite_code'] = $Dealer->buildInviteCode();
+				$saveData['status'] = 0;
+				$result = $Dealer->save($saveData);
+				if ($result) {
+					return $this->success("提交成功", url('/mobile/index'));
+				} else {
+					return $this->error($Dealer->getError());
+				}
+			} else {
+				return $this->error($Dealer->getError());
+			}
+		} else {
+			return $this->fetch();
+		}
+	}
+	
 	public function protocol() {		
 		return $this->fetch();
 	}

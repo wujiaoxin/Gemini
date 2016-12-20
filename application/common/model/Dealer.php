@@ -48,7 +48,8 @@ class Dealer extends \app\common\model\Base {
 		array('name'=>'dealer_lic_pic' ,'title'=>'营业执照照片', 'type'=>'image', 'help'=>''),
 		array('name'=>'rep_idcard_pic' ,'title'=>'法人身份证', 'type'=>'image', 'help'=>''),
 		array('name'=>'contacts_pic' ,'title'=>'联系人名片', 'type'=>'image', 'help'=>'加盖公章'),
-		array('name'=>'info_pic' ,'title'=>'信息表照片', 'type'=>'image', 'help'=>''),		
+		array('name'=>'info_pic' ,'title'=>'信息表照片', 'type'=>'image', 'help'=>''),
+		array('name'=>'status' ,'title'=>'状态', 'type'=>'select','option'=>array('1'=>'审核通过','0'=>'待审核','2'=>'拒绝',), 'help'=>''),		
 		array('name'=>'descr' ,'title'=>'备注信息', 'type'=>'textarea', 'help'=>'')
 	);
 
@@ -59,8 +60,10 @@ class Dealer extends \app\common\model\Base {
 		'info_pic'  => 'integer'
 	);
 	
-	public function buildInviteCode() { 
-		$randStr = str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ123456789');
+	protected $auto = array('update_time');
+	
+	public function buildInviteCode() {
+		$randStr = str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ23456789');
 		$rand = substr($randStr,0,6);
 		$Dealer = db('Dealer');
 		$result = $Dealer->where('invite_code',$rand)->find();

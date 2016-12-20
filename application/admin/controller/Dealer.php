@@ -146,8 +146,8 @@ class Dealer extends Admin {
 			return $this->error('非法操作！');
 		}
 		$link = db('Dealer');
-
 		$map    = array('id' => array('IN', $id));
+		$map['status'] = 2;
 		$result = $link->where($map)->delete();
 		if ($result) {
 			return $this->success("删除成功！");

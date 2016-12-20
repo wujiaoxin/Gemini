@@ -1558,6 +1558,9 @@ CREATE TABLE `gemini_dealer` (
   `rep_idcard_pic` int(11) COMMENT '法人身份证',
   `contacts_pic` int(11) COMMENT '联系人名片',
   `info_pic` int(11) COMMENT '信息表照片',
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+  `create_time` int(11) DEFAULT NULL,
+  `update_time` int(11) DEFAULT NULL,
   `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='车商信息表';
