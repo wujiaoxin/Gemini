@@ -382,6 +382,16 @@ class Order extends Base {
 		}
 	}
 	
+	
+	//车抵贷
+	public function carloan() {
+		if (IS_POST) {
+
+		} else {
+			return $this->fetch();
+		}
+	}
+	
 	protected function notifiedUserbySMS($uid, $msg){
 		
 		$user = db('Member')->find($uid);

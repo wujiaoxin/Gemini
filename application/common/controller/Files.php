@@ -10,22 +10,21 @@
 namespace app\common\controller;
 
 class Files {
+	
 	/**
 	 * 上传控制器
 	 */
 	public function upload() {
-		//$upload_type = input('get.filename', 'images', 'trim');
-		//$config      = $this->$upload_type();
-		// 获取表单上传文件 例如上传了001.jpg
+
 		$config = config('order_files_upload');
 		$file = request()->file('file');
 		$info = $file->validate(['ext'=>'jpg,jpeg,png,gif'])->move($config['rootPath'], true, false);
-
+		$infoExtend['order_id'] = input('get.order_id', '0', 'trim');
+		$infoExtend['form_key'] = input('get.form_key', '', 'trim');
+		$infoExtend['form_label'] = input('get.form_label', '', 'trim');
 		if ($info) {
-			//if($info->getExtension() == 'php'){				
-			//}
 			$return['status'] = 1;
-			$return['info']   = $this->save($config, $info);
+			$return['info']   = $this->save($config, $info, $infoExtend);
 		} else {
 			$return['status'] = 0;
 			$return['info']   = $file->getError();
@@ -55,15 +54,17 @@ class Files {
 	 * @var view
 	 * @access public
 	 */
-	public function save($config, $file) {
+	public function save($config, $file, $infoExtend) {
 		$file           = $this->parseFile($file);
 		$file['status'] = 1;
 		$file['uid'] = session('user_auth.uid');
 		$file['storage_mode'] = 1;
 		$file['descr']  = '';
+		$file['order_id']    = $infoExtend['order_id']; //订单ID
+		$file['form_key']    = $infoExtend['form_key']; //表单中文件字段
+		$file['form_label']  = $infoExtend['form_label']; //表单中文件标签
 		$dbname         = 'OrderFiles';
 		$id             = db($dbname)->insertGetId($file);
-
 		if ($id) {
 			$data = db($dbname)->where(array('id' => $id))->find();
 			return $data;
@@ -113,10 +114,6 @@ class Files {
 		$data['savepath']    = $info->getPath(); //不带文件名的文件路径
 		$data['url']         = $data['path']         = str_replace("\\", '/', substr($info->getPathname(), 1)); //全路径
 		$data['size']        = $info->getSize(); //文件大小，单位字节
-		$data['is_file']     = $info->isFile(); //是否是文件
-		$data['is_execut']   = $info->isExecutable(); //是否可执行
-		$data['is_readable'] = $info->isReadable(); //是否可读
-		$data['is_writable'] = $info->isWritable(); //是否可写
 		$data['md5']         = md5_file($info->getPathname());
 		$data['sha1']        = sha1_file($info->getPathname());
 		return $data;

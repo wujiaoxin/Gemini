@@ -62,7 +62,7 @@ class Dealer extends Admin {
 			);
 			$this->assign($data);
 			$this->setMeta("录入新车商");
-			return $this->fetch('public/edit');
+			return $this->fetch('edit');
 		}
 	}
 
@@ -92,7 +92,7 @@ class Dealer extends Admin {
 			);
 			$this->assign($data);
 			$this->setMeta("编辑车商");
-			return $this->fetch('public/edit');
+			return $this->fetch();
 		}
 	}
 

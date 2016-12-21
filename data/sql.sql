@@ -1321,7 +1321,7 @@ INSERT INTO `gemini_menu` VALUES ('4', '会员', 'admin', 'user', '0', '33', 'ad
 INSERT INTO `gemini_menu` VALUES ('5', '运营', 'admin', 'th', '0', '44', 'admin/link/index', '0', '', '', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('6', '扩展', 'admin', 'tags', '0', '55', 'admin/addons/index', '0', '', '', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('21', '友链管理', 'admin', 'link', '5', '0', 'admin/link/index', '0', '', '运营管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('7', '更新缓存', 'admin', 'refresh', '1', '0', 'admin/index/clear', '0', '', '后台首页', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('7', '更新缓存', 'admin', 'refresh', '1', '0', 'admin/index/clear', '0', '', '', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('8', '配置管理', 'admin', 'cog', '2', '0', 'admin/config/group', '0', '', '系统配置', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('9', '菜单管理', 'admin', 'book', '2', '0', 'admin/menu/index', '0', '', '系统配置', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('10', '导航管理', 'admin', 'map-marker', '2', '0', 'admin/channel/index', '0', '', '系统配置', '0', '0');
@@ -1341,6 +1341,7 @@ INSERT INTO `gemini_menu` VALUES ('24', '钩子列表', 'admin', 'code', '6', '0
 INSERT INTO `gemini_menu` VALUES ('25', '自定义表单', 'admin', '', '5', '0', 'admin/form/index', '0', '', '运营管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('26', '伪静态规则', 'admin', '', '2', '0', 'admin/seo/rewrite', '0', '', '优化设置', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('28', '订单管理', 'admin', '', '1', '1', 'admin/order/index', '0', '', '', '0', '0');
+INSERT INTO `gemini_menu` VALUES (29, '车商管理', 'admin', 'cab', 1, 0, 'admin/dealer/index', 0, '', '', 0, 0);
 
 -- ----------------------------
 -- Table structure for `gemini_model`
@@ -1516,6 +1517,9 @@ CREATE TABLE `gemini_order_files` (
   `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '文件上传用户ID',
+  `order_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
+  `form_key` char(128) NOT NULL DEFAULT '' COMMENT '表单中文件字段',
+  `form_label` char(128) NOT NULL DEFAULT '' COMMENT '表单中文件标签',
   `storage_mode` tinyint(2) NOT NULL DEFAULT '0' COMMENT '文件保存方式: 1.local 2.OSS',
   `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`id`)
