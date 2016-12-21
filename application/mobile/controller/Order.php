@@ -385,9 +385,55 @@ class Order extends Base {
 	
 	//车抵贷
 	public function carloan() {
+		$uid  = session('user_auth.uid');
+		$role = session('user_auth.role');
+		$orderModel = model('Order');
+		if($uid > 0){
+			$map['uid'] = $uid;
+			$map['status'] = -2;
+		}else{
+			return $this->error('请重新登录', url('User/login'));
+		}
 		if (IS_POST) {
-
+			$data = input('post.');
+			if ($data) {
+				$data['status'] = 0;
+				$result = $orderModel->save($data, array('id' => $data['id'], 'uid' => $uid));
+				if ($result) {
+					return $this->success("提交成功！", url('Order/index'));
+				} else {
+					return $this->error("提交失败！");
+				}
+			} else {
+				return $this->error($orderModel->getError());
+			}
 		} else {
+			$orderData = db('Order')->where($map)->find();
+			if($orderData == null){
+				$orderData['uid'] = $uid;
+				$orderData['type'] = 3;
+				$orderData['status'] = -2;
+				$orderData['sn'] = $orderModel->build_order_sn();
+				$orderData['id'] = db('Order')->insertGetId($orderData);
+			}else{
+				$map['uid'] = $uid;
+				$map['order_id'] = $orderData['id'];
+				$map['status'] = 1;//有效文件
+				$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($map)->select();
+				$filesLength=count($files);
+				if($filesLength > 0 && $filesLength < 100){//单例不允许超过100张
+					foreach($files as $key=>$value) {
+						if (!empty($value['form_key'])) {
+							$orderData[$value['form_key']] = $value;
+						}
+					}
+				}
+			}			
+			$data = array(
+				'orderDataStr' => json_encode($orderData),
+				'role'         => $role,
+			);
+			$this->assign($data);
 			return $this->fetch();
 		}
 	}

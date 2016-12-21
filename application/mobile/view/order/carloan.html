@@ -13,9 +13,27 @@
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">	
 	<link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
 	<script type="text/javascript">
-		var BASE_URL = ""; //根目录地址
-		var order_id = {$info['id']|default=0};
+		var BASE_URL = ""; 
+		var orderDataStr = '{$orderDataStr|default=""}';
+		//var orderData = {};
+		var orderData = JSON.parse(orderDataStr);
+		//console.log(orderData);
+		var formPicList = [
+			{
+				form_key:"idcard_face",
+				form_label:"身份证正面照片",
+				tryOCR:true
+			},
+			{
+				form_key:"idcard_back",
+				form_label:"身份证反面照片"
+			},
+			{
+				form_key:"driving_lic",
+				form_label:"行驶证"
+			}];
 
+		
     </script>
 	<style type="text/css">
         .main-box-title{
@@ -99,7 +117,29 @@
                         <h4 class="color-black">请如实提交相关资料证明</h4>
                     </div>
                     <div class="main-box-body clearfix">
- 
+                         <form method="post" class="form form-horizontal">
+                            <input type="hidden" name="id" value="0"/>
+                            <input type="hidden" name="bank_uid" value="3"/>
+
+                        </form>
+						<!--
+						<div class="content-block">
+							<div class="col-100">
+								<div class="row">
+									<label class="col-70">自动识别,请确认姓名、身份证号无误</label>
+									<label class="col-30 color-blue" id="inputModify">点击修改</label>
+								</div>
+								<label class="control-label">贷款人姓名</label>
+								<input type="text" name="idcard_face_pic_name" id="field_idcard_face_pic_name" value="" disabled="disabled">
+								<label class="control-label">贷款人身份证号</label>
+								<input type="text" name="idcard_face_pic_idNumber" id="field_idcard_face_pic_idNumber" value="" disabled="disabled">
+							</div>
+						</div>-->
+						<div id="picList">
+						</div>
+						<div class="content-block">
+                                <a class="button button-big button-raised butcom-css dpblue" id="submit">提交</a>
+                        </div>
                     </div>
                 </div>
 				</div>
@@ -112,15 +152,94 @@
         </div>
     </div>
     <div id="loading"></div>
-	<script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+	<script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
 	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
-	<script type="text/javascript" src="/Public/wap/js/webuploader.custom.js"></script>
+	<script type="text/javascript" src="/public/wap/js/webuploader.custom.js"></script>
 	<script type="text/javascript">
-
-		var uploadsize =  20;	
-        function btnSentUploader(picName){
+	function fillZero(i){
+		if (i<10){
+			i="0" + i;
+		}
+		return i
+	}
+	function formatDate(timeStr){
+		var timeStr = timeStr*1000;
+		var now =new Date(timeStr);
+      	var year=now.getFullYear();     
+	    var month=now.getMonth()+1;     
+	    var date=now.getDate();     
+	    var hour=fillZero(now.getHours());     
+	    var minute=fillZero(now.getMinutes());     
+	    var second=fillZero(now.getSeconds());    
+	    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+	};
+	var uploaderTpl = '\
+							<div class="form-group">\
+                                <div class="col-100 form-group-content">\
+                                    <div class="picker-box">\
+                                        <label class="control-label">#title#</label>\
+										<div id="fileList_#name#_sample" class="imgSample" style="display:#display#;">\
+                                            <img src="/public/wap/images/sample/#name#.png">\
+                                        </div>\
+                                        <input type="hidden" name="#name#" id="field_#name#" value="#value#">\
+										<div id="fileList_#name#" class="upload-file-list-info">\
+										#existImgTpl#\
+										</div>\
+										<div id="picker_#name#" class="picker_button">\
+                                            <span>上传照片</span>\
+                                        </div>\
+									</div>\
+                                </div> \
+                            </div>\
+		';
+		var existImgTpl = '\
+											<li class="affix-list-item" id="WU_FILE_10#index#">\
+                                                <div class="upload-file-info">\
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10#index#" data-id="#value#" data-fileurl="#path#"><i class="close"></i></span>\
+                                                    <span class="fname"></span>\
+                                                    <span class="fsize">上传时间:#time#</span>\
+                                                    <div class="clearfix"></div>\
+                                                </div>\
+                                                <div class="filebox image">\
+                                                    <img src="#path#" class="img-responsive">\
+                                                </div>\
+                                            </li>\
+							';
+							
+		var uploaderHtmlStr = '';
+		for(var index = 0; index < formPicList.length ;index++){
+			var formPic = formPicList[index];
+			var tempHtmlStr = uploaderTpl;
+			tempHtmlStr = tempHtmlStr.replace(/#title#/g, formPic.form_label);
+			
+			if(typeof(orderData[formPic.form_key]) == 'object'){
+				tempHtmlStr = tempHtmlStr.replace(/#existImgTpl#/g, existImgTpl);
+				tempHtmlStr = tempHtmlStr.replace(/#path#/g, orderData[formPic.form_key].path);
+				tempHtmlStr = tempHtmlStr.replace(/#time#/g, formatDate(orderData[formPic.form_key].create_time));
+				tempHtmlStr = tempHtmlStr.replace(/#display#/g, "none");
+				tempHtmlStr = tempHtmlStr.replace(/#value#/g, orderData[formPic.form_key].id);
+			}else{
+				tempHtmlStr = tempHtmlStr.replace(/#existImgTpl#/g, '');
+				tempHtmlStr = tempHtmlStr.replace(/#display#/g, "block");
+				tempHtmlStr = tempHtmlStr.replace(/#value#/g, '');
+			}
+			tempHtmlStr = tempHtmlStr.replace(/#index#/g, index);
+			tempHtmlStr = tempHtmlStr.replace(/#name#/g, formPic.form_key);
+			uploaderHtmlStr += tempHtmlStr;
+		}
+		//console.log(uploaderHtmlStr);
+		$("#picList").html(uploaderHtmlStr);
+							
+		var uploadsize =  20;
+        function btnSentUploader(formPicList){
+			var orderId = orderData.id;
+			if(orderId == null){
+				return ;//todo:alert
+			}
+			var picName = formPicList.form_key;
+			var form_label = formPicList.form_label;
             $("#picker_" + picName).SentUploader({
                 fileNumLimit:1,
                 uploadEvents: {
@@ -144,37 +263,59 @@
                 }
             },
             {
-                fileType: 'service',
-                filename : 'images',
+                order_id : orderId,
+				form_key : picName,
+				form_label : form_label,
             });
         };	
 		$(function(){
-			for(var index = 1; index <= 10 ;index++){
-				 btnSentUploader('supplement_pic_'+index);
+			for(var index = 0; index < formPicList.length ;index++){
+				btnSentUploader(formPicList[index]);
 			}
 
 			$("#submit").click(function(){
-				var postData = {};
-				postData["id"] = order_id;
-				for(var index = 1; index <= 10 ;index++){
+				var postData = {};				
+				if(orderData.id == null){
+					return ;//todo:alert
+				}
+				var bank_uid = $('#bank_uid').val();//todo
+				var idcard_name = $('#field_idcard_face_pic_name').val();
+                var idcard_num = $('#field_idcard_face_pic_idNumber').val();
+				var postData = {
+						'id':orderData.id,
+                        'type':3,
+                        'name':idcard_name,
+						'bank_uid': bank_uid,
+                        'idcard_num':idcard_num,
+                        'loan_limit':'',
+                        'idcard_face_pic':0,
+                        'idcard_back_pic':0,
+                        'driving_lic_pic':0,
+                        'status':0,
+                        'addr':'',
+                        'descr':'',
+                        'mobile':''
+                    };
+				
+				/*for(var index = 1; index <= 10 ;index++){
 					if($('#field_supplement_pic_' + index).val()){
 						postData['supplement_pic_'+index] = $('#field_supplement_pic_' + index).val();
 					}
-				}
+				}*/
                  ajax_jquery({
-                    type: 'post', // 提交方式 post
-                    url: '/mobile/order/supplement', // 需要提交的 url
+                    type: 'post',
+                    url: '/mobile/order/carloan',
                     datatype:'json',
                     data: postData,
-                    success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
+                    success: function(data) {
                         if(data.code == 1){
-                            ui_alert("补充资料提交成功!", function () {
+                            ui_alert("提交成功!", function () {
                                  window.location.href = '/mobile' ;            
                              });
                         }else{
                             if (typeof(data.msg) == 'string') {
                                 ui_alert(data.msg);
-                            }  
+                            }
                         }
                     }
                 }); 
