@@ -419,15 +419,15 @@ class Order extends Base {
 				$map['uid'] = $uid;
 				$map['order_id'] = $orderData['id'];
 				$map['status'] = 1;//有效文件
-				$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($map)->select();
-				$filesLength=count($files);
-				if($filesLength > 0 && $filesLength < 100){//单例不允许超过100张
+				$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($map)->limit(100)->select();
+				//$filesLength=count($files);
+				//if($filesLength > 0 && $filesLength < 100){//单例不允许超过100张
 					foreach($files as $key=>$value) {
 						if (!empty($value['form_key'])) {
 							$orderData[$value['form_key']] = $value;
 						}
 					}
-				}
+				//}
 			}			
 			$data = array(
 				'orderDataStr' => json_encode($orderData),

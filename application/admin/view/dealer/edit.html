@@ -18,6 +18,17 @@
 <script src="__PUBLIC__/plugs/datepicker/js/foundation-datepicker.js"></script>
 <script src="__PUBLIC__/plugs/datepicker/js/foundation-datepicker.zh-CN.js"></script>
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/plugs/board/board.min.css">
+<style type="text/css">
+	table{width: 80%;border: 1px solid black;margin-bottom: 20px;margin-left: 20px}
+	caption{text-align: center;margin-bottom: 10px;}
+	td{width:25%;border: 1px solid gray;padding:1px 6px;}
+	td[colspan="4"]{text-align: center;background-color: gray}
+	input[type="text"]{width:100%;border: none;}
+	input[name="property"],input[name="banks"],input[name="forms"]{margin-left:10px;border:none;border-bottom:1px solid black}
+	input[type="text"][name="banks"]{width: 15%;}
+	input:focus{outline:none;}
+	
+</style>
 <!-- datepicker end -->
 {/block}
 {block name="body"}
@@ -29,51 +40,165 @@
 	</header>
 	<div class="main-box-body clearfix">
 		<form method="post" class="form form-horizontal">
-			{if !isset($info)}
-			{assign name="info" value="" /}
-			{/if}
-			{if !empty($fieldGroup)}
-			<div class="tabs-wrapper">
-				<ul class="nav nav-tabs">
-					{volist name="fieldGroup" id="vGroup"}
-					<li {if $i eq 1}class="active"{/if}><a href="#tab{$key}" data-toggle="tab">{$key}</a></li>
-					{/volist}
-				</ul>
-				<div class="tab-content">
-					{volist name="fieldGroup" id="vGroup"}
-					<div class="tab-pane fade {if condition="$i eq 1"}in active{/if}" id="tab{$key}">
-						{volist name="vGroup" id="field"}
-						{if $field['type'] eq 'hidden'}
-						<input type="hidden" name="{$field['name']}" value="{$info[$field['name']]|default=''}"/>
-						{else/}
-						<div class="form-group">
-							<label class="col-lg-2 control-label">{$field['title']|htmlspecialchars}</label>
-							<div class="col-lg-10 col-sm-10">
-								{:widget('common/Form/show',array($field,$info))}
-								<div class="help-block">{$field['help']|default=''}</div>
-							</div>
-						</div>
-						{/if}
-						{/volist}
-					</div>
-					{/volist}
-				</div>
-			</div>
-			{else/}
-			{volist name="keyList" id="field"}
-			{if $field['type'] eq 'hidden'}
-			<input type="hidden" name="{$field['name']}" value="{$info[$field['name']]|default=''}"/>
-			{else/}
 			<div class="form-group">
-				<label class="col-lg-2 control-label">{$field['title']|htmlspecialchars}</label>
+				<table>
+					<caption><h3>合作车商信息表</h3></caption>
+					<tr>
+						<td colspan="4">企业信息</td>
+					</tr>
+					<tr>
+						<td>企业名称</td>
+						<td colspan="3"><input type="text" id="name" name="name" value=""></td>
+					</tr>
+					<tr>
+						<td>企业信用代码</td>
+						<td colspan="3"><input type="text" id="credit_code" name="credit_code" value=""></td>
+					</tr>
+					<tr>
+						<td>属性</td>
+						<td colspan="3">
+							<input type="checkbox" name="property" value="property1">4S店
+							<input tyep="text" name="property" value="">品牌
+							<input type="checkbox" name="property" value="property2">综合店
+							<input type="checkbox" name="property" value="property3">二手车商
+							<input type="checkbox" name="property" value="property4">其他
+							<input tyep="text" name="property" value="">
+						</td>
+					</tr>
+					<tr>
+						<td>城市</td>
+						<td><input type="text" id="city" name="city"></td>
+						<td>法人代表</td>
+						<td><input type="text" id="rep" name="rep" value=""></td>
+					</tr>
+					<tr>
+						<td>业务联系人</td>
+						<td><input type="text" id="contacts" name="contacts" value=""></td>
+						<td>职务</td>
+						<td><input type="text" id="duties" name="duties" value=""></td>
+					</tr>
+					<tr>
+						<td>手机号</td>
+						<td><input type="text" id="mobile" name="mobile" value=""></td>
+						<td>邮箱</td>
+						<td><input type="text" id="mail" name="mail" value=""></td>
+					</tr>
+					<tr>
+						<td>地址</td>
+						<td colspan="3"><input type="text" id="addr" name="addr" value=""></td>
+					</tr>
+					<tr>
+						<td colspan="4">账户信息</td>
+					</tr>
+					<tr>
+						<td>开户银行</td>
+						<td><input type="text" id="bank_name" name="bank_name" value=""></td>
+						<td>开户网点</td>
+						<td><input type="text" id="bank_branch" name="bank_branch" value=""></td>
+					</tr>
+					<tr>
+						<td>开户名</td>
+						<td><input type="text" id="bank_account_name" name="bank_account_name" value=""></td>
+						<td>开户账号</td>
+						<td><input type="text" id="bank_account_id" name="bank_account_id" value=""></td>
+					</tr>
+					<tr>
+						<td>开户银行(私户)</td>
+						<td><input type="text" id="priv_bank_name" name="priv_bank_name" value=""></td>
+						<td>开户网点(私户)</td>
+						<td><input type="text" id="priv_bank_branch" name="priv_bank_branch" value=""></td>
+					</tr>
+					<tr>
+						<td>开户名(私户)</td>
+						<td><input type="text" id="priv_bank_account_name" name="priv_bank_account_name" value=""></td>
+						<td>开户账号(私户)</td>
+						<td><input type="text" id="priv_bank_account_id" name="priv_bank_account_id" value=""></td>
+					</tr>
+					<tr>
+						<td colspan="4">业务信息</td>
+					</tr>
+					<tr>
+						<td>目前合作金融机构</td>
+						<td colspan="3">
+							<input type="checkbox" name="banks" value="1">
+							<input tyep="text" name="banks" value="">汽车金融公司	
+							<input type="checkbox" name="banks" value="2">招商银行
+							<input type="checkbox" name="banks" value="3">中国银行
+							<input type="checkbox" name="banks" value="4">建设银行
+							<input type="checkbox" name="banks" value="5">工商银行
+							<input type="checkbox" name="banks" value="6">平安银行
+							<input type="checkbox" name="banks" value="7">
+							<input type="text" name="banks"  value="">银行
+							<input type="checkbox" name="banks" value="8">其他
+							<input type="text" name="banks" value="">
+						</td>
+					</tr>
+					<tr>
+						<td>合作形式</td>
+						<td colspan="3">
+							<input type="checkbox" name="forms" value="1">新车分期
+							<input type="checkbox" name="forms" value="2">二手车分期
+							<input type="checkbox" name="forms" value="3">融资租赁
+							<input type="checkbox" name="forms" value="4">库存融资
+							<input type="checkbox" name="forms" value="5">供应链金融
+						</td>
+					</tr>
+					<tr>
+						<td>月均销量</td>
+						<td><input type="text" name="sales" id="sales" value=""></td>
+						<td>分期比例</td>
+						<td><input type="text" name="ratio" id="ratio" value=""></td>
+					</tr>
+					<tr>
+						<td>备注信息</td>
+						<td colspan="3"><input type="text" name="descr" id="descr" value=""></td>
+					</tr>
+				</table>
+			</div>
+			<div class="form-group">
+				<label class="col-lg-2 control-label">营业执照照片</label>
 				<div class="col-lg-10 col-sm-10">
-					{:widget('common/Form/show',array($field,$info))}
-					<div class="help-block">{$field['help']|default=''}</div>
+					<div class="picker-box">
+						<div id="picker_dealer_lic_pic" class="picker_button">上传图片</div>
+						<input type="hidden" name="dealer_lic_pic" id="field_dealer_lic_pic" value="">
+						<div id="fileList_dealer_lic_pic" class="upload-file-list-info" style="width:280px;"></div>
+					</div>
+					<div class="help-block"></div>
 				</div>
 			</div>
-			{/if}
-			{/volist}
-			{/if}
+			<div class="form-group">
+				<label class="col-lg-2 control-label">法人身份证</label>
+				<div class="col-lg-10 col-sm-10">
+					<div class="picker-box">
+						<div id="picker_rep_idcard_pic" class="picker_button">上传图片</div>
+						<input type="hidden" name="rep_idcard_pic" id="field_rep_idcard_pic" value="">
+						<div id="fileList_rep_idcard_pic" class="upload-file-list-info" style="width:280px;"></div>
+					</div>
+					<div class="help-block"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-lg-2 control-label">联系人名片</label>
+				<div class="col-lg-10 col-sm-10">
+					<div class="picker-box">
+						<div id="picker_contacts_pic" class="picker_button">上传图片</div>
+						<input type="hidden" name="contacts_pic" id="field_contacts_pic" value="">
+						<div id="fileList_contacts_pic" class="upload-file-list-info" style="width:280px;"></div>
+					</div>
+					<div class="help-block">加盖公章</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-lg-2 control-label">信息表照片</label>
+				<div class="col-lg-10 col-sm-10">
+					<div class="picker-box">
+						<div id="picker_info_pic" class="picker_button">上传图片</div>
+						<input type="hidden" name="info_pic" id="field_info_pic" value="">
+						<div id="fileList_info_pic" class="upload-file-list-info" style="width:280px;"></div>
+					</div>
+					<div class="help-block">加盖公章</div>
+				</div>
+			</div>
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10">
 					<input type="hidden" name="id" value="{$info['id']|default=''}">            
@@ -84,6 +209,42 @@
 		</form>
 	</div>
 </div>
+<script type="text/javascript">
+	var uploadsize =  20;	
+	function btnSentUploader(picName){
+    $("#picker_" + picName).SentUploader({
+        fileNumLimit:1,
+        uploadEvents: {
+            uploadComplete:function(file){}
+        },
+        listName : 'fileList_' + picName,
+        hiddenName: 'field_' + picName,
+        hiddenValType:1,
+        fileSingleSizeLimit:uploadsize*1024*1024,
+        closeX:true,
+        compress:{
+            width: 1024,
+            quality: 90,
+            allowMagnify: false,
+            crop: false,
+            preserveHeaders: true,
+            noCompressIfLarger: false,
+            compressSize: 0
+        }
+    },
+    {
+        fileType: 'service',
+        filename : 'images',
+    });
+};	
+$(function(){
+	btnSentUploader("dealer_lic_pic");
+	btnSentUploader("rep_idcard_pic");
+	btnSentUploader("contacts_pic");
+	btnSentUploader("info_pic");
+});
+</script>
+
 {/block}
 {block name="script"}
 <script type="text/javascript" src="__PUBLIC__/plugs/webuploader/webuploader.min.js"></script>
