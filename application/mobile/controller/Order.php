@@ -130,6 +130,7 @@ class Order extends Base {
 	public function view() {
 		$link = model('Order');
 		$id   = input('id', '', 'trim,intval');
+		$type   = input('type', '', 'trim,intval');
 		$map = '';
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
@@ -138,23 +139,23 @@ class Order extends Base {
 		}else{
 			return $this->error('请重新登录');
 		}
-
-		if (IS_POST) {
-			$data = input('post.');
-			if ($data) {
-				$result = $link->save($data, array('id' => $data['id']));
-				if ($result) {
-					return $this->success("修改成功！", url('Order/index'));
-				} else {
-					return $this->error("修改失败！");
-				}
-			} else {
-				return $this->error($link->getError());
-			}
-		} else {
-			$info = db('Order')->where($map)->find();
+		$info = db('Order')->where($map)->find();
+		if($info["type"] == 3){//车抵贷
+			$filter['uid'] = $uid;
+			$filter['order_id'] = $info['id'];
+			$filter['status'] = 1;//有效文件
+			$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->limit(100)->select();
+			$data = array(
+				'keyList' => $link->keyList,
+				'info'    => $info,
+				'files'   => $files,
+				'role'    => $role,
+			);
+			$this->assign($data);
+			return $this->fetch('viewCarloan');
+		}else{//垫资订单
 			$supplementModle = model('OrderSupplement');
-			$supplement = db('OrderSupplement')->where($map)->find();
+			$supplement = db('OrderSupplement')->where($map)->find();		
 			$data = array(
 				'keyList' => $link->keyList,
 				'info'    => $info,
@@ -164,11 +165,10 @@ class Order extends Base {
 			);
 			$this->assign($data);
 			if($role == 2){//银行审核
-				return $this->fetch('examine');				
+					return $this->fetch('examine');
 			}else{
 				return $this->fetch();
 			}
-			
 		}
 	}
 	
