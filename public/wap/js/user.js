@@ -106,8 +106,8 @@ function doRegisterPost() {
     var phone = $.trim($('#username').val());
     var smsCode = $.trim($("#smsCode").val());
     var password = $("#password").val();
-    var icode = $.trim($('#invite').val());
-    var icodeSkip = $('#invite').attr('data-skip');
+    var icode = $.trim($('#invite_code').val());
+    var icodeSkip = $('#invite_code').attr('data-skip');
     var download  = $('#download').attr('data-skip')
 
     if (phone == "") {
@@ -224,25 +224,25 @@ function doResetPasswordPost() {
 }
 
 function iCodeEmptyCheck(){
-    ui_ask('您还未输入车商代码，<br/>输入车商代码，<br/>无需审核即可申请垫资。', '直接注册', '去输入',function () {
-        $('#invite').val("");
-        $('#invite').attr('data-skip', '1');
+    ui_ask('您还未输入车商代码，<br/>直接注册请联系客服审核开通<br/>', '直接注册', '去输入',function () {
+        $('#invite_code').val("");
+        $('#invite_code').attr('data-skip', '1');
         doRegisterPost();
         return false;
     },function () {
-        $('#invite').focus();
+        $('#invite_code').focus();
         return false;
     });
 }
 
 function iCodeErrorCheck(){
     ui_ask('您输入的邀请码无效，<br/>请重新输入。', '直接注册', '重新输入',function () {
-        $('#invite').val("");
-        $('#invite').attr('data-skip', '1');
+        $('#invite_code').val("");
+        $('#invite_code').attr('data-skip', '1');
         doRegisterPost();
         return false;
     },function () {
-        $('#invite').focus();
+        $('#invite_code').focus();
         return false;
     });
 }

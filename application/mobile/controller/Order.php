@@ -391,6 +391,7 @@ class Order extends Base {
 		if($uid > 0){
 			$map['uid'] = $uid;
 			$map['status'] = -2;
+			$map['type'] = 3;
 		}else{
 			return $this->error('请重新登录', url('User/login'));
 		}
@@ -416,10 +417,10 @@ class Order extends Base {
 				$orderData['sn'] = $orderModel->build_order_sn();
 				$orderData['id'] = db('Order')->insertGetId($orderData);
 			}else{
-				$map['uid'] = $uid;
-				$map['order_id'] = $orderData['id'];
-				$map['status'] = 1;//有效文件
-				$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($map)->limit(100)->select();
+				$filter['uid'] = $uid;
+				$filter['order_id'] = $orderData['id'];
+				$filter['status'] = 1;//有效文件
+				$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->limit(100)->select();
 				//$filesLength=count($files);
 				//if($filesLength > 0 && $filesLength < 100){//单例不允许超过100张
 					foreach($files as $key=>$value) {

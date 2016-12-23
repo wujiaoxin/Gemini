@@ -8,9 +8,9 @@
     <meta http-equiv="pragma" content="no-cache">
     <title>VP贷-享全款的汽车分期</title>
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
 </head>
 <body>
     
@@ -85,17 +85,17 @@
                                         </div>
                                     </div>
                                 </li>
-								<input type="hidden" id="invite" name="invite" value="IPV29B" maxlength="6" disabled='' placeholder="输入车商代码" data-skip="0">
-                               <!-- <li>
+								<!-- <input type="hidden" id="invite_code" name="invite_code" value="IPV29B" maxlength="6" placeholder="输入车商代码" data-skip="0">
+                               --><li>
                                     <div class="item-content">
                                         <div class="item-inner register-inner">
                                             <div class="item-title label">车商邀请码</div>
                                             <div class="item-input">
-                                                <input type="text" id="invite" name="invite" value="IPV29B" maxlength="6" disabled='' placeholder="输入车商代码" data-skip="0">
+                                                <input type="text" id="invite_code" name="invite_code" value="" maxlength="6"  placeholder="输入车商代码" data-skip="0">
                                             </div>
                                         </div>
                                     </div>
-                                </li>-->
+                                </li>
                             </ul>
                             <div class="content-block fz6">
                                 点击注册表示同意<br/>
@@ -120,11 +120,22 @@
     </div>
 
     <div id="loading"></div>
-    <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>    
-    <script type="text/javascript" src="/Public/wap/js/md5.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/user.js"></script>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>    
+    <script type="text/javascript" src="/public/wap/js/md5.js"></script>
+    <script type="text/javascript" src="/public/wap/js/user.js"></script>
+	<script>
+	$(function(){
+		var invite_code = getUrlParam('invite_code');
+		if(invite_code != null){
+			$("#invite_code").val(invite_code).attr("disabled","true");
+		}
+	});
+	
+	</script>
 
+	
+	
 </body>
 </html>

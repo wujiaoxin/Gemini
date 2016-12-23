@@ -33,16 +33,22 @@
 					<tr>
 						<td><input class="ids row-selected" type="checkbox" name="id[]" value="{$item['id']}"></td>
 						<td>{$item['id']}</td>
-						<td>{$item['invite_code']}</td>
+						<td>
+							{if $item['status'] == 1}
+								<a title="点击查看二维码" href="https://pan.baidu.com/share/qrcode?w=512&h=512&url={:url('/mobile/user/register')}?invite_code={$item['invite_code']}" target="_blank">{$item['invite_code']}</a>
+							{else}
+								-
+							{/if}
+						</td>
 						<td>{$item['name']}</td>
 						<td>{$item['contacts']}</td>
 						<td>{$item['mobile']}</td>
 						<td>
 							{if $item['status'] == 0}
-							<span class="label label-primary">待审核</span>
+							<span class="label label-primary">待补充</span>
 							{/if}
 							{if $item['status'] == 1}
-							<span class="label label-success">已审核</span>
+							<span class="label label-success">已通过</span>
 							{/if}
 							{if $item['status'] == 2}
 							<span class="label label-danger">已拒绝</span>
@@ -50,11 +56,10 @@
 						</td>
 						<td>
 							<a href="{:url('view?id='.$item['id'])}">查看</a>
-							<a href="{:url('edit?id='.$item['id'])}">编辑</a>
+							<a href="{:url('edit?id='.$item['id'])}">编辑</a>							
 							{if $item['status'] == 2}
 							<a href="{:url('delete?id='.$item['id'])}" class="confirm ajax-get">删除</a>
-							{/if}
-							
+							{/if}							
 						</td>
 					</tr>
 					{/volist}

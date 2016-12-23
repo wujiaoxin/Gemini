@@ -57,8 +57,14 @@ class Dealer extends Admin {
 				return $this->error($link->getError());
 			}
 		} else {
+			$info['rep_idcard_pic'] = '';
+			$info['dealer_lic_pic'] = '';
+			$info['contacts_pic'] = '';
+			$info['info_pic'] = '';
 			$data = array(
 				'keyList' => $link->keyList,
+				'info' => $info,
+				'infoStr' => '{}',
 			);
 			$this->assign($data);
 			$this->setMeta("录入新车商");
@@ -73,6 +79,7 @@ class Dealer extends Admin {
 		if (IS_POST) {
 			$data = input('post.');
 			if ($data) {
+				//$data['status'] = 1;
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {
 					return $this->success("修改成功！", url('Dealer/index'));
@@ -89,6 +96,7 @@ class Dealer extends Admin {
 			$data = array(
 				'keyList' => $link->keyList,
 				'info'    => $info,
+				'infoStr' => json_encode($info),
 			);
 			$this->assign($data);
 			$this->setMeta("编辑车商");
