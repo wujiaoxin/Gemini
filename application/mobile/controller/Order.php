@@ -81,7 +81,7 @@ class Order extends Base {
 	public function add() {
 		$role = session('user_auth.role');
 		if($role == 2){//银行人员
-			return $this->redirect('mobile/order/index');	
+			return $this->redirect('mobile/order/index');
 		}		
 		if (IS_POST) {
 			$resp['code'] = 0;
@@ -112,6 +112,11 @@ class Order extends Base {
 			}
 			return json($resp);
 		} else {
+			$bankList = db('Member')->field('uid,nickname,mobile,addr')->where('access_group_id',2)->limit(5)->select();
+			$data = array(
+				'bankList' =>  $bankList,
+			);
+			$this->assign($data);
 			$this->assign('title', '新建订单');
 			return $this->fetch('edit');
 		}
@@ -152,7 +157,7 @@ class Order extends Base {
 				'supplementKeyList' => $supplementModle->keyList,
 				'supplementInfo' => $supplement,
 			);
-			$this->assign($data);			
+			$this->assign($data);
 			if($role == 2){//银行审核
 				return $this->fetch('examine');				
 			}else{
