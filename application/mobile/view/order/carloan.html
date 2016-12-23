@@ -10,33 +10,33 @@
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">	
-	<link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
-	<script type="text/javascript">
-		var BASE_URL = ""; 
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">   
+    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
+    <script type="text/javascript">
+        var BASE_URL = ""; 
 
-		var orderData = {};
-		try {
-			orderData = JSON.parse('{$orderDataStr}');
-		} catch (e) {
-			alert("数据异常");
-		}	
-		
+        var orderData = {};
+        try {
+            orderData = JSON.parse('{$orderDataStr}');
+        } catch (e) {
+            alert("数据异常");
+        }   
+        
         var formPicList ='';
         var picListStr = new Array();
-		picListStr[0] = [
-			{
-				form_key:"carloan_loaner_1",
-				form_label:"身份证正面照片"
-			},
-			{
-				form_key:"carloan_loaner_2",
-				form_label:"身份证反面照片"
-			},
-			{
-				form_key:"carloan_loaner_3",
-				form_label:"行驶证正副本"
-			},
+        picListStr[0] = [
+            {
+                form_key:"carloan_loaner_1",
+                form_label:"身份证正面照片"
+            },
+            {
+                form_key:"carloan_loaner_2",
+                form_label:"身份证反面照片"
+            },
+            {
+                form_key:"carloan_loaner_3",
+                form_label:"行驶证正副本"
+            },
             {
                 form_key:"carloan_loaner_4",
                 form_label:"机动车登记证1"
@@ -64,7 +64,7 @@
             },
             {
                 form_key:"carloan_carinfo_5",
-                form_label:"VIN"
+                form_label:"风挡VIN照"
             }];
         picListStr[2] = [
             {
@@ -92,9 +92,9 @@
                 form_label:"借条"
             }];
 
-		
+        
     </script>
-	<style type="text/css">
+    <style type="text/css">
         .main-box-title{
             text-align: center;
             margin: 12px auto;
@@ -154,7 +154,7 @@
         .optional-box{
             border: 1px dashed green;
         }
-	</style>
+    </style>
 </head>
 <body>   
     <div class="views">
@@ -170,8 +170,8 @@
                 </div>
             </div>
             <div class="pages navbar-through">
-                <div data-page="dqassess" class="page">						
-				<div class="page-content main-box clearfix bg-white">
+                <div data-page="dqassess" class="page">                     
+                <div class="page-content main-box clearfix bg-white">
                     <div class="main-box-title">
                         <h4 class="color-black">请如实提交相关资料证明</h4>
                     </div>
@@ -179,44 +179,99 @@
                          <form method="post" class="form form-horizontal">
                             <input type="hidden" name="id" value="0"/>
                             <input type="hidden" name="bank_uid" value="3"/>
-
+                            
                         </form>
-						<!--
-						<div class="content-block">
-							<div class="col-100">
-								<div class="row">
-									<label class="col-70">自动识别,请确认姓名、身份证号无误</label>
-									<label class="col-30 color-blue" id="inputModify">点击修改</label>
-								</div>
-								<label class="control-label">贷款人姓名</label>
-								<input type="text" name="idcard_face_pic_name" id="field_idcard_face_pic_name" value="" disabled="disabled">
-								<label class="control-label">贷款人身份证号</label>
-								<input type="text" name="idcard_face_pic_idNumber" id="field_idcard_face_pic_idNumber" value="" disabled="disabled">
-							</div>
-						</div>-->
-						<div id="picList">
-						</div>
-						<div class="content-block">
+                        <!--
+                        <div class="content-block">
+                            <div class="col-100">
+                                <div class="row">
+                                    <label class="col-70">自动识别,请确认姓名、身份证号无误</label>
+                                    <label class="col-30 color-blue" id="inputModify">点击修改</label>
+                                </div>
+                                <label class="control-label">贷款人姓名</label>
+                                <input type="text" name="idcard_face_pic_name" id="field_idcard_face_pic_name" value="" disabled="disabled">
+                                <label class="control-label">贷款人身份证号</label>
+                                <input type="text" name="idcard_face_pic_idNumber" id="field_idcard_face_pic_idNumber" value="" disabled="disabled">
+                            </div>
+                        </div>-->
+                        <div id="picList">
+                        </div>
+                         <div id="loanerInfo" class="form-group" style="display:none;">
+                                <div class="col-100">
+                                    <div class="">
+                                        <label class="control-label">借款人姓名</label>
+                                        <input type="text" name="idcard_face_pic_name" id="field_idcard_face_pic_name" maxlength="10" value="" />
+                                        <label class="control-label">借款人身份证号</label>
+                                        <input type="text" name="idcard_face_pic_idNumber" id="field_idcard_face_pic_idNumber" maxlength="18" value="" />
+                                        <label class="control-label">借款金额</label>
+                                         <input type="text" name="loan_limit" id="loan_limit" maxlength="10" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="content-block">
                             <a class="button button-big button-raised butcom-css dpblue" id="submit">下一步</a>
                         </div>
                     </div>
                 </div>
-				</div>
+                </div>
             </div>
         </div>
     </div>
-  	<div id="dialog" class="dialog">
+    <div id="dialog" class="dialog">
         <div id="dialogContent">
             <div id="dialogMain"></div>
         </div>
     </div>
     <div id="loading"></div>
-	<script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
-	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
-	<script type="text/javascript" src="/public/wap/js/webuploader.custom.js"></script>
-	<script type="text/javascript">
+    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/webuploader.custom.js"></script>
+    <script type="text/javascript">
+    function getIdcarNum(){
+        var field_idcard_face_pic_id =  '';
+        if(orderData['carloan_loaner_1']){
+            field_idcard_face_pic_id = orderData['carloan_loaner_1'].id;
+        }
+
+        if(field_idcard_face_pic_id == ''){
+            //ui_alert('请返回第一步上传身份证正面照');
+            return;
+        } 
+        ajax_jquery({
+            type: 'post',
+            url: '/mobile/open/tryOCR',
+            datatype: 'json',
+            data: {
+                "id": field_idcard_face_pic_id
+            },
+            success: function(data){
+                if(data.code == 1){
+                    $('#field_idcard_face_pic_name').val(data.data.name);
+                    $('#field_idcard_face_pic_idNumber').val(data.data.idcard_num);
+                }else{
+                    if (typeof(data.msg) == 'string') {
+                        //ui_alert(data.msg);
+                    }
+                }
+            }
+        });
+    };
+
+    function checkData(){
+        var result = true;
+        $('.picker-box > input').each(function(i){
+            if($(this).val()==''){
+                var text = formPicList[i].form_label;
+                ui_alert("请上传" + text);
+                result = false;
+                return false;
+            }
+        })
+        return result;
+    }
+
     function GetQueryString(name)
     {
         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -230,46 +285,48 @@
     };
     if(step == 2){
         $("#submit").text("提交");
+        getIdcarNum();
+        $('#loanerInfo').show();
     }
     formPicList=picListStr[step];
-	function fillZero(i){
-		if (i<10){
-			i="0" + i;
-		}
-		return i
-	}
-	function formatDate(timeStr){
-		var timeStr = timeStr*1000;
-		var now =new Date(timeStr);
-      	var year=now.getFullYear();     
-	    var month=now.getMonth()+1;     
-	    var date=now.getDate();     
-	    var hour=fillZero(now.getHours());     
-	    var minute=fillZero(now.getMinutes());     
-	    var second=fillZero(now.getSeconds());    
-	    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
-	};
-	var uploaderTpl = '\
-							<div class="form-group">\
+    function fillZero(i){
+        if (i<10){
+            i="0" + i;
+        }
+        return i
+    }
+    function formatDate(timeStr){
+        var timeStr = timeStr*1000;
+        var now =new Date(timeStr);
+        var year=now.getFullYear();     
+        var month=now.getMonth()+1;     
+        var date=now.getDate();     
+        var hour=fillZero(now.getHours());     
+        var minute=fillZero(now.getMinutes());     
+        var second=fillZero(now.getSeconds());    
+        return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+    };
+    var uploaderTpl = '\
+                            <div class="form-group">\
                                 <div class="col-100 form-group-content">\
                                     <div class="picker-box">\
                                         <label class="control-label">#title#</label>\
-										<div id="fileList_#name#_sample" class="imgSample" style="display:#display#;">\
+                                        <div id="fileList_#name#_sample" class="imgSample" style="display:#display#;">\
                                             <img src="/public/wap/images/sample/#name#.png">\
                                         </div>\
                                         <input type="hidden" name="#name#" id="field_#name#" value="#value#">\
-										<div id="fileList_#name#" class="upload-file-list-info">\
-										#existImgTpl#\
-										</div>\
-										<div id="picker_#name#" class="picker_button">\
+                                        <div id="fileList_#name#" class="upload-file-list-info">\
+                                        #existImgTpl#\
+                                        </div>\
+                                        <div id="picker_#name#" class="picker_button">\
                                             <span>上传照片</span>\
                                         </div>\
-									</div>\
+                                    </div>\
                                 </div> \
                             </div>\
-		';
-		var existImgTpl = '\
-											<li class="affix-list-item" id="WU_FILE_10#index#">\
+        ';
+        var existImgTpl = '\
+                                            <li class="affix-list-item" id="WU_FILE_10#index#">\
                                                 <div class="upload-file-info">\
                                                     <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_10#index#" data-id="#value#" data-fileurl="#path#"><i class="close"></i></span>\
                                                     <span class="fname"></span>\
@@ -280,39 +337,39 @@
                                                     <img src="#path#" class="img-responsive">\
                                                 </div>\
                                             </li>\
-							';
-							
-		var uploaderHtmlStr = '';
-		for(var index = 0; index < formPicList.length ;index++){
-			var formPic = formPicList[index];
-			var tempHtmlStr = uploaderTpl;
-			tempHtmlStr = tempHtmlStr.replace(/#title#/g, formPic.form_label);
-			
-			if(typeof(orderData[formPic.form_key]) == 'object'){
-				tempHtmlStr = tempHtmlStr.replace(/#existImgTpl#/g, existImgTpl);
-				tempHtmlStr = tempHtmlStr.replace(/#path#/g, orderData[formPic.form_key].path);
-				tempHtmlStr = tempHtmlStr.replace(/#time#/g, formatDate(orderData[formPic.form_key].create_time));
-				tempHtmlStr = tempHtmlStr.replace(/#display#/g, "none");
-				tempHtmlStr = tempHtmlStr.replace(/#value#/g, orderData[formPic.form_key].id);
-			}else{
-				tempHtmlStr = tempHtmlStr.replace(/#existImgTpl#/g, '');
-				tempHtmlStr = tempHtmlStr.replace(/#display#/g, "block");
-				tempHtmlStr = tempHtmlStr.replace(/#value#/g, '');
-			}
-			tempHtmlStr = tempHtmlStr.replace(/#index#/g, index);
-			tempHtmlStr = tempHtmlStr.replace(/#name#/g, formPic.form_key);
-			uploaderHtmlStr += tempHtmlStr;
-		}
-		//console.log(uploaderHtmlStr);
-		$("#picList").html(uploaderHtmlStr);
-							
+                            ';
+                            
+        var uploaderHtmlStr = '';
+        for(var index = 0; index < formPicList.length ;index++){
+            var formPic = formPicList[index];
+            var tempHtmlStr = uploaderTpl;
+            tempHtmlStr = tempHtmlStr.replace(/#title#/g, formPic.form_label);
+            
+            if(typeof(orderData[formPic.form_key]) == 'object'){
+                tempHtmlStr = tempHtmlStr.replace(/#existImgTpl#/g, existImgTpl);
+                tempHtmlStr = tempHtmlStr.replace(/#path#/g, orderData[formPic.form_key].path);
+                tempHtmlStr = tempHtmlStr.replace(/#time#/g, formatDate(orderData[formPic.form_key].create_time));
+                tempHtmlStr = tempHtmlStr.replace(/#display#/g, "none");
+                tempHtmlStr = tempHtmlStr.replace(/#value#/g, orderData[formPic.form_key].id);
+            }else{
+                tempHtmlStr = tempHtmlStr.replace(/#existImgTpl#/g, '');
+                tempHtmlStr = tempHtmlStr.replace(/#display#/g, "block");
+                tempHtmlStr = tempHtmlStr.replace(/#value#/g, '');
+            }
+            tempHtmlStr = tempHtmlStr.replace(/#index#/g, index);
+            tempHtmlStr = tempHtmlStr.replace(/#name#/g, formPic.form_key);
+            uploaderHtmlStr += tempHtmlStr;
+        }
+        //console.log(uploaderHtmlStr);
+        $("#picList").html(uploaderHtmlStr);
+                            
         function btnSentUploader(formPicList){
-			var orderId = orderData.id;
-			if(orderId == null){
-				return ;//todo:alert
-			}
-			var picName = formPicList.form_key;
-			var form_label = formPicList.form_label;
+            var orderId = orderData.id;
+            if(orderId == null){
+                return ;//todo:alert
+            }
+            var picName = formPicList.form_key;
+            var form_label = formPicList.form_label;
             $("#picker_" + picName).SentUploader({
                 fileNumLimit:1,
                 uploadEvents: {
@@ -337,10 +394,10 @@
             },
             {
                 order_id : orderId,
-				form_key : picName,
-				form_label : form_label,
+                form_key : picName,
+                form_label : form_label,
             });
-        };	
+        };  
         function submitData(){
             var postData = {};              
                 if(orderData.id == null){
@@ -349,13 +406,29 @@
                 var bank_uid = $('#bank_uid').val();//todo
                 var idcard_name = $('#field_idcard_face_pic_name').val();
                 var idcard_num = $('#field_idcard_face_pic_idNumber').val();
+                var loan_limit = $('#loan_limit').val();
+                if( idcard_name == ''){
+                    ui_alert('请输入借款人姓名');
+                    $('#field_idcard_face_pic_name').focus();
+                    return;
+                }
+                if( idcard_num == ''){
+                    ui_alert('请输入借款人身份证号');
+                    $('#field_idcard_face_pic_idNumber').focus();
+                    return;
+                }
+                if( idcard_name == ''){
+                    ui_alert('请输入借款金额');
+                    $('#loan_limit').focus();
+                    return;
+                }
                 var postData = {
                         'id':orderData.id,
                         'type':3,
                         'name':idcard_name,
-                        'bank_uid': bank_uid,
+                        'bank_uid':bank_uid,
                         'idcard_num':idcard_num,
-                        'loan_limit':'',
+                        'loan_limit':loan_limit,
                         'idcard_face_pic':0,
                         'idcard_back_pic':0,
                         'driving_lic_pic':0,
@@ -388,14 +461,17 @@
                     }
                 }); 
         };
-		$(function(){
-			for(var index = 0; index < formPicList.length ;index++){
-				btnSentUploader(formPicList[index]);
-			}
+        $(function(){
+            for(var index = 0; index < formPicList.length ;index++){
+                btnSentUploader(formPicList[index]);
+            }
 
-			$("#submit").click(function(){
+            $("#submit").click(function(){
+                if(checkData()==false){
+                    return;
+                }
                 if(step == 2){
-				    submitData();
+                    submitData();
                 }else if(step == 0){
                    goToUrl('/mobile/order/carloan?step=1');
                 }else if(step == 1){
@@ -403,8 +479,8 @@
                 }
 
             });
-		});
-	</script>  
+        });
+    </script>  
 
 </body>
 </html>
