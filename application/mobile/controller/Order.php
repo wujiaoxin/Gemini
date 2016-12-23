@@ -111,7 +111,7 @@ class Order extends Base {
 				$resp['msg'] = $link->getError();
 			}
 			return json($resp);
-		} else {
+		} else {//TODO:获取报单人信息筛选合作银行
 			$bankList = db('Member')->field('uid,nickname,mobile,addr')->where('access_group_id',2)->limit(5)->select();
 			$data = array(
 				'bankList' =>  $bankList,
