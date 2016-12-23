@@ -118,7 +118,7 @@ class Order extends Base {
 			);
 			$this->assign($data);
 			$this->assign('title', '新建订单');
-			return $this->fetch('edit');
+			return $this->fetch();
 		}
 	}
 	//查看

@@ -201,7 +201,7 @@
 												
                                                 <li>
                                                     <label class="label-radio item-content">
-                                                    <input type="radio" name="bank_name" value="0" checked="checked">
+                                                    <input type="radio" name="bank_name" value="0">
                                                     <div class="item-inner">
                                                         <div class="item-title">其他</div>
                                                     </div>
@@ -357,12 +357,17 @@
                 var type= $("#type").val();
                 var mobile = $('#mobile').val();//todo
 				var bank_uid = $('input[name="bank_name"]').filter(':checked').val();
+				if(bank_uid == undefined){
+				    ui_alert('请选择银行','');
+                    return;
+				}
+				return ;
 				var loan_limit = $('#loan_limit').val();//todo
                 var idcard_name = $('#field_idcard_face_pic_name').val();
                 var idcard_num = $('#field_idcard_face_pic_idNumber').val();
                  ajax_jquery({
-                    type: 'post', // 提交方式 post
-                    url: '/mobile/order/add', // 需要提交的 url
+                    type: 'post',
+                    url: '/mobile/order/add',
                     datatype:'json',
                     data: {
                         'type':type,
