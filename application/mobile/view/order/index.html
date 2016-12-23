@@ -22,8 +22,7 @@
 	div.toolbar  a{margin: 0 5%}
 	</style>	
 </head>
-<body>
-    
+<body>    
     <div class="views">
         <div class="view view-main">
 	        <div class="navbar">
@@ -77,15 +76,16 @@
 
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
 	<script>
 	var orderStatus = new Array();
-	orderStatus[0] = '<span class="blue-color">银行审核中</span>';
+	orderStatus[0] = '<span class="blue-color">审核中</span>';
 	orderStatus[1] = '<span class="blue-color">审核通过</span>';
 	orderStatus[2] = '<span class="red">审核未通过</span>';
   	var loading = false;  // 加载flag
 	var current_page = 1; 
 	var status = '';
+	var orderType = getUrlParam("type");
 
 	function fillZero(i){
 		if (i<10){
@@ -131,7 +131,8 @@
 			url: '/mobile/order/getOrderlist',   
 			data:{
 				page: pageid,
-				status: status
+				status: status,
+				type: orderType
 			},
 			success: function (resp){
 				var liHtml = '';
@@ -186,18 +187,9 @@
 		myApp.pullToRefreshDone($$('.pull-to-refresh-content'));
 	});
 
-	//获取页面参数
-	function GetQueryString(name)
-	{
-	    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-	    var r = window.location.search.substr(1).match(reg);
-	    if(r!=null)return  unescape(r[2]); return null;
-	}
-
-
 
 	$(function(){
-		$('#tab_' + GetQueryString('status')).click();
+		$('#tab_' + getUrlParam('status')).click();
 		getOrderList(current_page,status);
 		$(".orderList").on("click", "li", function(){
 			var id = $(this).attr("data");

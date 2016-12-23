@@ -9,9 +9,9 @@
     <meta http-equiv="pragma" content="no-cache">
     <title>VP贷-享全款的汽车分期</title>
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">    
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">    
 </head>
 <body>
     
@@ -27,7 +27,7 @@
                     <div class="center blue-color">个人中心</div>
                     <!--<div class="right">
                         <a href="javascript:toUserMessage();" class="link icon-only ">
-                            <img src="/Public/wap/images/message.png" height="40%"/>
+                            <img src="/public/wap/images/message.png" height="40%"/>
                         </a>
                     </div>-->
                 </div>
@@ -39,9 +39,8 @@
                             <div class="user-info-tl left">
                                <div class="user-face left rela"  >
                                     <a id="myAvatar" >
-                                        <img src="/Public/wap/images/user.png" width="100%"/>
-                                    </a>  
-                                    <input id="uploadFile"  type="file" tabindex="1" accept="image/*"/>
+                                        <img src="/public/wap/images/user.png" width="100%"/>
+                                    </a>
                                 </div>
                                 <div class="user-info-t left">
                                     <h2></h2>
@@ -67,17 +66,20 @@
                         <div class="user-item-con clearfix">
                             <ul>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}')">订单中心 <span class="right"><img class="cg-right-ico" src="/Public/wap/images/right.png" /></span></a> 
+                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}?type=1')">垫资订单 <span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
                                 </li>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/progress')}')">进度查询<span class="right"><img class="cg-right-ico" src="/Public/wap/images/right.png" /></span></a> 
+                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}?type=3')">车抵订单 <span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
                                 </li>
+                                <!--<li>
+                                    <a href="javascript:goToUrl('{:url('mobile/order/progress')}')">进度查询<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
+                                </li>-->
                             </ul>
                         </div>
                         <div class="user-item-con clearfix">
                             <ul>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/user/editpwd')}')">更改密码<span class="right"><img class="cg-right-ico" src="/Public/wap/images/right.png" /></span></a>
+                                    <a href="javascript:goToUrl('{:url('mobile/user/editpwd')}')">更改密码<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
                                 </li>
 								<!--
                                 <li>
@@ -91,19 +93,11 @@
                                 <li>
                                     <a href="javascript:toCallPhone();">
                                         联系客服
-                                        <span class="right"><span class="vm">0571-87813085</span><img class="cg-right-ico" src="/Public/wap/images/right.png" /></span>
+                                        <span class="right"><span class="vm">0571-87813085</span><img class="cg-right-ico" src="/public/wap/images/right.png" /></span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
-						<!--
-                        <div class="user-item-con clearfix">
-                            <ul>
-                                <li>
-                                    <a href="javascript:toHotApp();">精品推荐</a>
-                                </li>
-                            </ul>
-                        </div>-->
                         <div class="content-block">
                             <a class="button button-big button-raised butcom-css dpblue"
                                href="javascript:goToUrl('{:url('mobile/user/logout')}')">退出登录</a>
@@ -120,51 +114,9 @@
     </div>
 
     <div id="loading"></div>
-    <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
-    
-<script type="text/javascript" src="/Public/wap/js/LocalResizeIMG.js"></script>
-<script type="text/javascript" src="/Public/wap/js/mobileBUGFix.mini.js"></script>
-<script type="text/javascript">
-$(function(){
- /*   var a = "3000-10000";
-    var b = "1000-5000";
-    $("#a").html(a);
-    $("#b").html(b);
-	*/
-});
-/*
-$('#uploadFile').localResizeIMG({
-    width: 480,
-    success: function (result) {
-    	$("#loading").show();
-    	
-        var img = new Image();
-        img.src = result.base64;
-      
-        $('#myAvatar').html(img);
-        var img_v = result.clearBase64;
-        //开始上传文件
-        var param = {
-            "picFile": img_v,
-        };
-        ajax_jquery({
-            url: appPath + '/UserInfo/ajax_set_avatar?t=' + Math.random(),
-            data: param,
-            async: true,
-            success: function (resp) {
-                if (resp.status == "1" && resp.error == "00000000") {
-                    ui_alert("上传头像成功!");
-                }else{
-                    ajaxAlertMsg(resp);
-                }
-            }
-        });
-        return false;
-    }
-});*/
-</script>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
 
 </body>
 </html>

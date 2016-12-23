@@ -43,7 +43,7 @@ class Order extends Base {
 	}
 	
 	
-	public function getOrderList($status = null) {
+	public function getOrderList($status = null, $type = null) {
 		$map = '';
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
@@ -60,6 +60,11 @@ class Order extends Base {
 			$map = $map.' and status > -1';
 		}else{
 			$map = $map.' and status ='.(int)$status;
+		}
+		if($type == '3'){
+			$map = $map.' and type = 3';
+		}else{
+			$map = $map.' and type < 3';
 		}
 		
 		$order = "id desc";
@@ -419,6 +424,7 @@ class Order extends Base {
 				$orderData['uid'] = $uid;
 				$orderData['type'] = 3;
 				$orderData['status'] = -2;
+				$orderData['create_time'] = time();
 				$orderData['sn'] = $orderModel->build_order_sn();
 				$orderData['id'] = db('Order')->insertGetId($orderData);
 			}else{

@@ -407,6 +407,9 @@
                 var idcard_name = $('#field_idcard_face_pic_name').val();
                 var idcard_num = $('#field_idcard_face_pic_idNumber').val();
                 var loan_limit = $('#loan_limit').val();
+                var field_idcard_face_pic_id = 0;
+                var field_idcard_back_pic_id = 0;
+                var field_driving_lic_pic_id = 0;
                 if( idcard_name == ''){
                     ui_alert('请输入借款人姓名');
                     $('#field_idcard_face_pic_name').focus();
@@ -421,6 +424,15 @@
                     ui_alert('请输入借款金额');
                     $('#loan_limit').focus();
                     return;
+                }  
+                if(orderData['carloan_loaner_1']){
+                    field_idcard_face_pic_id = orderData['carloan_loaner_1'].id;
+                }
+                if(orderData['carloan_loaner_2']){
+                    field_idcard_back_pic_id = orderData['carloan_loaner_2'].id;
+                }
+                if(orderData['carloan_loaner_3']){
+                    field_driving_lic_pic_id = orderData['carloan_loaner_3'].id;
                 }
                 var postData = {
                         'id':orderData.id,
@@ -429,9 +441,9 @@
                         'bank_uid':bank_uid,
                         'idcard_num':idcard_num,
                         'loan_limit':loan_limit,
-                        'idcard_face_pic':0,
-                        'idcard_back_pic':0,
-                        'driving_lic_pic':0,
+                        'idcard_face_pic':field_idcard_face_pic_id,
+                        'idcard_back_pic':field_idcard_back_pic_id,
+                        'driving_lic_pic':field_driving_lic_pic_id,
                         'status':0,
                         'addr':'',
                         'descr':'',
