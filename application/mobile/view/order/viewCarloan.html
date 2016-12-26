@@ -8,28 +8,121 @@
     <meta http-equiv="pragma" content="no-cache">
     <title>VP贷-享全款的汽车分期</title>
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
     <script>
 		var BASE_URL = ""; //根目录地址
+        var imgList = {};
+        //for(var index = 0)
+        {volist name="files" id="file"}
+            {if isset($file['form_key'])}
+            imgList["{$file['form_key']}"] = {};
+            imgList["{$file['form_key']}"].src = "{$file['path']|default=''}";
+            imgList["{$file['form_key']}"].label = "{$file['form_label']|default=''}";
+            imgList["{$file['form_key']}"].key = "{$file['form_key']}";
+            {/if}
+        {/volist}
+		
+        var picList = [];
+        picList[0] = [
+            {
+                form_key:"carloan_loaner_1",
+                form_label:"身份证正面照片"
+            },
+            {
+                form_key:"carloan_loaner_2",
+                form_label:"身份证反面照片"
+            },
+            {
+                form_key:"carloan_loaner_3",
+                form_label:"行驶证正副本"
+            },
+            {
+                form_key:"carloan_loaner_4",
+                form_label:"机动车登记证1"
+            },
+            {
+                form_key:"carloan_loaner_5",
+                form_label:"机动车登记证2"
+            }];
+        picList[1] = [
+            {
+                form_key:"carloan_carinfo_1",
+                form_label:"含车牌车头照"
+            },
+            {
+                form_key:"carloan_carinfo_2",
+                form_label:"含车牌车尾照"
+            },
+            {
+                form_key:"carloan_carinfo_3",
+                form_label:"内饰照"
+            },
+            {
+                form_key:"carloan_carinfo_4",
+                form_label:"仪表盘照片"
+            },
+            {
+                form_key:"carloan_carinfo_5",
+                form_label:"风挡VIN照"
+            }];
+        picList[2] = [
+            {
+                form_key:"carloan_contract_1",
+                form_label:"质押借款合同1"
+            },
+            {
+                form_key:"carloan_contract_2",
+                form_label:"质押借款合同2"
+            },
+            {
+                form_key:"carloan_contract_3",
+                form_label:"车辆交易委托书"
+            },
+            {
+                form_key:"carloan_contract_4",
+                form_label:"车辆买卖合同1"
+            },
+            {
+                form_key:"carloan_contract_5",
+                form_label:"车辆买卖合同2"
+            },
+            {
+                form_key:"carloan_contract_6",
+                form_label:"借条"
+            }];
+
+
+
     </script>
 	<style type="text/css">
-	.main-box-title{
-		text-align:center;
-	}
-	.content-block{
-		margin: 5px 0;
-		padding: 4px  16px;
-	}
-	.imgSample{
-		width: 90%;
-		margin:0 auto;
-	}
-	.imgSample img{
-		width:100%;	
-	}
+    	.main-box-title{
+    		text-align:center;
+    	}
+    	.content-block{
+    		margin: 5px 0;
+    		padding: 4px  16px;
+    	}
+        .swiper-slide {
+          background: #fff;
+          box-sizing: border-box;
+          border: 1px solid #ccc;
+        }        
+        .swiper-container {
+          height: 120px;
+        }
+        .photo-browser-swiper-container{
+            padding: 15% 0;
+            height: 80%;
+        }
+        .swiper-container-horizontal > .swiper-pagination {
+          bottom: 6px;
+        }
+		.swiper-slide{line-height: 116px;}
+		.swiper-slide img {vertical-align: middle;}
 	</style>
+
 </head>
 <body>   
     <div class="views">
@@ -94,18 +187,24 @@
 							<div class='col-60'>车抵贷订单</div>
 						</div>
 
-						{volist name="files" id="file"}
-						<div class="content-block-title">{$file['form_label'] | default=''}</div>
-						<div class="content-block">
-						  <div class="content-block-inner">
-								<div class="picker-box">
-									<div class="imgSample">
-										<img src="{$file['path']|default=''}" />
-									</div>
-								</div>
-						  </div>
-						</div>
-						{/volist}					
+                	    <div class="content-block-title">借款人证件资料</div>
+                        <div class="swiper-container swiper-3" id="swiper0" data-index="0">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-wrapper">
+                            </div>
+                        </div>
+                         <div class="content-block-title">车辆资料</div>
+                        <div class="swiper-container swiper-3" id="swiper1" data-index="1">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-wrapper">                        
+                            </div>
+                        </div>
+                        <div class="content-block-title">借款合同</div>
+                        <div class="swiper-container swiper-3" id="swiper2" data-index="2">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-wrapper">              
+                            </div>
+                        </div>			
 						{if isset($info['status'])}
 							{if $info['status'] == 0}
 							<!--<div class="content-block">
@@ -125,9 +224,59 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/order.js"></script>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/public/wap/js/order.js"></script>
+    <script type="text/javascript">
+        var photoBrowserParam = [];
+        var myPhotoBrowser = [];
+
+        //Swiper Slider 初始化
+        // var mySwiper = myApp.swiper('.swiper-3', {
+        //     pagination:'.swiper-3 .swiper-pagination',
+        //     spaceBetween: 10,
+        //     slidesPerView: 3
+        // });
+        
+        for (var i in picList) {
+            var tempList = picList[i];
+            var param = [];
+            var swiperHtmlStr = ''
+            for (var j = 0; j < tempList.length; j++) {
+                var key = tempList[j].form_key;
+                if(typeof(imgList[key])=='object'){
+                    //<div class="swiper-slide"><img src="" /></div>
+                    swiperHtmlStr += '<div class="swiper-slide"><img src="' + imgList[key].src + '" /></div>'
+                   // $("#swiper"+i+" img").eq(j).attr('src',imgList[key].src);
+                    param[j] ={
+                        url: imgList[key].src,
+                        caption: imgList[key].label
+                    };
+                }
+            }
+            $("#swiper"+i+" > .swiper-wrapper").html(swiperHtmlStr);
+            myPhotoBrowser[i] = myApp.photoBrowser({
+                photos : param,
+                theme: 'dark',
+                type: 'popup',
+                backLinkText: ' ',
+                lazyLoading: true,
+                lazyLoadingInPrevNext: true
+            });
+        };
+        myApp.swiper('.swiper-3', {
+            pagination:'.swiper-3 .swiper-pagination',
+            spaceBetween: 10,
+            slidesPerView: 3
+        });
+        $('div.swiper-3').on('click','div.swiper-slide',function(ev){ //浏览点击的图片
+
+            var num = $(this).index();
+            var index = $(ev.delegateTarget).attr("data-index");
+            myPhotoBrowser[index].open(num);
+        });
+       
+    </script>
 </body>
 </html>

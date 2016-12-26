@@ -23,8 +23,8 @@
         }   
         
         var formPicList ='';
-        var picListStr = new Array();
-        picListStr[0] = [
+        var picList = new Array();
+        picList[0] = [
             {
                 form_key:"carloan_loaner_1",
                 form_label:"身份证正面照片"
@@ -45,7 +45,7 @@
                 form_key:"carloan_loaner_5",
                 form_label:"机动车登记证2"
             }];
-        picListStr[1] = [
+        picList[1] = [
             {
                 form_key:"carloan_carinfo_1",
                 form_label:"含车牌车头照"
@@ -66,7 +66,7 @@
                 form_key:"carloan_carinfo_5",
                 form_label:"风挡VIN照"
             }];
-        picListStr[2] = [
+        picList[2] = [
             {
                 form_key:"carloan_contract_1",
                 form_label:"质押借款合同1"
@@ -288,7 +288,7 @@
         getIdcarNum();
         $('#loanerInfo').show();
     }
-    formPicList=picListStr[step];
+    formPicList=picList[step];
     function fillZero(i){
         if (i<10){
             i="0" + i;
