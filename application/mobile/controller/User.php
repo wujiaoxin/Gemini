@@ -55,12 +55,27 @@ class User extends Base {
 				$resp["msg"] = '短信验证码错误！';
 				return json($resp);
 			}
-			$addr = '待审核用户';
+			
+			if($icode != ''){
+				$dealerInfo = db('Dealer')->field('id,name')->where('invite_code',$icode)->where('status',1)->find();
+				if($dealerInfo == null){
+					$resp["code"] = 0;
+					$resp["msg"] = '车商邀请码有误！';
+					return json($resp);
+				}else{
+					$addr = $dealerInfo["name"];
+					$access_group_id = 1;//TODO:后台权限组添加
+				}
+			}else{
+				$addr = '待审核用户';
+				$access_group_id = 0;
+			}
+			
 			$openid = NULL;
 			$user = model('User');
 			$uid = $user->registerByMobile($username, $password);
 			if ($uid > 0) {
-				$userinfo = array('nickname' => $username, 'addr' => $addr, 'openid' => $openid, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
+				$userinfo = array('nickname' => $username, 'addr' => $addr, 'openid' => $openid, 'status' => 1, 'invite_code' => $icode, 'access_group_id' => $access_group_id, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
 				//保存信息
 				if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 					//TODO:更新信息信息失败回滚
