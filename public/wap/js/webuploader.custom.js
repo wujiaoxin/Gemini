@@ -252,6 +252,7 @@
 						filebox_html = '<img src="' + BASE_URL + response.info.path + '" class="img-responsive" />';
 					}else{
 						filebox_html = '';
+						self.options.successFunc(response);
 					}
 					$fileItem.find('div.filebox').addClass(type).html(filebox_html);
 					$fileItem.find('.upload-file-info span').eq(0).attr('data-id', response.info.id).attr('data-fileurl', response.info.path);

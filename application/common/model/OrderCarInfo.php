@@ -30,7 +30,7 @@ class OrderCarInfo extends \app\common\model\Base {
 		array('name'=>'car_pic_9' ,'title'=>'车辆登记证1', 'type'=>'image', 'help'=>''),
 		array('name'=>'car_pic_10' ,'title'=>'车辆登记证2', 'type'=>'image', 'help'=>''),
 		array('name'=>'car_pic_11' ,'title'=>'行驶证正副本', 'type'=>'image', 'help'=>''),
-		array('name'=>'car_pic_12' ,'title'=>'车辆视频', 'type'=>'image', 'help'=>''),
+		array('name'=>'car_pic_12' ,'title'=>'车辆视频', 'type'=>'video', 'help'=>''),
 		// array('name'=>'car_pic_13' ,'title'=>'车辆照片13', 'type'=>'image', 'help'=>''),
 		// array('name'=>'car_pic_14' ,'title'=>'车辆照片14', 'type'=>'image', 'help'=>''),
 		// array('name'=>'car_pic_15' ,'title'=>'车辆照片15', 'type'=>'image', 'help'=>''),
