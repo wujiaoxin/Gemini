@@ -134,8 +134,7 @@
                                     <div class="picker-box">
                                         <label class="control-label">{$field['title']}</label>
 										<div id="fileList_{$field['name']}_sample" class="imgSample" style="{if $info[$field['name']] != 0}display:none;{/if}">
-                                            <!--<img src="/public/wap/images/sample/{$field['name']}.png">  //TODO-->
-											<img src="/public/images/vi.png">											
+                                            <img src="/public/wap/images/sample/{$field['name']}.png">	
                                         </div>
                                         <input type="hidden" name="{$field['name']}" id="field_{$field['name']}" value="{$info[$field['name']]|default=''}">
                                         <div id="fileList_{$field['name']}" class="upload-file-list-info">
