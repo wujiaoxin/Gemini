@@ -278,8 +278,10 @@
                 fileNumLimit:1,
                 uploadEvents: {
                     uploadComplete:function(file){
-                        $("#fileList_" + picName + "_pic_sample").hide();
-                        tryOCR(picName);
+                        if(file.type.substring(0,6) == "image/"){
+                            $("#fileList_" + picName + "_pic_sample").hide();
+                            tryOCR(picName);
+                        }
                     },
                 },
                 listName : 'fileList_' + picName + '_pic',

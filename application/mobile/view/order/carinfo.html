@@ -96,6 +96,9 @@
         .optional-box{
             border: 1px dashed green;
         }
+        #del_car_pic_12 .webuploader-pick{
+            background-color: #f44336;
+        }
 	</style>
 </head>
 <body>   
@@ -174,11 +177,11 @@
                                             </video>
                                         </div>
                                         <input type="hidden" name="car_pic_12" id="field_car_pic_12" value="">
-                                        <div id="fileList_icar_pic_12" class="upload-file-list-info">
+                                        <div id="fileList_car_pic_12" class="upload-file-list-info">
                                         </div>
-                                         <div id="picker_car_pic_12" class="picker_button">
+                                        <div id="picker_car_pic_12" class="picker_button">
                                             <span>上传车辆视频</span>   
-                                         </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -206,19 +209,22 @@
 	<script type="text/javascript" src="/public/wap/js/webuploader.custom.js?t=2"></script>
 	<script type="text/javascript">
 
-		var uploadsize =  20;	
+		// var uploadsize =  20;	
         function btnSentUploader(picName){
             $("#picker_" + picName).SentUploader({
                 fileNumLimit:1,
                 uploadEvents: {
                     uploadComplete:function(file){
-                        $("#fileList_" + picName + "_sample").hide();
+                        if(file.type.substring(0,6) == "image/"){
+
+                            $("#fileList_" + picName + "_sample").hide();
+                        }
                     }
                 },
                 listName : 'fileList_' + picName,
                 hiddenName: 'field_' + picName,
                 hiddenValType:1,
-                fileSingleSizeLimit:uploadsize*1024*1024,
+                fileSingleSizeLimit:20*1024*1024,
                 closeX:true,
                 compress:{
                     width: 1024,
@@ -238,48 +244,33 @@
 
          /*   
         */
+
             //car_pic_12 车辆视频上传
-            $("#picker_car_pic_12").click(function() {
-                if ($('#field_car_pic_12').val() != '') {
-                    ui_ask('是否重新上传？', '确定', '取消',function () {
-                        $('#field_car_pic_12').val("");
-                        return false;
-                    },function () {
-                        return false;
-                    });
-                 }
-            });
             $("#picker_car_pic_12").SentUploader({
                     fileNumLimit:1,
                     uploadEvents: {
                         uploadComplete:function(file){
-                            //console.log("hehe");
-                            // console.log(response);
-                            // $("#fileList_car_pic_12_sample > video").attr('src',);
-
+                            if(file.type.substring(0,6) == "video/"){
+                                $("#fileList_car_pic_12_sample").hide();
+                            }
                         }
                     },
                     successFunc:function(response){
-                            //console.log(response);
                             if(response.info.path){
-                               // console.log(response.info.path)
-                               
-                                 videoHtmlStr =  '<video width="230" controls>\
+                                 videoHtmlStr =  '<video controls>\
                                                 <source src="'+response.info.path+'" type="video/mp4">\
                                                 您的浏览器不支持 video 标签。\
                                             </video>';
                                 setTimeout(function(){
-                                     $("#fileList_car_pic_12_sample").html(videoHtmlStr);
-                                }, 1000);
-                               
+                                     // $("#fileList_car_pic_12_sample").html(videoHtmlStr);
+                                     $("#fileList_car_pic_12 > li > div.filebox").html(videoHtmlStr);
+                                }, 1000);     
                             }
-                            // $("#fileList_car_pic_12_sample > video").attr('src',);
-
                         },
                     listName : 'fileList_car_pic_12',
                     hiddenName: 'field_car_pic_12',
                     hiddenValType:1,
-                    fileSingleSizeLimit:uploadsize*1024*1024,
+                    fileSingleSizeLimit:20*1024*1024,
                     closeX:true,
                     compress:{
                         width: 1024,
