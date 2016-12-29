@@ -108,6 +108,34 @@ class Files {
 		}
 	}
 
+	public function getFile() {
+		$path = input('path', '', 'trim');
+		$fullPath = ROOT_PATH.'/public/wap/images/x.png';		
+		$uid  = session('user_auth.uid');
+		if($uid == null){
+			exit;
+		}		
+		$fileInfo = db("OrderFiles")->alias('a')->join('__ORDER__ b','a.order_id = b.id')->field('a.path,b.uid,b.bank_uid')->where(array('a.path' => $path))->find();
+		if($fileInfo!=null){
+			if($fileInfo['uid'] == $uid || $fileInfo['bank_uid'] == $uid){
+				$fullPath = ROOT_PATH.$fileInfo['path'];
+			}else{
+				//exit;
+			}
+		}else{
+			//exit;
+		}	
+		if (!is_file($fullPath)) {
+			//exit;
+			$fullPath = ROOT_PATH.'/public/wap/images/x.png';
+		}		
+		$mime_type = mime_content_type($fullPath); 
+		header('Content-type: '.$mime_type);
+		$size = readfile($fullPath);
+		header('Content-Length:' . $size);
+		exit;
+	}
+	
 	protected function parseFile($info) {
 		$data['create_time'] = $info->getATime(); //最后访问时间
 		$data['savename']    = $info->getBasename(); //获取无路径的basename
@@ -117,7 +145,8 @@ class Files {
 		$data['m_time']      = $info->getMTime(); //获取最后修改时间
 		$data['owner']       = $info->getOwner(); //文件拥有者
 		$data['savepath']    = $info->getPath(); //不带文件名的文件路径
-		$data['url']         = $data['path']         = str_replace("\\", '/', substr($info->getPathname(), 1)); //全路径
+		$data['path']        = str_replace("\\", '/', substr($info->getPathname(), 1)); //全路径
+		$data['url']         = '/mobile/files/getFile?path='.$data['path'];
 		$data['size']        = $info->getSize(); //文件大小，单位字节
 		$data['md5']         = md5_file($info->getPathname());
 		$data['sha1']        = sha1_file($info->getPathname());

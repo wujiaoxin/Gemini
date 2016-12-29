@@ -431,7 +431,7 @@ class Order extends Base {
 				$filter['uid'] = $uid;
 				$filter['order_id'] = $orderData['id'];
 				$filter['status'] = 1;//有效文件
-				$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->limit(100)->select();
+				$files = db('OrderFiles')->field('id,path,url,size,create_time,form_key,form_label')->where($filter)->limit(100)->select();
 				//$filesLength=count($files);
 				//if($filesLength > 0 && $filesLength < 100){//单例不允许超过100张
 					foreach($files as $key=>$value) {
