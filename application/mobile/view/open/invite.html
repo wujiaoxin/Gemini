@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
+
+    <script type="text/javascript">
+        var appPath = "/index.php";
+        var publicPath = "/public";
+        var redirect_uri = "";
+        function onBack(){
+        	window.location.href = "/index.php";
+        }
+        function onHome(){
+        	window.location.href = appPath;
+        }
+        function consumeBack(){
+        	window.location.href = "";
+        }
+        function onBackByUrl(url){
+        	window.location.href = url;
+        }
+        var qlMark = 0;
+    </script>
+    <style>
+    body{
+        background-color: #fcfcfc;
+    }
+    #inviteImg img{
+        display: block;
+        margin:auto;
+        padding-top: 80px;
+        padding-bottom: 40px;
+        width: 70%;
+    }
+    .desc{
+        text-align: center;
+    }
+    .desc p{
+        font-size: 16px;
+        font-weight: 800;
+        color: #444;
+        letter-spacing: 0px;
+    }
+    .desc span{
+       line-height: 40px;
+       font-weight: 500;
+       font-size: 14px
+    }
+    span{
+        color: #ff9900;
+    }
+    h2{
+        font-size: 16px;
+        color: #444;
+        border-left: 4px solid #ff9900;
+        padding: 0 4px;
+    }
+    .rule p{
+        text-indent:2em;
+    }
+    #submit{
+        background-color: #ff9900;
+    }
+    .content-button{
+        width: 80%;
+        margin: auto;
+        margin-top: 20%;
+    }
+    .footer p{
+        font-size: 10px;
+        font-weight: 500;
+    }
+	</style>
+</head>
+<body>
+    
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back"></i>
+                        </a>
+                    </div>
+                    <div class="center blue-color">奖励规则</div>
+                    <div class="right">
+                        <a href="#" class="link icon-only"> </a>
+                    </div>
+                </div>
+            </div>
+            <div class="pages">
+                <div data-page="dqassess" class="page">
+                    <div class="page-content">
+                       
+                            <div class="wb">
+                                <div id="inviteImg">
+                                    <img src="/public/wap/images/invitepage.png">
+                                </div>
+                                <div class="desc">
+                                    <p>送给车商朋友1000元优惠券</p>
+                                    <p>一起开始VP贷之旅吧~</p>
+                                    <p><span>查看规则</span></p>
+                                </div>
+                            </div>
+                            <div class="content-block">          
+                            <div class="rule" style="display: none">
+                                <h2>活动简介:</h2>
+                                <p>即日起 , 分享优惠链接给您的车商朋友，他们可以获得<span>1000元</span>VP贷的优惠券，有效期<span>30天</span>。</p>
+                                <p>当您的朋友享受完第一单VP贷的分期垫资服务后，您将获得<span>100元</span>的现金奖励，VP贷会放至您在VP贷的账户里，您随时可提现或消费。</p>
+                                <h2>活动说明:</h2>
+                                <p>拥有相同账户、手机号、微信号、支付账号、设备、银行卡的用户视为同一用户（适用于您及您的车商朋友），仅对首次使用VP贷分期垫资服务的用户进行返利；
+                                </p>
+                                <p>
+                                    一经发现任何违规套取返利的行为，将不予返利、追回相关余额或者封停账号，且依法追究其法律责任。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="content-button">
+                            <a class="button button-big button-raised butcom-css dpblue" id="submit" onclick="goToUrl('{:url('mobile/open/dealer')}')">马上邀请</a>
+                        </div>
+                        <div class="footer">
+                            <p>有任何关于本活动的问题和帮助,请联系活动客服</p>
+                            <p><a href="javascript:toCallPhone();">0571-87813085</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+
+    <div id="loading"></div>
+    <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
+    <script type="text/javascript">
+        $('.desc span').click(function(){
+            $('.rule').slideToggle('800');
+        })
+    </script>
+    
+</body>
+</html>

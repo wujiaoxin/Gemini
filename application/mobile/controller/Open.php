@@ -50,7 +50,11 @@ class Open extends Base {
 	public function privacy() {		
 		return $this->fetch();
 	}
-	
+
+	public function invite() {		
+		return $this->fetch();
+	}
+
 	public function aboutus() {		
 		return $this->fetch();
 	}

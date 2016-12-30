@@ -132,7 +132,7 @@ function ajax_jquery(options) {
             $("#loading").hide();
         },
         timeout: 60000,
-        async: false,
+        async: true,
     };
     var options_merge = new Object();
     $.extend(options_merge, options_default, options);
