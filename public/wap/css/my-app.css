@@ -2,17 +2,17 @@ body{letter-spacing:1px; color:#333; font-family: "Microsoft Yahei","SimHei","He
 ul{padding:0; margin:0; list-style-type: none;}
 /*@font-face {font-family: 'PingFang'; src: url('PingFang Regular.ttf') format('truetype')}*/
 .wb{background: #fff;}
-a{text-decoration: none; color:#3e9de8;}
-.them-color{color:#3bc2f5}
+a{text-decoration: none; color:#ff9900;}
+.them-color{color:#ff9900}
 img{border:none;}
 .swiper-slide img {width: 100%;}
 .left{float: left;}
 .right{float: right}
 .rel{position: relative;}
 .butcom-css{border:none; color:#fff;}
-.dpblue{background: #3e9de8;}
-.blue{background: #3bc3f6;}
-.blue-color{color:#3e9de8;}
+.dpblue{background: #ff9900;}
+.blue{background: #ff9900;}
+.blue-color{color:#ff9900;}
 .zi-color{color:#b568ec;}
 .gay-color{color:#666;}
 .c3{color:#333;}
