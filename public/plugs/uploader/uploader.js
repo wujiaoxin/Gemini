@@ -72,6 +72,7 @@ function sentUploader(options){
         {
             pick: {
                 id: options.wrap+'FilePicker',
+                // label: '<img src="/public/wap/images/imagePicker.png" width="20" height="20"/>点击选择图片'
                 label: '点击选择图片'
             },
             formData: {

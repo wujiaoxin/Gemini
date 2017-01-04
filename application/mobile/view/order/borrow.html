@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">   
-    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
+    <link rel="stylesheet" type="text/css" href="/public/plugs/uploader/webuploader.css">
     <link rel="stylesheet" type="text/css" href="/public/plugs/uploader/style.css">
     <script type="text/javascript">
         var BASE_URL = ""; 
@@ -39,13 +39,31 @@
             padding-right: 5%;
         }
 
-        .m-attachment {
-            font-size: 14px;
-            padding:0 15px 6px;
-        }
         .webuploader-pick {
             width: auto;
             margin-top : 0;
+        }
+        #uploader1 .placeholder {
+            background: url('/public/wap/images/bg_borrowinfo.png') no-repeat top center;
+        }
+
+        .imgSample{
+            padding-top: 20px;
+            margin: auto auto;
+            width: 100%;
+            background: white;
+            /* background: url('/public/wap/images/sampleImgBg.jpg'); */
+            position: relative;
+            text-align: center;
+        }
+        #picker_car_pic_12 .webuploader-pick{
+            width: 180px;
+            padding: 13px 0;
+            font-size: 16px;
+            background: white;
+            color: #ff9900;
+            border: 1px solid #ccc;
+            margin: 10px auto;
         }
         
         /*  #filelist li:nth-child(1):before{
@@ -82,9 +100,6 @@
                                     <div class="uploader_title">
                                         <h4>请上传相关借款资料照片</h4>
                                     </div>
-                                    <div class="m-attachment">
-                                        请上传借款人身份证正反面照、驾照、放款通知单、首付凭证、购车发票、车辆合格证、车辆保单、借款合同，共计9张。
-                                    </div>
                                     <div id="uploader1" class="uploader">
                                         <div class="queueList">
                                             <div class="placeholder">
@@ -106,7 +121,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="list-block">
-                                    <div class="list-block-label">请点击身份证正面照进行自动识别，并完善下列信息</div>
+                                    <div class="list-block-label">请填写后续信息<br>可点击<span class="color-orange">身份证正面照</span>进行自动识别</div>
                                     <ul>
                                         <li>
                                             <div class="item-content">
@@ -153,26 +168,20 @@
                             <div class="form-group">
                                 <div class="list-block">
                                     <div class="list-block-label">选择银行</div>
-                                    <ul>         
+                                    <ul>       
+                                        {volist name="bankList" id="bank"}  
                                         <li>
                                             <label class="label-radio item-content">
-                                                <input type="radio" name="bank_name" value="1">
+                                                <input type="radio" name="bank_name" value="{$bank.uid}">
                                                 <div class="item-inner">
-                                                    <div class="item-title">互纳科技</div>
+                                                    <div class="item-title">{$bank.addr}</div>
                                                 </div>
                                             </label>
                                         </li>
+                                        {/volist}
                                         <li>
                                             <label class="label-radio item-content">
-                                                <input type="radio" name="bank_name" value="2">
-                                                <div class="item-inner">
-                                                    <div class="item-title">华夏银行</div>
-                                                </div>
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <label class="label-radio item-content">
-                                                <input type="radio" name="bank_name" value="3">
+                                                <input type="radio" name="bank_name" value="0">
                                                 <div class="item-inner">
                                                     <div class="item-title">其他</div>
                                                 </div>
@@ -181,13 +190,10 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="carinfo">
                                 <div class="uploaderwrap">
                                     <div class="uploader_title">
                                         <h4>请上传相关车辆资料</h4>
-                                    </div>
-                                    <div class="m-attachment">
-                                        请上传车头、车尾照(含车牌)，发动机舱、侧面全车，铭牌、风挡VIN、内饰、仪表盘(含公里数)，车辆登记证1、2页、车辆登记证3、4页，行驶证正副本照片和车辆视频(15秒左右)，共计12项。
                                     </div>
                                     <div id="uploader2" class="uploader">
                                         <div class="queueList">
@@ -206,6 +212,24 @@
                                             </div>
                                         </div>
                                     </div>   
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                    <div class="list-block">
+                                        <div id="fileList_car_pic_12_sample" class="imgSample">
+                                            <video width="230" controls>
+                                                <source src="/public/wap/images/sample/car_pic_12.mp4" type="video/mp4">
+                                                您的浏览器不支持 video 标签。
+                                            </video>
+                                            <div id="picker_car_pic_12" class="picker_button">
+                                            <span>上传车辆视频</span>   
+                                        </div>
+                                        </div>
+                                        <input type="hidden" name="car_pic_12" id="field_car_pic_12" value="">
+                                        <div id="fileList_car_pic_12" class="upload-file-list-info">
+                                        </div>
+                                        
+                                    </div>
                                 </div>
                             </div>    
                             <div class="content-block">
@@ -230,6 +254,7 @@
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
     <script type="text/javascript" src="/public/plugs/uploader/webuploader.min.js"></script>
     <script type="text/javascript" src="/public/plugs/uploader/uploader.js"></script>
+    <script type="text/javascript" src="/public/wap/js/webuploader.custom.js"></script>
     <!-- <script type="text/javascript" src="/public/plugs/uploader/sortable.js"></script> -->
     <script type="text/javascript">
         // $('#container').on('click',function(){
@@ -285,8 +310,49 @@
             formData:{
                 order_id:orderData.id
             },
-            fileNumLimit: 12,
+            fileNumLimit: 11,
         });
+
+        $("#picker_car_pic_12").SentUploader({
+                    fileNumLimit:1,
+                    uploadEvents: {
+                        uploadComplete:function(file){
+                            if(file.type.substring(0,6) == "video/"){
+                                $("#fileList_car_pic_12_sample").hide();
+                            }
+                        }
+                    },
+                    successFunc:function(response){
+                            if(response.info.path){
+                                 videoHtmlStr =  '<video controls>\
+                                                <source src="'+response.info.path+'" type="video/mp4">\
+                                                您的浏览器不支持 video 标签。\
+                                            </video>';
+                                setTimeout(function(){
+                                     $("#fileList_car_pic_12 > li > div.filebox").html(videoHtmlStr);
+                                }, 1000);     
+                            }
+                        },
+                    listName : 'fileList_car_pic_12',
+                    hiddenName: 'field_car_pic_12',
+                    hiddenValType:1,
+                    fileSingleSizeLimit:20*1024*1024,
+                    closeX:true,
+                    compress:{
+                        width: 1024,
+                        quality: 90,
+                        allowMagnify: false,
+                        crop: false,
+                        preserveHeaders: true,
+                        noCompressIfLarger: false,
+                        compressSize: 0
+                    }
+                },
+                {
+                    fileType: 'video'
+                });
+
+
             var modal = myApp.modal({
              title: 'VP贷-享全款的汽车分期',
              text: '请选择订单类型',
@@ -297,6 +363,7 @@
                  onClick: function () {
                      $("#type").val(1);
                      $("#navbar_title").text('垫资申请-新车');
+                     $("#carinfo").hide();
                  }
                },
                {
@@ -309,15 +376,8 @@
              ]
             });
 
-        
-            // $('#inputModify').click(function(){
-            //     $('#field_idcard_face_pic_name').removeAttr('disabled');
-            //     $('#field_idcard_face_pic_idNumber').removeAttr('disabled');
-            //     $('#field_idcard_face_pic_name').focus();                
-            // });
 
-            $("#submit").click(function(){
-               
+            $("#submit").click(function(){       
                 var type= $("#type").val();
                 // var mobile = $('#mobile').val();//todo
                 var bank_uid = $('input[name="bank_name"]').filter(':checked').val();
@@ -326,7 +386,7 @@
                     return;
                 }
 
-                if( $('#filelist > li[value]').length < 9) {
+                if( $('#uploader1  .filelist > li[value]').length < 9) {
                     ui_alert("照片信息不完整，请补充上传");
                     return;
                 }
