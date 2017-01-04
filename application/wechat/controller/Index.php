@@ -120,7 +120,7 @@ class Index extends \think\Controller{
 		$oauth = & load_wechat('Oauth');
 		$callback = URL('wechat/index/getUserInfo');
 		$state = 1;
-		$scope = 'snsapi_base'; 
+		$scope = 'snsapi_userinfo'; 
 		$result = $oauth->getOauthRedirect($callback, $state, $scope);
 		if($result===FALSE){
 			echo "error";
