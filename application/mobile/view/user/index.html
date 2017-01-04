@@ -39,7 +39,11 @@
                             <div class="user-info-tl left">
                                <div class="user-face left rela"  >
                                     <a id="myAvatar" >
-                                        <img src="/public/wap/images/user.png" width="100%"/>
+									{if isset($user['headimgurl'])}
+										<img src="{$user['headimgurl']}" width="100%"/>
+									{else /}
+										<img src="/public/wap/images/user.png" width="100%"/>
+									{/if}
                                     </a>
                                 </div>
                                 <div class="user-info-t left">

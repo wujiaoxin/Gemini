@@ -179,6 +179,10 @@ class User extends Base{
 			'last_login_time' => time(),
 			'last_login_ip'   => get_client_ip(1),
 		);
+		$openid = session('user_openid');//TODO:绑定逻辑修正，当openid已绑定过账户
+		if(!empty($openid)){
+			$data['openid'] = $openid;
+		}
 		$this->where(array('uid'=>$user['uid']))->update($data);
 		$user = $this->where(array('uid'=>$user['uid']))->find();
 

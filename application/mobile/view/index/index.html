@@ -42,7 +42,11 @@
                         </div>
                         <div class="secdiv-con" onclick="goToUrl('{:url('mobile/user/index')}')" >
                             <div class="user-tx">
-                                <img src="/public/wap/images/user.png" width="100%"/>
+								{if isset($user['headimgurl'])}
+									<img src="{$user['headimgurl']}" width="100%"/>
+								{else /}
+									<img src="/public/wap/images/user.png" width="100%"/>
+								{/if}
                             </div>
                             <div class="secdiv-left">
                                 <span class="left">您好，</span><a href="#" class="yellow left">{$welcomeText}</a>

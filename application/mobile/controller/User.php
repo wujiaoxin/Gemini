@@ -14,19 +14,22 @@ class User extends Base {
 	public function _initialize() {
 		parent::_initialize();
 		if (!is_login() and !in_array($this->url, array('mobile/user/login', 'mobile/user/reset', 'mobile/user/register'))) {
-			$this->redirect('mobile/user/login');exit();
-		}elseif (is_login()) {
-			$user = model('User')->getInfo(session('user_auth.uid'));
-			//if (!$this->checkProfile($user) && $this->url !== 'user/profile/index') {
-			//	return $this->error('请补充完个人资料！', url('user/profile/index'));
-			//}
-			$this->assign('user', $user);
+			$this->redirect('mobile/user/login');
+			exit();
 		}
 	}
 
-	public function index() {		
+	public function index() {
 		//$this->assign($user);	
 		$user = model('User')->getInfo(session('user_auth.uid'));
+		if(!empty($user['openid'])){
+			$wechatInfo = db('MemberWechat')->field('nickname,headimgurl')->where('openid',$user['openid'])->find();
+			if($wechatInfo!=null){
+				$user['nickname'] = $wechatInfo['nickname'];
+				$user['headimgurl'] = $wechatInfo['headimgurl'];
+			}
+		}		
+		$this->assign('user', $user);
 		return $this->fetch();
 	}
 	
@@ -70,12 +73,20 @@ class User extends Base {
 				$addr = '待审核用户';
 				$access_group_id = 0;
 			}
-			
-			$openid = NULL;
 			$user = model('User');
 			$uid = $user->registerByMobile($username, $password);
 			if ($uid > 0) {
-				$userinfo = array('nickname' => $username, 'addr' => $addr, 'openid' => $openid, 'status' => 1, 'invite_code' => $icode, 'access_group_id' => $access_group_id, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
+				$userinfo['nickname']    = $username;
+				$userinfo['addr']        = $addr;
+				$userinfo['status']      = 1;
+				$userinfo['invite_code'] = $icode;
+				$userinfo['access_group_id'] = $access_group_id;
+				$userinfo['reg_time']    = time();
+				$userinfo['status']      = 1;			
+				$openid = session('user_openid');
+				if(!empty($openid)){
+					$userinfo['openid'] = $openid;
+				}
 				//保存信息
 				if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 					//TODO:更新信息信息失败回滚

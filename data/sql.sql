@@ -1229,6 +1229,28 @@ CREATE TABLE `gemini_member` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `gemini_member_wechat`
+-- ----------------------------
+DROP TABLE IF EXISTS `gemini_member_wechat`;
+CREATE TABLE `gemini_member_wechat` (
+  `openid` varchar(50) NOT NULL COMMENT '用户的标识,对当前公众号唯一',
+  `unionid` varchar(50) DEFAULT NULL COMMENT '微信第三方ID',
+  `nickname` text COMMENT '用户的昵称',  
+  `sex` tinyint(2) DEFAULT NULL COMMENT '性别',
+  `headimgurl` varchar(255) DEFAULT NULL COMMENT '头像地址',
+  `city` varchar(30) DEFAULT NULL COMMENT '城市',
+  `province` varchar(30) DEFAULT NULL COMMENT '省份',
+  `country` varchar(30) DEFAULT NULL COMMENT '国家',
+  `language` varchar(20) DEFAULT 'zh_CN' COMMENT '语言',
+  `subscribe` tinyint(2) DEFAULT 1 COMMENT '用户是否订阅该公众号标识',
+  `subscribe_time` int(10) DEFAULT NULL COMMENT '用户关注公众号时间',
+  `remark` varchar(100) DEFAULT NULL COMMENT '微信用户备注',
+  `groupid` int(10) DEFAULT NULL COMMENT '微信端的分组ID', 
+  `tagid_list` varchar(30) DEFAULT NULL COMMENT '用户被打上的标签ID列表,例如[128,2]',
+  PRIMARY KEY (`openid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for `gemini_member_extend`
 -- ----------------------------
 DROP TABLE IF EXISTS `gemini_member_extend`;
