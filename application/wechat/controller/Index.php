@@ -63,10 +63,10 @@ class Index extends \think\Controller{
 	}
 	public function menu() {
 		$menu = & load_wechat('menu');
-		$indexUrl = URL('wechat/index/getOauthRedirect');
+		$indexUrl = URL('wechat/index/getOauthRedirect','status=1');
 		$dealerUrl = URL('mobile/open/dealer');
 		$aboutUrl = URL('mobile/open/aboutus');
-		$userUrl = URL('mobile/user/index');
+		$userUrl = URL('wechat/index/getOauthRedirect','status=2');
 		$helpUrl = URL('mobile/open/help');
 		$data = json_decode('{
 			"button":[
@@ -116,10 +116,10 @@ class Index extends \think\Controller{
 		}
 	}
 
-	public function getOauthRedirect() {
+	public function getOauthRedirect($state = 1) {
 		$oauth = & load_wechat('Oauth');
 		$callback = URL('wechat/index/getUserInfo');
-		$state = 1;
+		$state = $state;
 		$scope = 'snsapi_userinfo'; 
 		$result = $oauth->getOauthRedirect($callback, $state, $scope);
 		if($result===FALSE){
@@ -132,7 +132,7 @@ class Index extends \think\Controller{
 		}
 	}
 	
-	public function getUserInfo() {
+	public function getUserInfo($state = 1) {
 		$oauth = & load_wechat('Oauth');
 		$result = $oauth->getOauthAccessToken();
 		if($result===FALSE){
@@ -146,7 +146,14 @@ class Index extends \think\Controller{
 				session('user_openid', $openid);
 				$isLogin = $model->loginByOpenid($openid);
 				if($isLogin == 1){
-					$redirectUrl = URL('mobile/index/index');
+					switch ($state) {
+						case 2: 
+							$redirectUrl = URL('mobile/user/index');
+							break;
+						default:
+							$redirectUrl = URL('mobile/index/index');
+							break;
+					}
 					$this->redirect($redirectUrl,302);
 				}else if($isLogin == 0){//未关联用户
 					$userInfo = $model->where('openid',$openid)->find();
