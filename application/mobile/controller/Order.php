@@ -498,10 +498,12 @@ class Order extends Base {
 						}
 					}
 				//}
-			}			
+			}
+			$bankList = db('Member')->field('uid,nickname,mobile,addr')->where('access_group_id',2)->limit(5)->select();		
 			$data = array(
 				'orderDataStr' => json_encode($orderData),
 				'role'         => $role,
+				'bankList' =>  $bankList,
 			);
 			$this->assign($data);
 			return $this->fetch();
