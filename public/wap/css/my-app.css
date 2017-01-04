@@ -619,3 +619,5 @@ input[type="number"]{-moz-appearance:textfield !important;}
 #verify{
 	margin-top:-4px;
 }
+
+.modal-button {color:#ff9900;background:white;}

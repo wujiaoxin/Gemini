@@ -12,20 +12,45 @@
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">   
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
+    <link rel="stylesheet" type="text/css" href="/public/plugs/uploader/style.css">
     <script type="text/javascript">
         var BASE_URL = ""; 
-
         var orderData = {};
         try {
             orderData = JSON.parse('{$orderDataStr}');
         } catch (e) {
             alert("数据异常");
-        }   
-        
-       
-        
+        }         
     </script>
     <style type="text/css">
+        .list-block .item-title.label {
+            width: 28%;
+        }
+        .item-inner .item-icon{
+            height: 24px;
+        }
+        .list-block .list-block-label {
+            margin: 0;
+            padding: 0 15px 6px;
+            font-size: 14px;
+            color: #838383
+        }
+        .label-radio.item-content {
+            padding-right: 5%;
+        }
+
+        .m-attachment {
+            font-size: 14px;
+            padding:0 15px 6px;
+        }
+        .webuploader-pick {
+            width: auto;
+            margin-top : 0;
+        }
+        
+        /*  #filelist li:nth-child(1):before{
+            content: "身份证";
+        } */
     
     </style>
 </head>
@@ -36,23 +61,161 @@
                 <div class="navbar-inner">
                     <div class="left">
                         <a href="javascript:history.go(-1)" class="link icon-only back">
-                            <i class="icon icon-back"></i>
+                            <i class="icon icon-back color-orange"></i>
+                            <span class="color-orange">返回</span>
                         </a>
                     </div>
-                    <div class="center blue-color">垫资申请</div>
+                    <div class="center" id="navbar_title">垫资申请</div>
+                    <div class="right"></div>
                 </div>
             </div>
             <div class="pages navbar-through">
-                <div data-page="dqassess" class="page">                     
-                <div class="page-content main-box clearfix bg-white">
-                    <div class="main-box-title">
-                        <h4 class="color-black">请如实提交相关资料证明</h4>
-                    </div>
+                <div class="page">                     
+                <div class="page-content main-box">
                     <div class="main-box-body clearfix">
-
+                    <div>
+                        <form method="post" class="form form-horizontal">
+                            <input type="hidden" name="id" value=""/>
+                            <input type="hidden" name="type" id="type" value=1/>
+                            <div class="form-group">
+                                <div class="uploaderwrap">
+                                    <div class="uploader_title">
+                                        <h4>请上传相关借款资料照片</h4>
+                                    </div>
+                                    <div class="m-attachment">
+                                        请上传借款人身份证正反面照、驾照、放款通知单、首付凭证、购车发票、车辆合格证、车辆保单、借款合同，共计9张。
+                                    </div>
+                                    <div id="uploader1" class="uploader">
+                                        <div class="queueList">
+                                            <div class="placeholder">
+                                                <div id="uploader1FilePicker"></div> 
+                                            </div>
+                                        </div>
+                                        <div class="statusBar" style="display:none;">
+                                            <div class="progress">
+                                                <span class="text">0%</span>
+                                                <span class="percentage"></span>
+                                            </div><div class="info"></div>
+                                            <div class="btns"> 
+                                                <div id="uploader1FilePicker2" class="filePicker2"></div>
+                                                <div class="uploadBtn">开始上传</div>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="list-block">
+                                    <div class="list-block-label">请点击身份证正面照进行自动识别，并完善下列信息</div>
+                                    <ul>
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title label">贷款人姓名:</div>
+                                                    <div class="item-input">
+                                                        <input type="text" name="idcard_name" id="idcard_name" value=""/>
+                                                    </div>
+                                                    <div class="item-icon">
+                                                        <img src="/public/wap/images/ico_edit.png" width="24" height="24" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                          <div class="item-content">
+                                            <div class="item-inner">
+                                              <div class="item-title label">身份证号:</div>
+                                              <div class="item-input">
+                                                <input type="text" name="idcard_num" id="idcard_num" value=""/>
+                                              </div>
+                                              <div class="item-icon">
+                                                    <img src="/public/wap/images/ico_edit.png" width="24" height="24"/>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </li>
+                                        <li>
+                                          <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title label">贷款金额:</div>
+                                                    <div class="item-input">
+                                                        <input type="text" name="loan_limit" id="loan_limit" value=""/>
+                                                    </div>
+                                                    <div class="item-icon">
+                                                        <img src="/public/wap/images/ico_edit.png" width="24" height="24"/>
+                                                    </div>
+                                                </div>
+                                          </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="list-block">
+                                    <div class="list-block-label">选择银行</div>
+                                    <ul>         
+                                        <li>
+                                            <label class="label-radio item-content">
+                                                <input type="radio" name="bank_name" value="1">
+                                                <div class="item-inner">
+                                                    <div class="item-title">互纳科技</div>
+                                                </div>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="label-radio item-content">
+                                                <input type="radio" name="bank_name" value="2">
+                                                <div class="item-inner">
+                                                    <div class="item-title">华夏银行</div>
+                                                </div>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="label-radio item-content">
+                                                <input type="radio" name="bank_name" value="3">
+                                                <div class="item-inner">
+                                                    <div class="item-title">其他</div>
+                                                </div>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="uploaderwrap">
+                                    <div class="uploader_title">
+                                        <h4>请上传相关车辆资料</h4>
+                                    </div>
+                                    <div class="m-attachment">
+                                        请上传车头、车尾照(含车牌)，发动机舱、侧面全车，铭牌、风挡VIN、内饰、仪表盘(含公里数)，车辆登记证1、2页、车辆登记证3、4页，行驶证正副本照片和车辆视频(15秒左右)，共计12项。
+                                    </div>
+                                    <div id="uploader2" class="uploader">
+                                        <div class="queueList">
+                                            <div class="placeholder">
+                                                <div id="uploader2FilePicker"></div> 
+                                            </div>
+                                        </div>
+                                        <div class="statusBar" style="display:none;">
+                                            <div class="progress">
+                                                <span class="text">0%</span>
+                                                <span class="percentage"></span>
+                                            </div><div class="info"></div>
+                                            <div class="btns"> 
+                                                <div id="uploader2FilePicker2" class="filePicker2"></div>
+                                                <div class="uploadBtn">开始上传</div>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                </div>
+                            </div>    
+                            <div class="content-block">
+                                <a class="button button-big button-raised butcom-css bg-orange" id="submit">提交申请</a>
+                            </div>
+                        </form>
+                    </div>
                     </div>
                 </div>
-                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -65,10 +228,144 @@
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
-    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
-    <script type="text/javascript" src="/public/wap/js/webuploader.custom.js"></script>
+    <script type="text/javascript" src="/public/plugs/uploader/webuploader.min.js"></script>
+    <script type="text/javascript" src="/public/plugs/uploader/uploader.js"></script>
+    <!-- <script type="text/javascript" src="/public/plugs/uploader/sortable.js"></script> -->
     <script type="text/javascript">
+        // $('#container').on('click',function(){
+        //     var container = document.getElementById("filelist");
+        //      Sortable.create(container);   
+        // });    
 
+        function tryOCR(id,type){
+            if(type != 'idcard_face'){
+                return;
+            }
+            ajax_jquery({
+                type: 'post',
+                url: '/mobile/open/tryOCR',
+                datatype: 'json',
+                data: {
+                    "id": id
+                },
+                success: function(data){
+                    if(data.code == 1){
+                        $('#idcard_name').val(data.data.name);
+                        $('#idcard_num').val(data.data.idcard_num);
+                    }else{
+                        if (typeof(data.msg) == 'string') {
+                            ui_alert(data.msg);
+                        }
+                    }
+                }
+            });
+        };
+        
+        $("#uploader1").on("click","img",function(){
+            var idcard = $(this).parent().parent('li').attr("value");
+            if( idcard ){
+                tryOCR(idcard,'idcard_face');
+            }
+            else{
+                ui_alert('请上传照片');
+            }
+        });
+
+        $(function(){
+
+        sentUploader({
+            wrap:'#uploader1',
+            formData:{
+                order_id:orderData.id
+            },
+            fileNumLimit: 9
+        });
+        sentUploader({
+            wrap:'#uploader2',
+            formData:{
+                order_id:orderData.id
+            },
+            fileNumLimit: 12,
+        });
+            var modal = myApp.modal({
+             title: 'VP贷-享全款的汽车分期',
+             text: '请选择订单类型',
+             verticalButtons: true,
+             buttons: [
+               {
+                 text: '新车垫资',
+                 onClick: function () {
+                     $("#type").val(1);
+                     $("#navbar_title").text('垫资申请-新车');
+                 }
+               },
+               {
+                 text: '二手车垫资',
+                 onClick: function () {
+                     $("#type").val(2);
+                     $("#navbar_title").text('垫资申请-二手车');
+                 }
+               },
+             ]
+            });
+
+        
+            // $('#inputModify').click(function(){
+            //     $('#field_idcard_face_pic_name').removeAttr('disabled');
+            //     $('#field_idcard_face_pic_idNumber').removeAttr('disabled');
+            //     $('#field_idcard_face_pic_name').focus();                
+            // });
+
+            $("#submit").click(function(){
+               
+                var type= $("#type").val();
+                // var mobile = $('#mobile').val();//todo
+                var bank_uid = $('input[name="bank_name"]').filter(':checked').val();
+                if(bank_uid == undefined){
+                    ui_alert('请选择银行','');
+                    return;
+                }
+
+                if( $('#filelist > li[value]').length < 9) {
+                    ui_alert("照片信息不完整，请补充上传");
+                    return;
+                }
+
+                var loan_limit = $('#loan_limit').val();//todo
+                var idcard_name = $('#idcard_name').val();
+                var idcard_num = $('#idcard_num').val();
+                 ajax_jquery({
+                    type: 'post',
+                    url: '/mobile/order/add',
+                    datatype:'json',
+                    data: {
+                        'type':type,
+                        'name':idcard_name,
+                        'bank_uid': '',
+                        'idcard_num':idcard_num,
+                        'loan_limit':loan_limit,
+                        'idcard_face_pic':'',
+                        'idcard_back_pic':'',
+                        'driving_lic_pic':'',
+                        'status':0,
+                        'addr':'',
+                        'descr':'',
+                        'mobile':''
+                    },
+                    success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
+                        if(data.code == 1){
+                            ui_alert("新增订单成功!", function () {
+                                 window.location.href = '/mobile' ;            
+                             });
+                        }else{
+                            if (typeof(data.msg) == 'string') {
+                                ui_alert(data.msg);
+                            }  
+                        }
+                    }
+                }); 
+            });
+        });
     </script>  
 
 </body>
