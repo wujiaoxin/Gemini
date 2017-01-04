@@ -108,7 +108,7 @@ class User extends Base {
 		}
 	}
 	
-	public function login($username = '', $password = '') {
+	public function login($username = '', $password = '', $wxbind = 0) {
 		if (IS_POST) {
 			$resp["code"] = 0;
 			$resp["msg"] = '未知错误！';
@@ -127,6 +127,9 @@ class User extends Base {
 			if ($uid > 0) {
 				$resp["code"] = 1;
 				$resp["msg"] = '登录成功！';
+				if($wxbind == 1){
+					$user->bindWechat($uid);
+				}
 				//$resp["redirectUrl"] = url('admin/index/index');
 				return json($resp);
 				//return $this->success('登录成功！', url('admin/index/index'));
@@ -146,6 +149,7 @@ class User extends Base {
 				//return $this->error($error, '');
 			}
 		} else {
+			$this->assign('wxbind', $wxbind);
 			return $this->fetch();
 		}
 

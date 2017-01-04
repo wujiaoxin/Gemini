@@ -27,6 +27,7 @@ function settime() {
 
 
 function doLoginPost(){
+	var wxbind = $("#wxbind").val();
     var phone = $("#username").val();
     var password = $("#password").val();
     if (phone == "" || password == "") {
@@ -38,7 +39,8 @@ function doLoginPost(){
     } else{
         var param = {
             "username": phone,
-			"password": password
+			"password": password,
+			"wxbind"  : wxbind
            // "password": hex_md5(password),
         };
         $("#login").attr("disabled", "disabled");

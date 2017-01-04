@@ -179,10 +179,6 @@ class User extends Base{
 			'last_login_time' => time(),
 			'last_login_ip'   => get_client_ip(1),
 		);
-		$openid = session('user_openid');//TODO:绑定逻辑修正，当openid已绑定过账户
-		if(!empty($openid)){
-			$data['openid'] = $openid;
-		}
 		$this->where(array('uid'=>$user['uid']))->update($data);
 		$user = $this->where(array('uid'=>$user['uid']))->find();
 
@@ -196,6 +192,17 @@ class User extends Base{
 
 		session('user_auth', $auth);
 		session('user_auth_sign', data_auth_sign($auth));
+	}
+	
+	public function bindWechat($uid){
+		$data['uid'] = $uid;
+		$openid = session('user_openid');
+		if(!empty($openid)){
+			$empty['openid'] = null;			
+			$this->where(array('openid' => $openid))->update($empty);//自动解除之前绑定关系
+			$data['openid'] = $openid;
+			$this->where(array('uid' => $uid))->update($data);
+		}		
 	}
 
 	public function logout(){

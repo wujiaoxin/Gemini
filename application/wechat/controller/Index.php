@@ -157,12 +157,12 @@ class Index extends \think\Controller{
 							return false;
 						}else{
 							$model->save($userInfo);
-							$redirectUrl = URL('mobile/user/login');
+							$redirectUrl = URL('mobile/user/login','wxbind=1');
 							$this->redirect($redirectUrl,302);
 						}
 					}else{//已入库用户
 						//echo "Error: 已入库用户";
-						$redirectUrl = URL('mobile/user/login');
+						$redirectUrl = URL('mobile/user/login','wxbind=1');
 						$this->redirect($redirectUrl,302);
 					}
 				}else{//异常用户:例如被禁用

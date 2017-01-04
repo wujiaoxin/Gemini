@@ -49,15 +49,15 @@
                                         <div class="item-inner register-inner">
                                             <div class="item-title label">密码</div>
                                             <div class="item-input register-inner">
-                                                <input type="password" id="password" name="password" maxlength="10"
-                                                       placeholder="您的登录密码">
+                                                <input type="password" id="password" name="password" maxlength="10" placeholder="您的登录密码" />
+												<input type="hidden" id="wxbind" name="wxbind" value="{$wxbind}" />
                                             </div>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
-                            <div class="content-block">
-                                <button type="submit" id="login" class="button button-big button-fill dpblue" style="width:100%">登录</button>
+                            <div class="content-block">									
+                                <button type="submit" id="login" class="button button-big button-fill dpblue" style="width:100%">{if $wxbind eq 1}微信绑定登录{else /}登录{/if}</button>
                             </div>
                             <div class="clearfix pr15 fz6" style="margin-top:-10px;">
                                 <a class="right blue-color" href="javascript:goToUrl('{:url('mobile/user/reset')}');">忘记密码？</a>
@@ -77,6 +77,6 @@
     <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>    
     <script type="text/javascript" src="/Public/wap/js/md5.js"></script>
-    <script type="text/javascript" src="/Public/wap/js/user.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/user.js?v=1"></script>
 </body>
 </html>
