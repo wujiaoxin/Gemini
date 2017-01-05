@@ -59,6 +59,10 @@ class Open extends Base {
 		return $this->fetch();
 	}
 	
+	public function help() {		
+		return $this->fetch();
+	}
+	
 	public function sendSmsCode($phone = '', $verifycode = '', $send_code  = '', $type = ''){
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
