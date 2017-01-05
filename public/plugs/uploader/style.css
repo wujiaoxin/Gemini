@@ -80,32 +80,26 @@ table {
 
 
 .uploader .placeholder {
-    /* border: 3px dashed #e6e6e6; */
-    min-height: 180px;
-    padding-top: 180px;
+    height: 380px;
     text-align: center;
-    background: url(./image.png) center 93px no-repeat;
+    /* background: url(./image.png) center 93px no-repeat; */
     color: #cccccc;
     font-size: 18px;
     position: relative;
-    margin: 0 2px 2px;
+    padding: 0 15px;
 }
 
 .uploader .placeholder .webuploader-pick {
-    width: 120px;
     font-size: 16px;
     background: #fff;
-    border: none;
     border-radius: 3px;
-    line-height: 44px;
-    padding: 0 30px;
+    height: 34px;
+    line-height: 34px;
     color: #ff9900;
     display: inline-block;
-    margin: 20px auto;
-    /* cursor: pointer; */
-    border: 1px solid #ccc;
+    border: 1px solid #ff9900;
     /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); */
-    top: 110px;
+    top: 310px;
 }
 
 /* .uploader .placeholder .webuploader-pick-hover {
@@ -375,6 +369,7 @@ table {
     position: relative;
     z-index: 10;
     color: white;
+    font-size: 22px;
 }
 
 .uploader .statusBar .info {

@@ -39,7 +39,7 @@
             padding-right: 5%;
         }
 
-        .webuploader-pick {
+        .filePicker2 .webuploader-pick {
             width: auto;
             margin-top : 0;
         }
@@ -47,22 +47,27 @@
             background: url('/public/wap/images/bg_borrowinfo.png') no-repeat top center;
         }
 
+        #uploader2 .placeholder {
+            height: 480px;
+            background: url('/public/wap/images/bg_carinfo.png') no-repeat top center;
+        }
+
+        #uploader2 .placeholder .webuploader-pick {
+            top: 410px;
+        }
+
         .imgSample{
             padding-top: 20px;
-            margin: auto auto;
-            width: 100%;
             background: white;
-            /* background: url('/public/wap/images/sampleImgBg.jpg'); */
-            position: relative;
             text-align: center;
         }
         #picker_car_pic_12 .webuploader-pick{
-            width: 180px;
+            width: 90%;
             padding: 13px 0;
             font-size: 16px;
             background: white;
             color: #ff9900;
-            border: 1px solid #ccc;
+            border: 1px solid #ff9900;
             margin: 10px auto;
         }
         
@@ -190,7 +195,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="form-group" id="carinfo">
+                            <div class="form-group carinfo">
                                 <div class="uploaderwrap">
                                     <div class="uploader_title">
                                         <h4>请上传相关车辆资料</h4>
@@ -214,7 +219,7 @@
                                     </div>   
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group carinfo">
                                     <div class="list-block">
                                         <div id="fileList_car_pic_12_sample" class="imgSample">
                                             <video width="230" controls>
@@ -257,6 +262,43 @@
     <script type="text/javascript" src="/public/wap/js/webuploader.custom.js"></script>
     <!-- <script type="text/javascript" src="/public/plugs/uploader/sortable.js"></script> -->
     <script type="text/javascript">
+         picList = [
+            {
+                form_key:"borrow_pic_1",
+                form_label:"身份证正面照片"
+            },
+            {
+                form_key:"borrow_pic_2",
+                form_label:"身份证反面照片"
+            },
+            {
+                form_key:"borrow_pic_3",
+                form_label:"驾驶证正副本"
+            },
+            {
+                form_key:"borrow_pic_4",
+                form_label:"放款通知单"
+            },
+            {
+                form_key:"borrow_pic_5",
+                form_label:"首付凭证"
+            },
+            {
+                form_key:"borrow_pic_6",
+                form_label:"购车发票"
+            },
+            {
+                form_key:"borrow_pic_7",
+                form_label:"车辆合格证"
+            },
+            {
+                form_key:"borrow_pic_8",
+                form_label:"车辆保单"
+            },
+            {
+                form_key:"borrow_pic_9",
+                form_label:"借款合同"
+            }];
         // $('#container').on('click',function(){
         //     var container = document.getElementById("filelist");
         //      Sortable.create(container);   
@@ -296,6 +338,7 @@
             }
         });
 
+        var form_label = "身份证照片";
         $(function(){
 
         sentUploader({
@@ -314,43 +357,43 @@
         });
 
         $("#picker_car_pic_12").SentUploader({
-                    fileNumLimit:1,
-                    uploadEvents: {
-                        uploadComplete:function(file){
-                            if(file.type.substring(0,6) == "video/"){
-                                $("#fileList_car_pic_12_sample").hide();
-                            }
-                        }
-                    },
-                    successFunc:function(response){
-                            if(response.info.path){
-                                 videoHtmlStr =  '<video controls>\
-                                                <source src="'+response.info.path+'" type="video/mp4">\
-                                                您的浏览器不支持 video 标签。\
-                                            </video>';
-                                setTimeout(function(){
-                                     $("#fileList_car_pic_12 > li > div.filebox").html(videoHtmlStr);
-                                }, 1000);     
-                            }
-                        },
-                    listName : 'fileList_car_pic_12',
-                    hiddenName: 'field_car_pic_12',
-                    hiddenValType:1,
-                    fileSingleSizeLimit:20*1024*1024,
-                    closeX:true,
-                    compress:{
-                        width: 1024,
-                        quality: 90,
-                        allowMagnify: false,
-                        crop: false,
-                        preserveHeaders: true,
-                        noCompressIfLarger: false,
-                        compressSize: 0
+            fileNumLimit:1,
+            uploadEvents: {
+                uploadComplete:function(file){
+                    if(file.type.substring(0,6) == "video/"){
+                        $("#fileList_car_pic_12_sample").hide();
+                    }
+                }
+            },
+            successFunc:function(response){
+                    if(response.info.path){
+                         videoHtmlStr =  '<video controls>\
+                                        <source src="'+response.info.path+'" type="video/mp4">\
+                                        您的浏览器不支持 video 标签。\
+                                    </video>';
+                        setTimeout(function(){
+                             $("#fileList_car_pic_12 > li > div.filebox").html(videoHtmlStr);
+                        }, 1000);     
                     }
                 },
-                {
-                    fileType: 'video'
-                });
+            listName : 'fileList_car_pic_12',
+            hiddenName: 'field_car_pic_12',
+            hiddenValType:1,
+            fileSingleSizeLimit:20*1024*1024,
+            closeX:true,
+            compress:{
+                width: 1024,
+                quality: 90,
+                allowMagnify: false,
+                crop: false,
+                preserveHeaders: true,
+                noCompressIfLarger: false,
+                compressSize: 0
+            }
+        },
+        {
+            fileType: 'video'
+        });
 
 
             var modal = myApp.modal({
@@ -363,7 +406,7 @@
                  onClick: function () {
                      $("#type").val(1);
                      $("#navbar_title").text('垫资申请-新车');
-                     $("#carinfo").hide();
+                     $(".carinfo").hide();
                  }
                },
                {

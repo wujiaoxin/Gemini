@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all"> 
 	<style>
+	#orderTabs{padding-top: 50px;}
 	.history-log ul li {height:72px;padding-top:10px;}
 	.order-id{width:100%; height: 24px; line-height: 24px;color:#666;font-size:12px;}
 	.order-name{width:100%; height: 24px; line-height: 24px;}
@@ -19,7 +20,9 @@
 	.orderInfo{float:left;}
 	.orderStatus{float:right;height:72px; line-height: 72px;}
 	.infinite-scroll-preloader{text-align: center;}
-	div.toolbar  a{margin: 0 5%}
+	.subnavbar{background:white;border-top:1px solid #DEDEDE;}
+	.subnavbar  a{color:#333333;font-size: 14px;padding: 10px;}
+	.tab_active {border-bottom: 2px solid #ff9900;color:#ff9900;}
 	</style>	
 </head>
 <body>    
@@ -30,13 +33,22 @@
 	                <div class="left">
 	                    <a href="javascript:goToUrl('/mobile/user')" class="link icon-only back">
 	                        <i class="icon icon-back color-orange"></i>
+	                        <span>返回</span>
 	                    </a>
 	                </div>
-	             	<div class="center blue-color">全部订单</div>
+	             	<div class="center">垫资订单</div>
 	             	<div class="right"></div>
+	        		<div class="subnavbar">
+					    <div class="navbar-inner">
+					        <a id="tab_" data_status='' data_text='全部订单'>全部订单</a>
+					        <a id="tab_0" data_status='0' data_text='待审核'>待审核</a>
+					        <a id="tab_1" data_status='1' data_text='已通过'>已通过</a>
+					        <a id="tab_2" data_status='2' data_text='未通过'>未通过</a>
+					    </div>
+					</div> 
 	            </div>
-	        </div>    
-            <div class="pages navbar-fixed toolbar-fixed">
+	        </div>     
+            <div class="pages navbar-fixed">
                 <div class="page">
                     <div class="page-content infinite-scroll pull-to-refresh-content">
 	                    <div class="pull-to-refresh-layer">
@@ -52,22 +64,6 @@
                     </div>
                     <div class="infinite-scroll-preloader">
 						<div class="preloader"></div>
-					</div>
-                    <div class="toolbar">
-					    <div class="toolbar-inner">
-					        <a id="tab_" data_status='' data_text='全部订单'>
-					        	<img src="/public/wap/images/allOrder.png" />
-					        </a>
-					        <a id="tab_0" data_status='0' data_text='待审核'>
-					        	<img src="/public/wap/images/checkingOrder.png" />
-					        </a>
-					        <a id="tab_1" data_status='1' data_text='已通过'>
-					        	<img src="/public/wap/images/passOrder.png" />
-					        </a>
-					        <a id="tab_2" data_status='2' data_text='未通过'>
-					        	<img src="/public/wap/images/rejectOrder.png" />
-					        </a>
-					    </div>
 					</div>
                 </div>
             </div>
@@ -168,9 +164,11 @@
 	});
 
 	//分类切换事件
-	$('div.toolbar-inner > a').on('click',function(){
+	$('div.subnavbar').on('click','a',function(){
 		$("ul.orderList").empty();
-		$('div.navbar .center').text($(this).attr('data_text'));
+		$(this).addClass('tab_active');
+		$(this).siblings('a').removeClass('tab_active');
+		// $('div.navbar .center').text($(this).attr('data_text'));
 		current_page = 1
 		status = $(this).attr('data_status');
 		getOrderList(current_page,$(this).attr('data_status'));

@@ -80,7 +80,7 @@ function sentUploader(options){
             },
             // dnd: '#dndArea',
             // paste: '#uploader',
-            swf: 'static/js/webuploader/Uploader.swf',
+            swf: '/public/plugs/uploader/Uploader.swf',
             chunked: false,
             chunkSize: 512 * 1024,
             server: '/mobile/files/upload.html',
@@ -481,8 +481,29 @@ function sentUploader(options){
             }
         });
 
-        uploader.onError = function( code ) {
-            ui_alert( 'Error: ' + code );
+        uploader.onError = function( error ) {
+            var title = error;
+            switch (error) {
+                case 'Q_EXCEED_NUM_LIMIT':
+                    title = '上传文件数量超出限制';
+                    break;
+                case 'F_EXCEED_SIZE':
+                    title = '单个文件大小超出限制';
+                    break;
+                case 'Q_EXCEED_SIZE_LIMIT':
+                    title = '文件总大小超出限制';
+                    break;
+                case 'Q_TYPE_DENIED':
+                    title = '文件类型限制';
+                    break;
+                case 'F_DUPLICATE':
+                    title = '同名文件已存在';
+                    break;
+                default:
+                    title = '未知类型上传错误' + type;
+                    break;
+            }
+             ui_alert( '提示:' + title );
         };
 
         $upload.on('click', function() {
