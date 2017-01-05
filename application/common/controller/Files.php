@@ -18,15 +18,15 @@ class Files {
 
 		$config = config('order_files_upload');
 		$file = request()->file('file');
-		$fileType = input('get.fileType', 'images', 'trim');
+		$fileType = input('fileType', 'images', 'trim');
 		if($fileType == 'video'){
 			$info = $file->validate(['ext'=>'mp4,mkv,avi,3gp,mov,mpg,rmvb,flv'])->move($config['rootPath'], true, false);
 		}else{
 			$info = $file->validate(['ext'=>'jpg,jpeg,png,gif'])->move($config['rootPath'], true, false);
 		}
-		$infoExtend['order_id'] = input('get.order_id', '0', 'trim');
-		$infoExtend['form_key'] = input('get.form_key', '', 'trim');
-		$infoExtend['form_label'] = input('get.form_label', '', 'trim');
+		$infoExtend['order_id'] = input('order_id', '0', 'trim');
+		$infoExtend['form_key'] = input('form_key', '', 'trim');
+		$infoExtend['form_label'] = input('form_label', '', 'trim');
 		if ($info) {
 			$return['status'] = 1;
 			$return['info']   = $this->save($config, $info, $infoExtend);
