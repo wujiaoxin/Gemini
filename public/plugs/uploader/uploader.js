@@ -27,6 +27,9 @@ function sentUploader(options){
 
             // 添加的文件总大小
             fileSize = 0,
+			
+			//添加文件的序号
+			fileIndex = 0,
 
             // 优化retina, 在retina下这个值是2
             ratio = window.devicePixelRatio || 1,
@@ -76,7 +79,7 @@ function sentUploader(options){
                 label: '点击选择图片'
             },
             formData: {
-                order_id: 0
+                type: 'images',
             },
             // dnd: '#dndArea',
             // paste: '#uploader',
@@ -85,7 +88,7 @@ function sentUploader(options){
             chunkSize: 512 * 1024,
             server: '/mobile/files/upload.html',
             // runtimeOrder: 'flash',
-
+			
             accept: {
                 title: 'Images',
                 extensions: 'gif,jpg,jpeg,bmp,png',
@@ -400,7 +403,6 @@ function sentUploader(options){
                     $progress.hide();
                     $( options.wrap +'FilePicker2' ).removeClass( 'element-invisible' );
                     $upload.text( '开始上传' );
-
                     stats = uploader.getStats();
                     if ( stats.successNum && !stats.uploadFailNum ) {
                         setState( 'finish' );
@@ -422,7 +424,20 @@ function sentUploader(options){
             updateStatus();
         }
 
+		uploader.onUploadStart = function(file) {
+			if(typeof(uploader.options.keyList) == "object"){
+				var keyList = uploader.options.keyList;
+				uploader.options.formData['form_key'] = keyList[fileIndex].form_key;
+			}
+			
+			fileIndex++;
+        }
+		
         uploader.onUploadSuccess = function(file, response) {
+			if (response.status == 0) {
+				//ui_alert(response.info);//TODO:异常处理
+				//return false;
+			}
             var $li = $('#'+file.id);
             $li.attr('value',response.info.id);
         }

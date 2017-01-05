@@ -18,7 +18,7 @@ class Files {
 
 		$config = config('order_files_upload');
 		$file = request()->file('file');
-		$fileType = input('fileType', 'images', 'trim');
+		$fileType = input('fileType', 'image', 'trim');
 		if($fileType == 'video'){
 			$info = $file->validate(['ext'=>'mp4,mkv,avi,3gp,mov,mpg,rmvb,flv'])->move($config['rootPath'], true, false);
 		}else{

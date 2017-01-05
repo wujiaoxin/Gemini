@@ -346,16 +346,40 @@
             formData:{
                 order_id:orderData.id
             },
-            fileNumLimit: 9
+            fileNumLimit: 9,
+			keyList: picList
         });
         sentUploader({
             wrap:'#uploader2',
             formData:{
-                order_id:orderData.id
+                order_id:orderData.id,
+				fileType:'image'
             },
             fileNumLimit: 11,
+			accept: {
+                title: 'Image',
+                extensions: 'gif,jpg,jpeg,bmp,png,mp4,mkv,avi,3gp,mov,mpg,rmvb,flv',
+                mimeTypes: 'image/*,video/*'
+            }
+        });
+		
+		sentUploader({
+            wrap:'#picker_car_pic_12',
+            formData:{
+                order_id:orderData.id,
+				fileType:'video',
+				form_key:"car_info_video",
+				form_label:"二手车视频"
+            },
+            fileNumLimit: 1,
+			accept: {
+                title: 'Video',
+                extensions: 'mp4,mkv,avi,3gp,mov,mpg,rmvb,flv',
+                mimeTypes: 'video/*'
+            }
         });
 
+/*
         $("#picker_car_pic_12").SentUploader({
             fileNumLimit:1,
             uploadEvents: {
@@ -394,7 +418,7 @@
         {
             fileType: 'video'
         });
-
+*/
 
             var modal = myApp.modal({
              title: 'VP贷-享全款的汽车分期',
