@@ -140,7 +140,26 @@ class Order extends Base {
 			return $this->error('请重新登录');
 		}
 		$info = db('Order')->where($map)->find();
-		if($info["type"] == 3){//车抵贷
+		
+		$filter['uid'] = $uid;
+		$filter['order_id'] = $info['id'];
+		$filter['status'] = 1;//有效文件
+		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->limit(100)->select();
+		$data = array(
+				'keyList' => $link->keyList,
+				'info'    => $info,
+				'files'   => $files,
+				'role'    => $role,
+		);
+		$this->assign($data);
+		if($info["type"] == 3){
+			return $this->fetch('viewCarloan');
+		}else{
+			return $this->fetch('viewBorrow');
+		}
+		
+		
+		/*if($info["type"] == 3){//车抵贷
 			$filter['uid'] = $uid;
 			$filter['order_id'] = $info['id'];
 			$filter['status'] = 1;//有效文件
@@ -169,7 +188,7 @@ class Order extends Base {
 			}else{
 				return $this->fetch();
 			}
-		}
+		}*/
 	}
 	
 	//审核API
