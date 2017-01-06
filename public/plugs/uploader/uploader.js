@@ -311,7 +311,6 @@ function sentUploader(options){
         // 负责view的销毁
         function removeFile( file ) {
             var $li = $('#'+file.id);
-
             delete percentages[ file.id ];
             updateTotalProgress();
             $li.off().find('.file-panel').off().end().remove();
@@ -428,15 +427,17 @@ function sentUploader(options){
 			if(typeof(uploader.options.keyList) == "object"){
 				var keyList = uploader.options.keyList;
 				uploader.options.formData['form_key'] = keyList[fileIndex].form_key;
+                uploader.options.formData['form_label'] = keyList[fileIndex].form_label;
 			}
-			
 			fileIndex++;
         }
 		
         uploader.onUploadSuccess = function(file, response) {
 			if (response.status == 0) {
-				//ui_alert(response.info);//TODO:异常处理
-				//return false;
+				$('#' + file.id).remove();
+                uploader.removeFile(file.id);
+                ui_alert(response.msg);
+                return false;
 			}
             var $li = $('#'+file.id);
             $li.attr('value',response.info.id);

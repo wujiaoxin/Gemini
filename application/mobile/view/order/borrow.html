@@ -98,7 +98,7 @@
                     <div>
                         <form method="post" class="form form-horizontal">
                             <input type="hidden" name="id" value=""/>
-                            <input type="hidden" name="type" id="type" value=1/>
+                            <input type="hidden" name="type" id="type" value="1"/>
                             <div class="form-group">
                                 <div class="uploaderwrap">
                                     <div class="uploader_title">
@@ -231,11 +231,21 @@
                                         </div>
                                         <input type="hidden" name="car_pic_12" id="field_car_pic_12" value="">
                                         <div id="fileList_car_pic_12" class="upload-file-list-info">
-                                        </div>
-                                        
+                                        </div>        
                                     </div>
                                 </div>
-                            </div>    
+                            </div>
+                            <div class="form-group carinfo">
+                                <div id="uploader" class="wu-example">
+                                <!--用来存放文件信息-->
+                                    <div id="thelist" class="uploader-list"></div>
+                                    <div class="btns">
+                                        <div id="picker">选择文件</div>
+                                        <button id="ctlBtn" class="btn btn-default">开始上传</button>
+                                    </div>
+                                </div>
+
+                            </div> 
                             <div class="content-block">
                                 <a class="button button-big button-raised butcom-css bg-orange" id="submit">提交申请</a>
                             </div>
@@ -264,11 +274,11 @@
          picList = [
             {
                 form_key:"borrow_pic_1",
-                form_label:"身份证正面照片"
+                form_label:"身份证正面照"
             },
             {
                 form_key:"borrow_pic_2",
-                form_label:"身份证反面照片"
+                form_label:"身份证反面照"
             },
             {
                 form_key:"borrow_pic_3",
@@ -302,6 +312,30 @@
         //     var container = document.getElementById("filelist");
         //      Sortable.create(container);   
         // });    
+        var uploader_video = WebUploader.create({
+
+    // swf文件路径
+            swf: '/public/plugs/uploader/Uploader.swf',
+
+            // 文件接收服务端。
+            server: '/mobile/files/upload.html',
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: '#picker',
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false,
+            formData:{
+                order_id:orderData.id,
+                fileType:'video'
+            }
+
+        });
+
+
+
+
 
         function tryOCR(id,type){
             if(type != 'idcard_face'){
@@ -337,17 +371,39 @@
             }
         });
 
-        var form_label = "身份证照片";
         $(function(){
+            var modal = myApp.modal({
+                title: 'VP贷-享全款的汽车分期',
+                text: '请选择订单类型',
+                verticalButtons: true,
+                buttons: [
+                   {
+                        text: '新车垫资',
+                        onClick: function () {
+                            $("#type").val(1);
+                            $("#navbar_title").text('垫资申请-新车');
+                            $(".carinfo").hide();
+                        }
+                    },
+                    {
+                        text: '二手车垫资',
+                        onClick: function () {
+                            $("#type").val(2);
+                            $("#navbar_title").text('垫资申请-二手车');
+                         }
+                    }]
+                });
 
         sentUploader({
             wrap:'#uploader1',
             formData:{
-                order_id:orderData.id
+                order_id:orderData.id,
+                fileType:'image'
             },
             fileNumLimit: 9,
 			keyList: picList
         });
+
         sentUploader({
             wrap:'#uploader2',
             formData:{
@@ -357,90 +413,68 @@
             fileNumLimit: 11,
 			accept: {
                 title: 'Image',
-                extensions: 'gif,jpg,jpeg,bmp,png,mp4,mkv,avi,3gp,mov,mpg,rmvb,flv',
-                mimeTypes: 'image/*,video/*'
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
             }
         });
-		
-		sentUploader({
-            wrap:'#picker_car_pic_12',
-            formData:{
-                order_id:orderData.id,
-				fileType:'video',
-				form_key:"car_info_video",
-				form_label:"二手车视频"
-            },
-            fileNumLimit: 1,
-			accept: {
-                title: 'Video',
-                extensions: 'mp4,mkv,avi,3gp,mov,mpg,rmvb,flv',
-                mimeTypes: 'video/*'
-            }
-        });
+	
+		// sentUploader({
+  //           wrap:'#picker_car_pic_12',
+  //           formData:{
+  //               order_id:orderData.id,
+		// 		fileType:'video',
+		// 		form_key:"car_info_video",
+		// 		form_label:"二手车视频"
+  //           },
+  //           fileNumLimit: 1,
+		// 	accept: {
+  //               title: 'Video',
+  //               extensions: 'mp4,mkv,avi,3gp,mov,mpg,rmvb,flv',
+  //               mimeTypes: 'video/*'
+  //           }
+  //       });
 
-/*
-        $("#picker_car_pic_12").SentUploader({
-            fileNumLimit:1,
-            uploadEvents: {
-                uploadComplete:function(file){
-                    if(file.type.substring(0,6) == "video/"){
-                        $("#fileList_car_pic_12_sample").hide();
-                    }
-                }
-            },
-            successFunc:function(response){
-                    if(response.info.path){
-                         videoHtmlStr =  '<video controls>\
-                                        <source src="'+response.info.path+'" type="video/mp4">\
-                                        您的浏览器不支持 video 标签。\
-                                    </video>';
-                        setTimeout(function(){
-                             $("#fileList_car_pic_12 > li > div.filebox").html(videoHtmlStr);
-                        }, 1000);     
+
+            $("#picker_car_pic_12").SentUploader({
+                fileNumLimit:1,
+                uploadEvents: {
+                    uploadComplete:function(file){
+                        if(file.type.substring(0,6) == "video/"){
+                            $("#fileList_car_pic_12_sample").hide();
+                        }
                     }
                 },
-            listName : 'fileList_car_pic_12',
-            hiddenName: 'field_car_pic_12',
-            hiddenValType:1,
-            fileSingleSizeLimit:20*1024*1024,
-            closeX:true,
-            compress:{
-                width: 1024,
-                quality: 90,
-                allowMagnify: false,
-                crop: false,
-                preserveHeaders: true,
-                noCompressIfLarger: false,
-                compressSize: 0
-            }
-        },
-        {
-            fileType: 'video'
-        });
-*/
-
-            var modal = myApp.modal({
-             title: 'VP贷-享全款的汽车分期',
-             text: '请选择订单类型',
-             verticalButtons: true,
-             buttons: [
-               {
-                 text: '新车垫资',
-                 onClick: function () {
-                     $("#type").val(1);
-                     $("#navbar_title").text('垫资申请-新车');
-                     $(".carinfo").hide();
-                 }
-               },
-               {
-                 text: '二手车垫资',
-                 onClick: function () {
-                     $("#type").val(2);
-                     $("#navbar_title").text('垫资申请-二手车');
-                 }
-               },
-             ]
+                successFunc:function(response){
+                        if(response.info.path){
+                             videoHtmlStr =  '<video autoplay="autoplay">\
+                                            <source src="'+response.info.path+'" type="video/mp4">\
+                                            您的浏览器不支持 video 标签。\
+                                        </video>';
+                            setTimeout(function(){
+                                 $("#fileList_car_pic_12 > li > div.filebox").html(videoHtmlStr);
+                            }, 1000);     
+                        }
+                    },
+                listName : 'fileList_car_pic_12',
+                hiddenName: 'field_car_pic_12',
+                hiddenValType:1,
+                fileSingleSizeLimit:20*1024*1024,
+                closeX:true,
+                compress:{
+                    width: 1024,
+                    quality: 90,
+                    allowMagnify: false,
+                    crop: false,
+                    preserveHeaders: true,
+                    noCompressIfLarger: false,
+                    compressSize: 0
+                }
+            },
+            {
+                fileType: 'video'
             });
+
+            
 
 
             $("#submit").click(function(){       
