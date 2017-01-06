@@ -496,9 +496,10 @@
                 var idcard_num = $('#idcard_num').val();
                  ajax_jquery({
                     type: 'post',
-                    url: '/mobile/order/add',
+                    url: '/mobile/order/borrow',
                     datatype:'json',
                     data: {
+						'id':orderData.id,
                         'type':type,
                         'name':idcard_name,
                         'bank_uid': '',

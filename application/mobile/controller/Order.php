@@ -428,7 +428,7 @@ class Order extends Base {
 			$data = input('post.');
 			if ($data) {
 				$data['status'] = 0;
-				$result = $orderModel->save($data, array('id' => $data['id'], 'uid' => $uid));
+				$result = $orderModel->isUpdate(true)->save($data, array('id' => $data['id'], 'uid' => $uid));
 				if ($result) {
 					return $this->success("提交成功！", url('Order/index'));
 				} else {
@@ -486,7 +486,7 @@ class Order extends Base {
 			$data = input('post.');
 			if ($data) {
 				$data['status'] = 0;
-				$result = $orderModel->save($data, array('id' => $data['id'], 'uid' => $uid));//TODO:防status偷天换日
+				$result = $orderModel->isUpdate(true)->save($data, array('id' => $data['id'], 'uid' => $uid));//TODO:防status偷天换日  id为空判断
 				if ($result) {
 					return $this->success("提交成功！", url('Order/index'));
 				} else {
