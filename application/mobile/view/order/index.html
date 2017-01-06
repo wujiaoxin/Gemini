@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all"> 
 	<style>
-	#orderTabs{padding-top: 50px;}
+	#orderTabs{padding-top: 40px;}
 	.history-log ul li {height:72px;padding-top:10px;}
 	.order-id{width:100%; height: 24px; line-height: 24px;color:#666;font-size:12px;}
 	.order-name{width:100%; height: 24px; line-height: 24px;}
@@ -33,7 +33,6 @@
 	                <div class="left">
 	                    <a href="javascript:goToUrl('/mobile/user')" class="link icon-only back">
 	                        <i class="icon icon-back color-orange"></i>
-	                        <span>返回</span>
 	                    </a>
 	                </div>
 	             	<div class="center">垫资订单</div>
@@ -82,6 +81,10 @@
 	var current_page = 1; 
 	var status = '';
 	var orderType = getUrlParam("type");
+
+	if(orderType == 3){
+		$('.navbar .navbar-inner > .center').text('车抵订单');
+	};
 
 	function fillZero(i){
 		if (i<10){
@@ -188,6 +191,7 @@
 
 
 	$(function(){
+		$('#tab_').addClass('tab_active');
 		$('#tab_' + getUrlParam('status')).click();
 		getOrderList(current_page,status);
 		$(".orderList").on("click", "li", function(){
