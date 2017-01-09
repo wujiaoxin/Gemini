@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
+    <script>
+		var BASE_URL = ""; //根目录地址
+        var imgList = {};
+        var picList = [];
+        //for(var index = 0)
+        {volist name="files" id="file"}
+            {if isset($file['form_key'])}
+            imgList["{$file['form_key']}"] = {};
+            imgList["{$file['form_key']}"].src = "{$file['path']|default=''}";
+            imgList["{$file['form_key']}"].label = "{$file['form_label']|default=''}";
+            imgList["{$file['form_key']}"].key = "{$file['form_key']}";
+            {/if}
+        {/volist}
+        picList[0] = [
+            {
+                form_key:"borrow_pic_1",
+                form_label:"身份证正面照片"
+            },
+            {
+                form_key:"borrow_pic_2",
+                form_label:"身份证反面照片"
+            },
+            {
+                form_key:"borrow_pic_3",
+                form_label:"驾驶证正副本"
+            },
+            {
+                form_key:"borrow_pic_4",
+                form_label:"放款通知单"
+            },
+            {
+                form_key:"borrow_pic_5",
+                form_label:"首付凭证"
+            },
+            {
+                form_key:"borrow_pic_6",
+                form_label:"购车发票"
+            },
+            {
+                form_key:"borrow_pic_7",
+                form_label:"车辆合格证"
+            },
+            {
+                form_key:"borrow_pic_8",
+                form_label:"车辆保单"
+            },
+            {
+                form_key:"borrow_pic_9",
+                form_label:"借款合同"
+            }];
+        picList[1] = [
+            {
+                form_key:"carinfo_pic_1",
+                form_label:"行驶证正副本"
+            },
+            {
+                form_key:"carinfo_pic_2",
+                form_label:"车辆登记证1、2页"
+            },
+            {
+                form_key:"carinfo_pic_3",
+                form_label:"车辆登记证3、4页"
+            },
+            {
+                form_key:"carinfo_pic_4",
+                form_label:"车头含车牌全车照"
+            },
+            {
+                form_key:"carinfo_pic_5",
+                form_label:"车尾含车牌全车照"
+            },
+            {
+                form_key:"carinfo_pic_6",
+                form_label:"侧面全车照"
+            },
+            {
+                form_key:"carinfo_pic_7",
+                form_label:"内饰"
+            },
+            {
+                form_key:"carinfo_pic_8",
+                form_label:"仪表盘含公里数"
+            },
+            {
+                form_key:"carinfo_pic_9",
+                form_label:"风挡VIN"
+            },
+            {
+                form_key:"carinfo_pic_10",
+                form_label:"引擎盖打开发动机舱"
+            },
+            {
+                form_key:"carinfo_pic_11",
+                form_label:"铭牌"
+            }];
+
+    </script>
+	<style type="text/css">
+		.list-block {
+			margin: 15px 0;
+		}
+		.list-block ul{
+			border-top: 0.5px solid #DEDEDE;
+			border-bottom: 0.5px solid #DEDEDE;
+		}
+		.list-block .item-content {
+			height: 36px;
+			min-height: auto;
+		}
+		.list-block li {
+			padding-top: 5px ;
+			padding-bottom: 8px;
+		}
+
+		.list-block li:after {
+		  	content: '';
+		  	position: absolute;
+		  	left: 15px;
+		  	bottom: 0;
+		  	right: 15px;
+		  	top: auto;
+		  	height: 0.8px;
+		  	width: auto;
+		  	background-color: #DEDEDE;
+		  	display: block;
+		  	z-index: 15;
+		  	-webkit-transform-origin: 50% 100%;
+		  	transform-origin: 50% 100%;
+		}
+		.list-block .item-inner:after {
+			height: 0;
+		}
+		.list-block .item-inner span {
+			letter-spacing: 0;
+		}
+
+		.list-block .item-after {
+			font-size: 14px;
+		}
+        .carinfo_video {
+            text-align: center;
+        }
+
+		.swiper-slide {
+          background: #fff;
+          box-sizing: border-box;
+          border: 1px solid #ccc;
+        }        
+        .swiper-container {
+          height: 120px;
+        }
+        .photo-browser-swiper-container{
+            padding: 15% 0;
+            height: 80%;
+        }
+        .swiper-container-horizontal > .swiper-pagination {
+          bottom: 6px;
+        }
+        .swiper-slide{line-height: 116px;}
+        .swiper-slide img {vertical-align: middle;}
+	</style>
+</head>
+<body>   
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center">查看订单</div>
+                    <!--<div class="right">
+                    </div>-->
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="dqassess" class="page">						
+					<div class="page-content main-box clearfix">
+						<div class="list-block">
+						  	<ul>
+								<li>
+								    <div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title color-gray">
+								            	<span>订单编号:&nbsp;</span>
+								            	<span>{$info['sn']}</span>
+								            </div>
+								            <div class="item-after">
+								            {if isset($info['status'])}
+												{if $info['status'] == 1}
+													<span class="color-orange">审核通过</span>
+												{elseif $info['status'] == 2/}
+													<span class="color-red">审核未通过</span>	
+												{else /}
+													<span class="color-orange">审核中</span>
+												{/if}
+											{/if}
+											</div>
+								        </div>
+								    </div>
+							    </li>
+							    <li>
+							    	<div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title">
+								            	<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:&nbsp;</span>
+								            	<span>{$info['name']}</span>
+								            </div>
+								        </div>
+							        </div> 
+							    	<div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title">
+								            	<span>身份证号:&nbsp;</span>
+								            	<span>{$info['idcard_num']}</span>
+								            </div>
+								        </div>
+							        </div> 
+							    </li>
+							    <li>
+							    	<div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title">
+								            	<span>订单类型:&nbsp;</span>
+								            	<span>{if $info['type'] == 1/}新车垫资{elseif $info['type'] == 2/}二手车垫资{/if}</span>
+								            </div>
+								        </div>
+							        </div> 
+							    	<div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title">
+								            	<span>贷款额度:&nbsp;</span>
+								            	<span>{$info['loan_limit']}</span>
+								            </div>
+								        </div>
+							        </div>
+							        <div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title">
+								            	<span>申请时间:&nbsp;</span>
+								            	<span>{$info['create_time'|date='Y-m-d H:i',###]}</span>
+								            </div>
+								        </div>
+							        </div>
+							    </li>
+							</ul>
+						</div>
+						<div class="content-block-title">借款资料</div>
+                        <div class="swiper-container swiper-3" id="swiper0" data-index="0">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-wrapper"></div>
+                        </div> 
+                        <div class="carinfo">
+                            <div class="content-block-title">车辆资料</div>
+                            <div class="swiper-container swiper-3" id="swiper1" data-index="1">
+                                <div class="swiper-pagination"></div>
+                                <div class="swiper-wrapper"></div>
+                            </div>
+                            <div class="content-block-title">车辆视频</div>
+                            <div class="carinfo_video">
+                                <video controls="controls">
+                                    <source src="" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                        {if isset($info['status']) && isset($role)}  
+                            {if $role == 1 AND $info['status'] == 0}
+                            <div class="content-block">
+                                <a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder({$info['id']},'1')">撤销订单</a>
+                            </div>
+                            {/if}
+                            <!-- {if $role == 2}
+                            <div class="list-block">
+                                <ul>
+                                    <li>
+                                      <label class="label-radio item-content">
+                                        <input type="radio" name="examine_status" id="examinePass" value="1">
+                                        <div class="item-inner">
+                                            <div class="item-title">审核通过</div>
+                                        </div>
+                                      </label>
+                                    </li>
+                                    <li>
+                                        <label class="label-radio item-content">
+                                        <input type="radio" name="examine_status" value="2">
+                                        <div class="item-inner">
+                                            <div class="item-title">审核拒绝</div>
+                                        </div>
+                                        </label>
+                                        <input type="hidden" name="addr" id="addr" value=1 />
+                                    </li>
+                                </ul>        
+                            </div>  
+                            <div class="content-block">
+                                <a class="button button-big button-raised butcom-css dpblue" href="javascript:examine({$info['id']});">提交审核</a>
+                            </div>
+                            {/if} -->
+                        {/if}
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/public/wap/js/order.js"></script>
+    <script type="text/javascript">
+    	var photoBrowserParam = [];
+        var myPhotoBrowser = []; 
+        var type = {$info['type']};
+        if(type == 1) {
+            $('.carinfo').hide();
+        } 	
+        for (var i in picList) {
+            var tempList = picList[i];
+            var param = [];
+            var swiperHtmlStr = ''
+            for (var j = 0; j < tempList.length; j++) {
+                var key = tempList[j].form_key;
+                if(typeof(imgList[key])=='object'){
+                    swiperHtmlStr += '<div class="swiper-slide"><img src="' + imgList[key].src + '" /></div>';
+                    param[j] ={
+                        url: imgList[key].src,
+                        caption: imgList[key].label
+                    };
+                }
+            }
+            $("#swiper"+i+" > .swiper-wrapper").html(swiperHtmlStr);
+            myPhotoBrowser[i] = myApp.photoBrowser({
+                photos : param,
+                theme: 'dark',
+                type: 'popup',
+                backLinkText: ' ',
+                lazyLoading: true,
+                lazyLoadingInPrevNext: true
+            });
+        };
+        myApp.swiper('.swiper-3', {
+            pagination:'.swiper-3 .swiper-pagination',
+            spaceBetween: 10,
+            slidesPerView: 3
+        });
+        $('div.swiper-3').on('click','div.swiper-slide',function(ev){ //浏览点击的图片
+            var num = $(this).index();
+            var index = $(ev.delegateTarget).attr("data-index");
+            myPhotoBrowser[index].open(num);
+        });
+    </script>
+</body>
+</html>

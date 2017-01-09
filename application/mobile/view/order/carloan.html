@@ -147,6 +147,49 @@
         .optional-box{
             border: 1px dashed green;
         }
+        .stepShow {
+            margin: 15px auto;
+            width: 80%;
+            text-align: center;
+            position: relative;
+        }
+        .stepContent {
+           letter-spacing: 0;
+           width: 70px;
+           text-align: center;
+           display: inline-block;
+        }
+        .num_circle {
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            color: white;
+            text-align: center;
+            font-size: 28px;
+            border-radius: 50%;
+            background-color: #DDDDDD;
+            margin: 0 auto 5px;
+        }
+        .step-progress {
+            width: 100%;
+            height: 4px;
+            position: absolute;
+            z-index: -1;
+            top: 14px;
+        }
+        .step-progress-bar {
+            width: auto;
+            height: 100%;
+            margin:0 35px;
+            background: #DDDDDD;
+        }
+        .step-progress-highlight {
+            background: #ff9900;
+            display: block;
+            width: 0%;
+            height: 100%;
+        }
+
     </style>
 </head>
 <body>   
@@ -159,12 +202,33 @@
                             <i class="icon icon-back color-orange"></i>
                         </a>
                     </div>
-                    <div class="center blue-color">车抵贷</div>
+                    <div class="center">车抵贷</div>
                 </div>
             </div>
             <div class="pages navbar-through">
-                <div data-page="dqassess" class="page">                     
+                <div class="page">                     
                 <div class="page-content main-box clearfix bg-white">
+                    <div class="stepShow">
+                    <div class="row">
+                        <div class="stepContent">
+                            <div class="num_circle">1</div>
+                            <p>借款人资料</p>
+                        </div>
+                        <div class="stepContent">
+                            <div class="num_circle">2</div>
+                            <p>车辆图片</p>
+                        </div>
+                        <div class="stepContent">
+                            <div class="num_circle">3</div>
+                            <p>借款人协议</p>
+                        </div>
+                    </div>
+                    <div class="step-progress">
+                        <p class="step-progress-bar">
+                            <span class="step-progress-highlight"></span>
+                        </p>
+                    </div>
+                    </div>
                     <div class="main-box-title">
                         <h4 class="color-black">请如实提交相关资料证明</h4>
                     </div>
@@ -172,21 +236,7 @@
                          <form method="post" class="form form-horizontal">
                             <input type="hidden" name="id" value="0"/>
                             <input type="hidden" name="bank_uid" value="0"/>
-                            
                         </form>
-                        <!--
-                        <div class="content-block">
-                            <div class="col-100">
-                                <div class="row">
-                                    <label class="col-70">自动识别,请确认姓名、身份证号无误</label>
-                                    <label class="col-30 color-blue" id="inputModify">点击修改</label>
-                                </div>
-                                <label class="control-label">贷款人姓名</label>
-                                <input type="text" name="idcard_face_pic_name" id="field_idcard_face_pic_name" value="" disabled="disabled">
-                                <label class="control-label">贷款人身份证号</label>
-                                <input type="text" name="idcard_face_pic_idNumber" id="field_idcard_face_pic_idNumber" value="" disabled="disabled">
-                            </div>
-                        </div>-->
                         <div id="picList">
                         </div>
                          <div id="loanerInfo" class="form-group" style="display:none;">
@@ -222,6 +272,9 @@
     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/webuploader.custom.js"></script>
     <script type="text/javascript">
+
+
+
     function getIdcarNum(){
         var field_idcard_face_pic_id =  '';
         if(orderData['carloan_loaner_1']){
@@ -272,11 +325,23 @@
         if(r!=null)return  unescape(r[2]); return null;
     }
 
+    function stepbarShow (step,width) {
+        $(".stepContent:lt("+step+")").children('.num_circle').css('background-color','#ff9900')
+                            .next('p').css('color','#ff9900');
+        $(".step-progress-highlight").css('width',width); 
+    }
+
     var step = GetQueryString("step");
     if(step < 1 || step > 2){
         step = 0 
     };
-    if(step == 2){
+    if(step == 0){
+        stepbarShow('1','25%');
+    } else if (step == 1) {
+        stepbarShow('2','75%');
+    } else if (step == 2) {
+        stepbarShow('3','100%');
+        //提交页
         $("#submit").text("提交");
         getIdcarNum();
         $('#loanerInfo').show();
