@@ -40,7 +40,7 @@ img{border:none;}
 .clearfix { *zoom: 1; }
 .oranger{color:#f86e12;}
 .vm{vertical-align: middle;}
-.view{background: url(../images/loading.gif) no-repeat center center;}
+.view{background: url(../images/loading.svg) no-repeat center center;}
 .vermid{vertical-align: top; margin-right: 5px;}
 .clearfix:before, .clearfix:after { display: table; line-height: 0; content: ""; } 
 .clearfix:after { clear: both; } 
@@ -91,7 +91,7 @@ img{border:none;}
 .mid-cricle-fb{width:7rem; height: 7rem; border:0.15rem transparent solid; border-left:0.15rem #fe7979 solid; border-top:0.15rem #fe7979 solid;  margin-left: -3.65rem; top:-0.15rem; transform:rotate(-45deg); -weikit-transform:rotate(-45deg); -moz-transform:rotate(-45deg); -ms-transform:rotate(-45deg); -o-transform:rotate(-45deg);}
 .mid-cricle-sb{width:7.4rem; height: 7.4rem; border:0.15rem transparent solid; border-left:0.15rem #44c6f6 solid; border-top:0.15rem #44c6f6 solid;  margin-left: -3.85rem; top:-0.35rem; transform:rotate(-90deg); -weikit-transform:rotate(-90deg); -moz-transform:rotate(-90deg); -ms-transform:rotate(-90deg); -o-transform:rotate(-90deg);}
 .mid-cricle-tb{width:7.8rem; height: 7.8rem; border:0.15rem transparent solid; border-left:0.15rem #3e9de8 solid; border-top:0.15rem #3e9de8 solid;  margin-left: -4.05rem; top:-0.55rem; transform:rotate(-135deg); -weikit-transform:rotate(-135deg); -moz-transform:rotate(-135deg); -ms-transform:rotate(-135deg); -o-transform:rotate(-135deg);}
-#loading{width:100%; height: 100%; display: none; background: rgba(0,0,0,.2) url(../images/loading.gif) no-repeat center center; position: fixed; top:0; left:0; z-index: 9999;}
+#loading{width:100%; height: 100%; display: none; background: rgba(0,0,0,.2) url(../images/loading.svg) no-repeat center center; position: fixed; top:0; left:0; z-index: 9999;}
 .loading{width:60px; height: 22px; text-align: center; line-height: 22px; border-radius: 10px; background: #3bc3f6; color:#fff; margin-right: 5px; display: inline-block;}
 #assess-return{display: none;}
 .ed-assesslow{color: #666; font-size: 0.7rem;  padding-bottom:10px;}
