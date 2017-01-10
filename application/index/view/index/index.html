@@ -1,108 +1,275 @@
-{extend name="public/base"/}
-{block name="body"}
-<div id="myCarousel" class="carousel slide">
-	<ol class="carousel-indicators">
-		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-		<li data-target="#myCarousel" data-slide-to="1"></li>
-		<li data-target="#myCarousel" data-slide-to="2"></li>
-	</ol>
-	<div class="carousel-inner">
-		<div class="item active" style="background:#dde2e8;">
-			<img src="__IMG__/slide1.png" alt="第一张">
-		</div>
-		<div class="item" style="background:#F5E4DC;">
-			<img src="__IMG__/slide2.png" alt="第二张">
-		</div>
-		<div class="item" style="background:#DE2A2D;">
-			<img src="__IMG__/slide3.png" alt="第三张">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="VP贷是汽车分期即时提车服务软件，是杭州互纳科技有限公司旗下专注提升汽车金融服务效率的互联网产品。享全款的汽车分期，就找VP贷。">
+	<meta name="keywords" content="VPDAI,VP贷,互纳科技,汽车消费金融服务,汽车分期,vpdai">
+	<meta name="author" content="">
+	<title>VP贷-享全款的汽车分期</title>
+	<link rel="stylesheet" href="public/css/bootstrap/bootstrap.min.css">
+	<style type="text/css">
+		.navbar{
+			margin-bottom: 0;
+			height: 60px;
+			border: 0;
+			line-height: 60px;
+		}
+		.nav-container{
+			padding: 0 140px 0 90px;
+		}
+		.navbar-inner{
+			display: inline-block;
+			vertical-align: middle;
+			margin-left: 20px;
+		}
+
+		.m-banner{
+			position: relative;
+		}
+		#cardealerApply{
+			position: absolute;
+			top: 66px;
+			left: 218px;
+			color: white;
+		}
+		#cardealerApply input{
+			border: none;
+			border-radius: 0;
+			background: none;
+			border-bottom: 1px solid rgba(255,255,255,.15);
+			width: 210px;
+			margin-top: 12px;
+			padding-left: 0;
+			font-size: 16px;
+			color: white;
+		}
+		#postBtn{
+			width: 210px;
+			height: 36px;
+			margin-top: 50px;
+			background: #ff9900;
+			border-radius: 0;
+			color: white;
+			font-size: 16px;
+		}
+		.m-PTcontent{
+			height: 360px;
+			color: #103256;
+		}
+		.m-PTcontent-title{
+			font-size: 30px;
+			padding-top: 38px;
+			padding-bottom: 28px;
+		}
+		.m-PTcontent-content{
+			width: 1000px;
+		}
+		.m-PTcontent-des1{
+			font-size: 24px;
+			margin: 0;
+		}
+		.m-PTcontent-des2{
+			font-size: 16px;
+			color: #9197AA;
+		}
+		#voiceOfmarket{
+			background: #FAFAFA;
+			color: #45AFE4;
+		}
+		#voiceOfmarket .row{
+			margin-bottom: 20px;
+		}
+		#loanStep{
+			color: white;
+			background: url('public/pc/images/maskCopy.png')
+		}
+		#loanStep .m-PTcontent-step{
+			color: #FF9900;
+			font-size: 72px;
+			line-height: 100px;
+			margin: 0;
+		}
+		#loanStep .m-PTcontent-des2{
+			color: white;
+			opacity: 0.7;
+		}
+		#loanStep .xcode-desc{
+			font-size: 24px;
+			opacity: 0.7;
+		}
+		#footer{
+			height: 100px;
+			background: #525252;
+		}
+		#footer p{
+			color: white;
+			opacity: 0.7;
+			margin: 15px 0 0 0;
+		}
+	</style>	
+</head>
+<body>
+	<nav class="navbar" role="navigation">
+		<div class="container nav-container">
+		 	<div class="row">
+			 	<div class="navbar-left">
+			 		<img src="public/pc/images/logo.png">
+			 	</div>
+			 	<div class="navbar-inner">
+			 		<img src="public/pc/images/slogan.png">
+			 	</div>
+			 	<div class="navbar-right">
+			 		<span>咨询电话：0571-87813085</span>
+			 	</div>
+	  		</div>
+	  	</div>
+	</nav>
+	<div class="m-banner">
+		<img src="public/pc/images/banner.png">
+		<form id="cardealerApply" enctype="multipart/form-data" method="post" onsubmit="return doPost();">
+			<h2>立刻申请，最快15分钟放款</h2>
+			<div class="formgroup">
+				<input class="form-control" id="contacts" type="text" name="contacts" placeholder="请输入您的姓名">
+				<input class="form-control" id="mobile" type="text" name="mobile" placeholder="请输入手机号码">
+				<input class="form-control" id="name" type="text" name="name" placeholder="请输入企业名称">
+				<button type="submit" id="postBtn" class="btn">车商入驻</button>
+			</div>
+		</form>
+	</div>
+	<div class="m-PTcontent text-center">
+		<p class="m-PTcontent-title">“我们的优势”</p>
+		<div class="container m-PTcontent-content">
+			<div class="row">
+				<div class="col-md-3">
+					<img src="public/pc/images/icon1.png">
+					<p class="m-PTcontent-des1">低门槛</p>
+					<p class="m-PTcontent-des2">车商专享</p>
+				</div>
+				<div class="col-md-3">
+					<img src="public/pc/images/icon2.png">
+					<p class="m-PTcontent-des1">审核快</p>
+					<p class="m-PTcontent-des2">10分钟极速反馈</p>
+				</div>
+				<div class="col-md-3">
+					<img src="public/pc/images/icon3.png">
+					<p class="m-PTcontent-des1">放款快</p>
+					<p class="m-PTcontent-des2">互联网的速度</p>
+				</div>
+				<div class="col-md-3">
+					<img src="public/pc/images/icon4.png">
+					<p class="m-PTcontent-des1">大额度</p>
+					<p class="m-PTcontent-des2">单笔最高100万</p>
+				</div>
+			</div>
 		</div>
 	</div>
-	<a href="#myCarousel" data-slide="prev" class="carousel-control left">
-		<span class="glyphicon glyphicon-chevron-left"></span>
-	</a>
-	<a href="#myCarousel" data-slide="next" class="carousel-control right">
-		<span class="glyphicon glyphicon-chevron-right"></span>
-	</a>
-</div>
-
-<div class="tab1">
-	<div class="container">
-		<h2 class="tab-h2">「为什么选择VP贷」</h2>
-		<p class="tab-p">简单强大的风控审核系统，让汽车分期更方便，更快捷</p>
-		<div class="row">			
-			<div class="col-md-6 col">
-				<div class="media">
-					<div class="media-left">
-						<img src="__IMG__/tab1-3.png" class="media-object" alt="">
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">15分钟极速放款</h4>
-						<p>轻松申请、高效审批、快速放款。最高可申请200000额度分期垫资。</p>
-					</div>
+	<div id="voiceOfmarket" class="m-PTcontent text-center">
+		<p class="m-PTcontent-title">“市场的声音”</p>
+		<div class="container m-PTcontent-content">
+			<div class="row text-left">
+				<div class="col-md-1"></div>
+				<div class="col-md-4">
+					<p class="m-PTcontent-des1">想快速提车，银行放款慢？</p>
+					<p class="m-PTcontent-des2">提交资料后半小时内即可到账，达到“一键提车”，车商回款快快快！</p>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-4">
+					<p class="m-PTcontent-des1">借款流程太繁琐？</p>
+					<p class="m-PTcontent-des2">超越传统模式，资料直接通过线上提交，“快而有序”，业务效率蹭蹭蹭！</p>
 				</div>
 			</div>
-			<div class="col-md-6 col">
-				<div class="media">
-					<div class="media-left">
-						<img src="__IMG__/tab1-4.png" class="media-object" alt="">
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">7×24小时服务</h4>
-						<p>一对一专属客户服务；专业客服团队提供7*24小时不间断技术服务，快速响应客户需求。</p>
-					</div>
+			<div class="row text-left">
+				<div class="col-md-1"></div>
+				<div class="col-md-4">
+					<p class="m-PTcontent-des1">担心回款有风险？</p>
+					<p class="m-PTcontent-des2">专业风控团队把控风险，合作银行直接回款，只引入优质客户源，</p>
 				</div>
-			</div>
-			<div class="col-md-6 col">
-				<div class="media">
-					<div class="media-left">
-						<img src="__IMG__/tab1-1.png" class="media-object" alt="">
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">基于阿里金融云</h4>
-						<p>依托阿里云ECS/RDS/OSS服务，提供可靠的系统服务。将传统车贷服务标准化，简单化，高效化</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 col">
-				<div class="media">
-					<div class="media-left">
-						<img src="__IMG__/tab1-2.png" class="media-object" alt="">
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">安全可靠</h4>
-						<p>提供的稳健的安全策略，包括备份恢复，容错，防止恶意攻击登陆，保证系统安全，可靠，稳定的运行。</p>
-					</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-4">
+					<p class="m-PTcontent-des1">盈利空间被压缩？</p>
+					<p class="m-PTcontent-des2">业内极具竞争力的息差，利润广阔</p>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-{/block}
-
-{block name="script"}
-<script type="text/javascript">
-	//轮播自动播放
-	$('#myCarousel').carousel({
-		//自动4秒播放
-		interval : 3000,
-	});
-
-	//设置文字垂直居中，谷歌浏览器加载图片的顺序问题，导致高度无法获取
-	$(window).load(function () {
-		$('.text').eq(0).css('margin-top', ($('.auto').eq(0).height() - $('.text').eq(0).height()) / 2 + 'px');
-	});
-	
-
-	$(window).resize(function () {
-		$('.text').eq(0).css('margin-top', ($('.auto').eq(0).height() - $('.text').eq(0).height()) / 2 + 'px');
-	});
-
-	$(window).load(function () {
-		$('.text').eq(1).css('margin-top', ($('.auto').eq(1).height() - $('.text').eq(1).height()) / 2 + 'px');
-	});
-
-	$(window).resize(function () {
-		$('.text').eq(1).css('margin-top', ($('.auto').eq(1).height() - $('.text').eq(1).height()) / 2 + 'px');
-	});
-</script>
-{/block}
+	<div id="loanStep" class="m-PTcontent text-center">
+		<p class="m-PTcontent-title">“仅需三步，极速借款”</p>
+		<div class="container m-PTcontent-content">
+			<div class="row">
+				<div class="col-md-3">
+					<p class="m-PTcontent-step">1</p>
+					<p class="m-PTcontent-des1">车商申请</p>
+					<p class="m-PTcontent-des2">在线注册并提交申请</p>
+				</div>
+				<div class="col-md-3">
+					<p class="m-PTcontent-step">2</p>
+					<p class="m-PTcontent-des1">电话沟通</p>
+					<p class="m-PTcontent-des2">客服10分钟内致电</p>
+				</div>
+				<div class="col-md-3">
+					<p class="m-PTcontent-step">3</p>
+					<p class="m-PTcontent-des1">签署协议</p>
+					<p class="m-PTcontent-des2">最快当天完成签约</p>
+				</div>
+				<div class="col-md-3">
+					<img src="public/pc/images/xcode.png">
+					<p class="xcode-desc">极速借款</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer id="footer">
+		<div class="container text-center">
+			<p>汽车分期 | 合作事宜 | 版权投诉</p>
+			<p>浙ICP备16040927号. © 2016 杭州互纳科技有限公司.  Hangzhou Huna Technology Co., Ltd</p>
+		</div>
+	</footer>
+	<script src="public/js/jquery.js"></script>
+	<script src="public/js/bootstrap.js"></script>
+	<script type="text/javascript">
+		function validatePhoneNumber(mobile) {
+		   	var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})|145|147|222)+\d{8})$/;
+		    if (!myreg.test(mobile)) {
+		        return false;
+		    } else {
+		        return true
+		    }
+		}
+		function doPost(){
+		var mobile = $("#mobile").val();
+		var name = $("#name").val();
+		var contacts = $("#contacts").val();
+		if (mobile == "" || name == "" || contacts == "") {
+			alert("请输入正确信息");
+		}else if (validatePhoneNumber(mobile) == false) {
+			alert("请输入正确的手机号!");
+		} else{
+			var param = {
+				"mobile": mobile,
+				"contacts": contacts,
+				"name": name
+			};
+			$("#postBtn").addClass("disabled");
+			$.ajax({
+				url: '/mobile/open/dealer?t='+Math.random(),
+				type: 'POST',
+				dataType: 'json',
+				data:param,
+				success:function(resp){
+					if (resp.code == "1" ) {
+						alert("提交成功，客服将尽快与您联系!");
+					} else {
+						if (typeof(resp.msg) == 'string') {
+							alert(resp.msg);
+						}                 
+					}
+				}
+			});
+			$("#postBtn").removeClass("disabled");
+		}
+		return false;
+	}
+	</script>
+</body>
+</html>

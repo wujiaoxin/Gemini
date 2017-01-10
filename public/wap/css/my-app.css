@@ -113,12 +113,12 @@ img{border:none;}
 .vcode-img img{height: 100%; float: right;}
 
 @keyframes runrotate{
-	0%{
-		transform:rotate(-45deg);
-	}
-	100%{
-		transform:rotate(315deg);
-	}
+    0%{
+        transform:rotate(-45deg);
+    }
+    100%{
+        transform:rotate(315deg);
+    }
 }
 @-webkit-keyframes runrotate{
     0%{
@@ -153,12 +153,12 @@ img{border:none;}
     }
 }
 @keyframes runrotate2{
-	0%{
-		transform:rotate(-90deg);
-	}
-	100%{
-		transform:rotate(270deg);
-	}
+    0%{
+        transform:rotate(-90deg);
+    }
+    100%{
+        transform:rotate(270deg);
+    }
 }
 @-webkit-keyframes runrotate2{
     0%{
@@ -193,12 +193,12 @@ img{border:none;}
     }
 }
 @keyframes runrotate3{
-	0%{
-		transform:rotate(-135deg);
-	}
-	100%{
-		transform:rotate(225deg);
-	}
+    0%{
+        transform:rotate(-135deg);
+    }
+    100%{
+        transform:rotate(225deg);
+    }
 }
 @-webkit-keyframes runrotate3{
     0%{
@@ -617,7 +617,7 @@ input[type="number"]{-moz-appearance:textfield !important;}
 .customer-tot:before{content: ""; display: block; background: #fd5353; border-radius: 50%; width:6px; height: 6px; position: absolute; left:15px; top:0.2rem;}
 .dian-i{width:6px; height: 6px; display: inline-block; float: left; background: #fd5353; border-radius: 50%; margin-right: 5px; margin-top: 8px;}
 #verify{
-	margin-top:-4px;
+    margin-top:-4px;
 }
 
 .modal-button {color:#ff9900;background:white;}
