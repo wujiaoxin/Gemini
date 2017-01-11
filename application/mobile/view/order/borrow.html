@@ -11,8 +11,10 @@
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">   
-    <link rel="stylesheet" type="text/css" href="/public/plugs/uploader/webuploader.css">
-    <link rel="stylesheet" type="text/css" href="/public/plugs/uploader/style.css">
+    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
+    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.gemini.css">
+    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/sortable.css">
+
     <script type="text/javascript">
         var BASE_URL = ""; 
         var orderData = {};
@@ -21,6 +23,106 @@
         } catch (e) {
             alert("数据异常");
         }         
+        var keyList = [
+            {
+                form_key:"borrow_pic_1",
+                form_label:"身份证正面照"
+            },
+            {
+                form_key:"borrow_pic_2",
+                form_label:"身份证反面照"
+            },
+            {
+                form_key:"borrow_pic_3",
+                form_label:"驾驶证正副本"
+            },
+            {
+                form_key:"borrow_pic_4",
+                form_label:"放款通知单"
+            },
+            {
+                form_key:"borrow_pic_5",
+                form_label:"首付凭证"
+            },
+            {
+                form_key:"borrow_pic_6",
+                form_label:"购车发票"
+            },
+            {
+                form_key:"borrow_pic_7",
+                form_label:"车辆合格证"
+            },
+            {
+                form_key:"borrow_pic_8",
+                form_label:"车辆保单"
+            },
+            {
+                form_key:"borrow_pic_9",
+                form_label:"借款合同"
+            }];
+
+        var keyList_1 = [
+            {
+                form_key:"carinfo_pic_1",
+                form_label:"行驶证正副本"
+            },
+            {
+                form_key:"carinfo_pic_2",
+                form_label:"车辆登记证1、2页"
+            },
+            {
+                form_key:"carinfo_pic_3",
+                form_label:"车辆登记证3、4页"
+            },
+            {
+                form_key:"carinfo_pic_4",
+                form_label:"车头含车牌全车照"
+            },
+            {
+                form_key:"carinfo_pic_5",
+                form_label:"车尾含车牌全车照"
+            },
+            {
+                form_key:"carinfo_pic_6",
+                form_label:"侧面全车照"
+            },
+            {
+                form_key:"carinfo_pic_7",
+                form_label:"内饰"
+            },
+            {
+                form_key:"carinfo_pic_8",
+                form_label:"仪表盘含公里数"
+            },
+            {
+                form_key:"carinfo_pic_9",
+                form_label:"风挡VIN"
+            },
+            {
+                form_key:"carinfo_pic_10",
+                form_label:"引擎盖打开发动机舱"
+            },
+            {
+                form_key:"carinfo_pic_11",
+                form_label:"铭牌"
+            }];
+        var picList = [];
+        var picList_1 = [];
+
+        for(var i=0 ; i<keyList.length;i++){            
+            if(typeof(orderData[keyList[i].form_key]) == "object" ){
+                picList.push(orderData[keyList[i].form_key]);
+                keyList[i].has = 1;
+            }
+        }
+
+        for(var i=0 ; i<keyList_1.length;i++){            
+            if(typeof(orderData[keyList_1[i].form_key]) == "object" ){
+                picList_1.push(orderData[keyList_1[i].form_key]);
+                keyList_1[i].has = 1;
+            }
+        }
+            
     </script>
     <style type="text/css">
         .list-block .item-title.label {
@@ -38,42 +140,18 @@
         .label-radio.item-content {
             padding-right: 5%;
         }
-
-        .filePicker2 .webuploader-pick {
-            width: auto;
-            margin-top : 0;
-        }
-        #uploader1 .placeholder {
-            background: url('/public/wap/images/bg_borrowinfo.png') no-repeat top center;
+        .uploaderwrap {
+        border-radius: 6px;
+        color: #838383;
+        margin-top: 10px;
+        background-color: #FFF;
         }
 
-        #uploader2 .placeholder {
-            height: 480px;
-            background: url('/public/wap/images/bg_carinfo.png') no-repeat top center;
-        }
-
-        #uploader2 .placeholder .webuploader-pick {
-            top: 410px;
-        }
-
-        .imgSample{
-            padding-top: 20px;
-            background: white;
+        .uploader_title {
+            padding-top: 16px;
             text-align: center;
-        }
-        #picker_car_pic_12 .webuploader-pick{
-            width: 90%;
-            padding: 13px 0;
             font-size: 16px;
-            background: white;
-            color: #ff9900;
-            border: 1px solid #ff9900;
-            margin: 10px auto;
         }
-        
-        /*  #filelist li:nth-child(1):before{
-            content: "身份证";
-        } */
     
     </style>
 </head>
@@ -104,24 +182,16 @@
                                     <div class="uploader_title">
                                         <h4>请上传相关借款资料照片</h4>
                                     </div>
-                                    <div id="uploader1" class="uploader">
-                                        <div class="queueList">
-                                            <div class="placeholder">
-                                                <div id="uploader1FilePicker"></div> 
-                                            </div>
-                                        </div>
-                                        <div class="statusBar" style="display:none;">
-                                            <div class="progress">
-                                                <span class="text">0%</span>
-                                                <span class="percentage"></span>
-                                            </div><div class="info"></div>
-                                            <div class="btns"> 
-                                                <div id="uploader1FilePicker2" class="filePicker2"></div>
-                                                <div class="uploadBtn">开始上传</div>
-                                            </div>
-                                        </div>
-                                    </div>   
-                                </div>
+                                    <div id="uploadpic"></div>   
+                                </div>                                
+                            </div>
+                            <div class="form-group carinfo">
+                                <div class="uploaderwrap">
+                                    <div class="uploader_title">
+                                        <h4>请上传相关车辆资料照片</h4>
+                                    </div>
+                                    <div id="uploadpic2"></div>   
+                                </div>                                
                             </div>
                             <div class="form-group">
                                 <div class="list-block">
@@ -194,60 +264,11 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="form-group carinfo">
-                                <div class="uploaderwrap">
-                                    <div class="uploader_title">
-                                        <h4>请上传相关车辆资料</h4>
-                                    </div>
-                                    <div id="uploader2" class="uploader">
-                                        <div class="queueList">
-                                            <div class="placeholder">
-                                                <div id="uploader2FilePicker"></div> 
-                                            </div>
-                                        </div>
-                                        <div class="statusBar" style="display:none;">
-                                            <div class="progress">
-                                                <span class="text">0%</span>
-                                                <span class="percentage"></span>
-                                            </div><div class="info"></div>
-                                            <div class="btns"> 
-                                                <div id="uploader2FilePicker2" class="filePicker2"></div>
-                                                <div class="uploadBtn">开始上传</div>
-                                            </div>
-                                        </div>
-                                    </div>   
-                                </div>
-                            </div>
-                            <div class="form-group carinfo">
-                                    <div class="list-block">
-                                        <div id="fileList_car_pic_12_sample" class="imgSample">
-                                            <video width="230" controls>
-                                                <source src="/public/wap/images/sample/car_pic_12.mp4" type="video/mp4">
-                                                您的浏览器不支持 video 标签。
-                                            </video>
-                                            <div id="picker_car_pic_12" class="picker_button">
-                                            <span>上传车辆视频</span>   
-                                        </div>
-                                        </div>
-                                        <input type="hidden" name="car_pic_12" id="field_car_pic_12" value="">
-                                        <div id="fileList_car_pic_12" class="upload-file-list-info">
-                                        </div>        
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group carinfo">
-                                <div id="uploader" class="wu-example">
-                                <!--用来存放文件信息-->
-                                    <div id="thelist" class="uploader-list"></div>
-                                    <div class="btns">
-                                        <div id="picker">选择文件</div>
-                                        <button id="ctlBtn" class="btn btn-default">开始上传</button>
-                                    </div>
-                                </div>
-
-                            </div> 
                             <div class="content-block">
                                 <a class="button button-big button-raised butcom-css bg-orange" id="submit">提交申请</a>
+                            </div>
+                            <div class="content-block">
+                                <a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder(orderData.id)">撤销订单</a>
                             </div>
                         </form>
                     </div>
@@ -266,77 +287,11 @@
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
-    <script type="text/javascript" src="/public/plugs/uploader/webuploader.min.js"></script>
-    <script type="text/javascript" src="/public/plugs/uploader/uploader.js"></script>
-    <script type="text/javascript" src="/public/wap/js/webuploader.custom.js"></script>
-    <!-- <script type="text/javascript" src="/public/plugs/uploader/sortable.js"></script> -->
-    <script type="text/javascript">
-         picList = [
-            {
-                form_key:"borrow_pic_1",
-                form_label:"身份证正面照"
-            },
-            {
-                form_key:"borrow_pic_2",
-                form_label:"身份证反面照"
-            },
-            {
-                form_key:"borrow_pic_3",
-                form_label:"驾驶证正副本"
-            },
-            {
-                form_key:"borrow_pic_4",
-                form_label:"放款通知单"
-            },
-            {
-                form_key:"borrow_pic_5",
-                form_label:"首付凭证"
-            },
-            {
-                form_key:"borrow_pic_6",
-                form_label:"购车发票"
-            },
-            {
-                form_key:"borrow_pic_7",
-                form_label:"车辆合格证"
-            },
-            {
-                form_key:"borrow_pic_8",
-                form_label:"车辆保单"
-            },
-            {
-                form_key:"borrow_pic_9",
-                form_label:"借款合同"
-            }];
-        // $('#container').on('click',function(){
-        //     var container = document.getElementById("filelist");
-        //      Sortable.create(container);   
-        // });    
-        var uploader_video = WebUploader.create({
-
-    // swf文件路径
-            swf: '/public/plugs/uploader/Uploader.swf',
-
-            // 文件接收服务端。
-            server: '/mobile/files/upload.html',
-
-            // 选择文件的按钮。可选。
-            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-            pick: '#picker',
-
-            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-            resize: false,
-            formData:{
-                order_id:orderData.id,
-                fileType:'video'
-            }
-
-        });
-
-
-
-
-
+    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.0.16.min.js"></script>
+    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script>
+    <script type="text/javascript" src="/public/plugs/webuploader/sortable.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/order.js"></script>
+    <script type="text/javascript">   
         function tryOCR(id,type){
             if(type != 'idcard_face'){
                 return;
@@ -361,9 +316,17 @@
             });
         };
         
-        $("#uploader1").on("click","img",function(){
-            var idcard = $(this).parent().parent('li').attr("value");
-            if( idcard ){
+         $("#uploadpic").GeminiUploader(keyList,picList,{
+            formData: {fileType:"image",order_id:orderData.id},
+        }); 
+
+         $("#uploadpic2").GeminiUploader(keyList_1,picList_1,{
+            formData: {fileType:"image",order_id:orderData.id},
+        });
+
+         $("#uploadpic").on("click","li",function(ev){
+            var idcard = $(this).attr("data-id");
+            if( idcard != undefined ){
                 tryOCR(idcard,'idcard_face');
             }
             else{
@@ -394,89 +357,6 @@
                     }]
                 });
 
-        sentUploader({
-            wrap:'#uploader1',
-            formData:{
-                order_id:orderData.id,
-                fileType:'image'
-            },
-            fileNumLimit: 9,
-			keyList: picList
-        });
-
-        sentUploader({
-            wrap:'#uploader2',
-            formData:{
-                order_id:orderData.id,
-				fileType:'image'
-            },
-            fileNumLimit: 11,
-			accept: {
-                title: 'Image',
-                extensions: 'gif,jpg,jpeg,bmp,png',
-                mimeTypes: 'image/*'
-            }
-        });
-	
-		// sentUploader({
-  //           wrap:'#picker_car_pic_12',
-  //           formData:{
-  //               order_id:orderData.id,
-		// 		fileType:'video',
-		// 		form_key:"car_info_video",
-		// 		form_label:"二手车视频"
-  //           },
-  //           fileNumLimit: 1,
-		// 	accept: {
-  //               title: 'Video',
-  //               extensions: 'mp4,mkv,avi,3gp,mov,mpg,rmvb,flv',
-  //               mimeTypes: 'video/*'
-  //           }
-  //       });
-
-
-            $("#picker_car_pic_12").SentUploader({
-                fileNumLimit:1,
-                uploadEvents: {
-                    uploadComplete:function(file){
-                        if(file.type.substring(0,6) == "video/"){
-                            $("#fileList_car_pic_12_sample").hide();
-                        }
-                    }
-                },
-                successFunc:function(response){
-                        if(response.info.path){
-                             videoHtmlStr =  '<video autoplay="autoplay">\
-                                            <source src="'+response.info.path+'" type="video/mp4">\
-                                            您的浏览器不支持 video 标签。\
-                                        </video>';
-                            setTimeout(function(){
-                                 $("#fileList_car_pic_12 > li > div.filebox").html(videoHtmlStr);
-                            }, 1000);     
-                        }
-                    },
-                listName : 'fileList_car_pic_12',
-                hiddenName: 'field_car_pic_12',
-                hiddenValType:1,
-                fileSingleSizeLimit:20*1024*1024,
-                closeX:true,
-                compress:{
-                    width: 1024,
-                    quality: 90,
-                    allowMagnify: false,
-                    crop: false,
-                    preserveHeaders: true,
-                    noCompressIfLarger: false,
-                    compressSize: 0
-                }
-            },
-            {
-                fileType: 'video'
-            });
-
-            
-
-
             $("#submit").click(function(){       
                 var type= $("#type").val();
                 // var mobile = $('#mobile').val();//todo
@@ -486,9 +366,16 @@
                     return;
                 }
 
-                if( $('#uploader1  .filelist > li[value]').length < 9) {
-                    ui_alert("照片信息不完整，请补充上传");
+                if( $('#uploadpic  .fileList > li[data-id]').length < 9) {
+                    ui_alert("借款资料不完整，请补充上传");
                     return;
+                }
+
+                if(type == 2){
+                    if( $('#uploadpic2  .fileList > li[data-id]').length < 11) {
+                        ui_alert("车辆资料不完整，请补充上传");
+                        return;
+                    }
                 }
 
                 var loan_limit = $('#loan_limit').val();//todo

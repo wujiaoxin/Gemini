@@ -15,7 +15,8 @@
 		this.thumbnailHeight = 150*ratio;
 		var wrapWidth = $(this.rootHandel).width();
 		this.liHeight = parseInt((wrapWidth-30)/100*31);//TODO:RESIZE 
-		//console.log(this.liHeight);
+		this.wrapHeight = (this.liHeight * (Math.ceil(keyList.length / 3)))+50;
+
 	}
 	
 	
@@ -55,6 +56,8 @@
 			var root = this.rootHandel;
 			$(root).html(wrapHtmlStr);			
 			$(".fileList >li").height(this.liHeight);
+			$(root).find(".queueList").height(this.wrapHeight);
+			
 			
 			//var list = $(root).find(".fileList")[0];
 			//if(list!=null){

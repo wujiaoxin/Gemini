@@ -276,7 +276,7 @@ class Order extends Base {
 			$data = $link->where($map)->find();
 			$saveData['id'] = $id;
 			if ($data) {				
-				if($data['status'] != 0){
+				if($data['status'] != 0 && $data['status'] != -2){
 					return $this->error("非法参数");
 				}				
 				$saveData['status'] = -1;
