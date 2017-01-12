@@ -68,11 +68,11 @@
             },
             {
                 form_key:"carinfo_pic_2",
-                form_label:"车辆登记证1、2页"
+                form_label:"机动车登记证1、2页"
             },
             {
                 form_key:"carinfo_pic_3",
-                form_label:"车辆登记证3、4页"
+                form_label:"机动车登记证3、4页"
             },
             {
                 form_key:"carinfo_pic_4",
@@ -136,9 +136,6 @@
             padding: 0 15px 6px;
             font-size: 14px;
             color: #838383
-        }
-        .label-radio.item-content {
-            padding-right: 5%;
         }
         .uploaderwrap {
         border-radius: 6px;
@@ -242,10 +239,10 @@
                             <div class="form-group">
                                 <div class="list-block">
                                     <div class="list-block-label">选择银行</div>
-                                    <ul>       
+                                    <ul class="pr20">       
                                         {volist name="bankList" id="bank"}  
                                         <li>
-                                            <label class="label-radio item-content">
+                                            <label class="label-radio item-content pr20">
                                                 <input type="radio" name="bank_name" value="{$bank.uid}">
                                                 <div class="item-inner">
                                                     <div class="item-title">{$bank.addr}</div>
@@ -254,7 +251,7 @@
                                         </li>
                                         {/volist}
                                         <li>
-                                            <label class="label-radio item-content">
+                                            <label class="label-radio item-content pr20">
                                                 <input type="radio" name="bank_name" value="0">
                                                 <div class="item-inner">
                                                     <div class="item-title">其他</div>
@@ -291,31 +288,7 @@
     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script>
     <script type="text/javascript" src="/public/plugs/webuploader/sortable.js"></script>
     <script type="text/javascript" src="/Public/wap/js/order.js"></script>
-    <script type="text/javascript">   
-        function tryOCR(id,type){
-            if(type != 'idcard_face'){
-                return;
-            }
-            ajax_jquery({
-                type: 'post',
-                url: '/mobile/open/tryOCR',
-                datatype: 'json',
-                data: {
-                    "id": id
-                },
-                success: function(data){
-                    if(data.code == 1){
-                        $('#idcard_name').val(data.data.name);
-                        $('#idcard_num').val(data.data.idcard_num);
-                    }else{
-                        if (typeof(data.msg) == 'string') {
-                            ui_alert(data.msg);
-                        }
-                    }
-                }
-            });
-        };
-        
+    <script type="text/javascript">    
          $("#uploadpic").GeminiUploader(keyList,picList,{
             formData: {fileType:"image",order_id:orderData.id},
         }); 
@@ -330,7 +303,7 @@
                 tryOCR(idcard,'idcard_face');
             }
             else{
-                ui_alert('请上传照片');
+                ui_alert('请先上传照片');
             }
         });
 

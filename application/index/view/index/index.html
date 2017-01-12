@@ -33,7 +33,7 @@
 	
 		.page{
 			margin: auto;
-			font-family: "microsoft yahei",Arial,'微软雅黑',SimHei;
+			font-family: "Microsoft Yahei",STXihei,SimHei,sans-serif;
 		}
 		.navbar{
 			margin-bottom: 0;
@@ -119,10 +119,10 @@
 		}
 
 		#voiceOfmarket{
-			background: #FAFAFA;
-			color: #45AFE4;
+			background: #FAFAFA;		
 		}
 		#voiceOfmarket .row{
+			color: #45AFE4;
 			margin-bottom: 1.25rem;
 		}
 		#loanStep{
@@ -313,6 +313,7 @@
 				success:function(resp){
 					if (resp.code == "1" ) {
 						alert("提交成功，客服将尽快与您联系!");
+						location.reload();
 					} else {
 						if (typeof(resp.msg) == 'string') {
 							alert(resp.msg);
