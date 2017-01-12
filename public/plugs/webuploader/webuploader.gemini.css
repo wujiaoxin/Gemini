@@ -49,6 +49,7 @@
 	position:relative;
 	vertical-align:middle;
 	width:100%;
+	min-height:80px;
 	z-index:2;
 }
 .gemini-uploader .imgWrap img{
@@ -153,61 +154,7 @@
     text-align: left;
 }
 
-.gemini-uploader .fileList li p.progress {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    height: 8px;
-    overflow: hidden;
-    z-index: 50;
-}
-.gemini-uploader .fileList li p.progress span {
-    display: none;
-    overflow: hidden;
-    width: 0;
-    height: 100%;
-    background: #1483d8 url(./progress.png) repeat-x;
 
-    -webit-transition: width 200ms linear;
-    -moz-transition: width 200ms linear;
-    -o-transition: width 200ms linear;
-    -ms-transition: width 200ms linear;
-    transition: width 200ms linear;
-
-    -webkit-animation: progressmove 2s linear infinite;
-    -moz-animation: progressmove 2s linear infinite;
-    -o-animation: progressmove 2s linear infinite;
-    -ms-animation: progressmove 2s linear infinite;
-    animation: progressmove 2s linear infinite;
-
-    -webkit-transform: translateZ(0);
-}
-
-@-webkit-keyframes progressmove {
-    0% {
-       background-position: 0 0;
-    }
-    100% {
-       background-position: 17px 0;
-    }
-}
-@-moz-keyframes progressmove {
-    0% {
-       background-position: 0 0;
-    }
-    100% {
-       background-position: 17px 0;
-    }
-}
-@keyframes progressmove {
-    0% {
-       background-position: 0 0;
-    }
-    100% {
-       background-position: 17px 0;
-    }
-}
 
 .gemini-uploader .fileList li p.imgWrap {
     position: relative;
@@ -306,39 +253,81 @@
 }
 
 .gemini-uploader .statusBar {
-    height: 63px;
-    border-top: 1px solid #dadada;
-    padding: 0 20px;
-    line-height: 63px;
+	display:none;
+    height: 30px;
+    padding: 0;
+    line-height: 30px;
     vertical-align: middle;
     position: relative;
 }
 
 .gemini-uploader .statusBar .progress {
-    border: 1px solid #1483d8;
-    width: 198px;
+    border: 1px solid #f90;
+    width: 98%;
     background: #fff;
-    height: 18px;
     position: relative;
     display: inline-block;
     text-align: center;
-    line-height: 20px;
+    line-height: 17px;
     color: #6dbfff;
     position: relative;
     margin-right: 10px;
 }
-.gemini-uploader .statusBar .progress span.percentage {
-    width: 0;
-    height: 100%;
-    left: 0;
-    top: 0;
-    background: #1483d8;
-    position: absolute;
-}
+
 .gemini-uploader .statusBar .progress span.text {
     position: relative;
     z-index: 10;
 }
+
+.gemini-uploader .statusBar .progress span.percentage {
+	position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    width: 0;
+    height: 100%;
+    background: #f90 url(./progress.png) repeat-x;
+	
+    -webit-transition: width 200ms linear;
+    -moz-transition: width 200ms linear;
+    -o-transition: width 200ms linear;
+    -ms-transition: width 200ms linear;
+    transition: width 200ms linear;
+
+    -webkit-animation: progressmove 2s linear infinite;
+    -moz-animation: progressmove 2s linear infinite;
+    -o-animation: progressmove 2s linear infinite;
+    -ms-animation: progressmove 2s linear infinite;
+    animation: progressmove 2s linear infinite;
+
+    -webkit-transform: translateZ(0);
+}
+
+@-webkit-keyframes progressmove {
+    0% {
+       background-position: 0 0;
+    }
+    100% {
+       background-position: 17px 0;
+    }
+}
+@-moz-keyframes progressmove {
+    0% {
+       background-position: 0 0;
+    }
+    100% {
+       background-position: 17px 0;
+    }
+}
+@keyframes progressmove {
+    0% {
+       background-position: 0 0;
+    }
+    100% {
+       background-position: 17px 0;
+    }
+}
+
 
 .gemini-uploader .statusBar .info {
     display: inline-block;
@@ -358,38 +347,8 @@
     float: left;
 }
 
-.gemini-uploader .statusBar .btns .webuploader-pick,
-.gemini-uploader .statusBar .btns .uploadBtn,
-.gemini-uploader .statusBar .btns .uploadBtn.state-uploading,
-.gemini-uploader .statusBar .btns .uploadBtn.state-paused {
-    background: #ffffff;
-    border: 1px solid #cfcfcf;
-    color: #565656;
-    padding: 0 18px;
-    display: inline-block;
-    border-radius: 3px;
-    margin-left: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    float: left;
-}
-.gemini-uploader .statusBar .btns .webuploader-pick-hover,
-.gemini-uploader .statusBar .btns .uploadBtn:hover,
-.gemini-uploader .statusBar .btns .uploadBtn.state-uploading:hover,
-.gemini-uploader .statusBar .btns .uploadBtn.state-paused:hover {
-    background: #f0f0f0;
-}
 
-.gemini-uploader .statusBar .btns .uploadBtn {
-    background: #00b7ee;
-    color: #fff;
-    border-color: transparent;
-}
-.gemini-uploader .statusBar .btns .uploadBtn:hover {
-    background: #00a2d4;
-}
-
-.gemini-uploader .statusBar .btns .uploadBtn.disabled {
+.gemini-uploader .btns .uploadBtn.disabled {
     pointer-events: none;
     opacity: 0.6;
 }

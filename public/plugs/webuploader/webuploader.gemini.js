@@ -15,7 +15,7 @@
 		this.thumbnailHeight = 150*ratio;
 		var wrapWidth = $(this.rootHandel).width();
 		this.liHeight = parseInt((wrapWidth-30)/100*31);//TODO:RESIZE 
-		this.wrapHeight = (this.liHeight * (Math.ceil(keyList.length / 3)))+50;
+		this.wrapHeight = (this.liHeight * (Math.ceil(keyList.length / 3)))+40;
 
 	}
 	
@@ -49,8 +49,15 @@
                 //    '</div>';
 				wrapHtmlStr += '<span class="success"></span></li>';
 			}			
-			wrapHtmlStr += '</ul></div>';			
-			wrapHtmlStr += '<div id="'+this.id+'_btns"><div id="'+this.id+'_picker" class="uploadBtn">选择照片</div></div></div>';
+			wrapHtmlStr += '</ul></div>';
+			wrapHtmlStr +='<div class="statusBar">';
+			wrapHtmlStr +=	'<div class="progress">';
+			wrapHtmlStr +=		'<span class="text">0%</span>';
+			wrapHtmlStr +=		'<span class="percentage"></span>';
+			wrapHtmlStr +=	'</div>';
+			wrapHtmlStr +='</div>';
+			
+			wrapHtmlStr += '<div id="'+this.id+'_btns" class="btns"><div id="'+this.id+'_picker" class="uploadBtn">选择照片</div></div></div>';
 			
 			wrapHtmlStr += '</div>';
 			var root = this.rootHandel;
@@ -71,7 +78,8 @@
 				}
 				var status = $(this).attr("data-status");
 				if(status == "ready"){
-					$(this).addClass( 'disabled' )
+					$(this).addClass( 'disabled' ).find(".webuploader-pick").text("上传中...");
+					$(self.rootHandel).find('.statusBar').show();
 					self.BDUploader.upload();
 					return false;
 				}
@@ -280,9 +288,16 @@
 				self.BDUploader.on('uploadComplete', function(file) {
 					self.dump('上传完成');
 					self.fileFinshedNum++;
+					
+					
+					var percent = Math.ceil((self.fileFinshedNum/self.options.fileNumLimit))*100;
+					$(self.rootHandel).find('.text').text(percent+"%");
+					$(self.rootHandel).find('.percentage').width(percent+"%");
+					
 					if(self.fileFinshedNum == self.options.fileNumLimit){
 						var btn = "#"+self.id+"_picker";
 						$(btn).hide();
+						$(self.rootHandel).find('.statusBar').hide();
 						//$(btn).find(".webuploader-pick").text('上传完成');
 					}
 				});
