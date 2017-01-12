@@ -18,6 +18,7 @@ class Dealer extends \app\common\model\Base {
 		array('name'=>'id' ,'title'=>'ID', 'type'=>'hidden'),
 		array('name'=>'name' ,'title'=>'企业名称', 'type'=>'text'),
 		array('name'=>'invite_code' ,'title'=>'邀请码', 'type'=>'hidden'),
+		array('name'=>'inviter' ,'title'=>'邀请人', 'type'=>'text'),
 		array('name'=>'property' ,'title'=>'属性', 'type'=>'text', 'help'=>''),
 		array('name'=>'city' ,'title'=>'城市', 'type'=>'text', 'help'=>''),
 		array('name'=>'addr' ,'title'=>'地址', 'type'=>'text', 'help'=>''),

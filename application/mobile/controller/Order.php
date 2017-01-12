@@ -15,9 +15,6 @@ class Order extends Base {
 		parent::_initialize();
 		if (!is_login()) {
 			$this->redirect('mobile/user/login');exit();
-		}elseif (is_login()) {
-			$user = model('User')->getInfo(session('user_auth.uid'));
-			$this->assign('user', $user);
 		}
 	}
 
@@ -42,6 +39,7 @@ class Order extends Base {
 		return $this->fetch();
 	}
 	
+
 	
 	public function getOrderList($status = null, $type = null) {
 		$map = '';
@@ -56,24 +54,33 @@ class Order extends Base {
 			$resp['msg'] = '请重新登录';
 			return json($resp);
 		}
-		if($status == null){
-			$map = $map.' and status > -1';
+		if($role == 1){
+			if($status == null){
+				$map = $map.' and status > -1';
+			}else{
+				$map = $map.' and status ='.(int)$status;
+			}
+			if($type == '3'){
+				$map = $map.' and type = 3';
+			}else{
+				$map = $map.' and type < 3';
+			}
+			
+			$sort = "id desc";
+			$list  = db('Order')->where($map)->order($sort)->paginate(15);
+			
+			$resp['code'] = 1;
+			$resp['msg'] = 'OK';
+			$resp['data'] = $list;
+			return json($resp);
 		}else{
-			$map = $map.' and status ='.(int)$status;
+			$Order = model('Order');
+			$list = $Order->get_order_list($uid,$role,$type);
+			$resp['code'] = 1;
+			$resp['msg'] = 'OK';
+			$resp['data'] = $list;
+			return json($resp);
 		}
-		if($type == '3'){
-			$map = $map.' and type = 3';
-		}else{
-			$map = $map.' and type < 3';
-		}
-		
-		$order = "id desc";
-		$list  = db('Order')->where($map)->order($order)->paginate(15);
-		
-		$resp['code'] = 1;
-		$resp['msg'] = 'OK';
-		$resp['data'] = $list;
-		return json($resp);
 	}
 	
 	public function progress() {
@@ -139,9 +146,18 @@ class Order extends Base {
 		}else{
 			return $this->error('请重新登录');
 		}
-		$info = db('Order')->where($map)->find();
-		
-		$filter['uid'] = $uid;
+		if($role==1){
+			$info = db('Order')->where($map)->find();
+		}else{
+			$authfilter['order_id'] = $id;
+			$authfilter['auth_uid'] = $uid;
+			$authfilter['auth_role'] = $role;			
+			$auth = db('OrderAuth')->where($authfilter)->find();
+			if($auth != null){
+				$info = db('Order')->where("id",$id)->find();
+			}
+		}
+		//$filter['uid'] = $uid;
 		$filter['order_id'] = $info['id'];
 		$filter['status'] = 1;//有效文件
 		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->limit(100)->select();
@@ -484,9 +500,21 @@ class Order extends Base {
 		}
 		if (IS_POST) {
 			$data = input('post.');
+			$orderAuthModel = model('OrderAuth');
 			if ($data) {
 				$data['status'] = 0;
 				$result = $orderModel->isUpdate(true)->save($data, array('id' => $data['id'], 'uid' => $uid));//TODO:防status偷天换日  id为空判断
+				
+				if($result){
+					//$bankList = db('Member')->field('uid,nickname,mobile,addr')->where('access_group_id',2)->limit(5)->select();
+					$examineRole = 3;//VP贷风控经理
+					$examineUid = 0;
+					$examineUser = db('Member')->field('uid,mobile')->where('access_group_id',$examineRole)->find();//TODO:建立车商管理关系
+					if($examineUser !=null){
+						$examineUid = $examineUser['uid'];
+					}
+					$result = $orderAuthModel->addAuth($data['id'],$examineUid,$examineRole);
+				}
 				if ($result) {
 					return $this->success("提交成功！", url('Order/index'));
 				} else {

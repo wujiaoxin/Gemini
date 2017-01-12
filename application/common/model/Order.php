@@ -49,6 +49,22 @@ class Order extends \app\common\model\Base {
 	public function build_order_sn(){
 		return date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
 	}
+	
+	
+	public function get_order_list($uid = 0, $role = 0, $type = 0){
+		$filter['auth_uid'] = $uid;
+		$filter['auth_role'] = $role;
+		if($type != 3){
+			$filter['type'] = $type;
+		}else{
+			$filter['type'] =['<',3];
+		}
+		$filter['status'] = ['>',-1];
+		$list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->paginate(15);
+		return $list;
+	}
+	
+	
 	/*
 	public function extend(){
 		return $this->hasOne('OrderExtend', 'uid');

@@ -269,13 +269,17 @@ CREATE TABLE `gemini_auth_group` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户组状态：为1正常，为0禁用,-1为删除',
   `rules` varchar(500) NOT NULL DEFAULT '' COMMENT '用户组拥有的规则id，多个规则 , 隔开',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of gemini_auth_group
 -- ----------------------------
 INSERT INTO `gemini_auth_group` VALUES ('1', 'admin', '', '车商销售经理', '4S店车商销售经理，负责报单', '1', '40,37,34,39,1');
 INSERT INTO `gemini_auth_group` VALUES ('2', 'admin', '', '银行风控经理', '银行授信审核', '1', '39,38,35,34,1');
+INSERT INTO `gemini_auth_group` VALUES ('3', 'admin', '', '风控审核专员', '订单预审', '1', '39,38,35,34,1');
+INSERT INTO `gemini_auth_group` VALUES ('4', 'admin', '', 'VP贷财务经理', '财务审核', '1', '39,38,35,34,1');
+INSERT INTO `gemini_auth_group` VALUES ('5', 'admin', '', 'VP贷财务出纳', '财务出纳', '1', '39,38,35,34,1');
+INSERT INTO `gemini_auth_group` VALUES ('6', 'admin', '', '资方联系专员', '合作资金方', '1', '39,38,35,34,1');
 
 -- ----------------------------
 -- Table structure for `gemini_auth_group_access`
@@ -1548,6 +1552,19 @@ CREATE TABLE `gemini_order_files` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='订单文件表';
 
 -- ----------------------------
+-- Table structure for `gemini_order_auth`
+-- ----------------------------
+DROP TABLE IF EXISTS `gemini_order_auth`;
+CREATE TABLE `gemini_order_auth` (
+  `auth_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id自增',
+  `auth_uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '审核员用户ID',
+  `auth_role` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户角色ID',
+  `order_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
+  PRIMARY KEY (`auth_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='订单查看权限表';
+
+
+-- ----------------------------
 -- Records of gemini_order_files
 -- ----------------------------
 
@@ -1558,7 +1575,8 @@ DROP TABLE IF EXISTS `gemini_dealer`;
 CREATE TABLE `gemini_dealer` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id自增',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '企业名称',
-  `invite_code` varchar(32) NOT NULL DEFAULT '' COMMENT '邀请码',
+  `invite_code` varchar(32) NOT NULL DEFAULT '' COMMENT '车商邀请码',
+  `inviter` varchar(32) DEFAULT '' COMMENT '注册邀请人',
   `property` varchar(255) NOT NULL DEFAULT '' COMMENT '属性',
   `city` varchar(255) NOT NULL DEFAULT '' COMMENT '城市',
   `addr` varchar(255) NOT NULL DEFAULT '' COMMENT '地址',

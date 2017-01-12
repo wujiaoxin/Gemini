@@ -112,15 +112,22 @@ class Files {
 		$path = input('path', '', 'trim');
 		$fullPath = ROOT_PATH.'/public/wap/images/x.png';		
 		$uid  = session('user_auth.uid');
+		$role  = session('user_auth.role');
 		if($uid == null){
 			exit;
-		}		
-		$fileInfo = db("OrderFiles")->alias('a')->join('__ORDER__ b','a.order_id = b.id')->field('a.path,b.uid,b.bank_uid')->where(array('a.path' => $path))->find();
+		}
+		$fileInfo = db("OrderFiles")->field('path,uid,order_id')->where("path", $path)->find();
 		if($fileInfo!=null){
-			if($fileInfo['uid'] == $uid || $fileInfo['bank_uid'] == $uid){
+			if($fileInfo['uid'] == $uid ){
 				$fullPath = ROOT_PATH.$fileInfo['path'];
 			}else{
-				//exit;
+				$authfilter['order_id'] = $fileInfo['order_id'];
+				$authfilter['auth_uid'] = $uid;
+				$authfilter['auth_role'] = $role;			
+				$auth = db('OrderAuth')->where($authfilter)->find();
+				if($auth != null){
+					$fullPath = ROOT_PATH.$fileInfo['path'];
+				}
 			}
 		}else{
 			//exit;

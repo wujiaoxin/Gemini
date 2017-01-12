@@ -24,6 +24,8 @@
 						<th>车商名称</th>
 						<th>联系人</th>
 						<th>电话</th>
+						<th>申请时间</th>
+						<th>邀请人</th>						
 						<th>状态</th>
 						<th>操作</th>
 					</tr>
@@ -42,7 +44,9 @@
 						</td>
 						<td>{$item['name']}</td>
 						<td>{$item['contacts']}</td>
-						<td>{$item['mobile']}</td>
+						<td>{$item['mobile']}</td>						
+						<td>{$item['create_time']|time_format}</td>
+						<td>{$item['inviter']}</td>
 						<td>
 							{if $item['status'] == 0}
 							<span class="label label-primary">待补充</span>
