@@ -442,6 +442,7 @@ class Order extends Base {
 		}
 		if (IS_POST) {
 			$data = input('post.');
+			$orderAuthModel = model('OrderAuth');
 			if ($data) {
 				$data['status'] = 0;
 				$result = $orderModel->isUpdate(true)->save($data, array('id' => $data['id'], 'uid' => $uid));
