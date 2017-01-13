@@ -51,13 +51,18 @@ class Order extends \app\common\model\Base {
 	}
 	
 	
-	public function get_order_list($uid = 0, $role = 0, $type = 0){
+	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null){
 		$filter['auth_uid'] = $uid;
 		$filter['auth_role'] = $role;
 		if($type == 3){
 			$filter['type'] = $type;
 		}else{
 			$filter['type'] =['<',3];
+		}
+		if($status == null){
+			$filter['status'] = ['>',-1];
+		}else{
+			$filter['status'] = $status;
 		}
 		$filter['status'] = ['>',-1];
 		$sort = "id desc";

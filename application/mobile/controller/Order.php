@@ -75,7 +75,7 @@ class Order extends Base {
 			return json($resp);
 		}else{
 			$Order = model('Order');
-			$list = $Order->get_order_list($uid,$role,$type);
+			$list = $Order->get_order_list($uid, $role, $type, $status);
 			$resp['code'] = 1;
 			$resp['msg'] = 'OK';
 			$resp['data'] = $list;
