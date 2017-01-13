@@ -278,7 +278,7 @@
 													<div class="item-inner">
 														<div class="item-title label">贷款金额:</div>
 														<div class="item-input">
-															<input type="text" name="loan_limit" id="loan_limit" value=""/>
+															<input type="number" name="loan_limit" id="loan_limit" value=""/>
 														</div>
 														<div class="item-icon">
 															<img src="/public/wap/images/ico_edit.png" width="24" height="24"/>
@@ -454,24 +454,22 @@
                     if( $('#uploadpic  .fileList img[data-id]').length < keyList.length) {
                         ui_alert("借款人资料不全，请补充上传");
                         return;
-                    }else if (!(idcard_name && idcard_num && loan_limit)) {
-                        //console.log(idcard_num)
-                        //ui_alert("借款信息不全，请补充上传");
-						if( idcard_name == ''){
-							ui_alert('请输入借款人姓名',function(){$('#idcard_name').focus()});
-							
-							return;
-						}
-						if( idcard_num == ''){
-							ui_alert('请输入借款人身份证号',function(){$('#idcard_num').focus()});
-							return;
-						}
-						if( loan_limit == ''){
-							ui_alert('请输入贷款金额',function(){$('#loan_limit').focus()});
-							return;
-						}						
+                    }
+                    if( idcard_name == ''){
+                        ui_alert('请输入借款人姓名',function(){$('#idcard_name').focus()});
                         return;
                     }
+                    if( idcard_num == ''){
+                        ui_alert('请输入借款人身份证号',function(){$('#idcard_num').focus()});
+                        return;
+                    } else if(!validateIdCard(idcard_num)){
+                        ui_alert('借款人身份证号有误',function(){$('#idcard_num').focus()});
+                        return;
+                    }
+                    if( loan_limit == ''){
+                        ui_alert('请输入贷款金额',function(){$('#loan_limit').focus()});
+                        return;
+                    }                      
 					step = 1;
 					
                    //goToUrl('/mobile/order/carloan?step=1');
