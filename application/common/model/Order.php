@@ -60,7 +60,8 @@ class Order extends \app\common\model\Base {
 			$filter['type'] =['<',3];
 		}
 		$filter['status'] = ['>',-1];
-		$list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->paginate(15);
+		$sort = "id desc";
+		$list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
 		return $list;
 	}
 	
