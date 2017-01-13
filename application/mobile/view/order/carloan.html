@@ -156,6 +156,7 @@
            width: 70px;
            text-align: center;
            display: inline-block;
+		   z-index: 2;
         }
         .num_circle {
             width: 36px;
@@ -167,12 +168,13 @@
             border-radius: 50%;
             background-color: #DDDDDD;
             margin: 0 auto 5px;
+			z-index: 2;
         }
         .step-progress {
             width: 100%;
             height: 4px;
             position: absolute;
-            z-index: -1;
+            z-index: 1;
             top: 14px;
         }
         .step-progress-bar {
