@@ -13,7 +13,6 @@
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">  
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.gemini.css"> 
-    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
     <script type="text/javascript">
         var BASE_URL = ""; 
 
@@ -315,7 +314,7 @@
                             <a class="button button-big button-raised butcom-css dpblue" id="submit">下一步</a>
                         </div>
 						<div class="content-block">
-                            <a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder(orderData.id,3)">撤销订单</a>
+                            <a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder(orderData.id,3)">撤销</a>
                         </div>
                     </div>
                 </div>
@@ -345,7 +344,10 @@
         }
 
 
-/*
+
+		$("#uploadpic").GeminiUploader(keyList,picList,{
+			formData: {fileType:"image",order_id:orderData.id},
+		}); 
         $("#uploadpic2").GeminiUploader(keyList_1,picList_1,{
             formData: {fileType:"image",order_id:orderData.id},
         });
@@ -353,7 +355,7 @@
         $("#uploadpic3").GeminiUploader(keyList_2,picList_2,{
             formData: {fileType:"image",order_id:orderData.id},
         });
-*/
+
         $("#uploadpic").on("click","img",function(ev){
             var idcard = $(this).attr("data-id");
             if( idcard != undefined ){
@@ -366,38 +368,32 @@
 
 		function goStep(_step){
 			step = _step;
-			$(".step").hide();
-			$("#step"+_step).show();
 			if(_step==-1){
 				history.go(-1);
 				return;
 			}
-		    if(_step < 1 || _step > 2){
+			if(_step < 1 || _step > 2){
 				_step = 0; 
 			};
+			
+			$(".step").hide();
+			$("#step"+_step).show();
+
 			if(_step == 0){
 				stepbarShow('1','25%');
-				$("#uploadpic").GeminiUploader(keyList,picList,{
-					formData: {fileType:"image",order_id:orderData.id},
-				}); 
+				$("#submit").text("下一步");
 			} else if (_step == 1) {
 				stepbarShow('2','75%');
-				$("#uploadpic2").GeminiUploader(keyList_1,picList_1,{
-					formData: {fileType:"image",order_id:orderData.id},
-				});
+				$("#submit").text("下一步");
 			} else if (_step == 2) {
 				stepbarShow('3','100%');
-				$("#uploadpic3").GeminiUploader(keyList_2,picList_2,{
-					formData: {fileType:"image",order_id:orderData.id},
-				})
-				//提交页
 				$("#submit").text("提交");
 			}			
 		};
-		goStep(0);
+		setTimeout(function () {
+			 goStep(0);
+		}, 500);//wait geminiuploader init TODO:fixed this bug
 		
-
-
         function submitData(){
             var postData = {};              
                 if(orderData.id == null){
@@ -468,8 +464,8 @@
 							ui_alert('请输入借款人身份证号',function(){$('#idcard_num').focus()});
 							return;
 						}
-						if( idcard_name == ''){
-							ui_alert('请输入借款金额',function(){$('#loan_limit').focus()});
+						if( loan_limit == ''){
+							ui_alert('请输入贷款金额',function(){$('#loan_limit').focus()});
 							return;
 						}						
                         return;
