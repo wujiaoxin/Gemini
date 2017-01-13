@@ -130,7 +130,7 @@
 		role = {$user['access_group_id']};
 		{/if}
 		
-		if(role == 2){	
+		if(role == 3){	
 			var checkingOrder = 0;
 			var passOrder = 0;		
 			ajax_jquery({
@@ -145,7 +145,7 @@
 						$("#checkingOrder > .deal-item-con").children(".deal-item-tit").text("未审核订单")
 							.parent().children(".deal-item-intro").empty()
 							.parent().children(".index-ed-data").text(checkingOrder + "条").css("color","red")
-							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?status=0')").text("去审核");			
+							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=1&status=0')").text("去审核");			
 					}else{
 						if (typeof(data.msg) == 'string') {
 							ui_alert(data.msg);
@@ -165,7 +165,7 @@
 						$("#passOrder > .deal-item-con").children(".deal-item-tit").text("已通过订单")
 							.parent().children(".deal-item-intro").empty()
 							.parent().children(".index-ed-data").text(passOrder + "条")
-							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?status=1')").text("查进度");			
+							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=3&status=0')").text("查进度");			
 					}else{
 						if (typeof(data.msg) == 'string') {
 							ui_alert(data.msg);

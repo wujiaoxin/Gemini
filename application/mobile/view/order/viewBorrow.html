@@ -10,7 +10,7 @@
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
+    <link rel="stylesheet" href="/public/wap/css/my-app.css">
     <script>
 		var BASE_URL = ""; //根目录地址
         var imgList = {};
@@ -150,12 +150,6 @@
 		.list-block .item-after {
 			font-size: 14px;
 		}
-
-		.swiper-slide {
-          background: #fff;
-          box-sizing: border-box;
-          border: 1px solid #ccc;
-        }        
         .swiper-container {
           height: 120px;
         }
@@ -166,8 +160,15 @@
         .swiper-container-horizontal > .swiper-pagination {
           bottom: 6px;
         }
-        .swiper-slide{line-height: 116px;}
+		.swiper-slide {
+          background: #fff;
+          box-sizing: border-box;
+          border: 1px solid #ccc;
+          line-height: 116px;
+        }        
         .swiper-slide img {vertical-align: middle;}
+        
+        
 	</style>
 </head>
 <body>   
@@ -270,7 +271,7 @@
                         {if isset($info['status']) && isset($role)}  
                             {if $role == 1 AND $info['status'] == 0}
                             <div class="content-block">
-                                <a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder({$info['id']},'1')">撤销订单</a>
+                                <a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder({$info['id']},'1')">撤回订单</a>
                             </div>
                             {/if}
                             {if $role == 3}

@@ -211,7 +211,7 @@
 								<a class="button button-big button-raised butcom-css dpblue" href="javascript:goToUrl('/mobile/order/carloan?id={$info['id']}')">编辑订单</a>
 							</div>-->
 							<div class="content-block">
-								<a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder({$info['id']},'3')">撤销订单</a>
+								<a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder({$info['id']},'3')">撤回订单</a>
 							</div>
 							{elseif $info['status'] == 2/}
 							<!--<div class="content-block">
@@ -247,7 +247,7 @@
                 var key = tempList[j].form_key;
                 if(typeof(imgList[key])=='object'){
                     //<div class="swiper-slide"><img src="" /></div>
-                    swiperHtmlStr += '<div class="swiper-slide"><img src="' + imgList[key].src + '" /></div>'
+                    swiperHtmlStr += '<div class="swiper-slide"><img src="' + imgList[key].src + '" /></div>';
                    // $("#swiper"+i+" img").eq(j).attr('src',imgList[key].src);
                     param[j] ={
                         url: imgList[key].src,

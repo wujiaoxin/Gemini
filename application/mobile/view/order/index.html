@@ -71,7 +71,8 @@
 
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/public/wap/js/order.js"></script>
 	<script>
 	var orderStatus = new Array();
 	orderStatus[0] = '<span class="blue-color">审核中</span>';
@@ -79,31 +80,17 @@
 	orderStatus[2] = '<span class="red">审核未通过</span>';
   	var loading = false;  // 加载flag
 	var current_page = 1; 
-	var status = '';
+	var status = getUrlParam('status');
 	var orderType = getUrlParam("type");
+	if(status == 'null')
+		{	
+			status = '';
+		}
 
 	if(orderType == 3){
 		$('.navbar .navbar-inner > .center').text('车抵订单');
 	};
 
-	function fillZero(i){
-		if (i<10){
-			i="0" + i;
-		}
-		return i
-	}
-	function formatDate(timeStr){
-		var timeStr = timeStr*1000;
-		var now =new Date(timeStr);
-      	var year=now.getFullYear();     
-	    var month=now.getMonth()+1;     
-	    var date=now.getDate();     
-	    var hour=fillZero(now.getHours());     
-	    var minute=fillZero(now.getMinutes());     
-	    var second=fillZero(now.getSeconds());    
-	    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
-	};
- 
  
 	function tpl(data){
 		var html = '';
@@ -174,7 +161,7 @@
 		// $('div.navbar .center').text($(this).attr('data_text'));
 		current_page = 1
 		status = $(this).attr('data_status');
-		getOrderList(current_page,$(this).attr('data_status'));
+		getOrderList(current_page,status);
 		myApp.attachInfiniteScroll($$('.infinite-scroll'));
 	});
 
@@ -192,8 +179,8 @@
 
 	$(function(){
 		$('#tab_').addClass('tab_active');
-		$('#tab_' + getUrlParam('status')).click();
-		getOrderList(current_page,status);
+		$('#tab_' + status).click();
+		//getOrderList(current_page,status);
 		$(".orderList").on("click", "li", function(){
 			var id = $(this).attr("data");
 			goToUrl('/mobile/order/view?id=' + id);

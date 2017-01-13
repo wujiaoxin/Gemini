@@ -15,16 +15,16 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 	position: relative;
 	display: inline-block;
 	cursor: pointer;
-	background: #ff9900;
+	background: #fff;
 	padding: 5px 15px;
-	color: #ffffff;
+	color: #ff9900;
 	text-align: center;
 	border-radius: 3px;
 	overflow: hidden;
     width: 90%;
     margin-top:5px;
    	font-size: 20px;
-	/* border:1px solid  #ccc; */
+	border:1px solid  #ff9900;
 }
 
 .webuploader-pick-disable {
