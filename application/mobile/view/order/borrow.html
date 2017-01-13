@@ -149,7 +149,6 @@
             text-align: center;
             font-size: 16px;
         }
-    
     </style>
 </head>
 <body>   
@@ -225,7 +224,7 @@
                                                 <div class="item-inner">
                                                     <div class="item-title label">借款金额:</div>
                                                     <div class="item-input">
-                                                        <input type="text" name="loan_limit" id="loan_limit" value=""/>
+                                                        <input type="number" name="loan_limit" id="loan_limit" value=""/>
                                                     </div>
                                                     <div class="item-icon">
                                                         <img src="/public/wap/images/ico_edit.png" width="24" height="24"/>
@@ -356,6 +355,9 @@
                 }
                 if( idcard_num == ''){
                     ui_alert('请输入借款人身份证号');
+                    return;
+                } else if (!validateIdCard(idcard_num)) {
+                    ui_alert('身份证号输入有误');
                     return;
                 }
                 if( loan_limit == ''){
