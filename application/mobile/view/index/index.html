@@ -142,9 +142,8 @@
 				success: function(resp){
 					if(resp.code == 1){
 						checkingOrder = resp.data.total;
-						$("#checkingOrder > .deal-item-con").children(".deal-item-tit").text("未审核订单")
-							.parent().children(".deal-item-intro").empty()
-							.parent().children(".index-ed-data").text(checkingOrder + "条").css("color","red")
+						$("#checkingOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
+							.children(".index-ed-data").text(checkingOrder + "条")
 							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=1&status=0')").text("去审核");			
 					}else{
 						if (typeof(data.msg) == 'string') {
@@ -157,15 +156,15 @@
 				url: '/mobile/order/getOrderlist',   
 				data:{
 					page: 1,
-					status: 1
+					status: 1,
+                    type: 3
 				},
 				success: function(resp){
 					if(resp.code == 1){
-						passOrder = resp.data.total;
-						$("#passOrder > .deal-item-con").children(".deal-item-tit").text("已通过订单")
-							.parent().children(".deal-item-intro").empty()
-							.parent().children(".index-ed-data").text(passOrder + "条")
-							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=3&status=0')").text("查进度");			
+						checkingOrder = resp.data.total;
+						$("#passOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
+                            .children(".index-ed-data").text(checkingOrder + "条")
+                            .next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=3&status=0')").text("去审核");    		
 					}else{
 						if (typeof(data.msg) == 'string') {
 							ui_alert(data.msg);
