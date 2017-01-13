@@ -197,7 +197,7 @@
             <div class="navbar">
                 <div class="navbar-inner">
                     <div class="left">
-                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                        <a href="javascript:goStep((step-1))" class="link icon-only back">
                             <i class="icon icon-back color-orange"></i>
                         </a>
                     </div>
@@ -232,80 +232,90 @@
                          <form method="post" class="form form-horizontal">
                             <input type="hidden" name="id" value="0"/>
                             <input type="hidden" name="bank_uid" value="0"/>
-                            <div class="form-group loanerInfo">
-                                <div class="uploaderwrap">
-                                    <div class="uploader_title">
-                                        <h4>请上传借款人资料照片</h4>
-                                    </div>
-                                    <div id="uploadpic"></div>   
-                                </div>
-                            </div>                              
-                            <div class="form-group loanerInfo">
-                                <div class="list-block">
-                                    <div class="list-block-label">请填写后续信息<br>可点击<span class="color-orange">身份证正面照</span>进行自动识别</div>
-                                    <ul>
-                                        <li>
-                                            <div class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title label">贷款人姓名:</div>
-                                                    <div class="item-input">
-                                                        <input type="text" name="idcard_name" id="idcard_name" value=""/>
-                                                    </div>
-                                                    <div class="item-icon">
-                                                        <img src="/public/wap/images/ico_edit.png" width="24" height="24" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                          <div class="item-content">
-                                            <div class="item-inner">
-                                              <div class="item-title label">身份证号:</div>
-                                              <div class="item-input">
-                                                <input type="text" name="idcard_num" id="idcard_num" value=""/>
-                                              </div>
-                                              <div class="item-icon">
-                                                    <img src="/public/wap/images/ico_edit.png" width="24" height="24"/>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </li>
-                                        <li>
-                                          <div class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title label">贷款金额:</div>
-                                                    <div class="item-input">
-                                                        <input type="text" name="loan_limit" id="loan_limit" value=""/>
-                                                    </div>
-                                                    <div class="item-icon">
-                                                        <img src="/public/wap/images/ico_edit.png" width="24" height="24"/>
-                                                    </div>
-                                                </div>
-                                          </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div id="carInfo" class="form-group">
-                                <div class="uploaderwrap">
-                                    <div class="uploader_title">
-                                        <h4>请上车辆资料照片</h4>
-                                    </div>
-                                    <div id="uploadpic2"></div>   
-                                </div>
-                            </div>   
-                            <div id="loanContract" class="form-group">
-                                <div class="uploaderwrap">
-                                    <div class="uploader_title">
-                                        <h4>请上传借款协议照片</h4>
-                                    </div>
-                                    <div id="uploadpic3"></div>   
-                                </div>
-                            </div>   
+                            <div id="step0" class="step">
+								<div class="form-group loanerInfo">
+									<div class="uploaderwrap">
+										<div class="uploader_title">
+											<h4>请上传借款人资料照片</h4>
+										</div>
+										<div id="uploadpic"></div>   
+									</div>
+								</div> 
+							
+								<div class="form-group loanerInfo">
+									<div class="list-block">
+										<div class="list-block-label">请填写后续信息<br>可点击<span class="color-orange">身份证正面照</span>进行自动识别</div>
+										<ul>
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">贷款人姓名:</div>
+														<div class="item-input">
+															<input type="text" name="idcard_name" id="idcard_name" value=""/>
+														</div>
+														<div class="item-icon">
+															<img src="/public/wap/images/ico_edit.png" width="24" height="24" />
+														</div>
+													</div>
+												</div>
+											</li>
+											<li>
+											  <div class="item-content">
+												<div class="item-inner">
+												  <div class="item-title label">身份证号:</div>
+												  <div class="item-input">
+													<input type="text" name="idcard_num" id="idcard_num" value=""/>
+												  </div>
+												  <div class="item-icon">
+														<img src="/public/wap/images/ico_edit.png" width="24" height="24"/>
+												  </div>
+												</div>
+											  </div>
+											</li>
+											<li>
+											  <div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">贷款金额:</div>
+														<div class="item-input">
+															<input type="text" name="loan_limit" id="loan_limit" value=""/>
+														</div>
+														<div class="item-icon">
+															<img src="/public/wap/images/ico_edit.png" width="24" height="24"/>
+														</div>
+													</div>
+											  </div>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div id="step1" class="step">
+								<div id="carInfo" class="form-group">
+									<div class="uploaderwrap">
+										<div class="uploader_title">
+											<h4>请上车辆资料照片</h4>
+										</div>
+										<div id="uploadpic2"></div>   
+									</div>
+								</div>
+							</div>
+							<div id="step2" class="step">								
+								<div id="loanContract" class="form-group">
+									<div class="uploaderwrap">
+										<div class="uploader_title">
+											<h4>请上传借款协议照片</h4>
+										</div>
+										<div id="uploadpic3"></div>   
+									</div>
+								</div>  
+							</div>  
                         </div>
                         </form>
                         <div class="content-block">
                             <a class="button button-big button-raised butcom-css dpblue" id="submit">下一步</a>
+                        </div>
+						<div class="content-block">
+                            <a class="button button-big button-raised butcom-css bg-red" href="javascript:hideOrder(orderData.id,3)">撤销订单</a>
                         </div>
                     </div>
                 </div>
@@ -326,7 +336,7 @@
     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script>
     <script type="text/javascript" src="/Public/wap/js/order.js"></script>
     <script type="text/javascript">
-        var step = getUrlParam("step");
+        var gstep = 0;// getUrlParam("step");
 
         function stepbarShow (step,width) {
             $(".stepContent:lt("+step+")").children('.num_circle').css('background-color','#ff9900')
@@ -334,10 +344,8 @@
             $(".step-progress-highlight").css('width',width); 
         }
 
-        $("#uploadpic").GeminiUploader(keyList,picList,{
-            formData: {fileType:"image",order_id:orderData.id},
-        }); 
 
+/*
         $("#uploadpic2").GeminiUploader(keyList_1,picList_1,{
             formData: {fileType:"image",order_id:orderData.id},
         });
@@ -345,7 +353,7 @@
         $("#uploadpic3").GeminiUploader(keyList_2,picList_2,{
             formData: {fileType:"image",order_id:orderData.id},
         });
-
+*/
         $("#uploadpic").on("click","img",function(ev){
             var idcard = $(this).attr("data-id");
             if( idcard != undefined ){
@@ -356,47 +364,49 @@
             }
         });
 
-        if(step < 1 || step > 2){
-            step = 0 
-        };
-        if(step == 0){
-            stepbarShow('1','25%');
-            $('.loanerInfo').show();
-            $('#carInfo , #loanContract').hide();
-        } else if (step == 1) {
-            stepbarShow('2','75%');
-            $('#carInfo').show();
-            $('.loanerInfo , #loanContract').hide();
-        } else if (step == 2) {
-            stepbarShow('3','100%');
-            $('#loanContract').show();
-            $('.loanerInfo , #carInfo').hide();
+		function goStep(_step){
+			step = _step;
+			$(".step").hide();
+			$("#step"+_step).show();
+			if(_step==-1){
+				history.go(-1);
+				return;
+			}
+		    if(_step < 1 || _step > 2){
+				_step = 0; 
+			};
+			if(_step == 0){
+				stepbarShow('1','25%');
+				$("#uploadpic").GeminiUploader(keyList,picList,{
+					formData: {fileType:"image",order_id:orderData.id},
+				}); 
+			} else if (_step == 1) {
+				stepbarShow('2','75%');
+				$("#uploadpic2").GeminiUploader(keyList_1,picList_1,{
+					formData: {fileType:"image",order_id:orderData.id},
+				});
+			} else if (_step == 2) {
+				stepbarShow('3','100%');
+				$("#uploadpic3").GeminiUploader(keyList_2,picList_2,{
+					formData: {fileType:"image",order_id:orderData.id},
+				})
+				//提交页
+				$("#submit").text("提交");
+			}			
+		};
+		goStep(0);
+		
 
-            //提交页
-            $("#submit").text("提交");
-        }
 
         function submitData(){
             var postData = {};              
                 if(orderData.id == null){
                     return ;//todo:alert
                 }
-                var bank_uid = $('#bank_uid').val();//todo
-                if( idcard_name == ''){
-                    ui_alert('请输入借款人姓名');
-                    $('#field_idcard_face_pic_name').focus();
-                    return;
-                }
-                if( idcard_num == ''){
-                    ui_alert('请输入借款人身份证号');
-                    $('#field_idcard_face_pic_idNumber').focus();
-                    return;
-                }
-                if( idcard_name == ''){
-                    ui_alert('请输入借款金额');
-                    $('#loan_limit').focus();
-                    return;
-                }  
+                var bank_uid = $('#bank_uid').val();
+				var idcard_name = $('#idcard_name').val();
+                var idcard_num = $('#idcard_num').val();
+                var loan_limit = $('#loan_limit').val();
                 var postData = {
                         'id':orderData.id,
                         'type':3,
@@ -434,7 +444,7 @@
         $(function(){
             $("#submit").click(function(){
                 if(step == 2){
-                     if( $('#uploadpic3  .fileList > li[data-id]').length < keyList_2.length ) {
+                     if( $('#uploadpic3  .fileList img[data-id]').length < keyList_2.length ) {
                         ui_alert("借款人协议不全，请补充上传");
                         return;
                     }
@@ -443,23 +453,39 @@
                     var idcard_name = $('#idcard_name').val();
                     var idcard_num = $('#idcard_num').val();
                     var loan_limit = $('#loan_limit').val();
-                    if( $('#uploadpic  .fileList > li[data-id]').length < keyList.length) {
+                    if( $('#uploadpic  .fileList img[data-id]').length < keyList.length) {
                         ui_alert("借款人资料不全，请补充上传");
                         return;
                     }else if (!(idcard_name && idcard_num && loan_limit)) {
-                        console.log(idcard_num)
-                        ui_alert("借款信息不全，请补充上传");
+                        //console.log(idcard_num)
+                        //ui_alert("借款信息不全，请补充上传");
+						if( idcard_name == ''){
+							ui_alert('请输入借款人姓名',function(){$('#idcard_name').focus()});
+							
+							return;
+						}
+						if( idcard_num == ''){
+							ui_alert('请输入借款人身份证号',function(){$('#idcard_num').focus()});
+							return;
+						}
+						if( idcard_name == ''){
+							ui_alert('请输入借款金额',function(){$('#loan_limit').focus()});
+							return;
+						}						
                         return;
                     }
-                   goToUrl('/mobile/order/carloan?step=1');
+					step = 1;
+					
+                   //goToUrl('/mobile/order/carloan?step=1');
                 }else if(step == 1){
-                    if( $('#uploadpic2  .fileList > li[data-id]').length < keyList_1.length) {
+                    if( $('#uploadpic2  .fileList img[data-id]').length < keyList_1.length) {
                         ui_alert("车辆资料不全，请补充上传");
                         return;
                     }
-                   goToUrl('/mobile/order/carloan?step=2');
+					step = 2;
+                   //goToUrl('/mobile/order/carloan?step=2');
                 }
-
+				goStep(step);
             });
         });
     </script>  

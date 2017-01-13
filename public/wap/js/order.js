@@ -1,17 +1,23 @@
 //撤销订单
 function hideOrder(id,type){
-	ajax_jquery({
-        url: '/mobile/order/cancel?id='+id+'&t=' + Math.random(),
-        success: function (resp) {
-            if (resp.code == 1) {
-				ui_alert("提交成功", function () {
-					window.location.href = "/mobile/order/index?type="+type;
-                });
-            } else {
-                ajaxAlertMsg(resp);
-            }
-        }
-    });	
+	ui_ask('确认撤销订单？', '确定', '取消',function () {
+		ajax_jquery({
+			url: '/mobile/order/cancel?id='+id+'&t=' + Math.random(),
+			success: function (resp) {
+				if (resp.code == 1) {
+					ui_alert("提交成功", function () {
+						window.location.href = "/mobile/order/index?type="+type;
+					});
+				} else {
+					ajaxAlertMsg(resp);
+				}
+			}
+		});
+        return false;
+    },function () {
+        return false;
+    });
+	
 }
 
 //身份证识别

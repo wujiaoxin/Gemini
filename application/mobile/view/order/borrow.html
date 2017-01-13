@@ -335,13 +335,13 @@
                 // var mobile = $('#mobile').val();//todo
                 var bank_uid = $('input[name="bank_name"]').filter(':checked').val();
 
-                if( $('#uploadpic  .fileList > li[data-id]').length < 9) {
+                if( $('#uploadpic  .fileList img[data-id]').length < 9) {
                     ui_alert("借款资料不完整，请补充上传");
                     return;
                 }
 
                 if(type == 2){
-                    if( $('#uploadpic2  .fileList > li[data-id]').length < 11) {
+                    if( $('#uploadpic2  .fileList img[data-id]').length < 11) {
                         ui_alert("车辆资料不完整，请补充上传");
                         return;
                     }
