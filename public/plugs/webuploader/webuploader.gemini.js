@@ -291,7 +291,7 @@
 					self.fileFinshedNum++;
 					
 					
-					var percent = Math.ceil((self.fileFinshedNum/self.options.fileNumLimit))*100;
+					var percent = Math.ceil((self.fileFinshedNum/self.options.fileNumLimit)*100);
 					$(self.rootHandel).find('.text').text(percent+"%");
 					$(self.rootHandel).find('.percentage').width(percent+"%");
 					
