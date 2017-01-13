@@ -445,6 +445,18 @@ class Order extends Base {
 			if ($data) {
 				$data['status'] = 0;
 				$result = $orderModel->isUpdate(true)->save($data, array('id' => $data['id'], 'uid' => $uid));
+				
+				if($result){
+					//$bankList = db('Member')->field('uid,nickname,mobile,addr')->where('access_group_id',2)->limit(5)->select();
+					$examineRole = 3;//VP贷风控经理
+					$examineUid = 0;
+					$examineUser = db('Member')->field('uid,mobile')->where('access_group_id',$examineRole)->find();//TODO:建立车商管理关系
+					if($examineUser !=null){
+						$examineUid = $examineUser['uid'];
+					}
+					$result = $orderAuthModel->addAuth($data['id'],$examineUid,$examineRole);
+				}
+				
 				if ($result) {
 					return $this->success("提交成功！", url('Order/index'));
 				} else {
