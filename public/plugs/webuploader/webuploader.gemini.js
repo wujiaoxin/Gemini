@@ -43,7 +43,7 @@
 			wrapHtmlStr += '</ul>';			
 			wrapHtmlStr += '<ul class="fileList fileListItem_'+keyList.length+'">';
 			for(var i=0; i<picList.length; i++){
-				wrapHtmlStr += '<li data-id="'+ picList[i].id +'"><p class="imgWrap"><img src='+picList[i].path+' /></p>'
+				wrapHtmlStr += '<li><p class="imgWrap"><img src='+picList[i].path+' data-id="'+ picList[i].id +'" /></p>'
 				//wrapHtmlStr += '<div class="file-panel">' +
                 //    '<span class="cancel">删除</span>' +
                 //    '</div>';
@@ -79,7 +79,8 @@
 				var status = $(this).attr("data-status");
 				if(status == "ready"){
 					$(this).addClass( 'disabled' ).find(".webuploader-pick").text("上传中...");
-					$(self.rootHandel).find('.statusBar').show();
+					$(self.rootHandel).find('.statusBar').show().end()
+									.find('.file-panel').hide();
 					self.BDUploader.upload();
 					return false;
 				}
@@ -275,7 +276,7 @@
 						return false;
 					}else{
 						var $li = $('#'+file.id);
-						$li.attr('data-id',response.info.id);	
+						$li.find('img').attr('data-id',response.info.id);	
 					}
 					self.dump('上传成功');
 
@@ -398,7 +399,6 @@
 
                 // 成功
                 if ( cur === 'error' || cur === 'invalid' ) {
-                    console.log( file.statusText );
                     showError( file.statusText );
                    // percentages[ file.id ][ 1 ] = 1;
                 } else if ( cur === 'interrupt' ) {

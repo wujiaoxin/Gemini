@@ -138,10 +138,10 @@
             color: #838383
         }
         .uploaderwrap {
-        border-radius: 6px;
-        color: #838383;
-        margin-top: 10px;
-        background-color: #FFF;
+            border-radius: 6px;
+            color: #838383;
+            margin-top: 10px;
+            background-color: #FFF;
         }
 
         .uploader_title {
@@ -197,7 +197,7 @@
                                         <li>
                                             <div class="item-content">
                                                 <div class="item-inner">
-                                                    <div class="item-title label">贷款人姓名:</div>
+                                                    <div class="item-title label">借款人姓名:</div>
                                                     <div class="item-input">
                                                         <input type="text" name="idcard_name" id="idcard_name" value=""/>
                                                     </div>
@@ -223,7 +223,7 @@
                                         <li>
                                           <div class="item-content">
                                                 <div class="item-inner">
-                                                    <div class="item-title label">贷款金额:</div>
+                                                    <div class="item-title label">借款金额:</div>
                                                     <div class="item-input">
                                                         <input type="text" name="loan_limit" id="loan_limit" value=""/>
                                                     </div>
@@ -297,12 +297,12 @@
             formData: {fileType:"image",order_id:orderData.id},
         });
 
-         $("#uploadpic").on("click","li",function(ev){
+         $("#uploadpic").on("click","img",function(ev){
             var idcard = $(this).attr("data-id");
             if( idcard != undefined ){
                 tryOCR(idcard,'idcard_face');
             }
-            else{
+            else {
                 ui_alert('请先上传照片');
             }
         });
@@ -334,10 +334,6 @@
                 var type= $("#type").val();
                 // var mobile = $('#mobile').val();//todo
                 var bank_uid = $('input[name="bank_name"]').filter(':checked').val();
-                if(bank_uid == undefined){
-                    ui_alert('请选择银行','');
-                    return;
-                }
 
                 if( $('#uploadpic  .fileList > li[data-id]').length < 9) {
                     ui_alert("借款资料不完整，请补充上传");
@@ -354,6 +350,22 @@
                 var loan_limit = $('#loan_limit').val();//todo
                 var idcard_name = $('#idcard_name').val();
                 var idcard_num = $('#idcard_num').val();
+                if( idcard_name == ''){
+                    ui_alert('请输入借款人姓名');
+                    return;
+                }
+                if( idcard_num == ''){
+                    ui_alert('请输入借款人身份证号');
+                    return;
+                }
+                if( idcard_name == ''){
+                    ui_alert('请输入借款金额');
+                    return;
+                }  
+                if(bank_uid == undefined){
+                    ui_alert('请选择银行','');
+                    return;
+                }
                  ajax_jquery({
                     type: 'post',
                     url: '/mobile/order/borrow',

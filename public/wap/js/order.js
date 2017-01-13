@@ -52,8 +52,40 @@ function formatDate(timeStr){
     return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
 };
 function fillZero(i){
-        if (i<10){
-            i="0" + i;
-        }
-        return i
+    if (i<10){
+        i="0" + i;
     }
+    return i
+};
+
+//提交订单审核
+function examine(id){
+    // var addr =  $("#addr").val();
+    var status = $('input[name="examine_status"]').filter(':checked').val();
+    if(typeof(status) == "undefined"){
+        ui_alert("请审核订单");
+    }
+    var param = {
+        "id": id,
+        "status": status,
+        "addr": ''
+    };
+    ajax_jquery({
+        url: '/mobile/order/examine?t=' + Math.random(),
+        data: param,
+        success: function (resp) {
+            if(resp.code == 1){
+                ui_alert("提交成功!", function () {
+                     window.location.href = '/mobile/order' ;            
+                 });
+            }else{
+                if (typeof(resp.msg) == 'string') {
+                    ui_alert(resp.msg);
+                }  
+            }
+        }
+    })
+};
+
+
+
