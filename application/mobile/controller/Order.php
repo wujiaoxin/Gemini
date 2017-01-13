@@ -173,8 +173,6 @@ class Order extends Base {
 		}else{
 			return $this->fetch('viewBorrow');
 		}
-		
-		
 		/*if($info["type"] == 3){//车抵贷
 			$filter['uid'] = $uid;
 			$filter['order_id'] = $info['id'];
@@ -204,9 +202,11 @@ class Order extends Base {
 			}else{
 				return $this->fetch();
 			}
-		}*/
+		}*///////注意此处括号
 	}
 	
+	
+	/*
 	//审核API
 	public function examine() {
 		$link = model('Order');
@@ -271,7 +271,7 @@ class Order extends Base {
 
 		}
 	}
-	
+	*/
 	
 	//撤销订单
 	public function cancel() {
@@ -556,6 +556,45 @@ class Order extends Base {
 			return $this->fetch();
 		}
 	}
+	
+	
+	//审核订单
+	public function examine() {		
+		$id     = input('id', '', 'trim,intval');
+		$status =  input('status', '', 'trim,intval');
+		$uid    = session('user_auth.uid');
+		$role   = session('user_auth.role');		
+		$filter["auth_role"] = $role;
+		if($id != ''){
+			$filter["order_id"] = $id;			
+		}else{
+			return $this->error("缺少参数");
+		}
+		if($uid > 0){
+			$filter["auth_uid"] = $uid;
+		}else{
+			return $this->error('请重新登录');
+		}
+		if($status != 1 && $status != 2){
+			return $this->error("非法参数");
+		}
+		if (IS_POST) {			
+			$auth = db('OrderAuth')->where($filter)->find();
+			if($auth == null){
+				return $this->error('没有权限审核该订单');
+			}
+			$orderModel = model('Order');			
+			$result = $orderModel->where("id",$id)->update(['status' => $status]);
+			if ($result) {
+				//TODO:1.短信通知；2.添加权限(财务、资方)；
+				return $this->success("提交成功！", url('Order/index'));
+			} else {
+				return $this->error("提交失败！");
+			}
+		}
+		return $this->error("请使用POST提交");
+	}
+	
 	
 	protected function notifiedUserbySMS($uid, $msg){
 		
