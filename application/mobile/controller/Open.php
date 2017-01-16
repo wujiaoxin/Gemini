@@ -27,6 +27,7 @@ class Open extends Base {
 				$saveData['mobile'] = $data["mobile"];
 				$saveData['name'] = $data["name"];
 				$saveData['contacts'] = $data["contacts"];
+				$saveData['inviter'] = $data["inviter"];
 				$saveData['invite_code'] = $Dealer->buildInviteCode();
 				$saveData['status'] = 0;
 				$result = $Dealer->save($saveData);

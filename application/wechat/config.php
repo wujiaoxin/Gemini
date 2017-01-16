@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'default_return_type'    => 'json',
+	//'default_return_type'    => 'json',
 		'wechat_config'   => array(
 		'token'          => 'Vpdai188',
 		'appid'          => 'wx1833935ea45da737',

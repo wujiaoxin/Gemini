@@ -59,7 +59,7 @@
 							  <div class="item-inner">
 							  <div class="item-title label">联系电话</div>
 								<div class="item-input">
-									<input type="text" id="mobile" type="text" name="mobile" placeholder="请输入手机号">
+									<input type="text" id="mobile" type="tel" name="mobile" placeholder="请输入手机号">
 								</div>
 							  </div>
 							</div>
@@ -68,6 +68,7 @@
 						<div class="content-block">
                             <button type="submit" id="postBtn" class="button button-big button-fill dpblue" style="width:100%">提交</button>
                         </div>
+						<input type="text" id="inviter" type="hidden" name="inviter">
 					  </form>
                     </div>
                 </div>
@@ -80,11 +81,13 @@
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
 	<script> 
+	var inviter = getUrlParam("inviter");//TODO:后台转换为UID
 	
 	function doPost(){
 		var mobile = $("#mobile").val();
 		var name = $("#name").val();
 		var contacts = $("#contacts").val();
+		//var inviter = $("#inviter").val();
 		if (mobile == "" || name == "" || contacts == "") {
 			ui_alert("请输入正确信息");
 		}else if (validatePhoneNumber(mobile) == false) {
@@ -93,7 +96,8 @@
 			var param = {
 				"mobile": mobile,
 				"contacts": contacts,
-				"name": name
+				"name": name,
+				"inviter": inviter
 			};
 			$("#postBtn").attr("disabled", "disabled");
 			ajax_jquery({

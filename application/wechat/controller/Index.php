@@ -181,5 +181,29 @@ class Index extends \think\Controller{
 		}		
 	}
 	
+	public function share(Request $request) {
+		$url = $request->url(true);
+		$script = &  load_wechat('Script');
+		$openid = session('user_openid');
+		$nickname = '';
+		if($openid != null){
+			$model =  model('MemberWechat');
+			$userInfo = $model->where('openid',$openid)->find();
+			if($userInfo!=null){
+				$nickname = $userInfo['nickname'];
+			}
+		}
+		$options = $script->getJsSign($url);
+		if($options===FALSE){
+			echo $script->errMsg;
+			return ;
+		}else{
+			$this->assign('openid', $openid);
+			$this->assign('nickname', $nickname);
+			$this->assign('options', json_encode($options));
+			return $this->fetch();
+		}		
+	}
+	
 }
 
