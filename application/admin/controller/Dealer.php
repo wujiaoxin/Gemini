@@ -138,6 +138,7 @@ class Dealer extends Admin {
 			$data = array(
 				'keyList' => $link->keyList,
 				'info'    => $info,
+				'infoStr' => json_encode($info),
 			);
 			$this->assign($data);
 			$this->setMeta("查看车商信息");
