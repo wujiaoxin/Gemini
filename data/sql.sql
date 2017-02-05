@@ -1592,7 +1592,7 @@ CREATE TABLE `gemini_dealer` (
   `bank_account_name` varchar(255) NOT NULL DEFAULT '' COMMENT '开户名',
   `bank_account_id` varchar(64) NOT NULL DEFAULT '' COMMENT '开户账号',
   `priv_bank_name` varchar(255) NOT NULL DEFAULT '' COMMENT '私户开户银行',
-  `priv_bank_code` varchar(64) NOT NULL DEFAULT '' COMMENT '私户开户网点',
+  `priv_bank_branch` varchar(64) NOT NULL DEFAULT '' COMMENT '私户开户网点',
   `priv_bank_account_name` varchar(255) NOT NULL DEFAULT '' COMMENT '私户开户名',
   `priv_bank_account_id` varchar(64) NOT NULL DEFAULT '' COMMENT '私户开户账号',
   `forms` varchar(255) NOT NULL DEFAULT '' COMMENT '合作内容',
