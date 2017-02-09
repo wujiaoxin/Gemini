@@ -4,7 +4,7 @@ html {
 	background-image: linear-gradient(to bottom, #F4E2C9 20%, #F4D7C9 100%);
 }
 
-html, body {
+/* html, body {
 	margin: 0;
 	padding: 0;
 	position: relative;
@@ -14,7 +14,7 @@ html, body {
 	font-family: 'Roboto', sans-serif;
 	font-weight: 300;
 }
-
+ */
 
 h1 {
 	color: #FF3F00;

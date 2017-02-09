@@ -172,7 +172,14 @@
 					}
 				}
 			});
-		}
+		}else if(role == 0){
+            $("#checkingOrder, #passOrder").find("a").attr("href","")
+                                .on("click",function(){
+                                    ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
+                                    return ;
+                                })
+        }
+
 
 		function goApply(){
 			if(role == 0){
