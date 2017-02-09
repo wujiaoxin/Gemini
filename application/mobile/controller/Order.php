@@ -432,6 +432,9 @@ class Order extends Base {
 	public function carloan() {
 		$uid  = session('user_auth.uid');
 		$role = session('user_auth.role');
+		if($role != 1){
+			return $this->error('没有权限', url('Index/index'));
+		}
 		$orderModel = model('Order');
 		if($uid > 0){
 			$map['uid'] = $uid;
@@ -503,6 +506,9 @@ class Order extends Base {
 	public function borrow($type = '1') {
 		$uid  = session('user_auth.uid');
 		$role = session('user_auth.role');
+		if($role != 1){
+			return $this->error('没有权限', url('Index/index'));
+		}
 		$orderModel = model('Order');
 		if($uid > 0){
 			$map['uid'] = $uid;
