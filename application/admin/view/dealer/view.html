@@ -281,8 +281,9 @@ function initCheckBox(name){
 			else{
 				htmlText += initData[i].v + "; ";
 			}
-		$("#"+name).text(htmlText);
 		}	
+		htmlText = htmlText.substring(0,htmlText.length-2);
+		$("#"+name).text(htmlText);
 	}
 }
 
@@ -292,7 +293,7 @@ $(function(){
 	initCheckBox("property");
 	initCheckBox("banks");
 	initCheckBox("forms");
-	// $("input").attr("disabled","disabled");
+	$("input").attr("disabled","disabled");
 	// $("input[type='checkbox']").not("input:checked").hide();
 
 });
