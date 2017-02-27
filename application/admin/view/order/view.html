@@ -2,19 +2,30 @@
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/libs/bootstrap-editable.css">
 <style>
-img {
-	max-width: 300px;
-}
-.view-label{
-	text-align: right;
-}
+	ul{
+		list-style-type:none;
+	}
+	.picContainer{
+		display: block;
+	}
+	.picListItem {  
+		border:1px solid #beceeb; 
+		font-size:148px; 
+		text-align:center; 
+		vertical-align:middle;
+		height: 240px;
+		overflow: hidden;
+		margin: 5px;
+	}
+	.picListItem img{
+		width: 100%;
+	}
 
 </style>
-{/block}
-
-{block name="body"}
-    <script>
-        var imgList = {};
+<script type="text/javascript">
+	
+	var imgList = {};
+    var picList = [];
         //for(var index = 0)
         {volist name="files" id="file"}
             {if isset($file['form_key'])}
@@ -24,7 +35,201 @@ img {
             imgList["{$file['form_key']}"].key = "{$file['form_key']}";
             {/if}
         {/volist}
-	</script>
+    var type = {$info['type']};
+    if (type == 1){
+	    picList[0] = [
+	        {
+	            form_key:"borrow_pic_1",
+	            form_label:"身份证正面照片"
+	        },
+	        {
+	            form_key:"borrow_pic_2",
+	            form_label:"身份证反面照片"
+	        },
+	        {
+	            form_key:"borrow_pic_3",
+	            form_label:"驾驶证正副本"
+	        },
+	        {
+	            form_key:"borrow_pic_4",
+	            form_label:"放款通知单"
+	        },
+	        {
+	            form_key:"borrow_pic_5",
+	            form_label:"首付凭证"
+	        },
+	        {
+	            form_key:"borrow_pic_6",
+	            form_label:"购车发票"
+	        },
+	        {
+	            form_key:"borrow_pic_7",
+	            form_label:"车辆合格证"
+	        },
+	        {
+	            form_key:"borrow_pic_8",
+	            form_label:"车辆保单"
+	        },
+	        {
+	            form_key:"borrow_pic_9",
+	            form_label:"借款合同"
+	        }];
+	}else if (type == 2) {
+		picList[0] = [
+	        {
+	            form_key:"borrow_pic_1",
+	            form_label:"身份证正面照片"
+	        },
+	        {
+	            form_key:"borrow_pic_2",
+	            form_label:"身份证反面照片"
+	        },
+	        {
+	            form_key:"borrow_pic_3",
+	            form_label:"驾驶证正副本"
+	        },
+	        {
+	            form_key:"borrow_pic_4",
+	            form_label:"放款通知单"
+	        },
+	        {
+	            form_key:"borrow_pic_5",
+	            form_label:"首付凭证"
+	        },
+	        {
+	            form_key:"borrow_pic_6",
+	            form_label:"购车发票"
+	        },
+	        {
+	            form_key:"borrow_pic_7",
+	            form_label:"车辆合格证"
+	        },
+	        {
+	            form_key:"borrow_pic_8",
+	            form_label:"车辆保单"
+	        },
+	        {
+	            form_key:"borrow_pic_9",
+	            form_label:"借款合同"
+	        }];
+	    picList[1] = [
+	        {
+	            form_key:"carinfo_pic_1",
+	            form_label:"行驶证正副本"
+	        },
+	        {
+	            form_key:"carinfo_pic_2",
+	            form_label:"车辆登记证1、2页"
+	        },
+	        {
+	            form_key:"carinfo_pic_3",
+	            form_label:"车辆登记证3、4页"
+	        },
+	        {
+	            form_key:"carinfo_pic_4",
+	            form_label:"车头含车牌全车照"
+	        },
+	        {
+	            form_key:"carinfo_pic_5",
+	            form_label:"车尾含车牌全车照"
+	        },
+	        {
+	            form_key:"carinfo_pic_6",
+	            form_label:"侧面全车照"
+	        },
+	        {
+	            form_key:"carinfo_pic_7",
+	            form_label:"内饰"
+	        },
+	        {
+	            form_key:"carinfo_pic_8",
+	            form_label:"仪表盘含公里数"
+	        },
+	        {
+	            form_key:"carinfo_pic_9",
+	            form_label:"风挡VIN"
+	        },
+	        {
+	            form_key:"carinfo_pic_10",
+	            form_label:"引擎盖打开发动机舱"
+	        },
+	        {
+	            form_key:"carinfo_pic_11",
+	            form_label:"铭牌"
+	        }];    
+	}else if (type == 3){
+		picList[0] = [
+	        {
+	            form_key:"carloan_loaner_1",
+	            form_label:"身份证正面照片"
+	        },
+	        {
+	            form_key:"carloan_loaner_2",
+	            form_label:"身份证反面照片"
+	        },
+	        {
+	            form_key:"carloan_loaner_3",
+	            form_label:"行驶证正副本"
+	        },
+	        {
+	            form_key:"carloan_loaner_4",
+	            form_label:"机动车登记证1"
+	        },
+	        {
+	            form_key:"carloan_loaner_5",
+	            form_label:"机动车登记证2"
+	        }];
+	    picList[1] = [
+	        {
+	            form_key:"carloan_carinfo_1",
+	            form_label:"含车牌车头照"
+	        },
+	        {
+	            form_key:"carloan_carinfo_2",
+	            form_label:"含车牌车尾照"
+	        },
+	        {
+	            form_key:"carloan_carinfo_3",
+	            form_label:"内饰照"
+	        },
+	        {
+	            form_key:"carloan_carinfo_4",
+	            form_label:"仪表盘照片"
+	        },
+	        {
+	            form_key:"carloan_carinfo_5",
+	            form_label:"风挡VIN照"
+	        }];
+	    picList[2] = [
+	        {
+	            form_key:"carloan_contract_1",
+	            form_label:"质押借款合同1"
+	        },
+	        {
+	            form_key:"carloan_contract_2",
+	            form_label:"质押借款合同2"
+	        },
+	        {
+	            form_key:"carloan_contract_3",
+	            form_label:"车辆交易委托书"
+	        },
+	        {
+	            form_key:"carloan_contract_4",
+	            form_label:"车辆买卖合同1"
+	        },
+	        {
+	            form_key:"carloan_contract_5",
+	            form_label:"车辆买卖合同2"
+	        },
+	        {
+	            form_key:"carloan_contract_6",
+	            form_label:"借条"
+	        }];
+	}
+    
+</script>
+{/block}
+{block name="body"}
 <div class="main-box clearfix">
 	<header class="main-box-header clearfix">
 		<div class="pull-left">
@@ -34,38 +239,72 @@ img {
 	<div class="main-box-body clearfix">
 
 		<form method="post" class="form form-horizontal">
-			{volist name="keyList" id="field"}
-			{if $field['type'] eq 'image'}	
-				{php}
-					$images = get_order_files($info[$field['name']]);
-				{/php}
-			<div class="form-group">
-				<label class="col-lg-2 view-label">{$field['title']|htmlspecialchars}</label>
-				<div class="col-lg-8">
-					<img src="{$images['path']|default=''}">
-				</div>
+			<div class="list-block">
+						  	<ul>
+								<li>
+								    <div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title color-gray">
+								            	<span>订单编号:&nbsp;</span>
+								            	<span>{$info['sn']}</span>
+								            </div>
+								        </div>
+								    </div>
+							    </li>
+							    <li>
+							    	<div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title">
+								            	<span>姓&#12288;&#12288;名:&nbsp;</span>
+								            	<span>{$info['name']}</span>
+								            </div>
+								        </div>
+							        </div>
+							    </li>
+							    <li> 
+							    	<div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title">
+								            	<span>身份证号:&nbsp;</span>
+								            	<span>{$info['idcard_num']}</span>
+								            </div>
+								        </div>
+							        </div> 
+							    </li>
+							    <li>
+							    	<div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title">
+								            	<span>订单类型:&nbsp;</span>
+								            	<span>{if $info['type'] == 1/}新车垫资{elseif $info['type'] == 2/}二手车垫资{elseif $info['type'] == 3/}车抵贷{/if}</span>
+								            </div>
+								        </div>
+							        </div>
+							    </li>
+							    <li>  
+							    	<div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title">
+								            	<span>贷款额度:&nbsp;</span>
+								            	<span>{$info['loan_limit']}</span>
+								            </div>
+								        </div>
+							        </div>
+							    </li>
+							    <li> 
+							        <div class="item-content">
+								        <div class="item-inner">
+								            <div class="item-title">
+								            	<span>申请时间:&nbsp;</span>
+								            	<span>{$info['create_time'|date='Y-m-d H:i',###]}</span>
+								            </div>
+								        </div>
+							        </div>
+							    </li>
+							</ul>
 			</div>
-			{elseif $field['type'] eq 'text'/}
-			<div class="form-group">
-				<label class="col-lg-2 view-label">{$field['title']|htmlspecialchars}</label>
-				<div class="col-lg-8">
-					{$info[$field['name']]|default='-'}
-				</div>
-			</div>
-			{else /} 
-			{/if}			
-			{/volist}
-			{volist name="files" id="file"}
-				{if isset($file['form_key'])}				
-				<div class="form-group">
-					<label class="col-lg-2 view-label">{$file['form_label']|default=''}</label>
-					<div class="col-lg-8">
-						<img src="{$file['path']|default=''}" />
-					</div>
-				</div>
-				{/if}
-			{/volist}
-			<div class="form-group">
+			<div class="picContainer"></div>
+			<div class="form-group clearfix">
 				<div class="col-lg-offset-2 col-lg-10">
 					<input type="hidden" name="id" value="{$info['id']|default=''}">            
 					<button class="btn btn-danger btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
@@ -75,4 +314,32 @@ img {
 
 	</div>
 </div>
+
+<script type="text/javascript">
+        for (var i in picList) {
+        	$(".picContainer").append('<div id="picContainerItem' + i + '" class="picContainerItem"></div>' )
+            var tempList = picList[i];
+            var param = [];
+            var imgLiItem = '<h2 class="picListTitle"></h2>'
+            for (var j = 0; j < tempList.length; j++) {
+                var key = tempList[j].form_key;
+                if(typeof(imgList[key]) == 'object'){
+                    imgLiItem += '<div class="picListItem col-xs-4 col-md-3"><img src="' + imgList[key].src + '" /></div>';
+                }
+            }
+            $("#picContainerItem"+i).html(imgLiItem);      
+        };
+        if (type == 1){
+        	$("#picContainerItem0 .picListTitle").text("借款资料");
+        }else if (type == 2) {
+        	$("#picContainerItem0 .picListTitle").text("借款资料");
+        	$("#picContainerItem1 .picListTitle").text("车辆资料");
+        }else if (type == 3) {
+        	$("#picContainerItem0 .picListTitle").text("借款人证件资料");
+        	$("#picContainerItem1 .picListTitle").text("车辆资料");
+        	$("#picContainerItem2 .picListTitle").text("借款合同");
+        }
+</script>
+
+
 {/block}
