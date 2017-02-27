@@ -12,20 +12,26 @@ use app\common\controller\Admin;
 
 class Order extends Admin {
 
-	public function index() {
-		//define('IS_ROOT', is_administrator());		
-		$map = '';
+	public function index($type = 3, $status = null) {
+		$Order = model('Order');
 		if (!IS_ROOT) {
 			$uid = session('user_auth.uid');
-			if($uid > 0){
-				$map = 'uid = '.$uid.' or bank_uid = '.$uid;
+			$role = session('user_auth.role');
+			$list = $Order->get_all_order_list($uid, $role, $status);
+		}else{			
+			/*if($type == 3){
+				$filter['type'] = $type;
 			}else{
-				return $this->error('请重新登录');
+				$filter['type'] =['<',3];
+			}*/
+			if($status == null){
+				$filter['status'] = ['>',-1];
+			}else{
+				$filter['status'] = $status;
 			}
+			$list  = db('Order')->where($filter)->order("id desc")->paginate(10);
 		}
-		$order = "id desc";
-		$list  = db('Order')->where($map)->order($order)->paginate(10);
-
+		
 		$data = array(
 			'list' => $list,
 			'page' => $list->render(),
@@ -34,6 +40,7 @@ class Order extends Admin {
 		$this->setMeta("订单管理");
 		return $this->fetch();
 	}
+	
 /*
 	//添加
 	public function add() {
@@ -98,38 +105,65 @@ class Order extends Admin {
 */
 	//查看
 	public function view() {
-		$link = model('Order');
+		
+		//checkOrderAuth
+		
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
 		$id   = input('id', '', 'trim,intval');
-		$map = '';
-		if (!IS_ROOT) {
-			$uid = session('user_auth.uid');
-			if($uid > 0){
-				$map = '(uid = '.$uid.' or bank_uid = '.$uid.') and id = '.$id;
-			}else{
-				return $this->error('请重新登录');
-			}
-		}else{
-			$map = 'id = '.$id;
+		$info = null;
+		
+		if($uid == null){
+			return $this->error('请重新登录');
 		}
+		
+		$filter['id'] = $id;
+		
+		if (IS_ROOT) {//管理员
+			$info = db('Order')->where($filter)->find();
+		}else{
+			if($role==1){//报单人-车商经理
+				$filter['uid'] = $uid;
+				$info = db('Order')->where($filter)->find();
+			}else{
+				$authfilter['order_id'] = $id;
+				$authfilter['auth_uid'] = $uid;
+				$authfilter['auth_role'] = $role;			
+				$auth = db('OrderAuth')->where($authfilter)->find();
+				if($auth != null){
+					$info = db('Order')->where("id",$id)->find();
+				}
+			}
+
+		}
+		if($info == null){
+			return $this->error('没有查看该订单权限');
+		}
+		
+		//end checkOrderAuth
+		$Order = model('Order');
 		if (IS_POST) {
+			
 			$data = input('post.');
 			if ($data) {
-				$result = $link->save($data, array('id' => $data['id']));
+				$result = $Order->save($data, array('id' => $data['id']));
 				if ($result) {
 					return $this->success("修改成功！", url('Order/index'));
 				} else {
 					return $this->error("修改失败！");
 				}
 			} else {
-				return $this->error($link->getError());
+				return $this->error($Order->getError());
 			}
-		} else {
-			//$map  = array('id' => $id);
-			$info = db('Order')->where($map)->find();
-
+		} else {			
+			$fileFilter['order_id'] = $info['id'];
+			$fileFilter['status'] = 1;//有效文件
+			$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($fileFilter)->limit(100)->select();
 			$data = array(
-				'keyList' => $link->keyList,
-				'info'    => $info,
+						'keyList' => $Order->keyList,
+						'info'    => $info,
+						'files'   => $files,
+						'role'    => $role,
 			);
 			$this->assign($data);
 			$this->setMeta("查看订单");

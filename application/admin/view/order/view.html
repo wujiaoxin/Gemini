@@ -11,7 +11,20 @@ img {
 
 </style>
 {/block}
+
 {block name="body"}
+    <script>
+        var imgList = {};
+        //for(var index = 0)
+        {volist name="files" id="file"}
+            {if isset($file['form_key'])}
+            imgList["{$file['form_key']}"] = {};
+            imgList["{$file['form_key']}"].src = "{$file['path']|default=''}";
+            imgList["{$file['form_key']}"].label = "{$file['form_label']|default=''}";
+            imgList["{$file['form_key']}"].key = "{$file['form_key']}";
+            {/if}
+        {/volist}
+	</script>
 <div class="main-box clearfix">
 	<header class="main-box-header clearfix">
 		<div class="pull-left">
@@ -42,7 +55,16 @@ img {
 			{else /} 
 			{/if}			
 			{/volist}
-
+			{volist name="files" id="file"}
+				{if isset($file['form_key'])}				
+				<div class="form-group">
+					<label class="col-lg-2 view-label">{$file['form_label']|default=''}</label>
+					<div class="col-lg-8">
+						<img src="{$file['path']|default=''}" />
+					</div>
+				</div>
+				{/if}
+			{/volist}
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10">
 					<input type="hidden" name="id" value="{$info['id']|default=''}">            
