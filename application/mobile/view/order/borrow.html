@@ -282,7 +282,7 @@
     <div id="loading"></div>
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.0.16.min.js"></script>
     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script>
     <script type="text/javascript" src="/public/plugs/webuploader/sortable.js"></script>
@@ -348,7 +348,7 @@
 
                 var loan_limit = $('#loan_limit').val();//todo
                 var idcard_name = $('#idcard_name').val();
-                var idcard_num = $('#idcard_num').val();
+                var idcard_num = $('#idcard_num').val().toUpperCase();
                 if( idcard_name == ''){
                     ui_alert('请输入借款人姓名');
                     return;

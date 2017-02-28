@@ -332,7 +332,7 @@
     <div id="loading"></div>
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.0.16.min.js"></script>
     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script>
     <script type="text/javascript" src="/Public/wap/js/order.js"></script>
@@ -403,7 +403,7 @@
                 }
                 var bank_uid = $('#bank_uid').val();
 				var idcard_name = $('#idcard_name').val();
-                var idcard_num = $('#idcard_num').val();
+                var idcard_num = $('#idcard_num').val().toUpperCase();
                 var loan_limit = $('#loan_limit').val();
                 var postData = {
                         'id':orderData.id,
@@ -449,7 +449,7 @@
                     submitData();
                 }else if(step == 0){
                     var idcard_name = $('#idcard_name').val();
-                    var idcard_num = $('#idcard_num').val();
+                    var idcard_num = $('#idcard_num').val().toUpperCase();
                     var loan_limit = $('#loan_limit').val();
                     if( $('#uploadpic  .fileList img[data-id]').length < keyList.length) {
                         ui_alert("借款人资料不全，请补充上传");

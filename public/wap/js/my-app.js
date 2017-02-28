@@ -336,7 +336,7 @@ function validateBankNum(banknum) {
 function validateIdCard(pId) {
 //检查身份证号码
 
-    var arrVerifyCode = [1, 0, "x", 9, 8, 7, 6, 5, 4, 3, 2];
+    var arrVerifyCode = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2];
     var Wi = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
     var Checker = [1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1];
 
