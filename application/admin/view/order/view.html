@@ -1,19 +1,23 @@
 {extend name="public/base"/}
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/libs/bootstrap-editable.css">
+<link rel="stylesheet" href="__CSS__/simple.slide.css" type="text/css">
 <style>
 	ul{
 		list-style-type:none;
 	}
 	.picContainer{
 		display: block;
+		width: 80%;
 	}
 	.picListItem {  
+		display: inline-block;
+		width: 150px;
+		height: 150px;
+		line-height: 150px;
 		border:1px solid #beceeb; 
-		font-size:148px; 
 		text-align:center; 
 		vertical-align:middle;
-		height: 240px;
 		overflow: hidden;
 		margin: 5px;
 	}
@@ -314,7 +318,7 @@
 
 	</div>
 </div>
-
+<script type="text/javascript" src="__JS__/simple.slide.js"></script>
 <script type="text/javascript">
         for (var i in picList) {
         	$(".picContainer").append('<div id="picContainerItem' + i + '" class="picContainerItem"></div>' )
@@ -324,11 +328,13 @@
             for (var j = 0; j < tempList.length; j++) {
                 var key = tempList[j].form_key;
                 if(typeof(imgList[key]) == 'object'){
-                    imgLiItem += '<div class="picListItem col-xs-4 col-md-3"><img src="' + imgList[key].src + '" /></div>';
+                    imgLiItem += '<div class="picListItem"><a href="javascript:;" i=" ' + imgList[key].src + '" class="Slide One"><img src=" ' + imgList[key].src + '"></a></div>';
                 }
             }
-            $("#picContainerItem"+i).html(imgLiItem);      
+            $("#picContainerItem"+i).html(imgLiItem);  
+            $("#picContainerItem"+i+' .One').simpleSlide();    
         };
+         
         if (type == 1){
         	$("#picContainerItem0 .picListTitle").text("借款资料");
         }else if (type == 2) {
