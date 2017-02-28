@@ -13,22 +13,30 @@ use app\common\controller\Admin;
 class Order extends Admin {
 
 	public function index($type = 3, $status = null) {
-		$Order = model('Order');
+		
+		if($status == null){
+			$filter['status'] = ['>',-1];
+		}else{
+			$filter['status'] = $status;
+		}
+		
+		/*if($type == 3){
+			$filter['type'] = $type;
+		}else{
+			$filter['type'] =['<',3];
+		}*/
+		
 		if (!IS_ROOT) {
 			$uid = session('user_auth.uid');
 			$role = session('user_auth.role');
-			$list = $Order->get_all_order_list($uid, $role, $status);
-		}else{			
-			/*if($type == 3){
-				$filter['type'] = $type;
+			if($role==1){//报单人-车商经理
+				$filter['uid'] = $uid;
+				$list  = db('Order')->where($filter)->order("id desc")->paginate(10);
 			}else{
-				$filter['type'] =['<',3];
-			}*/
-			if($status == null){
-				$filter['status'] = ['>',-1];
-			}else{
-				$filter['status'] = $status;
+				$Order = model('Order');
+				$list = $Order->get_all_order_list($uid, $role, $status);
 			}
+		}else{
 			$list  = db('Order')->where($filter)->order("id desc")->paginate(10);
 		}
 		
