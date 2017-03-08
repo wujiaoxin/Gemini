@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all"> 
+    <style type="text/css">
+        .banner-container {
+            position: relative;
+        }
+        #pie-container {
+            height: 185px;
+        }
+        .myAccount a {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            color: white;
+            font-size: 16px;
+        }
+        .record-title {
+            padding: 15px 15px 12px;
+            border-bottom: 1px solid #DEDEDE;
+            color: #333333;
+        }
+        .record-item {
+            background-color: #fff;
+            height: 44px;
+            line-height: 44px;
+            padding-left: 15px;
+            padding-right: 15px;
+            border-bottom: 1px solid #DEDEDE;
+            
+        }
+        .record-item span {
+            display: inline-block;
+            width: 32%;
+        }
+        .record-item-money {
+            color: #333333;
+            text-align: left;
+        }
+        .record-item-bank {
+            color: #999999;
+            text-align: center;
+        }
+        .record-item-date {
+            color: #999999;
+            text-align: right;
+        }
+
+    </style>   
+</head>
+<body>
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center">信用审核</div>
+                </div>
+            </div>
+            <div class="pages navbar-through toolbar-through">
+                <div data-page="appHome" class="page">
+                    <div class="page-content">
+                        <div class="banner-container">
+                            <div id="pie-container"></div>
+                            <p class="myAccount"><a href="#">我的账户</a></p>
+                        </div>
+                        <div class="record-block">
+                            <div class="record-title">贷款记录</div>
+                            <ul class="record-content">
+                                <li class="record-item">
+                                    <span class="record-item-money">20,000.00</span>
+                                    <span class="record-item-bank">建设银行</span>
+                                    <span class="record-item-date">2015-02-14</span>
+                                </li>
+                                <li class="record-item">
+                                    <span class="record-item-money">20,000.00</span>
+                                    <span class="record-item-bank">建设银行</span>
+                                    <span class="record-item-date">2015-02-14</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="record-block">
+                            <div class="record-title">还款记录</div>
+                            <ul class="record-content">
+                                <li class="record-item">
+                                    <span class="record-item-money">10,000.00</span>
+                                    <span class="record-item-bank">建设银行</span>
+                                    <span class="record-item-date">2015-02-14</span>
+                                </li>
+                                <li class="record-item">
+                                    <span class="record-item-money">20.00</span>
+                                    <span class="record-item-bank">建设银行</span>
+                                    <span class="record-item-date">2015-02-14</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script src="/public/wap/js/echarts/echarts.js"></script>
+    <script type="text/javascript">
+    var data =[];
+    data =[
+        {value:100,name:'完美'},
+        {value:90,name:'优秀'},
+        {value:75,name:'信用良好'},
+        {value:60,name:'及格'},
+        {value:50,name:'不及格'}
+    ]
+    var creditScore = data[2];
+
+        //模块化引入Echarts
+        require.config({
+            paths: {
+                echarts: '/public/wap/js/echarts'
+            }
+        });
+        require(
+            [
+                'echarts',
+                'echarts/chart/pie'  // 按需加载所需图表
+            ],
+            function (ec) {
+                var myChart = ec.init(document.getElementById('pie-container'));
+                var option = {
+                        title : {
+                            text: creditScore.name,
+                            x: 'center',
+                            y: 'center',
+                            textStyle:{
+                                color: '#fff',
+                                fontSize: 24
+                            }
+                        },
+                        backgroundColor :'rgba(255, 153, 0, 1)',
+                        color: ['rgba(249,231,56,1)','rgba(249,231,56,0.4)'],
+                        series : [
+                            {
+                                name:'个人信用',
+                                type:'pie',
+                                radius : ['85%','75%'],
+                                itemStyle : {
+                                    normal : {
+                                        label : {
+                                            show : false
+                                        },
+                                        labelLine : {
+                                            show : false
+                                        }
+                                    }
+                                },
+                                data:[
+                                    {value:creditScore.value},
+                                    {value:100-creditScore.value}
+                                ]
+                            }
+                        ]
+                    };
+                        
+                myChart.setOption(option);
+            }
+        );
+    </script>
+    <script type="text/javascript">
+		var role = -1;
+		{if isset($user['access_group_id'])}
+		role = {$user['access_group_id']};
+		{/if}
+		
+		if(role == 3){	
+			var checkingOrder = 0;
+			var passOrder = 0;		
+			ajax_jquery({
+				url: '/mobile/order/getOrderlist',   
+				data:{
+					page: 1,
+					status: 0
+				},
+				success: function(resp){
+					if(resp.code == 1){
+						checkingOrder = resp.data.total;
+						$("#checkingOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
+							.children(".index-ed-data").text(checkingOrder + "条")
+							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=1&status=0')").text("去审核");			
+					}else{
+						if (typeof(data.msg) == 'string') {
+							ui_alert(data.msg);
+						}
+					}
+				}
+			});
+			ajax_jquery({
+				url: '/mobile/order/getOrderlist',   
+				data:{
+					page: 1,
+					status: 0,
+                    type: 3
+				},
+				success: function(resp){
+					if(resp.code == 1){
+						checkingOrder = resp.data.total;
+						$("#passOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
+                            .children(".index-ed-data").text(checkingOrder + "条")
+                            .next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=3&status=0')").text("去审核");    		
+					}else{
+						if (typeof(data.msg) == 'string') {
+							ui_alert(data.msg);
+						}
+					}
+				}
+			});
+		}else if(role == 0){
+            $("#checkingOrder, #passOrder").find("a").attr("href","")
+                                .on("click",function(){
+                                    ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
+                                    return ;
+                                })
+        }
+
+
+		function goApply(){
+			if(role == 0){
+				ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
+				return ;
+			}	
+			goToUrl('/mobile/order/add');
+		}
+		
+		
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">    
+</head>
+    <style type="text/css">
+        .user-info {
+            height: 105px;
+            line-height: 105px;
+            background-color: white;        
+        }
+        .user-info div {
+            vertical-align: middle;
+            display: inline-block;
+            height: 72px;
+            line-height: 72px;
+        }
+        .user-info-face {
+            margin-left: 20px;
+            border-radius: 50%;
+            width: 72px;
+        }
+        .user-info-name {
+            color: #333333;
+            font-size: 20px;
+            max-width: 160px;
+            overflow: hidden;
+        }
+        .user-info-xcodeMini {
+            margin-right: 20px;
+            margin-top: 25px;
+        }
+
+        .order-block {
+            padding: 15px;
+        }
+        .order-item {
+            height: 50px;
+            line-height: 50px;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            color: white;
+            font-size: 24px;
+        }
+        .order-item div {
+            display: inline-block;
+        }
+        .order-item-media {
+            vertical-align: middle;
+            height: 35px;
+        }
+        .order-item-title {
+            margin-left: 10px;  
+            line-height: 50px;    
+        }
+        #orderPending {
+            background-color: #FFAD33;
+        }
+        #orderSubmitted {
+            background-color: #9A8FFF;
+        }
+        #orderSupplying {
+            background-color: #E56590;
+        }
+        #orderLoaned {
+            background-color: #63B1FB;
+        }
+
+    </style>
+<body>
+    
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:goToUrl('{:url('mobile/index/index')}');" class="link icon-only">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center">车商员工</div>
+                    <!--<div class="right">
+                        <a href="javascript:toUserMessage();" class="link icon-only ">
+                            <img src="/public/wap/images/message.png" height="40%"/>
+                        </a>
+                    </div>-->
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="dqassess" class="page">
+                    <div class="page-content">
+                        <div class="user-info-container">
+                            <div class="user-info">
+                                <div class="user-info-face">
+                                    {if isset($user['headimgurl'])}
+                                        <img src="{$user['headimgurl']}" width="100%"/>
+                                    {else /}
+                                        <img src="/public/wap/images/user.png" width="100%"/>
+                                    {/if}
+                                  
+                                </div>
+                                <div class="user-info-name">我的名字七个字</div>
+                                <div class="user-info-xcodeMini right"><img src="/public/wap/images/QRCodeMini.png"></div>
+                            </div>
+                        </div>
+                        <div class="order-block">
+                            <div class="order-item" id="orderPending">
+                                <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
+                                <div class="order-item-title">待受理订单</div>
+                                <div class="order-item-number right">2</div>
+                            </div>
+                            <div class="order-item" id="orderSubmitted">
+                                <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
+                                <div class="order-item-title">资料提交订单</div>
+                                <div class="order-item-number right">22</div>
+                            </div>
+                            <div class="order-item" id="orderSupplying">
+                                <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
+                                <div class="order-item-title">资料补充订单</div>
+                                <div class="order-item-number right">0</div>
+                            </div>
+                            <div class="order-item" id="orderLoaned">
+                                <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
+                                <div class="order-item-title">已放款订单</div>
+                                <div class="order-item-number right">112</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  	<div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
+        </div>
+    </div>
+
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+
+</body>
+</html>
