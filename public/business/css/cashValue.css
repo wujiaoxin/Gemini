@@ -1,0 +1,21 @@
+.cash-value .row-fluid {
+	margin-bottom: 10px;
+}
+.cash-value .border {
+	border: 1px solid #ddd;
+}
+.cash-value .span12 {
+	padding: 10px;
+}
+.cash-value .span4 div:nth-child(2) {
+	margin-top: 5px;
+}
+.cash-value .no-padding {
+	padding: 0;
+}
+.cash-value .form-horizontal .control-label {
+	text-align: left;
+}
+.cash-value .table th {
+	text-align: center;
+}
