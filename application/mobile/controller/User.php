@@ -233,19 +233,20 @@ TODO:check idcard if needed;
 		//$this->assign($user);		
 		return $this->fetch();
 	}
-	// 个人中心-我页面
-	public function me() {
-		//$this->assign($user);		
-		return $this->fetch();
-	}
-	// 我的积分页面
+	// 我的积分
 	public function myPoints() {
 		//$this->assign($user);		
 		return $this->fetch();
 	}
-	//我的客户
+	// 我的客户
 	public function myCustomers() {
 		//$this->assign($user);		
 		return $this->fetch();
 	}
+	// 账户设置
+	public function myAccount() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
+
 }

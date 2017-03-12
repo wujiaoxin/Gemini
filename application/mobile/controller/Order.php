@@ -627,5 +627,14 @@ class Order extends Base {
 
     }
 	
-	
+	// 注册补充
+	public function newOrder() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
+	// 客户授权
+	public function customerAuth() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
 }

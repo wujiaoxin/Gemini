@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">  
+    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
+    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.gemini.css"> 
+    <script type="text/javascript">
+        var orderData = {};  
+
+        var keyList = [
+            {
+                form_key:"carloan_loaner_1",
+                form_label:"身份证正面照"
+            },
+            {
+                form_key:"carloan_loaner_2",
+                form_label:"身份证反面照"
+            }];
+        var picList = [];
+        for(var i=0 ; i<keyList.length;i++){            
+            if(typeof(orderData[keyList[i].form_key]) == "object" ){
+                picList.push(orderData[keyList[i].form_key]);
+                keyList[i].has = 1;
+            }
+        }
+    </script>
+    <style type="text/css">
+        .stepShow {
+            margin: 20px auto 15px;
+            width: 80%;
+            text-align: center;
+            position: relative;
+        }
+        .stepContent {
+           letter-spacing: 0;
+           width: 70px;
+           text-align: center;
+           display: inline-block;
+		   z-index: 2;
+        }
+        .num_circle {
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            color: white;
+            text-align: center;
+            font-size: 28px;
+            border-radius: 50%;
+            background-color: #DDDDDD;
+            margin: 0 auto 5px;
+			z-index: 2;
+        }
+        .step-progress {
+            width: 100%;
+            height: 4px;
+            position: absolute;
+            z-index: 1;
+            top: 16px;
+        }
+        .step-progress-bar {
+            width: auto;
+            height: 100%;
+            margin:0 35px;
+            background: #DDDDDD;
+        }
+        .step-progress-highlight {
+            background: #ff9900;
+            display: block;
+            width: 0%;
+            height: 100%;
+        }
+
+        .step-info-block {
+            background: #ffffff;
+            margin-top: 0;
+        }
+        .step-info-title {
+            color: #838383;
+            height: 50px;
+            line-height: 50px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .protocol {
+            text-align: center;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+        #forgetPassword {
+            color: #ff9900;
+        }
+        .questionmark {
+            padding-right: -10px;
+            vertical-align: -webkit-baseline-middle;
+            color: #ff9900;
+        } 
+
+        .list-block {
+            margin: 0;
+        }
+        .list-block .list-block-label {
+            margin: 6px 0 0;
+        }
+    </style>
+</head>
+<body>   
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:goStep((step-1))" class="link icon-only back">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center">车抵贷</div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div class="page">                     
+                    <div class="page-content main-box clearfix">
+                        <div class="stepShow">
+                            <div class="row">
+                                <div class="stepContent">
+                                    <div class="num_circle">1</div>
+                                    <p>手机验证</p>
+                                </div>
+                                <div class="stepContent">
+                                    <div class="num_circle">2</div>
+                                    <p>手机授权</p>
+                                </div>
+                                <div class="stepContent">
+                                    <div class="num_circle">3</div>
+                                    <p>证件录入</p>
+                                </div>
+                            </div>
+                            <div class="step-progress">
+                                <p class="step-progress-bar">
+                                    <span class="step-progress-highlight"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-info-block list-block" id="step1">
+                            <div class="step-info-title">温馨提示：请添加相同姓名且常用的手机号~</div>
+                            <ul class="clearfix">
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner mr15">
+                                            <div class="item-title label">手机号</div>
+                                            <div class="item-input">
+                                                <input type="tel" id="mobile" name="mobile" placeholder="请输入手机号" onkeyup='this.value=this.value.replace(/\D/gi,"")' maxlength="11">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner mr15">
+                                            <div class="item-title label">短信验证码</div>
+                                            <div class="item-input">
+                                                <input type="tel" id="smsCode" maxlength="6" placeholder="请输入验证码"/>
+                                                <input id="getSmsCode" class="getcode dpblue" type="button" onclick="sendRestPasswordSmsCode('sms')" value="发送验证码">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="rvalicode-cont" style="display: none">
+                                    <div class="item-content">
+                                        <div class="item-inner mr15">
+                                            <div class="item-title label">图形验证码</div>
+                                            <div class="item-input rel">
+                                                <input type="text" id="rvalicode" name="rvalicode" maxlength="4" placeholder="图形验证码" value="">
+                                                <a href="javascript:;" class="auth-Code">
+                                                    <img src="{:url('mobile/open/verify')}"  name="verify" id="verify" height="100%"  onclick="doRefreshVerfiy()"/> 
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="step-info-block list-block" id="step2" style="visibility: visible;">
+                            <div class="step-info-title">温馨提示：请添加相同姓名且常用的手机号~</div>
+                            <ul class="clearfix">
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner mr15">
+                                            <div class="item-title label">手机号</div>
+                                            <div class="item-input">
+                                                <input type="tel" id="mobileStep2" maxlength="11" value="134****2332" disabled="disabled">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner mr15">
+                                            <div class="item-title label">服务密码</div>
+                                            <div class="item-input">
+                                                <input type="number" id="servicePwd" maxlength="6" placeholder="请输入服务密码"/>
+                                                <a id="forgetSP" type="button" class="getcode">
+                                                    <span class="questionmark">
+                                                        <img src="/public/wap/images/questionmark.png">
+                                                        <span>忘记密码</span>
+                                                    </span>                 
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                         <div class="step-info-block list-block" id="step3" style="visibility: visible;">
+                            <div class="form-group loanerInfo">
+                                    <div class="uploaderwrap">
+                                        <div class="uploader_title">
+                                            <div class="step-info-title">请上传借款人资料照片</div>
+                                        </div>
+                                        <div id="uploadpic"></div>   
+                                    </div>
+                                </div> 
+                            <div class="form-group loanerInfo">
+                                    <div class="list-block">
+                                        <div class="list-block-label mb10">请填写后续信息<br>可点击<span class="color-orange">身份证正面照</span>进行自动识别</div>
+                                        <ul>
+                                            <li>
+                                                <div class="item-content">
+                                                    <div class="item-inner mr15">
+                                                        <div class="item-title label">真实姓名</div>
+                                                        <div class="item-input">
+                                                            <input type="text" name="idcard_name" id="idcard_name" value=""/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="item-content">
+                                                    <div class="item-inner mr15">
+                                                        <div class="item-title label">身份证号</div>
+                                                        <div class="item-input">
+                                                            <input type="text" name="idcard_num" id="idcard_num" value=""/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="item-content">
+                                                    <div class="item-inner mr15">
+                                                        <div class="item-title label">银行卡号</div>
+                                                        <div class="item-input">
+                                                            <input type="number" name="bankcard_num" id="bankcard_num" value=""/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="content-block">
+                            <div class="protocol">
+                                <label>
+                                    <input type="checkbox" name="protocol">同意<a href="/mobile/open/protocol">《VP贷用户服务协议》</a>
+                                </label>
+                            </div>
+                            <button type="submit" id="submit" class="button button-big button-fill dpblue" style="width:100%" disabled="disabled">下一步</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="popover popover-forgetSP">
+        <div class="popover-angle"></div>
+        <div class="popover-inner">
+          <div class="content-block">
+            <p>忘记服务密码怎么办？</p>
+            <p>1.移动用户发送免费短信2010到10086;联通用户发送短信“MMCZ#6位新密码”到10010;电信用户发送短信MMCZ到10001;</p>
+            <p>2.登录网上营业厅或手机营业厅客户端进行服务密码重置</p>
+          </div>
+        </div>
+    </div>
+    <div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
+        </div>
+    </div>
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/user.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
+    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.0.16.min.js"></script>
+    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script>
+    <script type="text/javascript" src="/Public/wap/js/order.js"></script>
+    <script type="text/javascript">
+        var step = 1;// getUrlParam("step");
+
+        function stepbarShow (step,width) {
+            var rstep = step - 1;
+            $(".stepContent:lt("+ step +")").children('.num_circle').css('background-color','#ff9900')
+                                .next('p').css('color','#ff9900').end().end()
+            $(".stepContent:gt("+ rstep +")").children('.num_circle').css('background-color','#dddddd')
+                                .next('p').css('color','#dddddd');
+            $(".step-progress-highlight").css('width',width); 
+        }
+
+        function goStep(_step){
+            step = _step;
+            if(_step == 0){
+                history.go(-1);
+                return;
+            }
+            if(_step < 1 || _step > 3){
+                _step = 1; 
+            };
+            
+            $(".step-info-block").hide();
+            $("#step"+_step).show();
+
+            if(_step == 1){
+                stepbarShow('1','25%');
+                $("#submit").text("下一步");
+                $(".protocol").show();
+            } else if (_step == 2) {
+                stepbarShow('2','75%');
+                $("#submit").text("下一步");
+                $(".protocol").hide();
+            } else if (_step == 3) {
+                stepbarShow('3','100%');
+                $("#submit").text("提交");
+                $(".protocol").hide();
+                $("#uploadpic").GeminiUploader(keyList,picList,{
+                    formData: {fileType:"image",order_id:orderData.id},
+                }); 
+
+            }           
+        };
+         goStep(1);
+        // setTimeout(function () {
+        //      goStep(1);
+        // }, 500);//wait geminiuploader init TODO:fixed this bug
+		$(".protocol").on('click','label',function(){
+                var isChecked = $('input[name="protocol"]').prop('checked');
+                    $("#submit").attr("disabled",!isChecked);
+            })
+        $("#forgetSP").click(function(){
+                var clickedLink = this;
+                myApp.popover('.popover-forgetSP', clickedLink);
+            })
+        $("#uploadpic").on("click","img",function(ev){
+            var idcard = $(this).attr("data-id");
+            if( idcard != undefined ){
+                tryOCR(idcard,'idcard_face');
+            }
+            else{
+                ui_alert('请先上传照片');
+            }
+        });
+
+
+
+        $(function(){
+            $("#submit").on('click',function(){
+                var mobile = $("#mobile").val();
+                var smsCode = $("#smsCode").val();
+                var servicePwd = $("#servicePwd").val();
+                var idcard_name = $('#idcard_name').val();
+                var idcard_num = $('#idcard_num').val().toUpperCase();
+                var bankcard_num = $('#bankcard_num').val();
+                if(step == 1){
+                    // if(mobile == ""){
+                    //     ui_alert("请输入手机号");
+                    //     return;
+                    // }else if(!validatePhoneNumber(mobile)){
+                    //     ui_alert("请输入正确的手机号");
+                    //     return;
+                    // }else if (smsCode == "") {
+                    //     ui_alert("请输入手机验证码");
+                    //     return;
+                    // }
+                    // ajax_jquery({
+                    //     url: '',
+                    //     data: {
+                    //         'mobile': mobile,
+                    //         'smsCode': smsCode
+                    //     },
+                    //     success: function(data) {
+                    //         if(data.code == 1){
+                    //             ui_alert("提交成功!", function () {
+                                   goStep(2);            
+                    //              });
+                    //         }else{
+                    //             if (typeof(data.msg) == 'string') {
+                    //                 ui_alert(data.msg);
+                    //             }
+                    //         }
+                    //     }
+                    // });   
+                }else if(step == 2){
+                    // if(servicePwd == ""){
+                    //     ui_alert("请输入服务密码");
+                    //     return;
+                    // }else if(!validateServicePwd(servicePwd)){
+                    //     ui_alert("请输入正确的服务密码");
+                    //     return;
+                    // }
+                    // ajax_jquery({
+                    //     url: '',
+                    //     data: {
+                    //         'servicePwd': servicePwd
+                    //     },
+                    //     success: function(data) {
+                    //         if(data.code == 1){
+                    //             ui_alert("提交成功!", function () {
+                            goStep(3);          
+                    //              });
+                    //         }else{
+                    //             if (typeof(data.msg) == 'string') {
+                    //                 ui_alert(data.msg);
+                    //             }
+                    //         }
+                    //     }
+                    // });   
+                }else if(step == 3){
+                    if( $('#uploadpic  .fileList img[data-id]').length < keyList.length) {
+                        ui_alert("照片不全，请补充上传");
+                        return;
+                    }else if( idcard_name == ''){
+                        ui_alert('请输入真实姓名',function(){$('#idcard_name').focus()});
+                        return;
+                    }
+                    if( idcard_num == ''){
+                        ui_alert('请输入身份证号',function(){$('#idcard_num').focus()});
+                        return;
+                    } else if(!validateIdCard(idcard_num)){
+                        ui_alert('身份证号有误',function(){$('#idcard_num').focus()});
+                        return;
+                    }else if( bankcard_num == ''){
+                        ui_alert('请输入银行卡号',function(){$('#bankcard_num').focus()});
+                        return;
+                    }else if(!validateBankNum(bankcard_num)){
+                        ui_alert('请核对银行卡号',function(){$('#bankcard_num').focus()});
+                        return;
+                    }
+                    ajax_jquery({
+                        url: '',
+                        data: {
+                            'idcard_name': idcard_name,
+                            'idcard_num': idcard_num,
+                            'bankcard_num': bankcard_num
+                        },
+                        success: function(data) {
+                            if(data.code == 1){
+                                ui_alert("提交成功!", function () {
+                                    window.location.href = '/mobile' ;            
+                                 });
+                            }else{
+                                if (typeof(data.msg) == 'string') {
+                                    ui_alert(data.msg);
+                                }
+                            }
+                        }
+                    });           
+                }
+            });
+        });
+       
+       
+    </script>  
+
+</body>
+</html>

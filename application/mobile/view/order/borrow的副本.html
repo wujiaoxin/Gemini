@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">   
+
+</head>
+<body>   
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center" id="navbar_title">垫资申请</div>
+                    <div class="right"></div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div class="page">                     
+                    <div class="page-content">
+                        <form class="list-block mt10" method="post">
+                            <ul class="clearfix">
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner register-inner">
+                                            <div class="item-title label">购车价格</div>
+                                            <div class="item-input">
+                                                <input type="number" id="carPrice" name="carPrice" value="" maxlength="8" placeholder="请输入购车价格">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner register-inner">
+                                            <div class="item-title label">用户手机</div>
+                                            <div class="item-input register-inner">
+                                                <input type="tel" id="mobile" name="mobile" maxlength="11" placeholder="请输入借款人手机号" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="content-block">                                 
+                                <button type="submit" id="" class="button button-big button-fill dpblue" style="width:100%">提交</button>
+                            </div>
+                            <div class="clearfix pr15 fz6" style="margin-top:-10px;">
+                                <a class="right blue-color" href="">展示二维码</a>
+                            </div>
+                        </form>
+                    </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
+        </div>
+    </div>
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
+    <script type="text/javascript" src="/Public/wap/js/order.js"></script>
+    <script type="text/javascript">    
+        $(function(){
+            $("#submit").click(function(){       
+                var carPrice = $('#carPrice').val();
+                var mobile = $('#mobile').val();
+                
+                if( carPrice == ""){
+                    ui_alert('请输入购车价格');
+                    return;
+                }else if (mobile == "") {
+                    ui_alert('请输入借款人手机号');
+                    return;
+                }else if (!validateIdCard(idcard_num)) {
+                    ui_alert('身份证号输入有误');
+                    return;
+                }
+
+                 ajax_jquery({
+                    type: 'post',
+                    url: '/mobile/order/borrow',
+                    datatype:'json',
+                    data: {
+						'id':orderData.id,
+                        'type':type,
+                        'name':idcard_name,
+                        'bank_uid': '',
+                        'idcard_num':idcard_num,
+                        'loan_limit':loan_limit,
+                        'idcard_face_pic':'',
+                        'idcard_back_pic':'',
+                        'driving_lic_pic':'',
+                        'status':0,
+                        'addr':'',
+                        'descr':'',
+                        'mobile':''
+                    },
+                    success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
+                        if(data.code == 1){
+                            ui_alert("新增订单成功!", function () {
+                                 window.location.href = '/mobile' ;            
+                             });
+                        }else{
+                            if (typeof(data.msg) == 'string') {
+                                ui_alert(data.msg);
+                            }  
+                        }
+                    }
+                }); 
+            });
+        });
+    </script>  
+
+</body>
+</html>

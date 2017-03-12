@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">    
+</head>
+<body>
+    
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="#" class="link icon-only">
+                            <img src="/public/wap/images/logo.png" height="100%"/>
+                        </a>
+                    </div>
+                    <div class="right">
+                        <a class="link icon-only mylink" href="#" onclick="goToUrl('{:url('wechat/index/share')}')">
+                            <img src="/public/wap/images/invite.png" height="100%"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="pages navbar-through toolbar-through">
+                <div data-page="appHome" class="page">
+                    <div class="page-content">
+                        <div class="swiper-container no-margin mtop swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><a data-url='#' class="myhref"><img src="/public/wap/images/1.png"/></a></div>
+								<div class="swiper-slide"><a data-url='#' class="myhref"><img src="/public/wap/images/2.png"/></a></div>
+                           </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                        <div class="secdiv-con" onclick="goToUrl('{:url('mobile/user/index')}')" >
+                            <div class="user-tx">
+								{if isset($user['headimgurl'])}
+									<img src="{$user['headimgurl']}" width="100%"/>
+								{else /}
+									<img src="/public/wap/images/user.png" width="100%"/>
+								{/if}
+                            </div>
+                            <div class="secdiv-left">
+                                <span class="left">您好，</span><a href="#" class="yellow left">{$welcomeText}</a>
+                            </div>                            
+							<div class="secdiv-right blue-color tc">
+									<a href="#"> 会员中心<img src="/public/wap/images/right.png" class="right-ico ml5"/></a>
+							</div>
+                        </div>
+                        <div id="checkingOrder" class="deal-item dqjk-item bor-radius clearfix">
+                                <div class="deal-ico">
+                                    <img src="/public/wap/images/danqi.png" width="100%"/>
+                                </div>
+                                <div class="deal-item-con bor-radius">
+                                    <div class="deal-item-tit">
+                                        按揭垫资
+                                    </div>
+                                    <div class="deal-item-intro">
+                                        垫资额度
+                                    </div>
+                                    <div class="index-ed-data zi-color">
+                                        ￥50000-500000
+									</div>
+                                    <a href="javascript:goToUrl('{:url('mobile/order/borrow')}');"
+                                       class="a-btn bor-radius qbg-btn blue">去申请</a>
+                                </div>
+                        </div>
+						<!--
+						<div class="deal-status deal-item bor-radius clearfix">
+                                <div class="deal-item-con bor-radius">
+                                    <div class="deal-item-tit">
+                                        汽车垫资
+                                    </div>
+									<div class="deal-item-stintro">
+										系统正在争分夺秒的审核您的资料，请耐心等待。<p><a href="javascript:void();"class="blue-color right">进度详情>></a></p>
+									</div>
+                                </div>
+						</div>  
+						-->						
+                        <div id="passOrder" class="deal-item xjfq-item bor-radius clearfix">
+                                <div class="deal-ico">
+                                    <img src="/public/wap/images/xjfq.png" width="100%"/>
+                                </div>
+                                <div class="deal-item-con bor-radius">
+                                    <div class="deal-item-tit">
+                                        车抵贷
+                                    </div>
+                                    <div class="deal-item-intro">
+                                        贷款额度
+                                    </div>
+                                    <div class="index-ed-data zi-color">
+                                        ￥10000-500000
+									</div>
+                                    <a href="javascript:goToUrl('{:url('mobile/order/carloan')}')" class="a-btn bor-radius qbg-btn dpblue">去借款</a>
+                                </div>
+                        </div>
+                        <div class="footer clearfix">
+                            <div class="footer-link">
+                                <a class="mylink" href="javascript:goToUrl('{:url('mobile/open/aboutus')}')"><img src="/public/wap/images/bluewarn.png"/><span><b>关于我们</b></span></a>
+                            </div>
+                            <p class="fz6 gay-color">©2016 杭州互纳科技有限公司</p>
+                            <p class="fz6 gay-color">浙ICP备16040927号</p>
+							<!--
+                            <p class="tc" style="padding-top:10px;">
+                               <a class="mylink" style="color:#555" href="/index.php/industry/index.html">更多资讯</a>
+                            </p>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript">
+        modules.swiper();
+		var role = -1;
+		{if isset($user['access_group_id'])}
+		role = {$user['access_group_id']};
+		{/if}
+		
+		if(role == 3){	
+			var checkingOrder = 0;
+			var passOrder = 0;		
+			ajax_jquery({
+				url: '/mobile/order/getOrderlist',   
+				data:{
+					page: 1,
+					status: 0
+				},
+				success: function(resp){
+					if(resp.code == 1){
+						checkingOrder = resp.data.total;
+						$("#checkingOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
+							.children(".index-ed-data").text(checkingOrder + "条")
+							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=1&status=0')").text("去审核");			
+					}else{
+						if (typeof(data.msg) == 'string') {
+							ui_alert(data.msg);
+						}
+					}
+				}
+			});
+			ajax_jquery({
+				url: '/mobile/order/getOrderlist',   
+				data:{
+					page: 1,
+					status: 0,
+                    type: 3
+				},
+				success: function(resp){
+					if(resp.code == 1){
+						checkingOrder = resp.data.total;
+						$("#passOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
+                            .children(".index-ed-data").text(checkingOrder + "条")
+                            .next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=3&status=0')").text("去审核");    		
+					}else{
+						if (typeof(data.msg) == 'string') {
+							ui_alert(data.msg);
+						}
+					}
+				}
+			});
+		}else if(role == 0){
+            $("#checkingOrder, #passOrder").find("a").attr("href","")
+                                .on("click",function(){
+                                    ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
+                                    return ;
+                                })
+        }
+
+
+		function goApply(){
+			if(role == 0){
+				ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
+				return ;
+			}	
+			goToUrl('/mobile/order/add');
+		}
+		
+		
+    </script>
+
+</body>
+</html>
