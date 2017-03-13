@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all"> 
+	<style>
+    .navbar .right {
+        width: 60px;
+        font-size: 16px;
+    }
+    .navbar .right img {
+        width: 8px;
+    }
+    .subnavbar {
+        background: #ffffff;
+    }
+    .subnavbar-box {
+        width: 100%;
+        height: 30px;
+        overflow: hidden;
+    }
+    .subnavbar-wrap {
+        width: 100%;
+        height: 40px;
+        position: relative;
+        overflow: auto;
+        overflow-y: hidden;
+    }
+    .subnavbar-cont {
+        width: 480px;
+        height: 40px;
+    }
+    .subnavbar-item {
+        width: 74px;
+        display: inline-block;
+        font-size: 14px;
+        text-align: center;
+        color: #666666;
+    }
+	.subnavbar:after {
+		display: none;
+	}
+	.tab_active {
+		font-size: 16px;
+		color:#ff9900;
+		padding-bottom: 5px;
+		border-bottom: 2px solid #ff9900;
+	}
+	#orderTabs {
+		padding-top: 40px;
+	}
+	.order-list {
+		height: 120px;
+		border: 1px solid #DDDDDD;
+		border-radius: 5px;
+		margin: 15px 15px 0;
+		padding: 0 15px;
+		background-color: #ffffff;
+		color: #333333;
+	}
+	.order-type {
+		font-size: 14px;
+	}
+	.order-id,
+	.order-type,
+	.order-customer,
+	.order-status {
+		display: inline-block;
+	}
+	.order-list-info {
+		height: 40px;
+		line-height: 40px;
+		border-bottom: 1px solid #DDDDDD;
+		font-size: 16px;
+	}
+	.order-customer {
+		height: 80px;
+	}
+	.order-customer-name {
+		margin-top: 10px;
+		font-size: 24px;
+		height: 32px;
+	}
+	.order-customer-mobile {
+		font-size: 16px;
+		color: #999999;
+		height: 22px;
+	}
+	.order-status {
+		margin-top: 10px;
+	}
+	.infinite-scroll-preloader {
+		text-align: center;
+	}
+    .popover-dateRange {
+        width: 200px;
+    }
+    .popover-dateRange .list-button {
+        display: block;
+        color: #000000;
+        line-height: 30px;
+        text-align: center;
+        font-size: 16px;
+        margin: 6px;
+    }
+	</style>	
+</head>
+<body>    
+    <div class="views">
+        <div class="view view-main">
+	        <div class="navbar">
+	            <div class="navbar-inner">
+	                <div class="left">
+	                    <a href="javascript:goToUrl('/mobile/user')" class="link icon-only back">
+	                        <i class="icon icon-back color-orange"></i>
+	                    </a>
+	                </div>
+	             	<div class="center">订单管理</div>
+	             	<div class="right">
+                        <a href="#" data-popover=".popover-dateRange" class="link open-dateRange">
+                            <span>筛选</span>
+                            <img src="/public/wap/images/selectDown.png">
+                        </a>
+                    </div>
+                    <div class="subnavbar">
+                        <div class="subnavbar-box">
+                            <div class="subnavbar-wrap">
+                                <div class="subnavbar-cont">
+                                    <a class="subnavbar-item" id="tab_0" data_status='0'>待受理</a>
+                                    <a class="subnavbar-item" id="tab_1" data_status='1'>资料提交</a>
+                                    <a class="subnavbar-item" id="tab_2" data_status='1'>受理中</a>
+                                    <a class="subnavbar-item" id="tab_" data_status=''>全部</a>
+                                    <a class="subnavbar-item" id="tab_3" data_status='2'>已放款</a>
+                                    <a class="subnavbar-item" id="tab_9" data_status='9'>退回</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+	            </div>
+	        </div>     
+            <div class="pages navbar-fixed">
+                <div class="page">
+                    <div class="page-content infinite-scroll pull-to-refresh-content">
+	                    <div class="pull-to-refresh-layer">
+						    <div class="preloader"></div>
+						    <div class="pull-to-refresh-arrow"></div>
+						</div>
+						<div id="orderTabs" class="tabs">
+						    <div class="tab active">
+								<ul class="orderList">
+								</ul>
+							</div>
+						</div>				
+                    </div>
+                    <div class="infinite-scroll-preloader">
+						<div class="preloader"></div>
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- dateRange popover -->
+    <div class="popover popover-dateRange">
+        <div class="popover-angle"></div>
+        <div class="popover-inner">
+            <div class="list-block">
+                <ul>
+                    <li><a href="#" class="list-button">全部</a></li>
+                    <li><a href="#" class="list-button">最近</a></li>
+                    <li><a href="#" class="list-button">7天</a></li>
+                    <li><a href="#" class="list-button">一个月</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/public/wap/js/order.js"></script>
+    <script type="text/javascript">
+        // 点击弹出日期范围弹窗
+        $('.open-dateRange').on('click', function () {
+            var clickedLink = this;
+            myApp.popover('.popover-dateRange', clickedLink);
+        }); 
+        // 点击选择日期范围
+        $('.popover-dateRange').on('click','li',function () {
+            var clickedLink = $(this).text();
+            $('.open-dateRange span').text(clickedLink);
+            myApp.closeModal('.popover-dateRange', clickedLink);
+
+        }); 
+    </script>
+	<script>
+		var orderStatus = [];
+		orderStatus[0] = '<span class="blue-color">审核中</span>';
+		orderStatus[1] = '<span class="blue-color">审核通过</span>';
+		orderStatus[2] = '<span class="red">审核未通过</span>';
+	  	var loading = false;  // 加载flag
+		var current_page = 1; 
+		var status = getUrlParam('status');
+		var orderType = getUrlParam("type");
+		if(status == 'null')
+			{	
+				status = '';
+			}
+	 
+		function tpl(data){
+			var html = '';
+			if(typeof(data) =='object'){
+			for(var index = 0; index < data.length; index++){
+			  	html += '<li class="order-list" data="' + data[index].id + '">'
+							+'<div class="order-list-info">'
+								+'<div class="order-id">' + data[index].sn + '</div>'
+									+'<div class="order-type right">' + data[index].type + '</div>'
+							+'</div>'
+							+'<div class="order-list-item">'
+								+'<div class="order-customer">'
+									+'<div class="order-customer-name">' + data[index].name + '</div>'
+									+'<div class="order-customer-mobile">' + data[index].mobile + '</div>'
+								+'</div>'
+								+'<div class="order-status right">'
+									+'<img src="/public/wap/images/orderPending.png">'
+								+'</div>'
+							+'</div>'
+						+'</li>';
+				}
+			}
+			return html;
+		};
+
+		function getOrderList(pageid,status){
+			ajax_jquery({
+				type: 'get',
+				url: '/mobile/order/getOrderlist',   
+				data:{
+					'page': pageid,
+					'status': status,
+					'type': orderType
+				},
+				success: function (resp){
+					var liHtml = '';
+					loading = false;
+					console.log('无效数据 删除')
+					resp.data.total=1;
+					resp.data.data = [{
+								'mobile':13898793471,
+								'name':'walalal',
+								'type':'xinche',
+								'sn':'ffe33ff3',
+								'id':233
+							},
+							{
+								'mobile':13898793471,
+								'name':'walalal',
+								'type':'xinche',
+								'sn':'ffe33ff3',
+								'id':233
+							},
+							{
+								'mobile':13898793471,
+								'name':'walalal',
+								'type':'xinche',
+								'sn':'ffe33ff3',
+								'id':233
+							},
+							{
+								'mobile':13898793471,
+								'name':'walalal',
+								'type':'xinche',
+								'sn':'ffe33ff3',
+								'id':233
+							},
+							{
+								'mobile':13898793471,
+								'name':'walalal',
+								'type':'xinche',
+								'sn':'ffe33ff3',
+								'id':233
+							}];
+					if(resp.code == 1){
+						if(resp.data.total == 0){
+							liHtml = '<div class="no-result">'
+										+ '<img src="/public/wap/images/record.png"/><p>暂无订单记录</p>'
+									+ '</div>';
+						}else if(resp.data.data.length != 0){
+							current_page++;
+							liHtml=tpl(resp.data.data);				
+						};
+						$("ul.orderList").append(liHtml);	
+						if(resp.data.total <= (resp.data.per_page * resp.data.current_page)){
+						    myApp.detachInfiniteScroll($$('.infinite-scroll')); // 加载完毕，则注销无限加载事件，以防不必要的加载
+							// $$('.infinite-scroll-preloader').remove(); // 删除加载提示符
+						};
+					}else{
+						if(typeof(resp.msg) == 'string') {
+							ui_alert(resp.msg);
+						}  
+					}
+				}
+			});
+		}
+		// 注册'infinite'事件处理函数
+		$$('.infinite-scroll').on('infinite', function () { 
+			if (loading) return;	// 如果正在加载，则退出 
+			loading = true;			// 设置flag
+			getOrderList(current_page,status);
+		});
+
+		//分类切换事件
+		$('div.subnavbar').on('click','a',function(){
+			$("ul.orderList").empty();
+			$(this).addClass('tab_active')
+				.siblings('a').removeClass('tab_active');
+			current_page = 1
+			status = $(this).attr('data_status');
+			getOrderList(current_page,status);
+			myApp.attachInfiniteScroll($$('.infinite-scroll'));
+		});
+
+		//注册‘pull-to-refresh’事件处理函数
+		$$('.pull-to-refresh-content').on('refresh',function(){
+			if (loading) return;
+			loading = true;
+			current_page = 1;
+			$("ul.orderList").empty();
+			getOrderList(current_page,status);
+			myApp.attachInfiniteScroll($$('.infinite-scroll'));
+			myApp.pullToRefreshDone($$('.pull-to-refresh-content'));
+		});
+
+
+		$(function(){
+			$('#tab_').addClass('tab_active');
+			$('#tab_' + status).click();
+			//getOrderList(current_page,status);
+			$(".orderList").on("click", "li", function(){
+				var id = $(this).attr("data");
+				goToUrl('/mobile/order/view?id=' + id);
+			});
+			$(".navbar").on("touchmove",function(ev){
+				ev.preventDefault();
+			})
+		});
+	
+	</script>
+</body>
+</html>
