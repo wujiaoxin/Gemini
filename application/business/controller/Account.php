@@ -19,4 +19,8 @@ class Account extends Base {
 		return $this->fetch();
 	}
 
+	public function cash() {
+	  return $this->fetch();
+	}
+
 }
