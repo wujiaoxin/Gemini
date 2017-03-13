@@ -39,26 +39,29 @@
                         <div class="user-item-con clearfix">
                             <ul>
                                 <li>
+                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}')">我的订单<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
+                                </li>
+                                <li>
                                     <a href="javascript:goToUrl('{:url('mobile/user/myPoints')}')">我的积分<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
                                 </li>
                                 <li>
                                     <a href="javascript:goToUrl('{:url('mobile/user/myCustomers')}')">我的客户<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
                                 </li>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/user/index')}')">账户设置<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                    <a href="javascript:goToUrl('{:url('mobile/user/myAccount')}')">账户设置<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
                                 </li>
-                                <li>
+                                <!-- <li>
                                     <a href="javascript:goToUrl('{:url('mobile/user')}')">消息中心<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
                         <div class="user-item-con clearfix">
                             <ul>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('/mobile/open/help')}')">帮助中心<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
+                                    <a href="javascript:goToUrl('{:url('mobile/open/help')}')">帮助中心<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
                                 </li>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('/mobile/open/aboutus')}')">关于我们<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                    <a href="javascript:goToUrl('{:url('mobile/open/aboutus')}')">关于我们<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
                                 </li>
                                 <li>
                                     <a href="javascript:toCallPhone();">
@@ -67,10 +70,14 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div> 
+                        </div>
+                        <div class="content-block">
+                            <a class="button button-big button-raised butcom-css dpblue"
+                               href="javascript:goToUrl('{:url('mobile/user/logout')}')">退出登录</a>
+                        </div>
                         <div class="toolbar">
                         <div class="toolbar-inner">
-                            <a href="javascript:goToUrl('{:url('mobile/index')}');" class="toolbar-inner-block">
+                            <a href="javascript:goToUrl('{:url('mobile/index/index')}');" class="toolbar-inner-block">
                                 <span><img src="/public/wap/images/home.png"></span>
                             </a>
                             <a href="javascript:goToUrl('{:url('mobile/order/newOrder')}');" class="toolbar-inner-block">

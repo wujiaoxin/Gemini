@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <meta http-equiv="pragma" content="no-cache">
@@ -13,200 +12,110 @@
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">    
 </head>
-    <style type="text/css">
-        .user-info {
-            height: 105px;
-            line-height: 105px;
-            background-color: white;        
-        }
-        .user-info div {
-            vertical-align: middle;
-            display: inline-block;
-            height: 72px;
-            line-height: 72px;
-        }
-        .user-info-face {
-            margin-left: 20px;
-            border-radius: 50%;
-            width: 72px;
-        }
-        .user-info-name {
-            color: #333333;
-            font-size: 20px;
-            max-width: 160px;
-            overflow: hidden;
-        }
-        .user-info-xcodeMini {
-            margin-right: 20px;
-            margin-top: 25px;
-        }
-
-        .order-block {
-            padding: 15px;
-        }
-        .order-item {
-            height: 50px;
-            line-height: 50px;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-        .order-item a {
-            color: #ffffff;
-        }
-        .order-item div {
-            display: inline-block;
-        }
-        .order-item-media {
-            vertical-align: middle;
-            height: 35px;
-        }
-        .order-item-title {
-            margin-left: 10px;  
-            line-height: 50px;    
-        }
-        #orderPending {
-            background-color: #FFAD33;
-        }
-        #orderSubmitted {
-            background-color: #9A8FFF;
-        }
-        #orderSupplying {
-            background-color: #E56590;
-        }
-        #orderLoaned {
-            background-color: #63B1FB;
-        }
-
-        .popup-overlay.modal-overlay-visible {
-            display: none;
-        }
-        .popup-info-supply {
-            margin-top: 40px;
-        }
-        
-    </style>
 <body>
     
     <div class="views">
         <div class="view view-main">
-            <div class="navbar wb">
+            <div class="navbar">
                 <div class="navbar-inner">
                     <div class="left">
-                        <a href="javascript:goToUrl('{:url('mobile/index/index')}');" class="link icon-only">
-                            <i class="icon icon-back color-orange"></i>
+                        <a href="#" class="link icon-only">
+                            <img src="/public/wap/images/logo.png" height="100%"/>
                         </a>
                     </div>
-                    <div class="center">首页</div>
-                    <!--<div class="right">
-                        <a href="javascript:toUserMessage();" class="link icon-only ">
-                            <img src="/public/wap/images/message.png" height="40%"/>
+                    <div class="right">
+                        <a class="link icon-only mylink" href="#" onclick="goToUrl('{:url('wechat/index/share')}')">
+                            <img src="/public/wap/images/invite.png" height="100%"/>
                         </a>
-                    </div>-->
+                    </div>
                 </div>
             </div>
-            <div class="pages navbar-through">
-                <div data-page="dqassess" class="page">
+            <div class="pages navbar-through toolbar-through">
+                <div data-page="appHome" class="page">
                     <div class="page-content">
-                        <div class="user-info-container">
-                            <div class="user-info">
-                                <div class="user-info-face">
-                                    {if isset($user['headimgurl'])}
-                                        <img src="{$user['headimgurl']}" width="100%"/>
-                                    {else /}
-                                        <img src="/public/wap/images/user.png" width="100%"/>
-                                    {/if}
-                                  
-                                </div>
-                                <div class="user-info-name">我的名字七个字</div>
-                                <div class="user-info-xcodeMini right"><img src="/public/wap/images/QRCodeMini.png"></div>
-                            </div>
+                        <div class="swiper-container no-margin mtop swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><a data-url='#' class="myhref"><img src="/public/wap/images/1.png"/></a></div>
+								<div class="swiper-slide"><a data-url='#' class="myhref"><img src="/public/wap/images/2.png"/></a></div>
+                           </div>
+                            <div class="swiper-pagination"></div>
                         </div>
-                        <div class="order-block">
-                            <div class="order-item" id="orderPending">
-                                <a href="javascript:goToUrl('{:url('mobile/order/index')}');">
-                                    <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
-                                    <div class="order-item-title">待受理订单</div>
-                                    <div class="order-item-number right">2</div>
-                                </a>
+                        <div class="secdiv-con" onclick="goToUrl('{:url('mobile/user/index')}')" >
+                            <div class="user-tx">
+								{if isset($user['headimgurl'])}
+									<img src="{$user['headimgurl']}" width="100%"/>
+								{else /}
+									<img src="/public/wap/images/user.png" width="100%"/>
+								{/if}
                             </div>
-                            <div class="order-item" id="orderSubmitted">
-                                <a href="javascript:goToUrl('{:url('mobile/order/index')}');">
-                                    <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
-                                    <div class="order-item-title">资料提交订单</div>
-                                    <div class="order-item-number right">22</div>
-                                </a>
+                            <div class="secdiv-left">
+                                <span class="left">您好，</span><a href="#" class="yellow left">{$welcomeText}</a>
+                            </div>                            
+							<div class="secdiv-right blue-color tc">
+									<a href="#"> 会员中心<img src="/public/wap/images/right.png" class="right-ico ml5"/></a>
+							</div>
+                        </div>
+                        <div id="checkingOrder" class="deal-item dqjk-item bor-radius clearfix">
+                                <div class="deal-ico">
+                                    <img src="/public/wap/images/danqi.png" width="100%"/>
+                                </div>
+                                <div class="deal-item-con bor-radius">
+                                    <div class="deal-item-tit">
+                                        按揭垫资
+                                    </div>
+                                    <div class="deal-item-intro">
+                                        垫资额度
+                                    </div>
+                                    <div class="index-ed-data zi-color">
+                                        ￥50000-500000
+									</div>
+                                    <a href="javascript:goToUrl('{:url('mobile/order/borrow')}');"
+                                       class="a-btn bor-radius qbg-btn blue">去申请</a>
+                                </div>
+                        </div>
+						<!--
+						<div class="deal-status deal-item bor-radius clearfix">
+                                <div class="deal-item-con bor-radius">
+                                    <div class="deal-item-tit">
+                                        汽车垫资
+                                    </div>
+									<div class="deal-item-stintro">
+										系统正在争分夺秒的审核您的资料，请耐心等待。<p><a href="javascript:void();"class="blue-color right">进度详情>></a></p>
+									</div>
+                                </div>
+						</div>  
+						-->						
+                        <div id="passOrder" class="deal-item xjfq-item bor-radius clearfix">
+                                <div class="deal-ico">
+                                    <img src="/public/wap/images/xjfq.png" width="100%"/>
+                                </div>
+                                <div class="deal-item-con bor-radius">
+                                    <div class="deal-item-tit">
+                                        车抵贷
+                                    </div>
+                                    <div class="deal-item-intro">
+                                        贷款额度
+                                    </div>
+                                    <div class="index-ed-data zi-color">
+                                        ￥10000-500000
+									</div>
+                                    <a href="javascript:goToUrl('{:url('mobile/order/carloan')}')" class="a-btn bor-radius qbg-btn dpblue">去借款</a>
+                                </div>
+                        </div>
+                        <div class="footer clearfix">
+                            <div class="footer-link">
+                                <a class="mylink" href="javascript:goToUrl('{:url('mobile/open/aboutus')}')"><img src="/public/wap/images/bluewarn.png"/><span><b>关于我们</b></span></a>
                             </div>
-                            <div class="order-item" id="orderSupplying">
-                                <a href="javascript:goToUrl('{:url('mobile/order/index')}');">
-                                    <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
-                                    <div class="order-item-title">资料补充订单</div>
-                                    <div class="order-item-number right">0</div>
-                                </a>
-                            </div>
-                            <div class="order-item" id="orderLoaned">
-                                <a href="javascript:goToUrl('{:url('mobile/order/index')}');">
-                                    <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
-                                    <div class="order-item-title">已放款订单</div>
-                                    <div class="order-item-number right">112</div>
-                                </a>
-                            </div>
+                            <p class="fz6 gay-color">©2016 杭州互纳科技有限公司</p>
+                            <p class="fz6 gay-color">浙ICP备16040927号</p>
+							<!--
+                            <p class="tc" style="padding-top:10px;">
+                               <a class="mylink" style="color:#555" href="/index.php/industry/index.html">更多资讯</a>
+                            </p>-->
                         </div>
                     </div>
-                    <div class="toolbar">
-                        <div class="toolbar-inner">
-                            <a href="#" class="toolbar-inner-block toolbar-inner-active">
-                                <span><img src="/public/wap/images/home_active.png"></span>
-                            </a>
-                            <a href="javascript:goToUrl('{:url('mobile/order/newOrder')}');" class="toolbar-inner-block">
-                                <span><img src="/public/wap/images/newOrder.png"></span>
-                            </a>
-                            <a href="javascript:goToUrl('{:url('mobile/user/index')}');" class="toolbar-inner-block">
-                                <span><img src="/public/wap/images/personalCenter.png"></span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="popup popup-info-supply">
-                        <div class="content-block">
-                             <form class="list-block mt10" method="post">
-                                <ul class="clearfix">
-                                    <li>
-                                        <div class="item-content">
-                                            <div class="item-inner">
-                                                <div class="item-title label">姓名</div>
-                                                <div class="item-input">
-                                                    <input type="text" id="staffName" name="staffName" maxlength="10" autocomplete="off"
-                                                           placeholder="请输入真实姓名">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="item-content">
-                                            <div class="item-inner">
-                                                <div class="item-title label">职位</div>
-                                                <div class="item-input">
-                                                    <input type="text" id="job" name="job" maxlength="10" autocomplete="off" value="业务员" 
-                                                           placeholder="请输入你的职位">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="content-block">                                 
-                                    <button type="submit" id="info-supply" class="button button-big button-fill dpblue" style="width:100%">提交</button>
-                                </div>
-                            </form>
-                        </div>
-                  </div>
                 </div>
             </div>
-        </div>
-    </div>
-  	<div id="dialog" class="dialog">
-        <div id="dialogContent">
-            <div id="dialogMain"></div>
         </div>
     </div>
 
@@ -215,40 +124,72 @@
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
     <script type="text/javascript">
-        $(function(){
-             // myApp.popup('.popup-info-supply');
-             $("#info-supply").click(function(){       
-                var staffName= $("#staffName").val();
-                var job= $("#job").val();
-                if( staffName == '') {
-                    ui_alert("请输入您的真实姓名");
-                    return;
-                } else if (job == '') {
-                    ui_alert('请输入您的职位');
-                    return;
-                }
-                ajax_jquery({
-                    type: 'post',
-                    url: '',
-                    datatype:'json',
-                    data: {
-                        'staffName':staffName,
-                        'job':job
-                    },
-                    success: function(data){ // data 保存提交后返回的数据，一般为 json 数据
-                        if(data.code == 1){
-                            ui_alert("提交成功!", function(){
-                                 myApp.closeModal('.popup-info-supply') ;            
-                             });
-                        }else{
-                            if (typeof(data.msg) == 'string') {
-                                ui_alert(data.msg);
-                            }  
-                        }
-                    }
-                })
-            })
-        });
+        modules.swiper();
+		var role = -1;
+		{if isset($user['access_group_id'])}
+		role = {$user['access_group_id']};
+		{/if}
+		
+		if(role == 3){	
+			var checkingOrder = 0;
+			var passOrder = 0;		
+			ajax_jquery({
+				url: '/mobile/order/getOrderlist',   
+				data:{
+					page: 1,
+					status: 0
+				},
+				success: function(resp){
+					if(resp.code == 1){
+						checkingOrder = resp.data.total;
+						$("#checkingOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
+							.children(".index-ed-data").text(checkingOrder + "条")
+							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=1&status=0')").text("去审核");			
+					}else{
+						if (typeof(data.msg) == 'string') {
+							ui_alert(data.msg);
+						}
+					}
+				}
+			});
+			ajax_jquery({
+				url: '/mobile/order/getOrderlist',   
+				data:{
+					page: 1,
+					status: 0,
+                    type: 3
+				},
+				success: function(resp){
+					if(resp.code == 1){
+						checkingOrder = resp.data.total;
+						$("#passOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
+                            .children(".index-ed-data").text(checkingOrder + "条")
+                            .next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=3&status=0')").text("去审核");    		
+					}else{
+						if (typeof(data.msg) == 'string') {
+							ui_alert(data.msg);
+						}
+					}
+				}
+			});
+		}else if(role == 0){
+            $("#checkingOrder, #passOrder").find("a").attr("href","")
+                                .on("click",function(){
+                                    ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
+                                    return ;
+                                })
+        }
+
+
+		function goApply(){
+			if(role == 0){
+				ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
+				return ;
+			}	
+			goToUrl('/mobile/order/add');
+		}
+		
+		
     </script>
 
 </body>
