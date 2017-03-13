@@ -23,4 +23,17 @@ class Account extends Base {
 	  return $this->fetch();
 	}
 
+  public function value() {
+    return $this->fetch();
+  }
+
+  public function banks() {
+    return $this->fetch();
+  }
+  public function fundlist() {
+    return $this->fetch();
+  }
+  public function lineOfCredit() {
+      return $this->fetch();
+    }
 }

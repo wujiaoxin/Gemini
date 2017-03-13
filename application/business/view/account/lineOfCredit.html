@@ -1,0 +1,186 @@
+{extend name="base"}
+{block name="style"}
+<style>
+	.pop-container {
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 999999;
+		border: 1px solid #ddd;
+		background: #fff;
+
+	}
+</style>
+{/block}
+{block name="body"}
+<!--信用额度-->
+<div class="row-fluid">
+	<div class="span4 pop-container">
+		<div class="portlet">
+			<div class="portlet-title" style="margin: 10px 0 0 10px;">
+				<div class="caption">
+					保证金补缴页
+				</div>
+			</div>
+			<div class="portlet-body">
+				<form action="#" class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label">补缴金额</label>
+						<div class="controls">
+							<input type="number" placeholder="补缴金额" class="m-wrap medium" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">补缴方式</label>
+						<div class="controls">
+							<select class="small m-wrap" tabindex="1">
+								<option value="Category 1">线下转账</option>
+								<option value="Category 2">Category 2</option>
+								<option value="Category 3">Category 5</option>
+								<option value="Category 4">Category 4</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">选择账户</label>
+						<div class="controls">
+							<label class="radio line">
+								<input type="radio" name="optionsRadios2" value="option1" />
+								银行账户1: ********
+							</label>
+							<label class="radio line">
+								<input type="radio" name="optionsRadios2" value="option2" checked />
+								银行账户2: ********
+							</label>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">充值备注</label>
+						<div class="controls">
+							<textarea class="medium m-wrap" rows="3"></textarea>
+						</div>
+					</div>
+					<div class="form-actions">
+						<button type="submit" class="btn blue"><i class="icon-ok"></i>确认提交</button>
+						<button type="button" class="btn" style="width: 100px;">取消</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="span12">
+		<div class="tabbable tabbable-custom">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab_1_1" data-toggle="tab">申请额度</a></li>
+				<li><a href="#tab_1_2" data-toggle="tab">额度记录</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab_1_1">
+					<form action="#" class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">申请金额</label>
+							<div class="controls">
+								<input type="number" placeholder="" class="m-wrap medium" />
+								<span class="help-inline">万元</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">备注说明</label>
+							<div class="controls">
+								<textarea class="large m-wrap" rows="3"></textarea>
+							</div>
+						</div>
+						<div class="form-actions">
+							<button type="submit" class="btn blue"><i class="icon-ok"></i>确认提交</button>
+						</div>
+					</form>
+				</div>
+				<div class="tab-pane" id="tab_1_2">
+					<form action="#" class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label" style="text-align:left;">申请状态</label>
+							<div class="controls" style="float:left;margin-left: 0;">
+								<label class="radio">
+									<div class="radio">
+										<span class="checked">
+											<input type="radio" name="optionsRadios1" value="option1" checked>
+										</span>
+									</div>
+									全部
+								</label>
+								<label class="radio">
+									<div class="radio">
+										<span>
+											<input type="radio" name="optionsRadios1" value="option2">
+										</span>
+									</div>
+									未通过
+								</label>
+								<label class="radio">
+									<div class="radio">
+											<span>
+												<input type="radio" name="optionsRadios1" value="option2">
+											</span>
+									</div>
+									审核中
+								</label>
+								<label class="radio">
+									<div class="radio">
+											<span>
+												<input type="radio" name="optionsRadios1" value="option2">
+											</span>
+									</div>
+									冻结
+								</label>
+							</div>
+						</div>
+					</form>
+					<div class="span12" style="margin-left: 0;">
+						<div class="portlet">
+							<div class="portlet-body">
+								<table class="table table-bordered table-hover">
+									<thead>
+									<tr>
+										<th>时间</th>
+										<th>操作额度</th>
+										<th>现有额度</th>
+										<th>状态</th>
+										<th>保证金比例</th>
+										<th>需补缴保证金</th>
+										<th>备注</th>
+										<th>操作</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+									</tr>
+									<tr>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>补缴</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}

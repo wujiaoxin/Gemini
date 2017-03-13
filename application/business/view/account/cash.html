@@ -1,10 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{extend name="base"/}
+{block name="body"}
+<!--账户充值-->
+<div class="row-fluid">
+	<div class="span12">
+		<div class="portlet box">
+			<div class="portlet-body form">
+				<form action="#" class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label">充值金额</label>
+						<div class="controls">
+							<input type="number" placeholder="充值金额" class="m-wrap small">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">充值方式</label>
+						<div class="controls">
+							<select class="small m-wrap" tabindex="1">
+								<option value="1">线下转账1</option>
+								<option value="2">线下转账2</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">选择账户</label>
+						<div class="controls">
+							<label class="radio line">
+								<div class="radio">
+									<span class="checked">
+										<input type="radio" name="optionsRadios1" value="1" checked>
+									</span>
+								</div>
+								银行账户1
+							</label>
+							<label class="radio line">
+								<div class="radio">
+									<span>
+										<input type="radio" name="optionsRadios1" value="2">
+									</span>
+								</div>
+								银行账户2
+							</label>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">充值备注</label>
+						<div class="controls">
+							<textarea class="medium m-wrap" rows="3"></textarea>
+						</div>
+					</div>
+					<div class="form-actions" style="margin-bottom: 20px!important;border-bottom:1px dashed #ddd;">
+						<button type="submit" class="btn blue">
+							<i class="icon-ok"></i>
+							确认提交
+						</button>
+					</div>
+					<div class="control-group" style="padding-left: 105px;">
+						温馨提示：
+						<ol>
+							<li>----</li>
+							<li>----</li>
+						</ol>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}
+{/block}
