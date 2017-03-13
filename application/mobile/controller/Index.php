@@ -34,5 +34,8 @@ class Index extends Base {
 		}
 		$this->assign('welcomeText', $welcomeText);
 		return $this->fetch();
-	}	
+	}
+	public function indexDealer() {	
+		return $this->fetch();
+	}
 }

@@ -627,6 +627,11 @@ class Order extends Base {
 
     }
 	
+	// 车商员工订单页
+	public function indexDealer() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
 	// 注册补充
 	public function newOrder() {
 		//$this->assign($user);		

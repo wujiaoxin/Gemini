@@ -228,6 +228,11 @@ TODO:check idcard if needed;
 		}
 	}
 
+	//车商员工个人中心
+	public function personalCenter() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
 	// 二维码页面
 	public function QRCode() {
 		//$this->assign($user);		
