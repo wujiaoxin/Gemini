@@ -27,7 +27,7 @@
                             <i class="icon icon-back color-orange"></i>
                         </a>
                     </div>
-                    <div class="center">我</div>
+                    <div class="center">个人中心</div>
                 </div>
             </div>
             <div class="pages navbar-through toolbar-through">
@@ -39,19 +39,55 @@
                         <div class="user-item-con clearfix">
                             <ul>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}?type=1')">我的积分<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
+                                    <a href="javascript:goToUrl('{:url('mobile/order/indexDealer')}')">我的订单<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
                                 </li>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}?type=3')">我的客户<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                    <a href="javascript:goToUrl('{:url('mobile/user/myPoints')}')">我的积分<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
                                 </li>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}?type=3')">账户设置<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                    <a href="javascript:goToUrl('{:url('mobile/user/myCustomers')}')">我的客户<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
                                 </li>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}?type=3')">更多<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                    <a href="javascript:goToUrl('{:url('mobile/user/myAccount')}')">账户设置<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                </li>
+                                <!-- <li>
+                                    <a href="javascript:goToUrl('{:url('mobile/user')}')">消息中心<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                </li> -->
+                            </ul>
+                        </div>
+                        <div class="user-item-con clearfix">
+                            <ul>
+                                <li>
+                                    <a href="javascript:goToUrl('{:url('mobile/open/help')}')">帮助中心<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
+                                </li>
+                                <li>
+                                    <a href="javascript:goToUrl('{:url('mobile/open/aboutus')}')">关于我们<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:toCallPhone();">
+                                        联系客服
+                                        <span class="right"><span class="vm">0571-87813085</span><img class="cg-right-ico" src="/public/wap/images/right.png" /></span>
+                                    </a>
                                 </li>
                             </ul>
-                        </div>        
+                        </div>
+                        <div class="content-block">
+                            <a class="button button-big button-raised butcom-css dpblue"
+                               href="javascript:goToUrl('{:url('mobile/user/logout')}')">退出登录</a>
+                        </div>
+                        <div class="toolbar">
+                        <div class="toolbar-inner">
+                            <a href="javascript:goToUrl('{:url('mobile/index/indexDealer')}');" class="toolbar-inner-block">
+                                <span><img src="/public/wap/images/home.png"></span>
+                            </a>
+                            <a href="javascript:goToUrl('{:url('mobile/order/newOrder')}');" class="toolbar-inner-block">
+                                <span><img src="/public/wap/images/newOrder.png"></span>
+                            </a>
+                            <a href="#" class="toolbar-inner-block toolbar-inner-active">
+                                <span><img src="/public/wap/images/personalCenter_active.png"></span>
+                            </a>
+                        </div>
+                    </div>       
                     </div>
                 </div>
             </div>
