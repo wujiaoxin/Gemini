@@ -332,6 +332,16 @@ function validateBankNum(banknum) {
     }
 }
 
+//手机服务密码验证
+function validateServicePwd(ServicePwd) {
+    var num = /^\d{6}$/;  //6位全数字
+    if (!num.exec(ServicePwd)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 //验证身份证格式
 function validateIdCard(pId) {
 //检查身份证号码

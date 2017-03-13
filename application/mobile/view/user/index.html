@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <meta http-equiv="pragma" content="no-cache">
@@ -11,89 +10,59 @@
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">    
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all"> 
+    <style type="text/css">
+        #pie-container {
+            height: 185px;
+        }
+    </style>   
 </head>
 <body>
-    
     <div class="views">
         <div class="view view-main">
-            <div class="navbar wb">
+            <div class="navbar">
                 <div class="navbar-inner">
                     <div class="left">
-                        <a href="javascript:goToUrl('{:url('mobile/index/index')}');" class="link icon-only">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
                             <i class="icon icon-back color-orange"></i>
                         </a>
                     </div>
                     <div class="center">个人中心</div>
-                    <!--<div class="right">
-                        <a href="javascript:toUserMessage();" class="link icon-only ">
-                            <img src="/public/wap/images/message.png" height="40%"/>
-                        </a>
-                    </div>-->
                 </div>
             </div>
-            <div class="pages navbar-through">
-                <div data-page="dqassess" class="page">
+            <div class="pages navbar-through toolbar-through">
+                <div data-page="appHome" class="page">
                     <div class="page-content">
-                        <div class="user-info-tcon dpblue clearfix">
-                            <div class="user-info-tl left">
-                               <div class="user-face left rela"  >
-                                    <a id="myAvatar" >
-									{if isset($user['headimgurl'])}
-										<img src="{$user['headimgurl']}" width="100%"/>
-									{else /}
-										<img src="/public/wap/images/user.png" width="100%"/>
-									{/if}
-                                    </a>
-                                </div>
-                                <div class="user-info-t left">
-                                    <h2></h2>
-                                    <p><b class="fz7" >{$user['nickname']}</b></p>
-									<p>{$user['addr']}</p>
-                                </div>
-                            </div>
-                            <div class="user-info-rig right">
-                            <!--    <p class="gt-color">所属车商</p>
-                                <p><b class="fz7" id="a">杭州宝荣4S店</b></p>
-								-->
-                            </div>
+                        <div class="banner-container">
+                            <div id="pie-container"></div>
                         </div>
-						<!--
                         <div class="user-item-con clearfix">
                             <ul>
                                 <li>
-                                    <a href="javascript:toUserCenter();">我的资料</a>
-                                </li>
-                            </ul>
-                        </div>
-						-->
-                        <div class="user-item-con clearfix">
-                            <ul>
-                                <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}?type=1')">垫资订单 <span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
+                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}')">我的订单<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
                                 </li>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}?type=3')">车抵订单 <span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
+                                    <a href="javascript:goToUrl('{:url('mobile/user/myPoints')}')">我的积分<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
                                 </li>
-                                <!--<li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/progress')}')">进度查询<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
-                                </li>-->
+                                <li>
+                                    <a href="javascript:goToUrl('{:url('mobile/user/myCustomers')}')">我的客户<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:goToUrl('{:url('mobile/user/myAccount')}')">账户设置<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                </li>
+                                <!-- <li>
+                                    <a href="javascript:goToUrl('{:url('mobile/user')}')">消息中心<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                </li> -->
                             </ul>
                         </div>
                         <div class="user-item-con clearfix">
                             <ul>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/user/editpwd')}')">更改密码<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
+                                    <a href="javascript:goToUrl('{:url('mobile/open/help')}')">帮助中心<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
                                 </li>
-								<!--
                                 <li>
-                                    <a href="javascript:toUpdatePhone();">更改手机号</a>
+                                    <a href="javascript:goToUrl('{:url('mobile/open/aboutus')}')">关于我们<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
                                 </li>
-								-->
-                            </ul>
-                        </div>
-                        <div class="user-item-con clearfix">
-                            <ul>
                                 <li>
                                     <a href="javascript:toCallPhone();">
                                         联系客服
@@ -101,19 +70,23 @@
                                     </a>
                                 </li>
                             </ul>
+                        </div> 
+                        <div class="toolbar">
+                        <div class="toolbar-inner">
+                            <a href="javascript:goToUrl('{:url('mobile/index/index')}');" class="toolbar-inner-block">
+                                <span><img src="/public/wap/images/home.png"></span>
+                            </a>
+                            <a href="javascript:goToUrl('{:url('mobile/order/newOrder')}');" class="toolbar-inner-block">
+                                <span><img src="/public/wap/images/newOrder.png"></span>
+                            </a>
+                            <a href="#" class="toolbar-inner-block toolbar-inner-active">
+                                <span><img src="/public/wap/images/personalCenter_active.png"></span>
+                            </a>
                         </div>
-                        <div class="content-block">
-                            <a class="button button-big button-raised butcom-css dpblue"
-                               href="javascript:goToUrl('{:url('mobile/user/logout')}')">退出登录</a>
-                        </div>
+                    </div>       
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-  	<div id="dialog" class="dialog">
-        <div id="dialogContent">
-            <div id="dialogMain"></div>
         </div>
     </div>
 
@@ -121,6 +94,142 @@
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script src="/public/wap/js/echarts/echarts.js"></script>
+    <script type="text/javascript">
+    var salesAmount =[];
+    salesAmount =[
+        {value:123,name:'处理中订单'},
+        {value:203,name:'退回订单'},
+        {value:75,name:'已完成订单'}
+    ]
+
+        //模块化引入Echarts
+        require.config({
+            paths: {
+                echarts: '/public/wap/js/echarts'
+            }
+        });
+        require(
+            [
+                'echarts',
+                'echarts/chart/pie'  // 按需加载所需图表
+            ],
+            function (ec) {
+                var myChart = ec.init(document.getElementById('pie-container'));
+                var option = {
+                        title : {
+                            text: '销售额',
+                            x: '210',
+                            y: '35',
+                            textStyle:{
+                                color: '#000000',
+                                fontSize: 24
+                            }
+                        },
+                        legend: {
+                            orient : 'vertical',
+                            x : '54%',
+                            y : '80',
+                            data:[salesAmount[0].name,salesAmount[1].name,salesAmount[2].name]
+                        },
+                        backgroundColor :'rgba(255,255,255,1)',
+                        color: ['rgba(154,143,255,1)','rgba(255,173,51,1)','rgba(255,128,162,1)'],
+                        series : [
+                            {
+                                name:'销售额',
+                                type:'pie',
+                                radius : '65%',
+                                center :['28%','50%'],
+                                itemStyle : {
+                                    normal : {
+                                        label : {
+                                            show : false
+                                        },
+                                        labelLine : {
+                                            show : false
+                                        }
+                                    }
+                                },
+                                data:[
+                                    {value:salesAmount[0].value,name:salesAmount[0].name},
+                                    {value:salesAmount[1].value,name:salesAmount[1].name},
+                                    {value:salesAmount[2].value,name:salesAmount[2].name}
+                                ]
+                            }
+                        ]
+                    };
+                        
+                myChart.setOption(option);
+            }
+        );
+    </script>
+    <script type="text/javascript">
+		var role = -1;
+		{if isset($user['access_group_id'])}
+		role = {$user['access_group_id']};
+		{/if}
+		
+		if(role == 3){	
+			var checkingOrder = 0;
+			var passOrder = 0;		
+			ajax_jquery({
+				url: '/mobile/order/getOrderlist',   
+				data:{
+					page: 1,
+					status: 0
+				},
+				success: function(resp){
+					if(resp.code == 1){
+						checkingOrder = resp.data.total;
+						$("#checkingOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
+							.children(".index-ed-data").text(checkingOrder + "条")
+							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=1&status=0')").text("去审核");			
+					}else{
+						if (typeof(data.msg) == 'string') {
+							ui_alert(data.msg);
+						}
+					}
+				}
+			});
+			ajax_jquery({
+				url: '/mobile/order/getOrderlist',   
+				data:{
+					page: 1,
+					status: 0,
+                    type: 3
+				},
+				success: function(resp){
+					if(resp.code == 1){
+						checkingOrder = resp.data.total;
+						$("#passOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
+                            .children(".index-ed-data").text(checkingOrder + "条")
+                            .next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=3&status=0')").text("去审核");    		
+					}else{
+						if (typeof(data.msg) == 'string') {
+							ui_alert(data.msg);
+						}
+					}
+				}
+			});
+		}else if(role == 0){
+            $("#checkingOrder, #passOrder").find("a").attr("href","")
+                                .on("click",function(){
+                                    ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
+                                    return ;
+                                })
+        }
+
+
+		function goApply(){
+			if(role == 0){
+				ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
+				return ;
+			}	
+			goToUrl('/mobile/order/add');
+		}
+		
+		
+    </script>
 
 </body>
 </html>
