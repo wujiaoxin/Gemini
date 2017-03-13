@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">   
+    <style type="text/css">
+        .order-item {
+            height: 38px;
+            line-height: 38px;
+            font-size: 14px;
+            /* border-top: 1px solid #dedede; */
+        }
+    </style>
+</head>
+<body>   
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center" id="navbar_title">订单资料提交</div>
+                    <div class="right"></div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div class="page">                     
+                    <div class="page-content">
+                        <div class="list-block">
+                            <ul>
+                                <li class="accordion-item">
+                                    <a href="#" class="item-content item-link">
+                                        <div class="item-inner">
+                                          <div class="item-title">订单编号(<span>A12331232</span>)</div>
+                                        </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="content-block">
+                                            <ul class="clearfix">
+                                                <li class="order-item">
+                                                    <div class="order-info-type">
+                                                        <span>订单业务</span>
+                                                        <span class="right order-type">新车垫资</span>
+                                                    </div>
+                                                </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-loaner">
+                                                        <span>客户姓名</span>
+                                                        <span class="right order-loaner">李博</span>
+                                                    </div>
+                                                </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-mobile">
+                                                        <span>手机号</span>
+                                                        <span class="right order-mobile">13432456789</span>
+                                                    </div>
+                                                </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-idcardNum">
+                                                        <span>身份证号</span>
+                                                        <span class="right order-idcardNum">332112197608230183</span>
+                                                    </div>
+                                                </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-date">
+                                                        <span>申请时间</span>
+                                                        <span class="right order-date">2017:03:08</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="accordion-item"><a href="#" class="item-content item-link">
+                                    <div class="item-inner">
+                                      <div class="item-title">Item 2</div>
+                                    </div></a>
+                                  <div class="accordion-item-content">
+                                    <div class="content-block">
+                                      <p>Item 2 content. Lorem ipsum dolor sit amet...</p>
+                                    </div>
+                                  </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
+        </div>
+    </div>
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
+    <script type="text/javascript" src="/Public/wap/js/order.js"></script>
+    <script type="text/javascript">    
+        $(function(){
+            $("#submit").click(function(){       
+                var carPrice = $('#carPrice').val();
+                var mobile = $('#mobile').val();
+                
+                if( carPrice == ""){
+                    ui_alert('请输入购车价格');
+                    return;
+                }else if (mobile == "") {
+                    ui_alert('请输入借款人手机号');
+                    return;
+                }else if (!validatePhoneNumber(mobile)) {
+                    ui_alert('手机号输入有误');
+                    return;
+                }
+                ajax_jquery({
+                    type: 'post',
+                    url: '',
+                    datatype:'json',
+                    data: {
+						'carPrice':carPrice,
+                        'mobile':mobile
+                    },
+                    success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
+                        if(data.code == 1){
+                            ui_alert("订单创建成功<br>等待客户信息录入!", function () {
+                                  $(".QRCodeImg").attr('src','');          
+                             })
+                        }else{
+                            if (typeof(data.msg) == 'string') {
+                                ui_alert(data.msg);
+                            }  
+                        }
+                    }
+                }); 
+            });
+        });
+    </script>  
+
+</body>
+</html>

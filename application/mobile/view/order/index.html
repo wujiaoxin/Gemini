@@ -35,7 +35,7 @@
         overflow-y: hidden;
     }
     .subnavbar-cont {
-        width: 160%;
+        width: 480px;
         height: 40px;
     }
     .subnavbar-item {
@@ -43,17 +43,16 @@
         display: inline-block;
         font-size: 14px;
         text-align: center;
-    }
-    .subnavbar-item a {
-       color: #666666;
+        color: #666666;
     }
 	.subnavbar:after {
 		display: none;
 	}
-
 	.tab_active {
 		font-size: 16px;
 		color:#ff9900;
+		padding-bottom: 5px;
+		border-bottom: 2px solid #ff9900;
 	}
 	#orderTabs {
 		padding-top: 40px;
@@ -134,14 +133,14 @@
                     <div class="subnavbar">
                         <div class="subnavbar-box">
                             <div class="subnavbar-wrap">
-                                <ul class="subnavbar-cont">
-                                    <li class="subnavbar-item"><a id="tab_0" data_status='0' data_text='待受理'>待受理</a></li>
-                                    <li class="subnavbar-item"><a id="tab_1" data_status='1' data_text='资料提交'>资料提交</a></li>
-                                    <li class="subnavbar-item"><a id="tab_2" data_status='1' data_text='资料提交'>受理中</a></li>
-                                    <li class="subnavbar-item"><a id="tab_" data_status='' data_text='全部'>全部</a></li>
-                                    <li class="subnavbar-item"><a id="tab_3" data_status='2' data_text='已放款'>已放款</a></li>
-                                    <li class="subnavbar-item"><a id="tab_9" data_status='3' data_text='退回'>退回</a></li>
-                                </ul>
+                                <div class="subnavbar-cont">
+                                    <a class="subnavbar-item" id="tab_0" data_status='0'>待受理</a>
+                                    <a class="subnavbar-item" id="tab_1" data_status='1'>资料提交</a>
+                                    <a class="subnavbar-item" id="tab_2" data_status='1'>受理中</a>
+                                    <a class="subnavbar-item" id="tab_" data_status=''>全部</a>
+                                    <a class="subnavbar-item" id="tab_3" data_status='2'>已放款</a>
+                                    <a class="subnavbar-item" id="tab_9" data_status='9'>退回</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -157,36 +156,6 @@
 						<div id="orderTabs" class="tabs">
 						    <div class="tab active">
 								<ul class="orderList">
-									<li class="order-list">
-										<div class="order-list-info">
-											<div class="order-id">A12212991</div>
-											<div class="order-type right">新车垫资</div>
-										</div>
-										<div class="order-list-item">
-											<div class="order-customer">
-												<div class="order-customer-name">李博</div>
-												<div class="order-customer-mobile">13898793471</div>
-											</div>
-											<div class="order-status right">
-												<img src="/public/wap/images/orderPending.png">
-											</div>
-										</div>
-									</li>
-									<li class="order-list">
-										<div class="order-list-info">
-											<div class="order-id">A12212991</div>
-											<div class="order-type right">新车垫资</div>
-										</div>
-										<div class="order-list-item">
-											<div class="order-customer">
-												<div class="order-customer-name">李博</div>
-												<div class="order-customer-mobile">13898793471</div>
-											</div>
-											<div class="order-status right">
-												<img src="/public/wap/images/orderPending.png">
-											</div>
-										</div>
-									</li>
 								</ul>
 							</div>
 						</div>				
@@ -231,8 +200,8 @@
 
         }); 
     </script>
-	<!-- <script>
-		var orderStatus = new Array();
+	<script>
+		var orderStatus = [];
 		orderStatus[0] = '<span class="blue-color">审核中</span>';
 		orderStatus[1] = '<span class="blue-color">审核通过</span>';
 		orderStatus[2] = '<span class="red">审核未通过</span>';
@@ -244,27 +213,26 @@
 			{	
 				status = '';
 			}
-
-		if(orderType == 3){
-			$('.navbar .navbar-inner > .center').text('车抵订单');
-		};
-
 	 
 		function tpl(data){
 			var html = '';
 			if(typeof(data) =='object'){
 			for(var index = 0; index < data.length; index++){
-			  	html += '<li data="' + data[index].id + '">'
-							+ '<div class="orderInfo">'
-								+ '<div class="order-id">订单编号:' + data[index].sn + '</div>'				
-								+ '<div class="order-name">贷款人:' + data[index].name + '</div>'
-								+ '<div class="order-date">' + formatDate(data[index].create_time) + '</div>'
-							+ '</div>'
-							+ '<div class="orderStatus">'
-								+ orderStatus[data[index].status]
-								+ '<img class="cg-right-ico" src="/public/wap/images/right.png" />'
-							+ '</div>'
-						+ '</li>';
+			  	html += '<li class="order-list" data="' + data[index].id + '">'
+							+'<div class="order-list-info">'
+								+'<div class="order-id">' + data[index].sn + '</div>'
+									+'<div class="order-type right">' + data[index].type + '</div>'
+							+'</div>'
+							+'<div class="order-list-item">'
+								+'<div class="order-customer">'
+									+'<div class="order-customer-name">' + data[index].name + '</div>'
+									+'<div class="order-customer-mobile">' + data[index].mobile + '</div>'
+								+'</div>'
+								+'<div class="order-status right">'
+									+'<img src="/public/wap/images/orderPending.png">'
+								+'</div>'
+							+'</div>'
+						+'</li>';
 				}
 			}
 			return html;
@@ -282,6 +250,43 @@
 				success: function (resp){
 					var liHtml = '';
 					loading = false;
+					console.log('无效数据 删除')
+					resp.data.total=1;
+					resp.data.data = [{
+								'mobile':13898793471,
+								'name':'walalal',
+								'type':'xinche',
+								'sn':'ffe33ff3',
+								'id':233
+							},
+							{
+								'mobile':13898793471,
+								'name':'walalal',
+								'type':'xinche',
+								'sn':'ffe33ff3',
+								'id':233
+							},
+							{
+								'mobile':13898793471,
+								'name':'walalal',
+								'type':'xinche',
+								'sn':'ffe33ff3',
+								'id':233
+							},
+							{
+								'mobile':13898793471,
+								'name':'walalal',
+								'type':'xinche',
+								'sn':'ffe33ff3',
+								'id':233
+							},
+							{
+								'mobile':13898793471,
+								'name':'walalal',
+								'type':'xinche',
+								'sn':'ffe33ff3',
+								'id':233
+							}];
 					if(resp.code == 1){
 						if(resp.data.total == 0){
 							liHtml = '<div class="no-result">'
@@ -314,9 +319,8 @@
 		//分类切换事件
 		$('div.subnavbar').on('click','a',function(){
 			$("ul.orderList").empty();
-			$(this).addClass('tab_active');
-			$(this).siblings('a').removeClass('tab_active');
-			// $('div.navbar .center').text($(this).attr('data_text'));
+			$(this).addClass('tab_active')
+				.siblings('a').removeClass('tab_active');
 			current_page = 1
 			status = $(this).attr('data_status');
 			getOrderList(current_page,status);
@@ -348,6 +352,6 @@
 			})
 		});
 	
-	</script> -->
+	</script>
 </body>
 </html>
