@@ -39,4 +39,7 @@ class Account extends Base {
   public function infor() {
     return $this->fetch();
   }
+  public function message() {
+    return $this->fetch();
+  }
 }

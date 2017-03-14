@@ -1,0 +1,30 @@
+.message .span12 {
+	position: relative;
+	height: 80px;
+	border-bottom: 1px solid #ddd;
+	line-height: 40px;
+	margin-left: 0;
+	padding: 5px 0;
+}
+.f-fl {
+	float: left;
+}
+.message-date {
+	position: absolute;
+	right: 0;
+	font-size: 24px;
+}
+.message .avatar {
+	width: 70px;
+	height: 70px;
+	margin-right: 30px;
+}
+.message .title {
+	font-size: 24px;
+}
+.message .title i:before {
+	top: -9px;
+}
+.message p {
+	margin-bottom: 0;
+}
