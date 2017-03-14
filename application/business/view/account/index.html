@@ -1,5 +1,157 @@
 {extend name="base"/}
+{block name="style"}
+<link rel="stylesheet" href="/public/business/lib/metronic/css/glyphicons.css">
+<link rel="stylesheet" href="/public/business/lib/metronic/css/halflings.css">
+<link rel="stylesheet" href="/public/business/lib/metronic/css/jquery.gritter.css">
+<style>
+	.f-fl {
+		float: left;
+	}
+	.account-index .span12 {
+		margin-left: 0;
+		padding-right: 90px;
+		border-bottom: 1px solid #ddd;
+		position: relative;
+		min-width:900px;
+	}
+	.account-index .protraid {
+		width: 90px;
+	}
+	.account-index .protraid img{
+		width: 60px;
+		height: 60px;
+	}
+	.account-index .protraid i:before {
+		font: 50px/1em "Glyphicons";
+		color: #ddd;
+		top: 50%;
+	}
+	.account-index .sub-title {
+		color: #999;
+	}
+	.account-index .index-info {
+		font-size: 24px;
+		line-height:3;
+	}
+	.account-index .index-info i:before {
+		margin-top: -12px;
+	}
+	i.f-colgreen:before {
+		color: #25c398;
+	}
+	i.colyellow:before {
+		color: #f9bf0d;
+	}
+	.grade {
+		font-size: 48px;
+		line-height: 1;
+	}
+	.high {
+		color: #25c398;
+	}
+	.medium {
+		color: #f9bf0d;
+	}
+	.low {
+		color: #e12222;
+	}
+	.set-btn {
+		position: absolute;
+		right: 90px;
+		width: 100px;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.progress-success .bar {
+		background-color: #25c398;
+	}
+</style>
+{/block}
 {block name="body"}
 <!--账号设置-->
-account index
+<div class="row-fluid account-index">
+	<div class="span12" style="margin-left: 0">
+		<div class="protraid f-fl"><img src="/public/business/lib/metronic/image/avatar1_small.jpg"></div>
+		<div class="f-fl" style="width: 300px;margin-right: 10px">
+			<h4>您的账号安全度 <span class="high">90%</span></h4>
+			<div class="progress progress-success">
+				<div class="bar" style="width: 90%;"></div>
+			</div>
+		</div>
+		<div class="f-fl">
+			<span class="grade high">高</span>
+			<span class="grade medium">中</span>
+			<span class="grade low">低</span>
+		</div>
+	</div>
+	<div class="span12">
+		<div class="protraid f-fl"><a href="#" class="glyphicons no-js user"><i></i></a></div>
+		<div class="f-fl" style="width: 300px;margin-right: 10px">
+			<h4>法人认证</h4>
+			<p class="sub-title">实名操作，保证信息真实性</p>
+		</div>
+		<div class="f-fl index-info">
+			<a href="#" class="glyphicons no-js circle_ok"><i class="f-colgreen"></i></a>
+			** 123****11111
+		</div>
+	</div>
+	<div class="span12">
+		<div class="protraid f-fl"><a href="#" class="glyphicons no-js building"><i></i></a></div>
+		<div class="f-fl" style="width: 300px;margin-right: 10px">
+			<h4>企业认证</h4>
+			<p class="sub-title">企业认证</p>
+		</div>
+		<div class="f-fl index-info">
+			<a href="#" class="glyphicons no-js circle_ok"><i class="f-colgreen"></i></a>
+			机构代码  xxxxxxxxxxxxxxx
+		</div>
+	</div>
+	<div class="span12">
+		<div class="protraid f-fl"><a href="#" class="glyphicons no-js lock"><i></i></a></div>
+		<div class="f-fl" style="width: 300px;margin-right: 10px">
+			<h4>交易密码</h4>
+			<p class="sub-title">账户资金变动，修改账户信息时需要输入的密码</p>
+		</div>
+		<div class="f-fl index-info">
+			<a href="#" class="glyphicons no-js circle_exclamation_mark"><i class="colyellow"></i></a>
+			未设置
+		</div>
+		<button type="button" class="btn set-btn">设置</button>
+	</div>
+	<div class="span12">
+		<div class="protraid f-fl"><a href="#" class="glyphicons no-js iphone_shake"><i></i></a></div>
+		<div class="f-fl" style="width: 300px;margin-right: 10px">
+			<h4>绑定手机</h4>
+			<p class="sub-title">账户资金变动，实时通知</p>
+		</div>
+		<div class="f-fl index-info">
+			<a href="#" class="glyphicons no-js circle_ok"><i class="f-colgreen"></i></a>
+			已绑定  132****1293
+		</div>
+		<button type="button" class="btn set-btn">修改</button>
+	</div>
+	<div class="span12">
+		<div class="protraid f-fl"><a href="#" class="glyphicons no-js envelope"><i></i></a></div>
+		<div class="f-fl" style="width: 300px;margin-right: 10px">
+			<h4>绑定邮箱</h4>
+			<p class="sub-title">找回密码，接收最新消息</p>
+		</div>
+		<div class="f-fl index-info">
+			<a href="#" class="glyphicons no-js circle_exclamation_mark"><i class="colyellow"></i></a>
+			未绑定
+		</div>
+		<button type="button" class="btn set-btn">设置</button>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<script src="/public/business/lib/metronic/js/jquery.gritter.js"></script>
+<script src="/public/business/lib/metronic/js/jquery.pulsate.min.js"></script>
+<script src="/public/business/lib/metronic/js/jquery.bootpag.min.js"></script>
+<script src="/public/business/lib/metronic/js/ui-general.js"></script>
+<script>
+	jQuery(document).ready(function () {
+		UIGeneral.init();
+	});
+</script>
 {/block}
