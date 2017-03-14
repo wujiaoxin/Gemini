@@ -4446,11 +4446,11 @@ jQuery UI Datepicker(new in v1.2.2)
   background-color: #e0e0e0 !important;
   border: 0 !important;
   box-shadow: none !important;
-  height: 28px;
+  /*height: 28px;*/
 }
 
 .ui-widget-header .ui-icon {
-  background-image: url(../image/ui-icons_888888_256x240.png) !important;
+  /*background-image: url(../image/ui-icons_888888_256x240.png) !important;*/
 }
 
 .ui-widget-header .ui-datepicker-next,

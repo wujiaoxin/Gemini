@@ -1,0 +1,63 @@
+{extend name="base"/}
+{block name="style"}
+<style>
+	.firm-info label {
+		float: left;
+		margin-right: 10px;
+		margin-top: 0;
+		width: 100px;
+		text-align: right;
+	}
+	.infor .portlet-body{
+		padding-left: 20px;
+	}
+</style>
+{/block}
+{block name="body"}
+<div class="row-fluid infor">
+	<div class="span12">
+		<div class="portlet">
+			<div class="portlet-title">
+				<div class="caption">企业</div>
+			</div>
+			<div class="portlet-body">
+				<div class="control-group firm-info">
+					<label class="control-label">企业名称</label>
+					<span>***</span>
+				</div>
+				<div class="control-group firm-info">
+					<label class="control-label">信用证</label>
+					<span>***</span>
+				</div>
+				<div class="control-group firm-info">
+					<label class="control-label">单位地址</label>
+					<span>***</span>
+				</div>
+				<div class="control-group firm-info">
+					<label class="control-label">详细地址</label>
+					<span>***</span>
+				</div>
+				<div class="control-group firm-info">
+					<label class="control-label">签约业务</label>
+					<span>***</span>
+				</div>
+			</div>
+		</div>
+		<div class="portlet">
+			<div class="portlet-title">
+				<div class="caption">法人</div>
+			</div>
+			<div class="portlet-body">
+				<div class="control-group firm-info">
+					<label class="control-label">法人姓名</label>
+					<span>***</span>
+				</div>
+				<div class="control-group firm-info">
+					<label class="control-label">身份证号</label>
+					<span>***</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
