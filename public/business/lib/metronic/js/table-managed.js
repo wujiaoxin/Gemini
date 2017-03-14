@@ -17,7 +17,8 @@ var TableManaged = function () {
                   { "bSortable": false },
                   null,
                   { "bSortable": false },
-                  { "bSortable": false }
+                  { "bSortable": false },
+									{ "bSortable": false }
                 ],
                 "aLengthMenu": [
                     [5, 15, 20, -1],

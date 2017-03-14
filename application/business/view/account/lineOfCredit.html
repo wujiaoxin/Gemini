@@ -16,9 +16,9 @@
 {block name="body"}
 <!--信用额度-->
 <div class="row-fluid">
-	<div class="span4 pop-container">
+	<div class="span4 pop-container j_PopContainer">
 		<div class="portlet">
-			<div class="portlet-title" style="margin: 10px 0 0 10px;">
+			<div class="portlet-title" style="margin: 10px 0 10px 10px;">
 				<div class="caption">
 					保证金补缴页
 				</div>
@@ -61,9 +61,9 @@
 							<textarea class="medium m-wrap" rows="3"></textarea>
 						</div>
 					</div>
-					<div class="form-actions">
+					<div class="form-actions" style="text-align: center;padding: 0;">
 						<button type="submit" class="btn blue"><i class="icon-ok"></i>确认提交</button>
-						<button type="button" class="btn" style="width: 100px;">取消</button>
+						<button type="button" class="btn j_CancelPop" style="width: 100px;">取消</button>
 					</div>
 				</form>
 			</div>
@@ -183,4 +183,7 @@
 		</div>
 	</div>
 </div>
+{/block}
+{block name="script"}
+<script src="/public/business/js/lineOfCredit.js"></script>
 {/block}

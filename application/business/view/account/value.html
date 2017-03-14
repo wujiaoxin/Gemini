@@ -1,7 +1,7 @@
 {extend name="base"/}
 {block name="style"}
-<link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css">
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css" />
+<link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css">
 <style>
 	.card {
 		height: 100px;
@@ -141,6 +141,15 @@
 </div>
 {/block}
 {block name="script"}
-
+<script src="/public/business/lib/metronic/js/select2.min.js"></script>
+<script src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script src="/public/business/lib/metronic/js/app.js"></script>
+<script src="/public/business/lib/metronic/js/table-managed.js?v=1"></script>
+<script>
+	jQuery(document).ready(function () {
+		TableManaged.init();
+	});
+</script>
 {/block}
 

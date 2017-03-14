@@ -34,6 +34,9 @@ class Account extends Base {
     return $this->fetch();
   }
   public function lineOfCredit() {
-      return $this->fetch();
-    }
+    return $this->fetch();
+  }
+  public function infor() {
+    return $this->fetch();
+  }
 }

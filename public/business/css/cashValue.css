@@ -19,3 +19,6 @@
 .cash-value .table th {
 	text-align: center;
 }
+.cash-value a {
+	color: #333;
+}

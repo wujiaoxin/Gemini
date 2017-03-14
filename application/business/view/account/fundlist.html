@@ -1,4 +1,7 @@
 {extend name="base"}
+{block name="style"}
+<link rel="stylesheet" href="/public/business/lib/metronic/css/jquery-ui-1.10.1.custom.min.css">
+{/block}
 {block name="body"}
 <!--资金记录-->
 <div class="row-fluid">
@@ -52,7 +55,7 @@
 					<label class="control-label" style="padding-top: 6px;padding-right:5px;width: auto;">具体日期</label>
 					<div class="controls">
 						<div class="input-append" id="ui_date_picker_trigger">
-							<input type="text" class="m-wrap medium hasDatepicker" style="border-right: 1px solid #e5e5e5!important;" id="dp1489392462139">
+							<input type="text" class="m-wrap medium" style="border-right: 1px solid #e5e5e5!important;">
 						</div>
 					</div>
 				</div>
@@ -148,4 +151,13 @@
 		</div>
 	</div>
 </div>
+{/block}
+{block name="script"}
+<script src="/public/business/lib/metronic/js/app.js"></script>
+<script src="/public/business/lib/metronic/js/ui-jqueryui.js"></script>
+<script>
+	jQuery(document).ready(function () {
+		UIJQueryUI.init();
+	});
+</script>
 {/block}
