@@ -1,0 +1,21 @@
+.selectParm {
+	display: inline-block;
+	margin-left: 0;
+}
+.selectParm li {
+	display: inline-block;
+	width: 80px;
+	text-align: center;
+}
+.selectParm a {
+	text-decoration: none;
+	color: #000000;
+}
+#selectParm-orderDate {
+	width: 130px;
+	height: 24px;
+}
+#payOrderModal .controls {
+		line-height: 36px;
+    	height: 30px
+	}

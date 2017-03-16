@@ -1,0 +1,259 @@
+{extend name="base"/}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="/public/business/css/selectArea.css">
+<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css" />
+<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/chosen.css" />
+<style type="text/css">
+	.selectArea {
+		width: 120px;
+	}
+	.bankAccount-style-title {
+		text-align: center;
+	}
+</style>
+{/block}
+{block name="body"}
+<div class="row-fluid">
+	<div class="span12">
+		<div class="portlet box blue" id="form_wizard_1">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-reorder"></i> 信息填写 - <span class="step-title">Step 1 of 4</span>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form action="#" class="form-horizontal" id="submit_form">
+					<div class="form-wizard">
+						<div class="navbar steps">
+							<div class="navbar-inner">
+								<ul class="row-fluid">
+									<li class="span3">
+										<a href="#tab1" data-toggle="tab" class="step active">
+										<span class="number">1</span>
+										<span class="desc"><i class="icon-ok"></i>车商信息</span>   
+										</a>
+									</li>
+									<li class="span3">
+										<a href="#tab2" data-toggle="tab" class="step">
+										<span class="number">2</span>
+										<span class="desc"><i class="icon-ok"></i>法人信息</span>   
+										</a>
+									</li>
+									<li class="span3">
+										<a href="#tab3" data-toggle="tab" class="step">
+										<span class="number">3</span>
+										<span class="desc"><i class="icon-ok"></i>业务签约</span>   
+										</a>
+									</li>
+									<li class="span3">
+										<a href="#tab4" data-toggle="tab" class="step">
+										<span class="number">4</span>
+										<span class="desc"><i class="icon-ok"></i>银行账户</span>   
+										</a> 
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div id="bar" class="progress progress-success progress-striped">
+							<div class="bar"></div>
+						</div>
+						<div class="tab-content">
+							<div class="alert alert-error hide">
+								<button class="close" data-dismiss="alert"></button>
+								存在错误信息,请检查
+							</div>
+							<div class="alert alert-success hide">
+								<button class="close" data-dismiss="alert"></button>
+								提交成功
+							</div>
+							<div class="tab-pane active" id="tab1">
+								<h3 class="block">车商信息</h3>
+								<div class="control-group">
+									<label class="control-label">企业名称</label>
+									<div class="controls">
+										<input type="text" id="Enterprise" name="Enterprise" placeholder="请输入车商名称" class="m-wrap large" />
+									</div>
+								</div>
+								<div class="control-group">
+									<div class="controls">
+										<label class="radio">
+											<input type="radio" id="businessLicense" name="businessLicense" value="1" />传统证照
+										</label>
+										<label class="radio">
+											<input type="radio" name="businessLicense" value="2" checked />三合一证照
+										</label>  
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">单位所在地</label>
+									<div class="controls">
+										<select id="loc_province" class="selectArea"></select>
+										<select id="loc_city" class="selectArea"></select>
+										<select id="loc_town" class="selectArea"></select>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">详细地址</label>
+									<div class="controls">
+										<input type="text" id="address" name="address" placeholder="请输入具体地址" class="m-wrap large" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">营业期限</label>
+									<div class="controls">
+										<input type="text" id="termOfValidity" name="termOfValidity" value="长期" class="m-wrap medium" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">上传营业资格证</label>
+									<div class="controls">
+										<input id="licencePic" type="file" multiple="multiple" name="file" />
+									</div>
+								</div>	
+							</div>
+							<div class="tab-pane" id="tab2">
+								<h3 class="block">法人信息</h3>
+								<div class="control-group">
+									<label class="control-label">法人姓名</label>
+									<div class="controls">
+										<input type="text" id="legalPerson" name="legalPerson" placeholder="请输入法人姓名" class="m-wrap medium" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">身份证号</label>
+									<div class="controls">
+										<input type="text" id="idcardNum" name="idcardNum" placeholder="请输入身份证号" class="m-wrap medium" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">上传身份证正反面照片</label>
+									<div class="controls">
+										<input id="idcardPic" type="file" multiple="multiple" name="file" />
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab3">
+								<h3 class="block">业务签约</h3>
+								<div class="control-group">
+									<label class="control-label">属性</label>
+									<div class="controls">
+										<label class="checkbox"><input type="checkbox" name="property" value="1"/>4S店</label>
+										<label class="checkbox"><input type="checkbox" name="property" value="2"/>小贷机构</label>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">合作形式</label>
+									<div class="controls">
+										<label class="checkbox"><input type="checkbox" name="businessForm" value="1"/>按揭垫资</label>
+										<label class="checkbox"><input type="checkbox" name="businessForm" value="2"/>二手车垫资</label>
+										<label class="checkbox"><input type="checkbox" name="businessForm" value="3"/>车抵贷</label>
+									</div>
+								</div>	
+							</div>
+							<div class="tab-pane" id="tab4">
+								<h3 class="block">银行账号</h3>
+								<div class="row-fluid">
+									<div class="span6">
+										<h4 class="bankAccount-style-title">公户</h4>
+										<div class="control-group">
+											<label class="control-label">开户人</label>
+											<div class="controls">
+												<input type="text" id="public-name" name="public-name" placeholder="请输入开户人姓名" class="m-wrap medium" />
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">开户银行</label>
+											<div class="controls">
+												<input type="text" id="public-bank-name" name="public-bank-name" placeholder="请输入开户银行" class="m-wrap medium" />
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">银行账号</label>
+											<div class="controls">
+												<input type="text" id="public-bank-account" name="public-bank-account" placeholder="请输入银行账号" class="m-wrap medium" />
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">所在地区</label>
+											<div class="controls">
+												<input type="text" id="public-bank-address" name="public-bank-address" placeholder="请输入所在地区" class="m-wrap medium" />
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">支行名称</label>
+											<div class="controls">
+												<input type="text" id="public-bank-branch" name="public-bank-branch" placeholder="请输入支行名称" class="m-wrap medium" />
+											</div>
+										</div>
+									</div>
+									<div class="span6">
+										<h4 class="bankAccount-style-title">私户</h4>
+										<div class="control-group">
+											<label class="control-label">开户人</label>
+											<div class="controls">
+												<input type="text" id="public-name" name="public-name" placeholder="请输入开户人姓名" class="m-wrap medium" />
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">开户银行</label>
+											<div class="controls">
+												<input type="text" id="public-bank-name" name="public-bank-name" placeholder="请输入开户银行" class="m-wrap medium" />
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">银行账号</label>
+											<div class="controls">
+												<input type="text" id="public-bank-account" name="public-bank-account" placeholder="请输入银行账号" class="m-wrap medium" />
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">所在地区</label>
+											<div class="controls">
+												<input type="text" id="public-bank-address" name="public-bank-address" placeholder="请输入所在地区" class="m-wrap medium" />
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">支行名称</label>
+											<div class="controls">
+												<input type="text" id="public-bank-branch" name="public-bank-branch" placeholder="请输入支行名称" class="m-wrap medium" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>		
+							<div class="form-actions clearfix">
+								<a href="javascript:;" class="btn button-previous">
+								<i class="m-icon-swapleft"></i> Back 
+								</a>
+								<a href="javascript:;" class="btn blue button-next">
+								Continue <i class="m-icon-swapright m-icon-white"></i>
+								</a>
+								<a href="javascript:;" class="btn green button-submit">
+								Submit <i class="m-icon-swapright m-icon-white"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{/block}
+{block name="script"}
+	<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js" ></script>
+	<script type="text/javascript" src="/public/business/js/selectArea.js"></script>
+	<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="/public/business/lib/metronic/js/additional-methods.min.js"></script>
+	<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.bootstrap.wizard.min.js"></script>
+	<script type="text/javascript" src="/public/business/lib/metronic/js/chosen.jquery.min.js"></script>
+	<script src="/public/business/lib/metronic/js/form-wizard.js"></script>
+	<script>
+		jQuery(document).ready(function() {       
+		   App.init();
+		   FormWizard.init();
+		});
+	</script>     
+{/block}
+
