@@ -74,21 +74,21 @@
                         <div class="content-block">
                             <a class="button button-big button-raised butcom-css dpblue"
                                href="javascript:goToUrl('{:url('mobile/user/logout')}')">退出登录</a>
-                        </div>
-                        <div class="toolbar">
-                        <div class="toolbar-inner">
-                            <a href="javascript:goToUrl('{:url('mobile/index/indexDealer')}');" class="toolbar-inner-block">
-                                <span><img src="/public/wap/images/home.png"></span>
-                            </a>
-                            <a href="javascript:goToUrl('{:url('mobile/order/newOrder')}');" class="toolbar-inner-block">
-                                <span><img src="/public/wap/images/newOrder.png"></span>
-                            </a>
-                            <a href="#" class="toolbar-inner-block toolbar-inner-active">
-                                <span><img src="/public/wap/images/personalCenter_active.png"></span>
-                            </a>
-                        </div>
-                    </div>       
+                        </div>       
                     </div>
+                </div>
+            </div>
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <a href="javascript:goToUrl('{:url('mobile/index/indexDealer')}');" class="toolbar-inner-block">
+                        <span><img src="/public/wap/images/home.png"></span>
+                    </a>
+                    <a href="javascript:goToUrl('{:url('mobile/order/newOrder')}');" class="toolbar-inner-block">
+                        <span><img src="/public/wap/images/newOrder.png"></span>
+                    </a>
+                    <a href="#" class="toolbar-inner-block toolbar-inner-active">
+                        <span><img src="/public/wap/images/personalCenter_active.png"></span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -106,6 +106,21 @@
         {value:203,name:'退回订单'},
         {value:75,name:'已完成订单'}
     ]
+    ajax_jquery({
+            url: apiUrl + '/api/order/total',   
+            data:{
+                type: 1
+            },
+            success: function(resp){
+                if(resp.code == 1){         
+                }else{
+                    if (typeof(data.msg) == 'string') {
+                        ui_alert(data.msg);
+                    }
+                }
+            }
+        }); 
+    
 
         //模块化引入Echarts
         require.config({
@@ -167,73 +182,5 @@
             }
         );
     </script>
-    <script type="text/javascript">
-		var role = -1;
-		{if isset($user['access_group_id'])}
-		role = {$user['access_group_id']};
-		{/if}
-		
-		if(role == 3){	
-			var checkingOrder = 0;
-			var passOrder = 0;		
-			ajax_jquery({
-				url: '/mobile/order/getOrderlist',   
-				data:{
-					page: 1,
-					status: 0
-				},
-				success: function(resp){
-					if(resp.code == 1){
-						checkingOrder = resp.data.total;
-						$("#checkingOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
-							.children(".index-ed-data").text(checkingOrder + "条")
-							.next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=1&status=0')").text("去审核");			
-					}else{
-						if (typeof(data.msg) == 'string') {
-							ui_alert(data.msg);
-						}
-					}
-				}
-			});
-			ajax_jquery({
-				url: '/mobile/order/getOrderlist',   
-				data:{
-					page: 1,
-					status: 0,
-                    type: 3
-				},
-				success: function(resp){
-					if(resp.code == 1){
-						checkingOrder = resp.data.total;
-						$("#passOrder > .deal-item-con").children(".deal-item-intro").text('待审核订单').end()
-                            .children(".index-ed-data").text(checkingOrder + "条")
-                            .next("a").attr("href","javascript:goToUrl('/mobile/order/index?type=3&status=0')").text("去审核");    		
-					}else{
-						if (typeof(data.msg) == 'string') {
-							ui_alert(data.msg);
-						}
-					}
-				}
-			});
-		}else if(role == 0){
-            $("#checkingOrder, #passOrder").find("a").attr("href","")
-                                .on("click",function(){
-                                    ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
-                                    return ;
-                                })
-        }
-
-
-		function goApply(){
-			if(role == 0){
-				ui_alert('您的账号权限等待开通，如有疑问请联系客服。');
-				return ;
-			}	
-			goToUrl('/mobile/order/add');
-		}
-		
-		
-    </script>
-
 </body>
 </html>

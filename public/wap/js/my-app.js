@@ -1,3 +1,4 @@
+var apiUrl = "http://test.vpdai.com"
 var myApp = new Framework7({
     modalButtonCancel: "取消",
     modalButtonOk: "确认"

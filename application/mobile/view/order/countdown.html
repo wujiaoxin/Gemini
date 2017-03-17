@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" href="/public/wap/css/my-app.css">  
+    <style type="text/css">
+        .game_time{width:100px;height:100px;position:absolute;top:10%;left:43%;text-align:center;}
+        .pie{width:200px;height:200px;background-color:blue;border-radius:100px;position:absolute;}
+        .pie1{clip:rect(0px,200px,200px,100px);-o-transform:rotate(0deg);-moz-transform:rotate(0deg);-webkit-transform:rotate(0deg);background-color:#fff;}
+        .pie2{clip:rect(0px,100px,200px,0px);-o-transform:rotate(0deg);-moz-transform:rotate(0deg);-webkit-transform:rotate(0deg);background-color:#fff;}
+        .hold{width:200px;height:200px;position:absolute;z-index:1;}
+        .bg{width:200px;height:200px;border-radius:200px;position:absolute;background-color:#d13c36;}
+        .time{width:160px;height:160px;margin:20px 0 0 20px;background-color:#e45534;border-radius:160px;position:absolute;z-index:1;text-align:center;line-height:160px;font-size:30px;}
+    </style>
+</head>
+<body>   
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center"">信息结果</div>
+                    <div class="right"></div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div class="page">                     
+                    <div class="page-content">
+                        <div class="game_time">
+                            <div class="hold">
+                                <div class="pie pie1"></div>
+                            </div>
+                            <div class="hold">
+                                <div class="pie pie2"></div>
+                            </div>
+                            <div class="bg"></div>
+                            <div class="time"></div>                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
+        </div>
+    </div>
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript">
+        var showTime = function(){
+            var times = 6000; //60*100
+            countTime = setInterval(function(){
+                times = times-- < 0 ? 6000 : times;
+                var sec =  Math.floor(times / 100);
+                var centisec = Math.floor(times % 100);
+                var count = 0;
+                count++;
+                var d = count + 0.6;
+                sec = (sec<10)?"0"+sec:sec;
+                centisec = (centisec<10)?"0"+centisec:centisec;
+                if(times > 3000){  
+                    $(".pie1").css("-o-transform","rotate(" + d + "deg)");
+                    $(".pie1").css("-moz-transform","rotate(" + d + "deg)");
+                    $(".pie1").css("-webkit-transform","rotate(" + d + "deg)");
+                }else{
+                    $(".pie2").css("backgroundColor", "#d13c36");
+                    $(".pie2").css("-o-transform","rotate(" + d + "deg)");
+                    $(".pie2").css("-moz-transform","rotate(" + d + "deg)");
+                    $(".pie2").css("-webkit-transform","rotate(" + d + "deg)");
+    }
+            $(".time").html(sec +":" + centisec);    
+            },10);
+        };
+        // showTime();
+    </script>
+</body>
+</html>

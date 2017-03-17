@@ -642,9 +642,20 @@ class Order extends Base {
 		//$this->assign($user);		
 		return $this->fetch();
 	}
+	// 倒计时页面
+	public function countdown() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
 	//订单信息提交
 	public function orderSupplement() {
 		//$this->assign($user);		
 		return $this->fetch();
 	}
+	//订单查看页面
+	public function viewOrder() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
+
 }

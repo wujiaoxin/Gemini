@@ -134,19 +134,20 @@
                         <div class="subnavbar-box">
                             <div class="subnavbar-wrap">
                                 <div class="subnavbar-cont">
-                                    <a class="subnavbar-item" id="tab_0" data_status='0'>待受理</a>
-                                    <a class="subnavbar-item" id="tab_1" data_status='1'>资料提交</a>
-                                    <a class="subnavbar-item" id="tab_2" data_status='1'>受理中</a>
+                                    <a class="subnavbar-item" id="tab_0" data_status='0'>待授权</a>
+                                    <a class="subnavbar-item" id="tab_1" data_status='1'>待提交</a>
                                     <a class="subnavbar-item" id="tab_" data_status=''>全部</a>
-                                    <a class="subnavbar-item" id="tab_3" data_status='2'>已放款</a>
-                                    <a class="subnavbar-item" id="tab_9" data_status='9'>退回</a>
+                                    <a class="subnavbar-item" id="tab_2" data_status='2'>审核中</a>
+                                    <a class="subnavbar-item" id="tab_3" data_status='3'>已放款</a>
+                                    <a class="subnavbar-item" id="tab_9" data_status='4'>已退回</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 	            </div>
-	        </div>     
-            <div class="pages navbar-fixed">
+	        </div>
+	        
+            <div class="pages navbar-fixed toolbar-fixed">
                 <div class="page">
                     <div class="page-content infinite-scroll pull-to-refresh-content">
 	                    <div class="pull-to-refresh-layer">
@@ -174,7 +175,7 @@
             <div class="list-block">
                 <ul>
                     <li><a href="#" class="list-button">全部</a></li>
-                    <li><a href="#" class="list-button">最近</a></li>
+                    <li><a href="#" class="list-button">今天</a></li>
                     <li><a href="#" class="list-button">7天</a></li>
                     <li><a href="#" class="list-button">一个月</a></li>
                 </ul>
@@ -202,9 +203,11 @@
     </script>
 	<script>
 		var orderStatus = [];
-		orderStatus[0] = '<span class="blue-color">审核中</span>';
-		orderStatus[1] = '<span class="blue-color">审核通过</span>';
-		orderStatus[2] = '<span class="red">审核未通过</span>';
+		orderStatus[0] = '<span class="gray-color">待授权</span>';
+		orderStatus[1] = '<span class="red-color">待提交</span>';
+		orderStatus[2] = '<span class="blue-color">审核中</span>';
+		orderStatus[3] = '<span class="green-color">已放款</span>';
+		orderStatus[4] = '<span class="red-color">已退回</span>';
 	  	var loading = false;  // 加载flag
 		var current_page = 1; 
 		var status = getUrlParam('status');
@@ -229,7 +232,8 @@
 									+'<div class="order-customer-mobile">' + data[index].mobile + '</div>'
 								+'</div>'
 								+'<div class="order-status right">'
-									+'<img src="/public/wap/images/orderPending.png">'
+									// +'<img src="/public/wap/images/orderPending.png">'
+									+ orderStatus[data[index].status]
 								+'</div>'
 							+'</div>'
 						+'</li>';
@@ -241,7 +245,7 @@
 		function getOrderList(pageid,status){
 			ajax_jquery({
 				type: 'get',
-				url: '/mobile/order/getOrderlist',   
+				url: apiUrl + '/api/order/getList',   
 				data:{
 					'page': pageid,
 					'status': status,
@@ -250,43 +254,6 @@
 				success: function (resp){
 					var liHtml = '';
 					loading = false;
-					console.log('无效数据 删除')
-					resp.data.total=1;
-					resp.data.data = [{
-								'mobile':13898793471,
-								'name':'walalal',
-								'type':'xinche',
-								'sn':'ffe33ff3',
-								'id':233
-							},
-							{
-								'mobile':13898793471,
-								'name':'walalal',
-								'type':'xinche',
-								'sn':'ffe33ff3',
-								'id':233
-							},
-							{
-								'mobile':13898793471,
-								'name':'walalal',
-								'type':'xinche',
-								'sn':'ffe33ff3',
-								'id':233
-							},
-							{
-								'mobile':13898793471,
-								'name':'walalal',
-								'type':'xinche',
-								'sn':'ffe33ff3',
-								'id':233
-							},
-							{
-								'mobile':13898793471,
-								'name':'walalal',
-								'type':'xinche',
-								'sn':'ffe33ff3',
-								'id':233
-							}];
 					if(resp.code == 1){
 						if(resp.data.total == 0){
 							liHtml = '<div class="no-result">'

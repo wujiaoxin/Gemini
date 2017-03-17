@@ -11,7 +11,23 @@
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">    
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all"> 
+    <script type="text/javascript">
+        ajax_jquery({
+            url: apiUrl+ '/api/user/userInfo?t=' + Math.random(),
+            success: function (resp) {
+                if(resp.code == 1){
+                    $(".user-info-face img").css('src',resp.data.headerimgurl);
+                    $(".user-info-name").text(resp.data.realname);
+                }else{
+                    if (typeof(resp.msg) == 'string') {
+                        ui_alert(resp.msg);
+                    }  
+                }
+            }
+        });
+        
+    </script>
 </head>
     <style type="text/css">
         .user-info {
@@ -112,15 +128,10 @@
                         <div class="user-info-container">
                             <div class="user-info">
                                 <div class="user-info-face">
-                                    {if isset($user['headimgurl'])}
-                                        <img src="{$user['headimgurl']}" width="100%"/>
-                                    {else /}
-                                        <img src="/public/wap/images/user.png" width="100%"/>
-                                    {/if}
-                                  
+                                        <img src="/public/wap/images/user.png" width="100%"/>                                  
                                 </div>
-                                <div class="user-info-name">我的名字七个字</div>
-                                <div class="user-info-xcodeMini right"><img src="/public/wap/images/QRCodeMini.png"></div>
+                                <div class="user-info-name">VP贷用户</div>
+                                <!-- <div class="user-info-xcodeMini right"><img src="/public/wap/images/QRCodeMini.png"></div> -->
                             </div>
                         </div>
                         <div class="order-block">
@@ -154,52 +165,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="toolbar">
-                        <div class="toolbar-inner">
-                            <a href="#" class="toolbar-inner-block toolbar-inner-active">
-                                <span><img src="/public/wap/images/home_active.png"></span>
-                            </a>
-                            <a href="javascript:goToUrl('{:url('mobile/order/newOrder')}');" class="toolbar-inner-block">
-                                <span><img src="/public/wap/images/newOrder.png"></span>
-                            </a>
-                            <a href="javascript:goToUrl('{:url('mobile/user/personalCenter')}');" class="toolbar-inner-block">
-                                <span><img src="/public/wap/images/personalCenter.png"></span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="popup popup-info-supply">
-                        <div class="content-block">
-                             <form class="list-block mt10" method="post">
-                                <ul class="clearfix">
-                                    <li>
-                                        <div class="item-content">
-                                            <div class="item-inner">
-                                                <div class="item-title label">姓名</div>
-                                                <div class="item-input">
-                                                    <input type="text" id="staffName" name="staffName" maxlength="10" autocomplete="off"
-                                                           placeholder="请输入真实姓名">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="item-content">
-                                            <div class="item-inner">
-                                                <div class="item-title label">职位</div>
-                                                <div class="item-input">
-                                                    <input type="text" id="job" name="job" maxlength="10" autocomplete="off" value="业务员" 
-                                                           placeholder="请输入你的职位">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="content-block">                                 
-                                    <button type="submit" id="info-supply" class="button button-big button-fill dpblue" style="width:100%">提交</button>
-                                </div>
-                            </form>
-                        </div>
-                  </div>
+                </div>
+            </div>
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <a href="#" class="toolbar-inner-block toolbar-inner-active">
+                        <span><img src="/public/wap/images/home_active.png"></span>
+                    </a>
+                    <a href="javascript:goToUrl('{:url('mobile/order/newOrder')}');" class="toolbar-inner-block">
+                        <span><img src="/public/wap/images/newOrder.png"></span>
+                    </a>
+                    <a href="javascript:goToUrl('{:url('mobile/user/personalCenter')}');" class="toolbar-inner-block">
+                        <span><img src="/public/wap/images/personalCenter.png"></span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -214,42 +192,5 @@
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
-    <script type="text/javascript">
-        $(function(){
-             // myApp.popup('.popup-info-supply');
-             $("#info-supply").click(function(){       
-                var staffName= $("#staffName").val();
-                var job= $("#job").val();
-                if( staffName == '') {
-                    ui_alert("请输入您的真实姓名");
-                    return;
-                } else if (job == '') {
-                    ui_alert('请输入您的职位');
-                    return;
-                }
-                ajax_jquery({
-                    type: 'post',
-                    url: '',
-                    datatype:'json',
-                    data: {
-                        'staffName':staffName,
-                        'job':job
-                    },
-                    success: function(data){ // data 保存提交后返回的数据，一般为 json 数据
-                        if(data.code == 1){
-                            ui_alert("提交成功!", function(){
-                                 myApp.closeModal('.popup-info-supply') ;            
-                             });
-                        }else{
-                            if (typeof(data.msg) == 'string') {
-                                ui_alert(data.msg);
-                            }  
-                        }
-                    }
-                })
-            })
-        });
-    </script>
-
 </body>
 </html>
