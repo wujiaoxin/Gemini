@@ -8,14 +8,14 @@
     <meta http-equiv="pragma" content="no-cache">
     <title>VP贷-享全款的汽车分期</title>
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">    
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all">    
 </head>
 <body>
     <div class="views">
         <div class="view view-main">
-            <div class="navbar wb">
+            <div class="navbar">
                 <div class="navbar-inner">
                     <div class="left">
                         <a href="javascript:goToUrl('{:url('mobile/index/index')}');" class="link icon-only back">
@@ -30,53 +30,44 @@
                 </div>
             </div>
             <div class="pages navbar-through">
-                <div data-page="Password" class="page">
-                    <div class="page-content jobPage">
-                        <form id="login-form" class="list-block mt10" method="post" onsubmit="return doDealerLoginPost();">
-                            <ul class="clearfix">
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner register-inner">
-                                            <div class="item-title label">账号</div>
-                                            <div class="item-input">
-                                                <input type="tel" id="username" name="username" value="" maxlength="11" placeholder="手机号">
-                                            </div>
+                <div class="page">
+                    <div class="page-content">
+                        <form class="list-block mt15">
+                            <ul>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">账号</div>
+                                        <div class="item-input">
+                                            <input type="tel" id="username" name="username" value="" maxlength="11" placeholder="请输入手机号">
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner register-inner">
-                                            <div class="item-title label">密码</div>
-                                            <div class="item-input register-inner">
-                                                <input type="password" id="password" name="password" maxlength="10" placeholder="登录密码" />
-												<input type="hidden" id="wxbind" name="wxbind" value="{$wxbind}" />
-                                            </div>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">密码</div>
+                                        <div class="item-input">
+                                            <input type="password" id="password" name="password" maxlength="10" placeholder="请输入登录密码" />
                                         </div>
                                     </div>
                                 </li>
-                                <li class="rvalicode-cont" style="display: none">
-                                    <div class="item-content">
-                                        <div class="item-inner register-inner">
-                                            <div class="item-title label">图形验证码</div>
-                                            <div class="item-input rel">
-                                                <input type="text" id="rvalicode" name="rvalicode" maxlength="4" placeholder="图形验证码" value="0000">
-                                                <a href="javascript:;" class="auth-Code">
-                                                    <img src="{:url('mobile/open/verify')}"  name="verify" id="verify" height="100%"  onclick="doRefreshVerfiy()"/> 
-                                                </a>
-                                            </div>
+                                <li class="item-content rvalicode-cont" style="display: none">
+                                    <div class="item-inner">
+                                        <div class="item-title label">图形验证码</div>
+                                        <div class="item-input">
+                                            <input type="text" id="rvalicode" name="rvalicode" maxlength="4" placeholder="图形验证码" value="">
+                                            <a href="javascript:;" class="auth-Code">
+                                                <img src="{:url('mobile/open/verify')}" name="verify" id="verify" onclick="doRefreshVerfiy()"/> 
+                                            </a>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
-                            <div class="content-block">									
-                                <button type="submit" id="login" class="button button-big button-fill dpblue" style="width:100%">{if $wxbind eq 1}微信绑定登录{else /}登录{/if}</button>
+                            <div class="content-block fs14 mt10">
+                                 <a class="color-orange" href="javascript:goToUrl('{:url('mobile/user/registerDealer')}');">注册新用户</a>
+                                 <a class="right color-orange pull-right" href="javascript:goToUrl('{:url('mobile/user/reset')}');">忘记密码?</a>
                             </div>
-                            <div class="clearfix pr15 fz6" style="margin-top:-10px;">
-                                <a class="right blue-color" href="javascript:goToUrl('{:url('mobile/user/reset')}');">忘记密码？</a>
-                            </div>
-                            <div class="content-block">
-                                <a class="button button-big wb color-orange" href="javascript:goToUrl('{:url('mobile/user/registerDealer')}');">还没有账号？立即注册</a>
+                            <div class="content-block m-bottom-button">									
+                                <a href="#" id="login" class="button button-fill button-big color-orange" onclick="return doDealerLoginPost();">登录</a>
                             </div>
                         </form>
                     </div>
@@ -91,5 +82,6 @@
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>    
     <script type="text/javascript" src="/public/wap/js/md5.js"></script>
     <script type="text/javascript" src="/public/wap/js/user.js?v=1"></script>
+    </script>
 </body>
 </html>

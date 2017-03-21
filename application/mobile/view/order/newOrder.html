@@ -110,17 +110,17 @@
                     success: function(resp) { 
                         if(resp.code == 1){
                             ui_alert("订单创建成功!<br>请扫码进行客户授信");
-                            var sn = resp.data.sn;
+                            var id = resp.data.id;
                         }else{
                             if (typeof(resp.msg) == 'string') {
                                 ui_alert(resp.msg);
                             }  
                         }
-                        if(sn){
+                        if(id){
                             ajax_jquery({
                                 url: apiUrl + '/api/order/getQRCode',
                                 data: {
-                                    'sn':sn 
+                                    'id':id 
                                 },
                                 success: function(resp) { 
                                     if(resp.code == 1){

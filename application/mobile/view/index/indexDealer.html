@@ -12,22 +12,6 @@
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all"> 
-    <script type="text/javascript">
-        ajax_jquery({
-            url: apiUrl+ '/api/user/userInfo?t=' + Math.random(),
-            success: function (resp) {
-                if(resp.code == 1){
-                    $(".user-info-face img").css('src',resp.data.headerimgurl);
-                    $(".user-info-name").text(resp.data.realname);
-                }else{
-                    if (typeof(resp.msg) == 'string') {
-                        ui_alert(resp.msg);
-                    }  
-                }
-            }
-        });
-        
-    </script>
 </head>
     <style type="text/css">
         .user-info {
@@ -192,5 +176,20 @@
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+        <script type="text/javascript">
+        ajax_jquery({
+            url: apiUrl+ '/api/user/userInfo?t=' + Math.random(),
+            success: function (resp) {
+                if(resp.code == 1){
+                    $(".user-info-face img").css('src',resp.data.headerimgurl);
+                    $(".user-info-name").text(resp.data.realname);
+                }else{
+                    if (typeof(resp.msg) == 'string') {
+                        ui_alert(resp.msg);
+                    }  
+                }
+            }
+        });
+    </script>
 </body>
 </html>

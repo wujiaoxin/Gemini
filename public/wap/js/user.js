@@ -321,9 +321,8 @@ function sendSmsCode(send_code, type) {
 
 
 
-
-//车商员工
 var isimgverify = 0;
+//车商员工
 function doDealerRegisterPost() {
     var mobile = $.trim($('#mobile').val());
     var authcode = $.trim($('#authcode').val());
@@ -381,29 +380,29 @@ function doDealerRegisterPost() {
 
 //车商员工登录
 function doDealerLoginPost(){
-    var wxbind = $("#wxbind").val();
-    var phone = $("#username").val();
+    var mobile = $("#username").val();
     var password = $("#password").val();
     var imgverify = $.trim($("#rvalicode").val());
 
-    if (phone == "" || password == "") {
-        ui_alert("请输入手机号和密码!");
-    }else if (!validatePhoneNumber(phone)) {
+    if (mobile == "") {
+        ui_alert("请输入手机号!");
+    }else if (!validatePhoneNumber(mobile)) {
         ui_alert("请输入正确的手机号!");
-    } else if (!checkValidPasswd(password)) {
-        ui_alert("请输入6-10位英文数字组合的密码");
-    } else if (isimgverify && verifycode == "") {
-        ui_alert("请输入图形验证码");
-    } else{
+    }else if (password == "") {
+        ui_alert("请输入密码!");
+    }else if (!validateDealerPassword(password)) {
+        ui_alert("密码格式错误!");
+    }else if (isimgverify && imgverify == "") {
+        ui_alert("请输入图形验证码!");
+    }else{
         var param = {
-            "mobile": phone,
+            "mobile": mobile,
             "password": password,
-            "wxbind"  : wxbind,
             "imgVerify": imgverify
         };
         $("#login").attr("disabled", "disabled");
         ajax_jquery({
-            url: '/mobile/user/login?t='+Math.random(),
+            url: apiUrl +'/api/user/login?t='+Math.random(),
             data:param,
             success:function(resp){
                 if (resp.code == "1" ) {
@@ -411,8 +410,9 @@ function doDealerLoginPost(){
                 } else {
                     if (typeof(resp.msg) == 'string') {
                         ui_alert(resp.msg);
-                        if(resp.data.needImgVerify){
+                        if(resp.code == "-2"){
                             isimgverify = 1;
+                            doRefreshVerfiy();
                             $(".rvalicode-cont").show();
                         }else {
                             isimgverify = 0;
