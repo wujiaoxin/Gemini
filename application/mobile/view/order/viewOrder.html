@@ -67,11 +67,34 @@
             line-height: 38px;
             font-size: 14px;
         }
+        .order-idcardNum {
+            letter-spacing: 0px;
+        }
         #order-amount {
             padding-left: 0;
             border-top: 1px solid #dedede;
             border-bottom: 1px solid #dedede;
         }
+        .pic-cont-block {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap; 
+        }
+        .pic-cont-item {
+            width: 90px;
+            height: 90px;
+            line-height: 90px;
+            overflow: hidden;     
+            border: 1px solid #dedede;
+            border-radius: 5px;
+            background: #f2f2f2;
+            margin: 5px 0;
+        }
+        .pic-cont-item img {
+            width: 100%;
+            vertical-align: middle;
+        }
+    
     </style>
 </head>
 <body>   
@@ -93,10 +116,10 @@
                     <div class="page-content">
                         <div class="list-block">
                             <ul>
-                                <li class="accordion-item">
+                                <li class="accordion-item accordion-item-expanded">
                                     <a href="#" class="item-content item-link">
                                         <div class="item-inner">
-                                          <div class="item-title">订单编号(<span>A12331232</span>)</div>
+                                          <div class="item-title">订单编号(<span class="order-sn">A12331232</span>)</div>
                                         </div>
                                     </a>
                                     <div class="accordion-item-content">
@@ -108,6 +131,31 @@
                                                         <span class="right order-type">新车垫资</span>
                                                     </div>
                                                 </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-amount">
+                                                        <span>借贷金额</span>
+                                                        <span class="right order-amount">20,000元</span>
+                                                    </div>
+                                                </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-date">
+                                                        <span>申请时间</span>
+                                                        <span class="right order-date">2017:03:08</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="accordion-item">
+                                    <a href="#" class="item-content item-link">
+                                        <div class="item-inner">
+                                            <div class="item-title">客户信息</div>
+                                        </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="content-block">
+                                            <ul class="clearfix">
                                                 <li class="order-item">
                                                     <div class="order-info-loaner">
                                                         <span>客户姓名</span>
@@ -126,47 +174,52 @@
                                                         <span class="right order-idcardNum">332112197608230183</span>
                                                     </div>
                                                 </li>
-                                                <li class="order-item">
-                                                    <div class="order-info-date">
-                                                        <span>申请时间</span>
-                                                        <span class="right order-date">2017:03:08</span>
-                                                    </div>
-                                                </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="accordion-item accordion-item-expanded">
+                                <li class="accordion-item">
                                     <a href="#" class="item-content item-link">
                                         <div class="item-inner">
-                                            <div class="item-title">完善资料</div>
+                                            <div class="item-title">流程状态</div>
                                         </div>
                                     </a>
                                     <div class="accordion-item-content">
                                         <div class="content-block">
-                                            <div class="item-content order-info-amount" id="order-amount">
-                                                <div class="item-inner">
-                                                    <div class="item-title label">垫资金额</div>
-                                                    <div class="item-input">
-                                                        <input type="number" name="loan_limit" id="loan_limit" value=""/>
-                                                    </div>
+                                            
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="accordion-item">
+                                    <a href="#" class="item-content item-link">
+                                        <div class="item-inner">
+                                            <div class="item-title">附件信息</div>
+                                        </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="content-block pic-info">
+                                            <div class="pic-cont">
+                                                <div class="pic-cont-title">个人信息</div>
+                                                <div class="pic-cont-block">
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/2.png"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/down_payment.jpg"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/drivingLic.png"></div>
                                                 </div>
                                             </div>
-                                            <div class="form-group loanerInfo">
-                                                <div class="uploaderwrap">
-                                                    <div class="uploader_title">
-                                                        <h4>请上传借款资料照片</h4>
-                                                    </div>
-                                                    <div id="uploadpic"></div>   
+                                             <div class="pic-cont">
+                                                <div class="pic-cont-title">证件信息</div>
+                                                <div class="pic-cont-block">
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/2.png"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/down_payment.jpg"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/drivingLic.png"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/2.png"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/down_payment.jpg"></div>
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
-                        </div>
-                        <div class="content-block">
-                            <a class="button button-big button-raised butcom-css dpblue" id="submit">提交</a>
                         </div>
                     </div>
                 </div>
@@ -186,11 +239,76 @@
     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script>
     <script type="text/javascript" src="/public/wap/js/order.js"></script>
     <script type="text/javascript"> 
-        $("#uploadpic").GeminiUploader(keyList,picList,{
-            formData: {fileType:"image",order_id:orderData.id},
-        }); 
+        var order_id = getUrlParam('id');
+        ajax_jquery({
+            url: apiUrl +'/api/order/detail?t=' + Math.random(),
+            data: order_id,
+            success: function (resp) {
+                // resp = {
+                //     "code": 1,
+                //     "msg": "获取成功！",
+                //     "data":{
+                //                 "id": 1013,
+                //                 "sn": "2016122149555552",
+                //                 "uid": 2,
+                //                 "bank_uid": 3,
+                //                 "type": 2,
+                //                 "name": "王业茂",
+                //                 "mobile": "",
+                //                 "idcard_num": "410425198904114038",
+                //                 "idcard_face_pic": 93,
+                //                 "idcard_back_pic": 94,
+                //                 "driving_lic_pic": 95,
+                //                 "loan_limit": 130000,
+                //                 "create_time": 1482301249,
+                //                 "update_time": 1482301620,
+                //                 "status": 1,
+                //                 "finance": 0,
+                //                 "addr": "车商门店",
+                //                 "descr": "",
+                //                 "reject_reason": 0
+                //             }
+                // }
 
+                if (resp.code == "1") {
+                    $(".order-sn").text(resp.data.sn);
+                    $(".order-type").text("新车垫资");
+                    $(".order-amount").text(resp.data.finance);
+                    $(".order-date").text(formatDate(resp.data.create_time));
+                    $(".order-loaner").text(resp.data.name);
+                    $(".order-mobile").text(resp.data.mobile);
+                    $(".order-idcard_num").text(resp.data.idcard_num);
+                } else {
+                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+                        ui_alert(resp.msg);
+                    } else {
+                        ui_alert("找回密码请求失败");
+                    }
+                }
+            }
+        });
         $(function(){
+            var myPhotoBrowserPopup = myApp.photoBrowser({
+                photos : [
+                    {
+                        url: 'http://lorempixel.com/1024/1024/sports/1/',
+                        caption: 'Caption 1 Text'
+                    },
+                    {
+                        url: 'http://lorempixel.com/1024/1024/sports/2/',
+                        caption: 'Second Caption Text'
+                    },
+                    {
+                        url: 'http://lorempixel.com/1024/1024/sports/3/',
+                        caption: 'Second Caption Text'
+                    },
+                ],
+                theme: 'dark',
+                type: 'standalone'
+            });
+            $$('.pic-info').on('click','.pic-cont-item', function () {
+                myPhotoBrowserPopup.open();
+            });
             $("#submit").click(function(){       
                 var loan_limit = $('#loan_limit').val();
                 

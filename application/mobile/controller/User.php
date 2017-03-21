@@ -228,6 +228,16 @@ TODO:check idcard if needed;
 		}
 	}
 
+	// 车商员工注册页
+	public function registerDealer() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
+	// 车商员工登录页
+	public function loginDealer() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
 	//车商员工个人中心
 	public function personalCenter() {
 		//$this->assign($user);		
@@ -252,6 +262,6 @@ TODO:check idcard if needed;
 	public function myAccount() {
 		//$this->assign($user);		
 		return $this->fetch();
-	}
+	}	
 
 }

@@ -317,3 +317,155 @@ function sendSmsCode(send_code, type) {
     }
     //return false;
 }
+
+
+
+
+var isimgverify = 0;
+//车商员工
+function doDealerRegisterPost() {
+    var mobile = $.trim($('#mobile').val());
+    var authcode = $.trim($('#authcode').val());
+    var smsCode = $.trim($("#smsCode").val());
+    var password = $("#password").val();
+    
+    if (mobile == "") {
+        ui_alert("请输入手机号!");
+    } else if (!validatePhoneNumber(mobile)) {
+        ui_alert("请输入正确的手机号!");
+    } else if (authcode == "") {
+        ui_alert("请输入车商授权码");
+    } else if (password == "") {
+        ui_alert("请输入密码");
+    } else if (!validatePassword(password)) {
+        ui_alert("请输入6-10位英文数字组合的密码");
+    } else if (smsCode == "") {
+        ui_alert("请输入手机验证码");
+    } else {
+        var param = {
+            "mobile": mobile,
+            "smsCode": smsCode,
+            "password": password,
+            "authcode": authcode
+        };
+        $("#submit").attr("disabled", "disabled");
+        if(typeof(redirect_uri) != 'undefined' && redirect_uri) {
+            param['redirect_uri'] = redirect_uri;
+        }
+        ajax_jquery({
+            url: apiUrl+ '/api/user/reg?t=' + Math.random(),
+            data: param,
+            success: function (resp) {
+                if(resp.code == 1){
+                    ui_alert("注册成功!", function () {
+                         window.location.href = '/mobile/index/indexDealer' ;            
+                    });
+                }else{
+                    if (typeof(resp.msg) == 'string') {
+                        ui_alert(resp.msg);
+                    }
+                    if(isimgverify){
+                        $(".rvalicode-cont").show();
+                    }else{
+                        $(".rvalicode-cont").hide();
+                    }
+                }
+            }
+        });
+        $("#submit").removeAttr("disabled");
+    }
+    return false;
+}
+
+
+//车商员工登录
+function doDealerLoginPost(){
+    var mobile = $("#username").val();
+    var password = $("#password").val();
+    var imgverify = $.trim($("#rvalicode").val());
+
+    if (mobile == "") {
+        ui_alert("请输入手机号!");
+    }else if (!validatePhoneNumber(mobile)) {
+        ui_alert("请输入正确的手机号!");
+    }else if (password == "") {
+        ui_alert("请输入密码!");
+    }else if (!validateDealerPassword(password)) {
+        ui_alert("密码格式错误!");
+    }else if (isimgverify && imgverify == "") {
+        ui_alert("请输入图形验证码!");
+    }else{
+        var param = {
+            "mobile": mobile,
+            "password": password,
+            "imgVerify": imgverify
+        };
+        $("#login").attr("disabled", "disabled");
+        ajax_jquery({
+            url: apiUrl +'/api/user/login?t='+Math.random(),
+            data:param,
+            success:function(resp){
+                if (resp.code == "1" ) {
+                        window.location.href = "/mobile";
+                } else {
+                    if (typeof(resp.msg) == 'string') {
+                        ui_alert(resp.msg);
+                        if(resp.code == "-2"){
+                            isimgverify = 1;
+                            doRefreshVerfiy();
+                            $(".rvalicode-cont").show();
+                        }else {
+                            isimgverify = 0;
+                            $(".rvalicode-cont").hide();
+                        }
+                    }                 
+                }
+            }
+        });
+        $("#login").removeAttr("disabled");
+    }
+    return false;
+}
+//短信验证码
+function sendSmsVerify() {
+    var mobile = $.trim($('#mobile').val());
+    var imgverify = $.trim($("#rvalicode").val());
+
+    if (mobile == "") {
+        ui_alert("请输入手机号!");
+    } else if (!validatePhoneNumber(mobile)) {
+        ui_alert("请输入正确的手机号!");
+    } else if (isimgverify && imgverify == "") {
+        ui_alert("请输入图形验证码");
+    } else {
+        var param = {
+            "mobile": mobile,
+            "imgverify": imgverify
+        };
+        ajax_jquery({
+            url: apiUrl + '/api/user/sendSmsVerify?t=' + Math.random(),
+            data: param,
+            success: function (resp) {
+                if (resp.code == "1") {
+                    settime();
+                } else {
+                    doRefreshVerfiy();
+                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+                        ajaxAlertMsg(resp);
+                    } else {
+                        ui_alert("发送验证码失败");
+                    }
+                }
+                if(typeof(resp.data) == "object" && resp.data.needImgVerify == 1){
+                    isimgverify = 1;
+                }else {
+                    isimgverify = 0;
+                }
+            }
+        });
+    }
+    //return false;
+}
+
+
+

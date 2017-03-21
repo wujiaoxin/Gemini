@@ -1,3 +1,4 @@
+var apiUrl = "http://test.vpdai.com"
 var myApp = new Framework7({
     modalButtonCancel: "取消",
     modalButtonOk: "确认"
@@ -120,12 +121,18 @@ function ajax_jquery(options) {
         return;
     } else {
     }
+    var sid =localStorage.getItem('sid');
+    if(typeof(sid) == "object"){
+        sid = 0;
+    }
     var options_default = {
         url: '/mobile/index',
         type: 'POST',
         dataType: 'json',
         beforeSend: ajaxLoading(),
-        data: new Object(),
+        data: {
+            sid: sid
+        },
         success: _ajax_success,
         error: _ajax_error,
         complete: function (data) {
@@ -271,6 +278,25 @@ function validatePhoneNumber(mobile) {
 //验证密码
 function validatePassword(pass) {
     if (pass.length < 6 || pass.length > 10 || pass.match(/[^a-zA-Z0-9]+/)) {
+        return false;
+    }
+    var ls = 0;
+    if (pass.match(/(([a-z])|([A-Z]))+/)) {
+        ls++;
+    }
+    if (pass.match(/([0-9])+/)) {
+        ls++;
+    }
+    if (ls < 2) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+//车商验证密码
+function validateDealerPassword(pass) {
+    if (pass.length < 8 || pass.length > 16 || pass.match(/[^a-zA-Z0-9]+/)) {
         return false;
     }
     var ls = 0;

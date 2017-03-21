@@ -86,7 +86,7 @@
     <script type="text/javascript" src="/Public/wap/js/order.js"></script>
     <script type="text/javascript">    
         $(function(){
-            $("#submit").click(function(){       
+            $("#submit").click(function(){     
                 var carPrice = $('#carPrice').val();
                 var mobile = $('#mobile').val();
                 
@@ -101,22 +101,37 @@
                     return;
                 }
                 ajax_jquery({
-                    type: 'post',
-                    url: '',
-                    datatype:'json',
+                    url: apiUrl + '/api/order/add',
                     data: {
-						'carPrice':carPrice,
-                        'mobile':mobile
+                        'type': 1,
+						'price': carPrice,
+                        'mobile': mobile
                     },
-                    success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
-                        if(data.code == 1){
-                            ui_alert("订单创建成功<br>等待客户信息录入!", function () {
-                                  $(".QRCodeImg").attr('src','');          
-                             })
+                    success: function(resp) { 
+                        if(resp.code == 1){
+                            ui_alert("订单创建成功!<br>请扫码进行客户授信");
+                            var id = resp.data.id;
                         }else{
-                            if (typeof(data.msg) == 'string') {
-                                ui_alert(data.msg);
+                            if (typeof(resp.msg) == 'string') {
+                                ui_alert(resp.msg);
                             }  
+                        }
+                        if(id){
+                            ajax_jquery({
+                                url: apiUrl + '/api/order/getQRCode',
+                                data: {
+                                    'id':id 
+                                },
+                                success: function(resp) { 
+                                    if(resp.code == 1){
+                                        $(".QRCodeImg").attr('src',resp.data.url); 
+                                    }else{
+                                        if (typeof(resp.msg) == 'string') {
+                                            ui_alert(resp.msg);
+                                        }  
+                                    }
+                                }
+                            }); 
                         }
                     }
                 }); 

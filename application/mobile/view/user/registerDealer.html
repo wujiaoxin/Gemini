@@ -10,7 +10,7 @@
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all">
 </head>
 <body>
     
@@ -24,78 +24,65 @@
                         </a>
                     </div>
                     <div class="center">用户注册</div>
-                    <div class="right">
-                        <a href="#" class="link icon-only">
-                        </a>
-                    </div>
                 </div>
             </div>
             <div class="pages navbar-through">
-                <div data-page="Password" class="page">
-                    <div class="page-content jobPage">
-                        <form id="register" class="list-block mt10" method="post" onsubmit="return doRegisterPost();">
-                            <ul class="clearfix">
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner register-inner">
-                                            <div class="item-title label">手机号</div>
-                                            <div class="item-input">
-                                                <input type="tel" id="username" name="username" placeholder="请输入手机号" onkeyup='this.value=this.value.replace(/\D/gi,"")' maxlength="11">
-                                            </div>
+                <div class="page">
+                    <div class="page-content">
+                        <form  class="list-block mt15">
+                            <ul>
+                                <li class="item-content">
+                                    <div class="item-inner register-inner">
+                                        <div class="item-title label">手机号</div>
+                                        <div class="item-input">
+                                            <input type="tel" id="mobile" name="mobile" placeholder="请输入手机号" onkeyup='this.value=this.value.replace(/\D/gi,"")' maxlength="11">
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner register-inner">
-                                            <div class="item-title label">车商编码</div>
-                                            <div class="item-input">
-                                                <input type="text" id="invite_code" name="invite_code" value="" maxlength="6"  placeholder="请输入渠道代码" data-skip="0">
-                                            </div>
+                                <li class="item-content">
+                                    <div class="item-inner register-inner">
+                                        <div class="item-title label">车商授权码</div>
+                                        <div class="item-input">
+                                            <input type="text" id="authcode" name="authcode" value="" maxlength="6"  placeholder="请输入授权码" data-skip="0">
                                         </div>
                                     </div>
                                 </li>
-                                <li class="rvalicode-cont" style="display: none">
-                                    <div class="item-content">
-                                        <div class="item-inner register-inner">
-                                            <div class="item-title label">图形验证码</div>
-                                            <div class="item-input rel">
-                                                <input type="text" id="rvalicode" name="rvalicode" maxlength="4" placeholder="图形验证码" value="0000">
-                                                <a href="javascript:;" class="auth-Code">
-                                                    <img src="{:url('mobile/open/verify')}"  name="verify" id="verify" height="100%"  onclick="doRefreshVerfiy()"/> 
-                                                </a>
-                                            </div>
+                                <li class="item-content">
+                                    <div class="item-inner register-inner">
+                                        <div class="item-title label">密码</div>
+                                        <div class="item-input">
+                                            <input type="password" id="password" name="password" maxlength="16" autocomplete="off"
+                                                   placeholder="8-16位英文数字组合">
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner register-inner">
-                                            <div class="item-title label">密码</div>
-                                            <div class="item-input">
-                                                <input type="password" id="password" name="password" maxlength="10" autocomplete="off"
-                                                       placeholder="6-10位英文数字组合">
-                                            </div>
+                                <li class="item-content rvalicode-cont" style="display: none;">
+                                    <div class="item-inner register-inner">
+                                        <div class="item-title label">图形验证码</div>
+                                        <div class="item-input">
+                                            <input type="text" id="rvalicode" name="rvalicode" maxlength="4" placeholder="图形验证码" value="">
+                                            <a href="javascript:;" class="auth-Code">
+                                                <img src="{:url('mobile/open/verify')}"  name="verify" id="verify" onclick="doRefreshVerfiy()"/> 
+                                            </a>
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner register-inner">
-                                            <div class="item-title label">短信验证码</div>
-                                            <div class="item-input">
-                                                <input type="tel" id="smsCode" maxlength="6" placeholder="请输入短信验证码"/>
-                                                <input id="getSmsCode" class="getcode dpblue" type="button" onclick="sendRegSmsCode('sms')" value="发送验证码">
-                                            </div>
+                                <li class="item-content">
+                                    <div class="item-inner register-inner">
+                                        <div class="item-title label">短信验证码</div>
+                                        <div class="item-input rel">
+                                            <input type="tel" id="smsCode" maxlength="6" placeholder="请输入短信验证码"/>
+                                            <a id="getSmsCode" class="getcode" onclick="sendSmsVerify()">发送验证码</a>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
-                            <div class="content-block">
-                                <button type="submit" id="submit" class="button button-big button-fill dpblue" style="width:100%">注册</button>
+                            <div class="content-block m-bottom-button">
+                                <a id="submit" class="button button-fill button-big color-orange" onclick="return doDealerRegisterPost();">注册</a>
+                                <a class="button button-big color-orange mt15" href="javascript:goToUrl('{:url('mobile/user/loginDealer')}');">我已有账号，直接登录</a>
                             </div>
                             <div class="content-block">
-                                <a class="button button-big wb color-orange" href="javascript:goToUrl('{:url('mobile/user/login')}');">我已有账号，直接登录</a>
+                                
                             </div>
                         </form>
                     </div>
@@ -115,17 +102,21 @@
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>    
     <script type="text/javascript" src="/public/wap/js/md5.js"></script>
     <script type="text/javascript" src="/public/wap/js/user.js"></script>
-	<script>
-	$(function(){
-		var invite_code = getUrlParam('invite_code');
-		if(invite_code != null){
-			$("#invite_code").val(invite_code).attr("disabled","true");
-		}
-	});
-	
-	</script>
-
-	
-	
+    <script type="text/javascript">
+        ajax_jquery({
+            url: apiUrl + '/api/session/create',
+            data: {
+                'client':'wechat' 
+            },
+            success: function(resp) { 
+                if(resp.code == 1){
+                    localStorage.setItem('sid', resp.data.sid);
+                }else{
+                    if (typeof(resp.msg) == 'string') {
+                        ui_alert(resp.msg);
+                    }  
+                }
+            }
+        }); 
 </body>
 </html>

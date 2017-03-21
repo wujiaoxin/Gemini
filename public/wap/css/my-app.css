@@ -634,4 +634,7 @@ input[type="number"]{-moz-appearance:textfield !important;}
 .toolbar-inner-active {
     border-bottom: 4px solid #FFAD33;
 }
+.bottom-button {
+    margin: 300px auto 0;
+}
 

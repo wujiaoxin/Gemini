@@ -13,26 +13,6 @@
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">  
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.gemini.css"> 
-    <script type="text/javascript">
-        var orderData = {};  
-
-        var keyList = [
-            {
-                form_key:"carloan_loaner_1",
-                form_label:"身份证正面照"
-            },
-            {
-                form_key:"carloan_loaner_2",
-                form_label:"身份证反面照"
-            }];
-        var picList = [];
-        for(var i=0 ; i<keyList.length;i++){            
-            if(typeof(orderData[keyList[i].form_key]) == "object" ){
-                picList.push(orderData[keyList[i].form_key]);
-                keyList[i].has = 1;
-            }
-        }
-    </script>
     <style type="text/css">
         .stepShow {
             margin: 20px auto 15px;
@@ -103,6 +83,9 @@
             vertical-align: -webkit-baseline-middle;
             color: #ff9900;
         } 
+        .popover-forgetSP {
+            width: 300px;
+        }
 
         .list-block {
             margin: 0;
@@ -136,11 +119,11 @@
                                 </div>
                                 <div class="stepContent">
                                     <div class="num_circle">2</div>
-                                    <p>手机授权</p>
+                                    <p>证件录入</p>
                                 </div>
                                 <div class="stepContent">
                                     <div class="num_circle">3</div>
-                                    <p>证件录入</p>
+                                    <p>手机授权</p>
                                 </div>
                             </div>
                             <div class="step-progress">
@@ -189,50 +172,8 @@
                             </ul>
                         </div>
                         <div class="step-info-block list-block" id="step2" style="display: none;">
-                        <!-- <div class="step-info-block list-block" id="step2" style="visibility: visible;"> -->
-                            <!-- <div class="step-info-title">温馨提示：请添加相同姓名且常用的手机号~</div> -->
-                            <ul class="clearfix">
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner mr15">
-                                            <div class="item-title label">手机号</div>
-                                            <div class="item-input">
-                                                <input type="tel" id="mobileStep2" maxlength="11" value="134****2332" disabled="disabled">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner mr15">
-                                            <div class="item-title label">服务密码</div>
-                                            <div class="item-input">
-                                                <input type="number" id="servicePwd" maxlength="6" placeholder="请输入服务密码"/>
-                                                <a id="forgetSP" type="button" class="getcode">
-                                                    <span class="questionmark">
-                                                        <img src="/public/wap/images/questionmark.png">
-                                                        <span>忘记密码</span>
-                                                    </span>                 
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="step-info-block list-block" id="step3" style="display: none;">
-                        <!-- <div class="step-info-block list-block" id="step3" style="visibility: visible;"> -->
-                            <!-- <div class="form-group loanerInfo">
-                                <div class="uploaderwrap">
-                                    <div class="uploader_title">
-                                        <div class="step-info-title">请上传借款人资料照片</div>
-                                    </div>
-                                    <div id="uploadpic"></div>   
-                                </div>
-                            </div>  -->
                             <div class="form-group loanerInfo">
                                     <div class="list-block">
-                                       <!--  <div class="list-block-label mb10">请填写后续信息<br>可点击<span class="color-orange">身份证正面照</span>进行自动识别</div> -->
                                         <ul>
                                             <li>
                                                 <div class="item-content">
@@ -268,10 +209,40 @@
                                     </div>
                                 </div>
                         </div>
+                        <div class="step-info-block list-block" id="step3" style="display: none;">
+                            <ul class="clearfix">
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner mr15">
+                                            <div class="item-title label">手机号</div>
+                                            <div class="item-input">
+                                                <input type="tel" id="mobileStep2" maxlength="11" value="134****2332" disabled="disabled">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner mr15">
+                                            <div class="item-title label">服务密码</div>
+                                            <div class="item-input">
+                                                <input type="number" id="servicePwd" maxlength="6" placeholder="请输入服务密码"/>
+                                                <a id="forgetSP" type="button" class="getcode">
+                                                    <span class="questionmark">
+                                                        <img src="/public/wap/images/questionmark.png">
+                                                        <span>忘记密码</span>
+                                                    </span>                 
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                         <div class="content-block">
                             <div class="protocol">
                                 <label>
-                                    <input type="checkbox" name="protocol">同意<a href="/mobile/open/protocol">《VP贷用户服务协议》</a>
+                                    <input type="checkbox" name="protocol">同意<a href="/mobile/open/protocol" disabled="disabled">《VP贷用户服务协议》</a>
                                 </label>
                             </div>
                             <button type="submit" id="submit" class="button button-big button-fill dpblue" style="width:100%" disabled="disabled">下一步</button>
@@ -301,8 +272,8 @@
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/user.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
-    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.0.16.min.js"></script>
-    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script>
+<!--     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.0.16.min.js"></script>
+    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script> -->
     <script type="text/javascript" src="/Public/wap/js/order.js"></script>
     <script type="text/javascript">
         var step = 1;// getUrlParam("step");
@@ -341,16 +312,13 @@
                 stepbarShow('3','100%');
                 $("#submit").text("提交");
                 $(".protocol").hide();
-                $("#uploadpic").GeminiUploader(keyList,picList,{
-                    formData: {fileType:"image",order_id:orderData.id},
-                }); 
+                // $("#uploadpic").GeminiUploader(keyList,picList,{
+                //     formData: {fileType:"image",order_id:orderData.id},
+                // }); 
 
             }           
         };
          goStep(1);
-        // setTimeout(function () {
-        //      goStep(1);
-        // }, 500);//wait geminiuploader init TODO:fixed this bug
 		$(".protocol").on('click','label',function(){
                 var isChecked = $('input[name="protocol"]').prop('checked');
                     $("#submit").attr("disabled",!isChecked);
@@ -359,81 +327,42 @@
                 var clickedLink = this;
                 myApp.popover('.popover-forgetSP', clickedLink);
             })
-        $("#uploadpic").on("click","img",function(ev){
-            var idcard = $(this).attr("data-id");
-            if( idcard != undefined ){
-                tryOCR(idcard,'idcard_face');
-            }
-            else{
-                ui_alert('请先上传照片');
-            }
-        });
-
-
 
         $(function(){
             $("#submit").on('click',function(){
-                var mobile = $("#mobile").val();
-                var smsCode = $("#smsCode").val();
-                var servicePwd = $("#servicePwd").val();
-                var idcard_name = $('#idcard_name').val();
-                var idcard_num = $('#idcard_num').val().toUpperCase();
-                var bankcard_num = $('#bankcard_num').val();
                 if(step == 1){
-                    // if(mobile == ""){
-                    //     ui_alert("请输入手机号");
-                    //     return;
-                    // }else if(!validatePhoneNumber(mobile)){
-                    //     ui_alert("请输入正确的手机号");
-                    //     return;
-                    // }else if (smsCode == "") {
-                    //     ui_alert("请输入手机验证码");
-                    //     return;
-                    // }
-                    // ajax_jquery({
-                    //     url: '',
-                    //     data: {
-                    //         'mobile': mobile,
-                    //         'smsCode': smsCode
-                    //     },
-                    //     success: function(data) {
-                    //         if(data.code == 1){
-                    //             ui_alert("提交成功!", function () {
-                                   goStep(2);            
-                    //              });
-                    //         }else{
-                    //             if (typeof(data.msg) == 'string') {
-                    //                 ui_alert(data.msg);
-                    //             }
-                    //         }
-                    //     }
-                    // });   
+                    var mobile = $("#mobile").val();
+                    var smsCode = $("#smsCode").val();
+                    if(mobile == ""){
+                        ui_alert("请输入手机号");
+                        return;
+                    }else if(!validatePhoneNumber(mobile)){
+                        ui_alert("请输入正确的手机号");
+                        return;
+                    }else if (smsCode == "") {
+                        ui_alert("请输入手机验证码");
+                        return;
+                    }
+                    ajax_jquery({
+                        url: '',
+                        data: {
+                            'mobile': mobile,
+                            'smsCode': smsCode
+                        },
+                        success: function(data) {
+                            if(data.code == 1){
+                                goStep(2);            
+                            }else{
+                                if (typeof(data.msg) == 'string') {
+                                    ui_alert(data.msg);
+                                }
+                            }
+                        }
+                    });   
                 }else if(step == 2){
-                    // if(servicePwd == ""){
-                    //     ui_alert("请输入服务密码");
-                    //     return;
-                    // }else if(!validateServicePwd(servicePwd)){
-                    //     ui_alert("请输入正确的服务密码");
-                    //     return;
-                    // }
-                    // ajax_jquery({
-                    //     url: '',
-                    //     data: {
-                    //         'servicePwd': servicePwd
-                    //     },
-                    //     success: function(data) {
-                    //         if(data.code == 1){
-                    //             ui_alert("提交成功!", function () {
-                            goStep(3);          
-                    //              });
-                    //         }else{
-                    //             if (typeof(data.msg) == 'string') {
-                    //                 ui_alert(data.msg);
-                    //             }
-                    //         }
-                    //     }
-                    // });   
-                }else if(step == 3){
+                    var idcard_name = $('#idcard_name').val();
+                    var idcard_num = $('#idcard_num').val().toUpperCase();
+                    var bankcard_num = $('#bankcard_num').val();
                     // if( $('#uploadpic  .fileList img[data-id]').length < keyList.length) {
                     //     ui_alert("照片不全，请补充上传");
                     //     return;
@@ -465,7 +394,7 @@
                         success: function(data) {
                             if(data.code == 1){
                                 ui_alert("提交成功!", function () {
-                                    window.location.href = '/mobile' ;            
+                                     goStep(3);             
                                  });
                             }else{
                                 if (typeof(data.msg) == 'string') {
@@ -474,6 +403,32 @@
                             }
                         }
                     });           
+                }else if(step == 3){
+                    var servicePwd = $("#servicePwd").val();   
+                    if(servicePwd == ""){
+                        ui_alert("请输入服务密码");
+                        return;
+                    }else if(!validateServicePwd(servicePwd)){
+                        ui_alert("请输入正确的服务密码");
+                        return;
+                    }
+                    ajax_jquery({
+                        url: '',
+                        data: {
+                            'servicePwd': servicePwd
+                        },
+                        success: function(data) {
+                            if(data.code == 1){
+                                ui_alert("提交成功!", function () {
+                                    window.location.href = '/mobile' ;        
+                                 });
+                            }else{
+                                if (typeof(data.msg) == 'string') {
+                                    ui_alert(data.msg);
+                                }
+                            }
+                        }
+                    });   
                 }
             });
         });
