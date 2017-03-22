@@ -10,9 +10,9 @@
     <meta http-equiv="pragma" content="no-cache">
     <title>VP贷-享全款的汽车分期</title>
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.css">
-    <link rel="stylesheet" href="/Public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/Public/wap/css/my-app.css" media="all">   
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all">   
 </head>
 <body>
     
@@ -26,79 +26,67 @@
                         </a>
                     </div>
                     <div class="center">找回密码</div>
-                    <div class="right">
-                        <a href="#" class="link icon-only"> 
-                        </a>
-                    </div>
                 </div>
             </div>
             <div class="pages navbar-through">
-                <div data-page="Password" class="page">
-                    <div class="page-content jobPage">
-                        <form  class="list-block mt10" method="post" onsubmit="return doResetPasswordPost();">
-                            <ul class="clearfix">
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner register-inner">
-                                            <div class="item-input">
-                                                <input type="tel" id="username" name="username" value="" placeholder="输入手机号"  onkeyup='this.value=this.value.replace(/\D/gi,"")'  maxlength="11">
-                                            </div>
+                <div class="page">
+                    <div class="page-content">
+                        <form  class="list-block mt10">
+                            <ul>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">账号</div>
+                                        <div class="item-input">
+                                            <input type="tel" id="username" name="username" value="" placeholder="请输入手机号"  onkeyup='this.value=this.value.replace(/\D/gi,"")'  maxlength="11">
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner register-inner">
-                                            <div class="item-input rel">
-                                                <input type="text" id="rvalicode" name="rvalicode" maxlength="4" placeholder="输入图形验证码">
-                                                <a href="javascript:;" class="auth-Code">
-													<img src="{:url('mobile/open/verify')}"  name="verify" id="verify" height="100%"  onclick="doRefreshVerfiy()"/> 
-                                                </a>
-                                            </div>
+                                <li class="item-content rvalicode-cont" style="display: none;">
+                                    <div class="item-inner">
+                                        <div class="item-title label">图形验证码</div>
+                                        <div class="item-input">
+                                            <input type="text" id="rvalicode" name="rvalicode" maxlength="4" placeholder="输入图形验证码">
+                                            <a href="javascript:;" class="auth-Code">
+												<img src="{:url('mobile/open/verify')}"  name="verify" id="verify" height="100%"  onclick="doRefreshVerfiy()"/> 
+                                            </a>
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner register-inner">
-                                            <div class="item-input rel">
-                                                <input type="tel" id="smsCode" maxlength="6" placeholder="输入验证码">
-                                                <a class="get-code" id="getSmsCode" onclick="sendRestPasswordSmsCode('sms')" href="javascript:void(0);">发送验证码</a>
-                                            </div>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">短信验证码</div>
+                                        <div class="item-input rel">
+                                            <input type="tel" id="smsVerify" maxlength="6" placeholder="输入验证码">
+                                            <a id="getSmsCode" class="getcode" onclick="sendSmsVerify()" href="javascript:void(0);">发送验证码</a>
                                         </div>
                                     </div>
                                 </li>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">新密码</div>
+                                        <div class="item-input">
+                                            <input type="password" id="password" name="password" maxlength="16" autocomplete="off"
+                                                   placeholder="输入新密码（8-16位英文数字组合）">
+                                        </div>
+                                    </div>
+                                </li>
+                               <!--  <li class="item-content" style="display: none;">
+                                    <div class="item-inner">
+                                        <div class="item-title label">身份验证</div>
+                                        <div class="item-input">
+                                             <input type="text" id="idcard" name="idcard" maxlength="4" value='1234'
+                                                   placeholder="请输入本人身份证号后4位">
+                                            <input type="hidden" class="is_realname" value="0">                                                 
+                                        </div>
+                                    </div>
+                                </li> -->
                             </ul>
-                            <div class="borrow-det-item tr">
+                            <!-- <div class="borrow-det-item tr">
                                 <a class="blue-bg fz6 pr15" onclick="sendRestPasswordSmsCode('voice')" href="javascript:void(0);">收不到验证码?</a>
-                            </div>
-                            <ul class="clearfix none-box" style="margin-bottom:10px; display:none;">
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner">
-                                            <div class="item-input">
-												 <input type="text" id="idcard" name="idcard" maxlength="4" value='1234'
-                                                       placeholder="请输入本人身份证号后4位">
-													<input type="hidden" class="is_realname" value="0">                                            		
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <ul class="clearfix">
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner">
-                                            <div class="item-input">
-                                                <input type="password" id="password" name="password" maxlength="10" autocomplete="off"
-                                                       placeholder="输入新密码（6-10位英文数字组合）">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="content-block">
-                                <button type="submit" id="submit" class="button button-big button-fill dpblue" style="width:100%">提交</button>
+                            </div> -->
+
+                            <div class="content-block m-bottom-button">
+                                <a id="submit" class="button button-big button-fill color-orange" onclick="return doResetDealerPassword();">提交</a>
                             </div>
                         </form>
                     </div>
@@ -111,7 +99,7 @@
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>    
-    <script src="/Public/wap/js/md5.js"></script>
-    <script src="/Public/wap/js/user.js"></script>
+    <script type="text/javascript" src="/public/wap/js/md5.js"></script>
+    <script type="text/javascript" src="/public/wap/js/user.js"></script>
 </body>
 </html>

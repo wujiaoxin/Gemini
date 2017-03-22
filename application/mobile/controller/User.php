@@ -238,6 +238,16 @@ TODO:check idcard if needed;
 		//$this->assign($user);		
 		return $this->fetch();
 	}
+	// 车商员工重置密码
+	public function resetDealer() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
+	// 车商员工修改密码
+	public function editpwdDealer() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
 	//车商员工个人中心
 	public function personalCenter() {
 		//$this->assign($user);		

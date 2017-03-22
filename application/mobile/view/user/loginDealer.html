@@ -82,6 +82,22 @@
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>    
     <script type="text/javascript" src="/public/wap/js/md5.js"></script>
     <script type="text/javascript" src="/public/wap/js/user.js?v=1"></script>
+    <script type="text/javascript">
+        ajax_jquery({
+            url: apiUrl + '/api/session/create',
+            data: {
+                'client':'wechat' 
+            },
+            success: function(resp) { 
+                if(resp.code == 1){
+                    localStorage.setItem('sid', resp.data.sid);
+                }else{
+                    if (typeof(resp.msg) == 'string') {
+                        ui_alert(resp.msg);
+                    }  
+                }
+            }
+        }); 
     </script>
 </body>
 </html>

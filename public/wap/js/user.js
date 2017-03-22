@@ -324,9 +324,9 @@ function sendSmsCode(send_code, type) {
 var isimgverify = 0;
 //车商员工
 function doDealerRegisterPost() {
-    var mobile = $.trim($('#mobile').val());
+    var mobile = $.trim($('#username').val());
     var authcode = $.trim($('#authcode').val());
-    var smsCode = $.trim($("#smsCode").val());
+    var smsverify = $.trim($("#smsVerify").val());
     var password = $("#password").val();
     
     if (mobile == "") {
@@ -344,7 +344,7 @@ function doDealerRegisterPost() {
     } else {
         var param = {
             "mobile": mobile,
-            "smsCode": smsCode,
+            "smsverify": smsverify,
             "password": password,
             "authcode": authcode
         };
@@ -406,7 +406,8 @@ function doDealerLoginPost(){
             data:param,
             success:function(resp){
                 if (resp.code == "1" ) {
-                        window.location.href = "/mobile";
+                    localStorage.setItem('token',token);
+                    window.location.href = "/mobile/index/indexDealer";
                 } else {
                     if (typeof(resp.msg) == 'string') {
                         ui_alert(resp.msg);
@@ -426,9 +427,96 @@ function doDealerLoginPost(){
     }
     return false;
 }
+
+//车商重置密码
+function doResetDealerPassword() {
+    var mobile = $.trim($('#username').val());
+    var smsverify = $.trim($("#smsVerify").val());
+    var newPassword = $("#password").val();
+    var idcard  = $("#idcard").val();
+    // var is_realname = $(".is_realname").val();
+    if (mobile == "") {
+        ui_alert("请输入手机号!");
+    } else if (!validatePhoneNumber(mobile)) {
+        ui_alert("请输入正确的手机号!");
+    } else if (smsverify == "") {
+        ui_alert("请输入手机验证码");
+    } else if (newPassword == "") {
+        ui_alert("请输入新密码");
+    } else if (!validateDealerPassword(newPassword)) {
+        ui_alert("请输入8-16位英文数字组合的密码");
+    } else {
+        var param = {
+            "mobile": mobile,
+            "smsverify": smsverify,
+            "newPassword": newPassword
+        };
+        $("#submit").attr("disabled", "disabled");
+        ajax_jquery({
+            url: apiUrl + '/api/user/resetPassword?t=' + Math.random(),
+            data: param,
+            success: function (resp) {
+                if (resp.code == "1") {
+                    ui_alert("修改成功", function () {
+                        window.location.href = '/mobile/user/loginDealer';
+                    });
+                } else {
+                    if (typeof(resp.msg) == 'string') {
+                        ui_alert(resp.msg);
+                    }
+                }
+            }
+        });
+        $("#submit").removeAttr("disabled");
+    }
+    return false;
+}
+
+//车商员工修改密码
+function doEditpwdDealer() {
+    var token =localStorage.getItem("token");
+    var oldPasswd = $("#old-password").val();
+    var newPasswd = $("#new-password").val();
+    var confirm_password = $("#confirm-password").val();
+    if (oldPasswd == "") {
+        ui_alert("请输入旧密码!");
+    }else if(newPasswd == ""){
+        ui_alert("请输入新密码!");
+    }else if(!validateDealerPassword(newPasswd)){
+        ui_alert("请输入8-16位英文数字组合的密码!");
+    }else if(confirm_password == ""){
+        ui_alert("请输入确认密码!");
+    }else if (newPasswd != confirm_password) {
+        ui_alert("两次密码输入不一致");
+    }else{
+        var param = {
+            "token": token,
+            "oldpassword": oldPasswd,
+            "password": newPasswd
+        };
+        $("#editpwd").attr("disabled", "disabled");
+        ajax_jquery({
+            url: apiUrl + '/api/user/editPassword?t=' + Math.random(),
+            data: param,
+            success: function (resp) {
+               if (resp.code == "1") {
+                    ui_alert("修改成功", function () {
+                        window.location.href = '/mobile/user/loginDealer';
+                    });
+                } else {
+                    if (typeof(resp.msg) == 'string') {
+                        ui_alert(resp.msg);
+                    }
+                }
+            }
+        });
+        $("#editpwd").removeAttr("disabled");
+    }
+    return false;
+}
 //短信验证码
 function sendSmsVerify() {
-    var mobile = $.trim($('#mobile').val());
+    var mobile = $.trim($('#username').val());
     var imgverify = $.trim($("#rvalicode").val());
 
     if (mobile == "") {
@@ -449,17 +537,19 @@ function sendSmsVerify() {
                 if (resp.code == "1") {
                     settime();
                 } else {
-                    doRefreshVerfiy();
+                    if(resp.code == "-2" || resp.code == "1001"){
+                        isimgverify = 1;
+                        $(".rvalicode-cont").show();
+                    }else {
+                        isimgverify = 0;
+                        $(".rvalicode-cont").hide();
+                    }
                     if (typeof(resp.msg) == 'string' && resp.msg != '') {
                         ajaxAlertMsg(resp);
                     } else {
                         ui_alert("发送验证码失败");
                     }
-                }
-                if(typeof(resp.data) == "object" && resp.data.needImgVerify == 1){
-                    isimgverify = 1;
-                }else {
-                    isimgverify = 0;
+                    doRefreshVerfiy();
                 }
             }
         });
