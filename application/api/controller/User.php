@@ -21,7 +21,15 @@ class User extends Api {
 		}
 		if (!$password) {
 			return ['code'=>1003,'msg'=>'密码不能为空'];
-		}		
+		}
+		
+		$storeSmsCode = session('smsCode');
+		$storeMobile = session('mobile');
+		
+		if($mobile != $storeMobile || $smsverify == $storeSmsCode){
+			return ['code'=>1005,'msg'=>'短信验证码错误'];
+		}
+		
 		$uid = $model->registerByMobile($mobile, $password, $password, false);
 		if (0 < $uid) {
 			$userinfo = array('nickname' => $mobile, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
@@ -150,6 +158,7 @@ class User extends Api {
 		//if(1){
 		if(sendSms($mobile,$smsMsg)){
 			session('smsCode',$smsCode);
+			session('mobile',$mobile);
 			session('needImgVerify', 0);
 			session('lastSmsSendTime',time());
 			$resp["code"] = 1;
