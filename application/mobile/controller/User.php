@@ -233,8 +233,25 @@ TODO:check idcard if needed;
 		//$this->assign($user);		
 		return $this->fetch();
 	}
+
+	// 车商员工密码修改页
+	public function resetDealer() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
+
 	// 车商员工登录页
 	public function loginDealer() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
+	// 车商员工重置密码
+	public function resetDealer() {
+		//$this->assign($user);		
+		return $this->fetch();
+	}
+	// 车商员工修改密码
+	public function editpwdDealer() {
 		//$this->assign($user);		
 		return $this->fetch();
 	}

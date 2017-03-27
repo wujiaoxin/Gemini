@@ -9,10 +9,10 @@
     <title>VP贷-享全款的汽车分期</title>
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
-    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">  
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css"> 
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.gemini.css"> 
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all"> 
     <script type="text/javascript">
         var BASE_URL = ""; 
 
@@ -62,19 +62,6 @@
         }
     </script>  
     <style type="text/css">
-        .order-item {
-            height: 38px;
-            line-height: 38px;
-            font-size: 14px;
-        }
-        .order-idcardNum {
-            letter-spacing: 0px;
-        }
-        #order-amount {
-            padding-left: 0;
-            border-top: 1px solid #dedede;
-            border-bottom: 1px solid #dedede;
-        }
         .pic-cont-block {
             display: flex;
             justify-content: space-around;
@@ -95,26 +82,92 @@
             vertical-align: middle;
         }
     
+
+        .step-block {
+            height: 70px;
+            overflow: hidden;
+        }
+        .stepShow {
+            text-align: center;
+            position: relative;
+            height: 80px;
+            overflow: auto;
+            overflow-y: hidden;
+            }
+        .step-wrap {
+            width: 150%;
+            height: 80px;
+        }
+
+        .stepContent {
+           width: 25%;
+           display: inline-block;
+           z-index: 2;
+        }
+        .num_circle {
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-size: 14px;
+            border: 5px solid rgba(255,153,0,0.4);
+            border-radius: 50%;
+            color: rgba(255,153,0,0.4);
+            background: #ffffff;
+            z-index: 2;
+        }
+        .step-progress {
+            width: 150%;
+            height: 4px;
+            position: absolute;
+            z-index: 1;
+            top: 32px;
+        }
+        .step-progress-bar {
+            width: 75%;
+            height: 100%;
+            margin:0 10%;
+            background: rgba(255,153,0,0.4);
+        }
+        .step-progress-highlight {
+            background: #ff9900;
+            display: block;
+            width: 0%;
+            height: 100%;
+            transition-duration: 5s;
+            -moz-transition-duration: 5s; /* Firefox 4 */
+            -webkit-transition-duration: 5s; /* Safari 和 Chrome */
+            -o-transition-duration: 5s; 
+        }
+        .active {
+            border: 5px solid rgba(255,153,0,1);
+            color: rgba(255,153,0,1);
+            transition-duration: 5s;
+            -moz-transition-duration: 5s; /* Firefox 4 */
+            -webkit-transition-duration: 5s; /* Safari 和 Chrome */
+            -o-transition-duration: 5s; 
+        }
+
     </style>
 </head>
 <body>   
     <div class="views">
         <div class="view view-main">
-            <div class="navbar wb">
+            <div class="navbar">
                 <div class="navbar-inner">
                     <div class="left">
                         <a href="javascript:history.go(-1)" class="link icon-only back">
                             <i class="icon icon-back color-orange"></i>
                         </a>
                     </div>
-                    <div class="center" id="navbar_title">订单资料提交</div>
+                    <div class="center">订单资料提交</div>
                     <div class="right"></div>
                 </div>
             </div>
             <div class="pages navbar-through">
                 <div class="page">                     
                     <div class="page-content">
-                        <div class="list-block">
+                        <div class="list-block mt10">
                             <ul>
                                 <li class="accordion-item accordion-item-expanded">
                                     <a href="#" class="item-content item-link">
@@ -128,19 +181,19 @@
                                                 <li class="order-item">
                                                     <div class="order-info-type">
                                                         <span>订单业务</span>
-                                                        <span class="right order-type">新车垫资</span>
+                                                        <span class="pull-right order-type">新车垫资</span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-amount">
                                                         <span>借贷金额</span>
-                                                        <span class="right order-amount">20,000元</span>
+                                                        <span class="pull-right order-amount">20,000元</span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-date">
                                                         <span>申请时间</span>
-                                                        <span class="right order-date">2017:03:08</span>
+                                                        <span class="pull-right order-date">2017:03:08</span>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -159,34 +212,55 @@
                                                 <li class="order-item">
                                                     <div class="order-info-loaner">
                                                         <span>客户姓名</span>
-                                                        <span class="right order-loaner">李博</span>
+                                                        <span class="pull-right order-loaner">李博</span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-mobile">
                                                         <span>手机号</span>
-                                                        <span class="right order-mobile">13432456789</span>
+                                                        <span class="pull-right order-mobile">13432456789</span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-idcardNum">
                                                         <span>身份证号</span>
-                                                        <span class="right order-idcardNum">332112197608230183</span>
+                                                        <span class="pull-right order-idcardNum">332112197608230183</span>
                                                     </div>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="accordion-item">
+                                <li class="accordion-item accordion-item-expanded">
                                     <a href="#" class="item-content item-link">
                                         <div class="item-inner">
                                             <div class="item-title">流程状态</div>
                                         </div>
                                     </a>
                                     <div class="accordion-item-content">
-                                        <div class="content-block">
-                                            
+                                        <div class="content-block step-block">
+                                           <div class="stepShow">
+                                                <div class="row step-wrap">
+                                                    <div class="stepContent">
+                                                        <div class="num_circle">待授权</div>
+                                                    </div>
+                                                    <div class="stepContent">
+                                                        <div class="num_circle">资料审核</div>
+                                                    </div>
+                                                    <div class="stepContent">
+                                                        <div class="num_circle">放款审核</div>
+                                                    </div>
+                                                    <div class="stepContent">
+                                                        <div class="num_circle">已放款</div>
+                                                    </div>
+                                                </div>
+                                                <div class="step-progress">
+                                                    <p class="step-progress-bar">
+                                                        <span class="step-progress-highlight"></span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </li>
@@ -206,7 +280,7 @@
                                                     <div class="pic-cont-item"><img src="/public/wap/images/drivingLic.png"></div>
                                                 </div>
                                             </div>
-                                             <div class="pic-cont">
+                                             <div class="pic-cont pb10">
                                                 <div class="pic-cont-title">证件信息</div>
                                                 <div class="pic-cont-block">
                                                     <div class="pic-cont-item"><img src="/public/wap/images/2.png"></div>
@@ -241,38 +315,12 @@
     <script type="text/javascript"> 
         var order_id = getUrlParam('id');
         ajax_jquery({
-            url: apiUrl +'/api/order/detail?t=' + Math.random(),
+            // url: apiUrl +'/api/order/detail?t=' + Math.random(),
             data: order_id,
             success: function (resp) {
-                // resp = {
-                //     "code": 1,
-                //     "msg": "获取成功！",
-                //     "data":{
-                //                 "id": 1013,
-                //                 "sn": "2016122149555552",
-                //                 "uid": 2,
-                //                 "bank_uid": 3,
-                //                 "type": 2,
-                //                 "name": "王业茂",
-                //                 "mobile": "",
-                //                 "idcard_num": "410425198904114038",
-                //                 "idcard_face_pic": 93,
-                //                 "idcard_back_pic": 94,
-                //                 "driving_lic_pic": 95,
-                //                 "loan_limit": 130000,
-                //                 "create_time": 1482301249,
-                //                 "update_time": 1482301620,
-                //                 "status": 1,
-                //                 "finance": 0,
-                //                 "addr": "车商门店",
-                //                 "descr": "",
-                //                 "reject_reason": 0
-                //             }
-                // }
-
                 if (resp.code == "1") {
                     $(".order-sn").text(resp.data.sn);
-                    $(".order-type").text("新车垫资");
+                    $(".order-type").text(resp.data.type);
                     $(".order-amount").text(resp.data.finance);
                     $(".order-date").text(formatDate(resp.data.create_time));
                     $(".order-loaner").text(resp.data.name);
@@ -281,13 +329,24 @@
                 } else {
                     if (typeof(resp.msg) == 'string' && resp.msg != '') {
                         ui_alert(resp.msg);
-                    } else {
-                        ui_alert("找回密码请求失败");
-                    }
+                    } 
                 }
             }
         });
+
+        function stepbarShow (step) {
+            var rstep = step - 1;
+            var progressWidth = rstep * 33;
+            $(".stepContent:lt("+ step +")").children('.num_circle').addClass('active');
+            $(".stepContent:gt("+ rstep +")").children('.num_circle').removeClass('active');
+            $(".step-progress-highlight").width(progressWidth+"%"); 
+        }
+ 
+       
+        
+
         $(function(){
+            stepbarShow(2);
             var myPhotoBrowserPopup = myApp.photoBrowser({
                 photos : [
                     {
@@ -308,36 +367,6 @@
             });
             $$('.pic-info').on('click','.pic-cont-item', function () {
                 myPhotoBrowserPopup.open();
-            });
-            $("#submit").click(function(){       
-                var loan_limit = $('#loan_limit').val();
-                
-                if(loan_limit == ""){
-                    ui_alert('请输入垫资金额');
-                    return;
-                }else if( $('#uploadpic  .fileList img[data-id]').length < keyList.length ){
-                    ui_alert("照片资料不全，请补充上传");
-                    return;
-                }
-                ajax_jquery({
-                    type: 'post',
-                    url: '',
-                    datatype:'json',
-                    data: {
-						'loan_limit':loan_limit
-                    },
-                    success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
-                        if(data.code == 1){
-                            ui_alert("订单提交成功", function () {
-                                  window.location.href = '/mobile/order/indexDealer' ;            
-                             })
-                        }else{
-                            if (typeof(data.msg) == 'string') {
-                                ui_alert(data.msg);
-                            }  
-                        }
-                    }
-                }); 
             });
         });
     </script>  
