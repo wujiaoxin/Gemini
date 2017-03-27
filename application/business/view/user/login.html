@@ -33,18 +33,23 @@
 	</div>
 	<div class="content">
 		<!-- BEGIN LOGIN FORM --> 
-		<div class="form-vertical login-form">
+		<form class="form-vertical login-form" action="index.html">
 			<h3 class="form-title">登录</h3>
-			<div class="alert hide">
-				<a class="close"></a>
-				<span></span>
+			<div class="alert alert-error hide">
+				<button class="close" data-dismiss="alert"></button>
+				<span>请输入账号和密码</span>
 			</div>
+			<div class="alert hide" id="mobile-error">
+				<button class="close" data-dismiss="alert"></button>
+				<span>请输入正确手机号</span>
+			</div>
+
 			<div class="control-group">
 				<label class="control-label visible-ie8 visible-ie9">账号</label>
 				<div class="controls">
 					<div class="input-icon left">
 						<i class="icon-user"></i>
-						<input class="m-wrap placeholder-no-fix" type="number" placeholder="请输入手机号" id="login-username"/>
+						<input class="m-wrap placeholder-no-fix" type="number" placeholder="请输入手机号" id="login_username" name="username"/>
 					</div>
 				</div>
 			</div>
@@ -53,7 +58,7 @@
 				<div class="controls">
 					<div class="input-icon left">
 						<i class="icon-lock"></i>
-						<input class="m-wrap placeholder-no-fix" type="password" placeholder="请输入您的密码" id="login-password">
+						<input class="m-wrap placeholder-no-fix" type="password" placeholder="请输入您的密码" name="password"/>
 					</div>
 				</div>
 			</div>
@@ -61,7 +66,7 @@
 				<label class="checkbox">
 				<input type="checkbox" name="remember" value="1"/>记住账号密码
 				</label>
-				<button id="loginBtn" class="btn green pull-right">
+				<button type="submit" id="loginBtn" class="btn green pull-right">
 				登录 <i class="m-icon-swapright m-icon-white"></i>
 				</button>            
 			</div>
@@ -78,12 +83,11 @@
 					<a href="javascript:;" id="register-btn" class="">注册账号</a>
 				</p>
 			</div>
-		</div>
-		<!-- </form> -->
+		</form>
 		<!-- END LOGIN FORM -->        
 
 		<!-- BEGIN FORGOT PASSWORD FORM -->
-		<div class="form-vertical forget-form">
+		<form class="form-vertical forget-form" action="index.html">
 			<h3 class="">忘记密码?</h3>
 			<p>输入您的注册手机号找回密码</p>
 			<div class="control-group">
@@ -98,15 +102,15 @@
 				<button type="button" id="back-btn" class="btn">
 				<i class="m-icon-swapleft"></i> 返回
 				</button>
-				<button class="btn green pull-right" id="reset-password">
+				<button type="submit" class="btn green pull-right">
 				提交 <i class="m-icon-swapright m-icon-white"></i>
 				</button>            
 			</div>
-		</div>
+		</form>
 		<!-- END FORGOT PASSWORD FORM -->
 
 		<!-- BEGIN REGISTRATION FORM -->
-		<div class="form-vertical register-form">
+		<form class="form-vertical register-form" action="index.html">
 			<h3 class="">注册</h3>
 			<p>完善下列信息:</p>
 			<div class="control-group">
@@ -158,11 +162,11 @@
 				<button id="register-back-btn" type="button" class="btn">
 				<i class="m-icon-swapleft"></i>  返回
 				</button>
-				<button  id="register-submit-btn" class="btn green pull-right">
+				<button type="submit" id="register-submit-btn" class="btn green pull-right">
 				注册 <i class="m-icon-swapright m-icon-white"></i>
 				</button>            
 			</div>
-		</div>
+		</form>
 		<!-- END REGISTRATION FORM -->
 	</div>
 	<!-- END LOGIN -->
@@ -179,14 +183,16 @@
 	<script src="/public/business/lib/metronic/js/jquery.blockui.min.js" type="text/javascript"></script>  
 	<script src="/public/business/lib/metronic/js/jquery.cookie.min.js" type="text/javascript"></script>
 	<script src="/public/business/lib/metronic/js/jquery.uniform.min.js" type="text/javascript"></script>
-	<!-- <script src="/public/business/lib/metronic/js/jquery.validate.min.js" type="text/javascript"></script> -->
-	<script src="/public/business/js/app.js" type="text/javascript"></script>
+	<script src="/public/business/lib/metronic/js/jquery.validate.min.js" type="text/javascript"></script>
+	<script src="/public/business/lib/metronic/js/app.js" type="text/javascript"></script>
 	<script src="/public/business/js/validate.js" type="text/javascript"></script>
-	<script src="/public/business/js/login.js" type="text/javascript"></script>  
+	<script src="/public/business/lib/metronic/js/login.js" type="text/javascript"></script>  
 	<script>
 		jQuery(document).ready(function() {     
 		  App.init();
 		  Login.init();
+
+		  $()
 		});
 
 	</script>
