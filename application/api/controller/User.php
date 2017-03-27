@@ -22,11 +22,10 @@ class User extends Api {
 		if (!$password) {
 			return ['code'=>1003,'msg'=>'密码不能为空'];
 		}
-		
-		$storeSmsCode = session('smsCode');
 		$storeMobile = session('mobile');
-		
-		if($mobile != $storeMobile || $smsverify == $storeSmsCode){
+		$storeSmsCode = session('smsCode');
+
+		if($mobile != $storeMobile || $smsverify != $storeSmsCode){			
 			return ['code'=>1005,'msg'=>'短信验证码错误'];
 		}
 		
