@@ -57,7 +57,8 @@ class User extends Api {
 		$user = model('User');
 		$uid  = $user->login($mobile, $password);
 		if ($uid > 0) {
-			$token = rand(100000,999999);
+			//$token = rand(100000,999999);
+			$token = generateToken($uid);
 			$resp["code"] = 1;
 			$resp["msg"] = '登录成功';			
 			$data["token"] = $token;
@@ -116,7 +117,7 @@ class User extends Api {
 	
 		if(!preg_match("/^1[34578]{1}\d{9}$/",$mobile)){
 			$resp["code"] = 0;
-			$resp["msg"] = "手机号格式错误!";
+			$resp["msg"] = "手机号格式错误";
 			return $resp;
 		}
 		
@@ -124,14 +125,14 @@ class User extends Api {
 		if($needImgVerify == 1 ){
 			if($imgVerify == null){
 				session('needImgVerify', 1);
-				$resp["code"] = -1;
-				$resp["msg"] = "需要图形验证码!";
+				$resp["code"] = -2;
+				$resp["msg"] = "需要图形验证码";
 				return $resp;
 			}else{
 				$storeImgVerify = session('imgVerify');
 				if($storeImgVerify != $imgVerify){
-					$resp["code"] = -2;
-					$resp["msg"] = "图形验证码错误!";
+					$resp["code"] = 1001;
+					$resp["msg"] = "图形验证码错误";
 					return $resp;
 				}
 			}
