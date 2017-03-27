@@ -1,16 +1,10 @@
 <?php
-// +----------------------------------------------------------------------
-// | SentCMS [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2013 http://www.tensent.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Author: molong <molong@tensent.cn> <http://www.tensent.cn>
-// +----------------------------------------------------------------------
 
 namespace app\common\controller;
 
 class Api extends \think\Controller {
 	public function _initialize() {
+		//echo "hello";
 		// 读取数据库中的配置
 		$config = cache('db_config_data');
 		if (!$config) {
@@ -21,11 +15,13 @@ class Api extends \think\Controller {
 		
 		//检查SID
 		if($this->checkSID() == false ){
-			$resp["code"] = 100;
-			$resp["msg"] = "sid无效";
-			return json($resp);
+			$resp["code"] = -1;
+			$resp["msg"] = "会话异常";
+			header('Content-Type: application/json; charset=utf-8'); 
+			exit(json_encode($resp, JSON_UNESCAPED_UNICODE)); 			
 		}
 	}
+	
 	
 	
 	protected function checkSID() {
