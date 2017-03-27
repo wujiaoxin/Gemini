@@ -8,24 +8,6 @@ function validatePhoneNumber(mobile) {
     }
 }
 
-function validatePassword(pass) {
-    if (pass.length < 8 || pass.length > 16 || pass.match(/[^a-zA-Z0-9]+/)) {
-        return false;
-    }
-    var ls = 0;
-    if (pass.match(/(([a-z])|([A-Z]))+/)) {
-        ls++;
-    }
-    if (pass.match(/([0-9])+/)) {
-        ls++;
-    }
-    if (ls < 2) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
 function validateBankNum(banknum) {
     if (banknum.length < 16 || banknum.length > 19) {
         return false;

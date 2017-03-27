@@ -233,13 +233,6 @@ TODO:check idcard if needed;
 		//$this->assign($user);		
 		return $this->fetch();
 	}
-
-	// 车商员工密码修改页
-	public function resetDealer() {
-		//$this->assign($user);		
-		return $this->fetch();
-	}
-
 	// 车商员工登录页
 	public function loginDealer() {
 		//$this->assign($user);		

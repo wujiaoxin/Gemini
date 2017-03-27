@@ -65,8 +65,9 @@
             line-height: 38px;
             font-size: 14px;
         }
-        #order-amount,
-        #order-term {
+        #order-amount {
+            padding-left: 0;
+            border-top: 1px solid #dedede;
             border-bottom: 1px solid #dedede;
         }
     </style>
@@ -145,15 +146,7 @@
                                                 <div class="item-inner">
                                                     <div class="item-title label">垫资金额</div>
                                                     <div class="item-input">
-                                                        <input type="number" name="loan_limit" id="loan_limit" value="" placeholder="请输入垫资金额">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="item-content order-info-term" id="order-term">
-                                                <div class="item-inner">
-                                                    <div class="item-title label">垫资期限</div>
-                                                    <div class="item-input">
-                                                        <input type="number" name="loan_term" id="loan_term" value="" placeholder="请输入垫资期限">
+                                                        <input type="number" name="loan_limit" id="loan_limit" value=""/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -234,8 +227,7 @@
                     url: '',
                     datatype:'json',
                     data: {
-						'loan_limit':loan_limit,
-                        'loan_term':loan_term
+						'loan_limit':loan_limit
                     },
                     success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
                         if(data.code == 1){

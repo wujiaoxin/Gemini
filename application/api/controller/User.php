@@ -4,30 +4,35 @@ namespace app\api\controller;
 use app\common\controller\Api;
 
 class User extends Api {
-	
+
 	public function index($username = '', $password = '', $verify = ''){
 		$resp["code"] = 1;
 		$resp["msg"] = "USER-API";
 		return json($resp);
-	}
+	}  
 	
-	/**
-	 * 用户注册
-	 * @author fwj <fwj@vpdai.com>
-	 */
-	public function reg($mobile = '', $password = '', $authcode = '', $invitecode = ''){
-		$model = \think\Loader::model('User');
-		if (!$mobile || !$password) {
-				return $this->error('手机号或者密码不能为空！','');
-			//	return ['code'=>0,'msg'=>'手机号或者密码不能为空！'];
-		}		
-		//$this->checkVerify($verify);		
-		//创建注册用户
-		$uid = $model->registerByMobile($mobile, $password,$password , false);
-
+	public function reg($mobile = null, $password = null, $smsverify = null, $authcode = null, $invitecode = null){
+		$model = model('User');
+		$resp["code"] = 0;
+		$resp["msg"] = "注册失败";
+		
+		if (!$mobile) {
+			return ['code'=>1002,'msg'=>'手机号不能为空'];
+		}
+		if (!$password) {
+			return ['code'=>1003,'msg'=>'密码不能为空'];
+		}
+		
+		$storeSmsCode = session('smsCode');
+		$storeMobile = session('mobile');
+		
+		if($mobile != $storeMobile || $smsverify == $storeSmsCode){
+			return ['code'=>1005,'msg'=>'短信验证码错误'];
+		}
+		
+		$uid = $model->registerByMobile($mobile, $password, $password, false);
 		if (0 < $uid) {
 			$userinfo = array('nickname' => $mobile, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
-			//保存信息
 			if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 				return $this->error('注册失败！', '');
 			} else {
@@ -36,14 +41,43 @@ class User extends Api {
 		} else {
 			return $this->error($model->getError());
 		}
-
 	}
 	
-	public function login($mobile = '', $password = '', $imgVerify = ''){
-		
-		$resp["code"] = 1;
-		$resp["msg"] = "登录成功！";
-		return $resp;
+	public function login($mobile = '', $password = '', $imgverify = null){
+		$resp["code"] = 0;
+		$resp["msg"] = '未知错误';		
+		if (!$mobile || !$password) {
+			$resp["code"] = 0;
+			$resp["msg"] = '用户名或者密码不能为空！';
+			return json($resp);
+		}		
+		//验证码验证 TODO
+		//$this->checkVerify($verify);
+
+		$user = model('User');
+		$uid  = $user->login($mobile, $password);
+		if ($uid > 0) {
+			$token = rand(100000,999999);
+			$resp["code"] = 1;
+			$resp["msg"] = '登录成功';			
+			$data["token"] = $token;
+			$resp["data"] = $data;
+			session('token',$token);
+			return json($resp);
+		} else {
+			switch ($uid) {
+			case -1:$error = '用户不存在或被禁用！';
+				break; //系统级别禁用
+			case -2:$error = '密码错误！';
+				break;
+			default:$error = '未知错误！';
+				break; // 0-接口参数错误（调试阶段使用）
+			}
+			$resp["code"] = 0;
+			$resp["msg"] = $error;
+			return json($resp);
+		}
+
 	}
 	
 	public function logout(){
@@ -124,6 +158,7 @@ class User extends Api {
 		//if(1){
 		if(sendSms($mobile,$smsMsg)){
 			session('smsCode',$smsCode);
+			session('mobile',$mobile);
 			session('needImgVerify', 0);
 			session('lastSmsSendTime',time());
 			$resp["code"] = 1;
@@ -137,17 +172,25 @@ class User extends Api {
 		return $resp;
 	}
 		
- 	/**
-	 * 验证码
-	 * @param  integer $id 验证码ID
-	 * @author 郭平平 <molong@tensent.cn>
-	 */
-	public function getImgVerify($sid) {
+	public function getImgVerify() {
 		$verify = new \org\Verify(array('length' => 4));
-		$verify->entry($sid);
+		$verify->entry(1);
 		return json('')->header(['Content-Type' => 'image/png']);
 	}
-
+	
+	public function checkImgVerify($code) {
+		if ($code) {
+			$verify = new \org\Verify();
+			$result = $verify->check($code,1);
+			if (!$result) {
+				return $this->error("验证码错误！", "");
+			}else{
+				return $this->success('验证码正确',"");
+			}
+		} else {
+			return $this->error("验证码为空！", "");
+		}
+	}
 	
 }
 
