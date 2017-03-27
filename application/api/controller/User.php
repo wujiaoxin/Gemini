@@ -35,7 +35,13 @@ class User extends Api {
 			if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 				return $this->error('注册失败！', '');
 			} else {
-				return $this->success('注册成功！', url('admin/user/index'));
+				$token = generateToken($uid);
+				$resp["code"] = 1;
+				$resp["msg"] = '注册成功';			
+				$data["token"] = $token;
+				$resp["data"] = $data;
+				session('token',$token);
+				return json($resp);
 			}
 		} else {
 			return $this->error($model->getError());
