@@ -19,15 +19,15 @@ class Open extends Base {
 		return "ok";
 	}
 	
-	public function dealer() {//车商申请
+	public function dealer($mobile = null, $name = null, $contacts = null, $inviter = null) {//车商申请
 		$Dealer = model('Dealer');
 		if (IS_POST) {
-			$data = input('post.');
-			if ($data) {
-				$saveData['mobile'] = $data["mobile"];
-				$saveData['name'] = $data["name"];
-				$saveData['contacts'] = $data["contacts"];
-				$saveData['inviter'] = $data["inviter"];
+			//$data = input('post.');
+			if ($mobile) {
+				$saveData['mobile'] = $mobile;
+				$saveData['name'] = $name;
+				$saveData['contacts'] = $contacts;
+				$saveData['inviter'] = $inviter;
 				$saveData['invite_code'] = $Dealer->buildInviteCode();
 				$saveData['status'] = 0;
 				$result = $Dealer->save($saveData);
