@@ -37,15 +37,17 @@ function sendSms($mobile, $content){
 	}*/
 }
 
-function generateToken($uid = ""){
+function generateToken($uid = "", $sid = null){
 	$key = "gemini";
 	$token = array(
 		//"iss" => "https://api.vpdai.com",
 		//"aud" => "https://api.vpdai.com",
-		"iat" => time(),#token发布时间
-		"nbf" => time()+86400,#token过期时间
-		"uid" => $uid
+		"iat" => time(),//#token发布时间
+		"exp" => time()+86400,//#token过期时间
+		"uid" => $uid,
+		"sid" => $sid
 	);
+	
 	/**
 	 * IMPORTANT:
 	 * You must specify supported algorithms for your application. See
@@ -54,9 +56,17 @@ function generateToken($uid = ""){
 	 */
 	$jwt = JWT::encode($token, $key);
 	//$decoded = JWT::decode($jwt, $key, array('HS256'));
-	//print_r($decoded);
+	//print_r($jwt);	
+	//print_r("\n");
 	return $jwt;
 	
+}
+
+function decodedToken($jwt = ""){
+	$key = "gemini";
+	$decoded = JWT::decode($jwt, $key, array('HS256'));
+	//print_r($decoded);
+	return $decoded;
 }
 
 

@@ -11,7 +11,7 @@ class User extends Api {
 		return json($resp);
 	}  
 	
-	public function reg($mobile = null, $password = null, $smsverify = null, $authcode = null, $invitecode = null){
+	public function reg($mobile = null, $password = null, $smsverify = null, $authcode = null, $invitecode = null, $sid = null){
 		$model = model('User');
 		$resp["code"] = 0;
 		$resp["msg"] = "注册失败";
@@ -35,7 +35,7 @@ class User extends Api {
 			if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 				return $this->error('注册失败！', '');
 			} else {
-				$token = generateToken($uid);
+				$token = generateToken($uid, $sid);
 				$resp["code"] = 1;
 				$resp["msg"] = '注册成功';			
 				$data["token"] = $token;
@@ -48,7 +48,7 @@ class User extends Api {
 		}
 	}
 	
-	public function login($mobile = '', $password = '', $imgverify = null){
+	public function login($mobile = '', $password = '', $imgverify = null, $sid = null){
 		$resp["code"] = 0;
 		$resp["msg"] = '未知错误';		
 		if (!$mobile || !$password) {
@@ -63,7 +63,7 @@ class User extends Api {
 		$uid  = $user->login($mobile, $password);
 		if ($uid > 0) {
 			//$token = rand(100000,999999);
-			$token = generateToken($uid);
+			$token = generateToken($uid, $sid);
 			$resp["code"] = 1;
 			$resp["msg"] = '登录成功';			
 			$data["token"] = $token;
