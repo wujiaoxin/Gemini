@@ -58,13 +58,9 @@
 							<div class="bar"></div>
 						</div>
 						<div class="tab-content">
-							<div class="alert alert-error hide">
-								<button class="close" data-dismiss="alert"></button>
-								存在错误信息,请检查
-							</div>
-							<div class="alert alert-success hide">
-								<button class="close" data-dismiss="alert"></button>
-								提交成功
+							<div class="alert hide">
+								<a class="close"></a>
+								<span></span>
 							</div>
 							<div class="tab-pane active" id="tab1">
 								<h3 class="block">车商信息</h3>
@@ -77,7 +73,7 @@
 								<div class="control-group">
 									<div class="controls">
 										<label class="radio">
-											<input type="radio" id="businessLicense" name="businessLicense" value="1" />传统证照
+											<input type="radio" name="businessLicense" value="1" />传统证照
 										</label>
 										<label class="radio">
 											<input type="radio" name="businessLicense" value="2" checked />三合一证照
@@ -223,13 +219,13 @@
 							</div>		
 							<div class="form-actions clearfix">
 								<a href="javascript:;" class="btn button-previous">
-								<i class="m-icon-swapleft"></i> Back 
+									<i class="m-icon-swapleft"></i>上一步 
 								</a>
 								<a href="javascript:;" class="btn blue button-next">
-								Continue <i class="m-icon-swapright m-icon-white"></i>
+									下一步<i class="m-icon-swapright m-icon-white"></i>
 								</a>
 								<a href="javascript:;" class="btn green button-submit">
-								Submit <i class="m-icon-swapright m-icon-white"></i>
+									提交<i class="m-icon-swapright m-icon-white"></i>
 								</a>
 							</div>
 						</div>
@@ -248,11 +244,11 @@
 	<script type="text/javascript" src="/public/business/lib/metronic/js/additional-methods.min.js"></script>
 	<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.bootstrap.wizard.min.js"></script>
 	<script type="text/javascript" src="/public/business/lib/metronic/js/chosen.jquery.min.js"></script>
-	<script src="/public/business/lib/metronic/js/form-wizard.js"></script>
+	<script src="/public/business/js/guide.js"></script>
 	<script>
 		jQuery(document).ready(function() {       
 		   // App.init();
-		   FormWizard.init();
+		   guide.init();
 		});
 	</script>     
 {/block}
