@@ -915,9 +915,9 @@ function ajax_jquery(options) {
     } else {
     }
     var sid =localStorage.getItem('sid');
-    if(typeof(sid) == "object"){
-        sid = 0;
-    }
+    // if(typeof(sid) == "object"){
+    //     sid = 0;
+    // }
     var options_default = {
         url: '',
         type: 'POST',
@@ -956,6 +956,105 @@ function _ajax_error(XMLHttpRequest, textStatus, errorThrown) {
         console.log("XHR="+XMLHttpRequest+"\ntextStatus="+textStatus+"\nerrorThrown=" + errorThrown);
     }
 }
+
+function setNavActive (navId) {
+  var thisUrl = window.location.pathname;
+  var navItemList = $('#' + navId + " li");
+  $('#' + navId + " li").each(function(){
+    var navLiUrl = $(this).find('a').attr('href');
+    if(thisUrl.indexOf(navLiUrl) != -1){
+        $(this).addClass("active")
+          .parents("li").addClass("active");
+        var pageTitle = $(this).children('a').text();
+        $(".page-title").text(pageTitle);
+        $("#page-sidebar-menu > li.active").find('a > span.title').after('<span class="selected"></span>').end()
+                                            .find('a > span.arrow').addClass('open');
+    }
+  });
+}
+setNavActive("page-sidebar-menu");
+
+function errorShow(message){
+    jQuery('.alert').children('span').text(message).end()
+        .show();
+}
+jQuery('.alert > .close').click(function(){
+    jQuery(this).parent('.alert').hide();
+});
+
+
+function formatAmount(n) {
+    n = parseFloat(n).toFixed(2);
+    n = n.toString().replace(/\B(?=(?:\d{3})+\b)/g, ',');
+    return n;
+}
+
+function logout(n) {
+    var token = localStorage.getItem('token');
+    ajax_jquery({
+        url: apiUrl +'/api/user/logout?t='+Math.random(),
+        data:{
+            'token': token
+        },
+        success:function(resp){
+            if (resp.code == "1" ) {
+                    window.location.href = "/business/user/login";
+            } else {
+                if (typeof(resp.msg) == 'string') {
+                    ui_alert("alert-error",resp.msg);
+                    return false;
+                }                 
+            }
+        }
+    });
+}
+
+$("#editPasswordBtn").click(function(event) {
+    var oldPassword = $("#oldPassword").val();
+    var newPassword = $("#newPassword").val();
+    var confirmPassword = $("#confirmPassword").val();
+    var token = localStorage.getItem('token');
+    if(oldPassword == ""){
+        ui_alert("alert-error","请输入原密码");
+        return;
+    }else if(!validatePassword(oldPassword)){
+        ui_alert("alert-error","原密码输入有误");
+        return;
+    }else if(newPassword == ""){
+        ui_alert("alert-error","请输入新密码");
+        return;
+    }else if(!validatePassword(newPassword)){
+        ui_alert("alert-error","请输入8-16位英文数字组合");
+        return;
+    }else if(confirmPassword == ""){
+        ui_alert("alert-error","请确认新密码");
+        return;
+    }else if(newPassword != confirmPassword){
+        ui_alert("alert-error","两次输入密码不一致");
+        return;
+    }
+
+    ajax_jquery({
+        url: apiUrl +'/api/user/editPassword?t='+Math.random(),
+        data:{
+            'token': token,
+            'oldPassword': oldPassword,
+            'newPassword': newPassword
+        },
+        success:function(resp){
+            if (resp.code == "1" ) {
+                    ui_alert("alert-success","密码重置成功");
+            } else {
+                if (typeof(resp.msg) == 'string') {
+                    ui_alert("alert-error",resp.msg);
+                    return false;
+                }                 
+            }
+        }
+    });
+});
+
+
 
 
 
