@@ -1,8 +1,9 @@
 {extend name="base"/}
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="/public/business/css/selectArea.css">
-<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css" />
-<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/chosen.css" />
+<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
+<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/chosen.css">
+<link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
 <style type="text/css">
 	.selectArea {
 		width: 120px;
@@ -10,7 +11,13 @@
 	.bankAccount-style-title {
 		text-align: center;
 	}
+	.webuploader-pick-file-close .close{
+		background: inherit;
+	}
 </style>
+<script type="text/javascript">
+	var BASE_URL = "";
+</script>
 {/block}
 {block name="body"}
 <div class="row-fluid">
@@ -105,7 +112,18 @@
 									<div class="controls">
 										<input id="licencePic" type="file" multiple="multiple" name="file" />
 									</div>
-								</div>	
+								</div>
+								<div class="control-group">
+									<label class="control-label">上传营业资格证</label>
+									<div class="controls">
+										<div class="picker-box span3">
+											<div id="picker_dealer_lic_pic" class="picker_button">上传图片</div>
+											<input type="hidden" name="dealer_lic_pic" id="field_dealer_lic_pic">
+											<div id="fileList_dealer_lic_pic" class="upload-file-list-info" style="width:250px;">
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="tab-pane" id="tab2">
 								<h3 class="block">法人信息</h3>
@@ -245,10 +263,39 @@
 	<script type="text/javascript" src="/public/business/lib/metronic/js/chosen.jquery.min.js"></script>
 	<script type="text/javascript" src="/public/business/js/selectArea.js"></script>
 	<script type="text/javascript" src="/public/business/js/guide.js"></script>
+	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
+	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.custom.js"></script>
 	<script>
 		jQuery(document).ready(function() {       
 		   // App.init();
 		   guide.init();
+		   function btnSentUploader(picName){
+				$("#picker_" + picName).SentUploader({
+					fileNumLimit:1,
+					uploadEvents: {
+						uploadComplete:function(file){}
+					},
+					listName : 'fileList_' + picName,
+					hiddenName: 'field_' + picName,
+					hiddenValType:1,
+					fileSingleSizeLimit:20*1024*1024,
+					closeX:true,
+					compress:{
+						width: 1024,
+						quality: 90,
+						allowMagnify: false,
+						crop: false,
+						preserveHeaders: true,
+						noCompressIfLarger: false,
+						compressSize: 0
+					}
+				},
+				{
+					fileType: 'service',
+					filename : 'images',
+				});
+			};
+			btnSentUploader("dealer_lic_pic");
 		});
 	</script>     
 {/block}

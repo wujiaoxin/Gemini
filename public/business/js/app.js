@@ -923,6 +923,7 @@ function ajax_jquery(options) {
         error: _ajax_error,
         timeout: 60000,
         async: true,
+        cache:false
     };
     var options_merge = new Object();
     $.extend(true,options_merge, options_default, options);
