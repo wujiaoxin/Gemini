@@ -30,6 +30,7 @@ class User extends Base {
 				$resp["code"] = 1;
 				$resp["msg"] = '登录成功！';
 				session("mobile", $mobile);
+				session("uid", $uid);
 				return json($resp);
 			} else {
 				switch ($uid) {
@@ -51,9 +52,10 @@ class User extends Base {
 	}
 
 	public function guide() {		
-		$mobile = session("mobile");//TODO:登录判断
-		if($mobile == null){
-			return $this->error("页面错误",url("/buniuser/user/login"));
+		$mobile = session("mobile");
+		$uid = session("uid");
+		if($mobile == null || $uid == null){
+			return $this->error("请重新登录",url("/business/user/login"));
 		}		
 		$modelDealer = model('Dealer');		
 		if (IS_POST) {
