@@ -25,7 +25,7 @@ class User extends Api {
 		$storeMobile = session('mobile');
 		$storeSmsCode = session('smsCode');
 
-		if($mobile != $storeMobile || $smsverify != $storeSmsCode){			
+		if($mobile != $storeMobile || $smsverify != $storeSmsCode){
 			return ['code'=>1005,'msg'=>'短信验证码错误'];
 		}
 		
@@ -176,6 +176,79 @@ class User extends Api {
 			$resp["msg"] = "发送失败！";
 		}
 		return $resp;
+	}
+	
+	
+	public function resetPassword($mobile = '', $token = null, $smsverify = null, $newPassword = null, $idcard = null){
+
+		$resp["code"] = 0;
+		$resp["msg"] = "找回失败";
+	
+		if (!$mobile) {
+			return ['code'=>1002,'msg'=>'手机号不能为空'];
+		}
+		if (!$newPassword) {
+			return ['code'=>1003,'msg'=>'新密码不能为空'];
+		}
+		$storeMobile = session('mobile');
+		
+		if($token != null){
+			$storeToken = session('token');
+			if($token == $storeToken && $mobile == $storeMobile){
+				$resp["code"] = 1;
+				$resp["msg"] = "修改成功";
+			}
+		}else{
+			if($smsverify != null){
+				
+				$storeSmsCode = session('smsCode');
+				if($mobile == $storeMobile && $smsverify == $storeSmsCode){
+					$resp["code"] = 1;
+					$resp["msg"] = "修改成功";
+				}else{
+					return ['code'=>1005,'msg'=>'短信验证码错误'];
+				}
+			}
+			
+		}
+		
+		if($resp["code"] == 1){			
+			$user = model('User');	
+			$result = $user->resetpw($mobile,$newPassword);
+			if ($result !== false) {
+				return $this->success("修改成功", "");
+			}else{
+				return $this->error($user->getError(), '');
+			}
+			
+		}
+		return $resp;
+	}
+	
+	
+	public function checkSmsVerify($mobile = '', $smsverify = null, $sid = null){
+		
+		if (!$mobile) {
+			return ['code'=>1002,'msg'=>'手机号不能为空'];
+		}
+		if (!$smsverify) {
+			return ['code'=>1003,'msg'=>'验证码不能为空'];
+		}
+		
+		$storeMobile = session('mobile');
+		$storeSmsCode = session('smsCode');
+
+		if($mobile != $storeMobile || $smsverify != $storeSmsCode){			
+			return ['code'=>1005,'msg'=>'短信验证码错误'];
+		}else{		
+			$token = generateToken($mobile, $sid);
+			$resp["code"] = 1;
+			$resp["msg"] = '校验成功';			
+			$data["token"] = $token;
+			$resp["data"] = $data;
+			session('token',$token);
+			return json($resp);
+		}
 	}
 		
 	public function getImgVerify() {
