@@ -73,16 +73,16 @@
 								<div class="control-group">
 									<div class="controls">
 										<label class="radio">
-											<input type="radio" name="businessLicense" value="1" />传统证照
+											<input type="radio" name="businessLicense" value="1" checked>三合一证照
 										</label>
 										<label class="radio">
-											<input type="radio" name="businessLicense" value="2" checked />三合一证照
+											<input type="radio" name="businessLicense" value="2">传统证照
 										</label>  
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">单位所在地</label>
-									<div class="controls">
+									<div class="controls" id="loc">
 										<select id="loc_province" class="selectArea"></select>
 										<select id="loc_city" class="selectArea"></select>
 										<select id="loc_town" class="selectArea"></select>
@@ -239,12 +239,12 @@
 {/block}
 {block name="script"}
 	<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js" ></script>
-	<script type="text/javascript" src="/public/business/js/selectArea.js"></script>
 	<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="/public/business/lib/metronic/js/additional-methods.min.js"></script>
 	<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.bootstrap.wizard.min.js"></script>
 	<script type="text/javascript" src="/public/business/lib/metronic/js/chosen.jquery.min.js"></script>
-	<script src="/public/business/js/guide.js"></script>
+	<script type="text/javascript" src="/public/business/js/selectArea.js"></script>
+	<script type="text/javascript" src="/public/business/js/guide.js"></script>
 	<script>
 		jQuery(document).ready(function() {       
 		   // App.init();

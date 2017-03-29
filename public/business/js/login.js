@@ -51,7 +51,7 @@ var Login = function () {
 		            success:function(resp){
 		                if (resp.code == "1" ) {
 		                		ui_alert("alert-success","登录成功");
-		                		localStorage.setItem('token');
+		                		localStorage.setItem('token',resp.data.token);
 		                        window.location.href = "/business/index/index";
 		                } else {
 		                    if(resp.code == "-2" || resp.code == "1001"){
@@ -83,6 +83,9 @@ var Login = function () {
 	        	}else if(!validatePhoneNumber(username)){
 	        		ui_alert("alert-error","手机号输入错误");
 	        		return false;
+	        	}else if(smsverify == ""){
+					ui_alert("alert-error","请输入手机验证码");
+	        		return false;
 	        	}else if(password == ""){
 					ui_alert("alert-error","请输入密码");
 	        		return false;
@@ -90,43 +93,25 @@ var Login = function () {
 	        		ui_alert("alert-error","请输入8-16位英文数字组合密码");
 	        		return false;
 	        	}
-	        	ajax_jquery({
-		            url: apiUrl + '/api/user/checkSmsVerify?t=' + Math.random(),
-		            data: {
-		                'mobile': username,
-		                'smsverify': smsverify 
+	        	 ajax_jquery({
+		            url: apiUrl +'/api/user/resetPassword?t='+Math.random(),
+		            data:{
+		            	'mobile': username,
+		            	'smsverify': smsverify,
+		            	'newPassword': password
 		            },
-		            success: function(resp) { 
-		                if(resp.code == 1){
-		                    localStorage.setItem('token', resp.data.token);
-		                    var token = localStorage.getItem('token');
-					        ajax_jquery({
-					            url: apiUrl +'/api/user/login?t='+Math.random(),
-					            data:{
-					            	'mobile': username,
-					            	'token': token,
-					            	'newPassword': password
-					            },
-					            success:function(resp){
-					                if (resp.code == "1" ) {
-					                		ui_alert("alert-success","密码重置成功");
-					                        window.location.href = "/business/user/login";
-					                } else {
-					                    if (typeof(resp.msg) == 'string') {
-					                        ui_alert("alert-error",resp.msg);
-					                        return false;
-					                    }                 
-					                }
-					            }
-					        });
-		                }else{
+		            success:function(resp){
+		                if (resp.code == "1" ) {
+		                		ui_alert("alert-success","密码重置成功");
+		                        window.location.href = "/business/user/login";
+		                } else {
 		                    if (typeof(resp.msg) == 'string') {
 		                        ui_alert("alert-error",resp.msg);
 		                        return false;
-		                    }  
+		                    }                 
 		                }
 		            }
-		        }); 
+		        });
 	        });
  			
 
@@ -273,3 +258,8 @@ var Login = function () {
 	    //return false;
 	}
 
+	function getUrlParam(name) {  
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); 
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null) return unescape(r[2]); return null;
+	}
