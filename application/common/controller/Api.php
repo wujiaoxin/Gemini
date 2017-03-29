@@ -4,7 +4,6 @@ namespace app\common\controller;
 
 class Api extends \think\Controller {
 	public function _initialize() {
-		//echo "hello";
 		// 读取数据库中的配置
 		$config = cache('db_config_data');
 		if (!$config) {
@@ -12,7 +11,8 @@ class Api extends \think\Controller {
 			cache('db_config_data', $config);
 		}
 		config($config);
-		
+
+		//$this->checkJWT();
 		//检查SID
 		if($this->checkSID() == false ){
 			$resp["code"] = -1;
@@ -21,9 +21,8 @@ class Api extends \think\Controller {
 			exit(json_encode($resp, JSON_UNESCAPED_UNICODE)); 			
 		}
 	}
-	
-	
-	
+
+
 	protected function checkSID() {
 		$sid = input('sid');
 		if (isset($sid)) {
@@ -38,8 +37,7 @@ class Api extends \think\Controller {
 			return false;
 		}
 	}
-	
-	
+
 	protected function checkLogin() {
 		$userid = session('userid');
 		if (isset($userid)) {
@@ -48,6 +46,18 @@ class Api extends \think\Controller {
 			return false;
 		}
 	}
-
 	
+	protected function checkJWT() {		
+		$headerAuth = request()->header('Authorization');
+		list($jwt) = sscanf( $headerAuth, 'Bearer %s');
+		if($jwt == null){
+			$jwt = input('token');
+		}
+		if($jwt == null){
+			return false;
+		}
+		//print_r($jwt);
+		$authInfo = decodedToken($jwt);
+		return $authInfo;		
+	}	
 }

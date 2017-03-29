@@ -11,7 +11,7 @@ class User extends Api {
 		return json($resp);
 	}  
 	
-	public function reg($mobile = null, $password = null, $smsverify = null, $authcode = null, $invitecode = null){
+	public function reg($mobile = null, $password = null, $smsverify = null, $authcode = null, $invitecode = null, $sid = null){
 		$model = model('User');
 		$resp["code"] = 0;
 		$resp["msg"] = "注册失败";
@@ -22,11 +22,10 @@ class User extends Api {
 		if (!$password) {
 			return ['code'=>1003,'msg'=>'密码不能为空'];
 		}
-		
-		$storeSmsCode = session('smsCode');
 		$storeMobile = session('mobile');
-		
-		if($mobile != $storeMobile || $smsverify == $storeSmsCode){
+		$storeSmsCode = session('smsCode');
+
+		if($mobile != $storeMobile || $smsverify != $storeSmsCode){
 			return ['code'=>1005,'msg'=>'短信验证码错误'];
 		}
 		
@@ -36,14 +35,20 @@ class User extends Api {
 			if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 				return $this->error('注册失败！', '');
 			} else {
-				return $this->success('注册成功！', url('admin/user/index'));
+				$token = generateToken($uid, $sid);
+				$resp["code"] = 1;
+				$resp["msg"] = '注册成功';			
+				$data["token"] = $token;
+				$resp["data"] = $data;
+				session('token',$token);
+				return json($resp);
 			}
 		} else {
 			return $this->error($model->getError());
 		}
 	}
 	
-	public function login($mobile = '', $password = '', $imgverify = null){
+	public function login($mobile = '', $password = '', $imgverify = null, $sid = null){
 		$resp["code"] = 0;
 		$resp["msg"] = '未知错误';		
 		if (!$mobile || !$password) {
@@ -57,7 +62,8 @@ class User extends Api {
 		$user = model('User');
 		$uid  = $user->login($mobile, $password);
 		if ($uid > 0) {
-			$token = rand(100000,999999);
+			//$token = rand(100000,999999);
+			$token = generateToken($uid, $sid);
 			$resp["code"] = 1;
 			$resp["msg"] = '登录成功';			
 			$data["token"] = $token;
@@ -116,7 +122,7 @@ class User extends Api {
 	
 		if(!preg_match("/^1[34578]{1}\d{9}$/",$mobile)){
 			$resp["code"] = 0;
-			$resp["msg"] = "手机号格式错误!";
+			$resp["msg"] = "手机号格式错误";
 			return $resp;
 		}
 		
@@ -124,14 +130,14 @@ class User extends Api {
 		if($needImgVerify == 1 ){
 			if($imgVerify == null){
 				session('needImgVerify', 1);
-				$resp["code"] = -1;
-				$resp["msg"] = "需要图形验证码!";
+				$resp["code"] = -2;
+				$resp["msg"] = "需要图形验证码";
 				return $resp;
 			}else{
 				$storeImgVerify = session('imgVerify');
 				if($storeImgVerify != $imgVerify){
-					$resp["code"] = -2;
-					$resp["msg"] = "图形验证码错误!";
+					$resp["code"] = 1001;
+					$resp["msg"] = "图形验证码错误";
 					return $resp;
 				}
 			}
@@ -170,6 +176,79 @@ class User extends Api {
 			$resp["msg"] = "发送失败！";
 		}
 		return $resp;
+	}
+	
+	
+	public function resetPassword($mobile = '', $token = null, $smsverify = null, $newPassword = null, $idcard = null){
+
+		$resp["code"] = 0;
+		$resp["msg"] = "找回失败";
+	
+		if (!$mobile) {
+			return ['code'=>1002,'msg'=>'手机号不能为空'];
+		}
+		if (!$newPassword) {
+			return ['code'=>1003,'msg'=>'新密码不能为空'];
+		}
+		$storeMobile = session('mobile');
+		
+		if($token != null){
+			$storeToken = session('token');
+			if($token == $storeToken && $mobile == $storeMobile){
+				$resp["code"] = 1;
+				$resp["msg"] = "修改成功";
+			}
+		}else{
+			if($smsverify != null){
+				
+				$storeSmsCode = session('smsCode');
+				if($mobile == $storeMobile && $smsverify == $storeSmsCode){
+					$resp["code"] = 1;
+					$resp["msg"] = "修改成功";
+				}else{
+					return ['code'=>1005,'msg'=>'短信验证码错误'];
+				}
+			}
+			
+		}
+		
+		if($resp["code"] == 1){			
+			$user = model('User');	
+			$result = $user->resetpw($mobile,$newPassword);
+			if ($result !== false) {
+				return $this->success("修改成功", "");
+			}else{
+				return $this->error($user->getError(), '');
+			}
+			
+		}
+		return $resp;
+	}
+	
+	
+	public function checkSmsVerify($mobile = '', $smsverify = null, $sid = null){
+		
+		if (!$mobile) {
+			return ['code'=>1002,'msg'=>'手机号不能为空'];
+		}
+		if (!$smsverify) {
+			return ['code'=>1003,'msg'=>'验证码不能为空'];
+		}
+		
+		$storeMobile = session('mobile');
+		$storeSmsCode = session('smsCode');
+
+		if($mobile != $storeMobile || $smsverify != $storeSmsCode){			
+			return ['code'=>1005,'msg'=>'短信验证码错误'];
+		}else{		
+			$token = generateToken($mobile, $sid);
+			$resp["code"] = 1;
+			$resp["msg"] = '校验成功';			
+			$data["token"] = $token;
+			$resp["data"] = $data;
+			session('token',$token);
+			return json($resp);
+		}
 	}
 		
 	public function getImgVerify() {

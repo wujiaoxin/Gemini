@@ -42,7 +42,7 @@ var Login = function () {
         			return false;
         		}
 		        ajax_jquery({
-		            url: apiUrl +'/api/user/login?t=' + Math.random(),
+		            url: apiUrl +'/business/user/login?t=' + Math.random(),
 		            data:{
 		            	"mobile": username,
 		            	"password": password,
@@ -51,7 +51,7 @@ var Login = function () {
 		            success:function(resp){
 		                if (resp.code == "1" ) {
 		                		ui_alert("alert-success","登录成功");
-		                		localStorage.setItem('token',resp.data.token);
+		                		//localStorage.setItem('token',resp.data.token);
 		                        window.location.href = "/business/index/index";
 		                } else {
 		                    if(resp.code == "-2" || resp.code == "1001"){

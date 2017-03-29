@@ -17,6 +17,14 @@
 </style>
 <script type="text/javascript">
 	var BASE_URL = "";
+	
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+	
 </script>
 {/block}
 {block name="body"}
