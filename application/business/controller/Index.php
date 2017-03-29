@@ -12,6 +12,10 @@ use app\common\controller\Base;
 
 class Index extends Base {
 	public function index() {
+		$uid = session("uid");
+		if($uid == null){
+			return $this->error("请先登录",url("/business/user/login"));
+		}
 		return $this->fetch();
 	}
 }
