@@ -43,13 +43,12 @@ var guide = function () {
                             return false;
                         }
                         ajax_jquery({
-                            url: apiUrl +'/api/order/save?t='+Math.random(),
+                            url: apiUrl +'/business/user/guide?t='+Math.random(),
                             data:{
-                                'type': '1',
-                                'Enterprise': Enterprise,
+                                'name': Enterprise,
                                 'businessLicense': businessLicense,
-                                'loc_address': loc_address,
-                                'address': address,
+                                'city': loc_address,
+                                'addr': address,
                                 'termOfValidity': termOfValidity
                             },
                             success:function(resp){
@@ -77,10 +76,9 @@ var guide = function () {
                             return false;
                         }
                         ajax_jquery({
-                            url: apiUrl +'/api/order/save?t='+Math.random(),
+                            url: apiUrl +'/business/user/guide?t='+Math.random(),
                             data:{
-                                'type': '1',
-                                'legalPerson': legalPerson,
+                                'rep': legalPerson,
                                 'idcardNum': idcardNum
                             },
                             success:function(resp){
@@ -95,28 +93,27 @@ var guide = function () {
                             }
                         });
                     }else if(index == 3){
-                        var legalPerson = $("#legalPerson").val();
-                        var idcardNum = $("#idcardNum").val();
-                        if(legalPerson == ""){
-                            ui_alert("alert-error","请填写法人姓名");
-                            return false;
-                        }else if(idcardNum == ""){
-                            ui_alert("alert-error","请填写法人身份证号");
-                            return false;
-                        }else if(!validateBankNum(idcardNum)){
-                            ui_alert("alert-error","身份证号填写有误");
-                            return false;
-                        }
+
+                        // var legalPerson = $("#legalPerson").val();
+                        // var idcardNum = $("#idcardNum").val();
+                        // if(legalPerson == ""){
+                        //     ui_alert("alert-error","请填写法人姓名");
+                        //     return false;
+                        // }else if(idcardNum == ""){
+                        //     ui_alert("alert-error","请填写法人身份证号");
+                        //     return false;
+                        // }else if(!validateBankNum(idcardNum)){
+                        //     ui_alert("alert-error","身份证号填写有误");
+                        //     return false;
+                        // }
                         ajax_jquery({
-                            url: apiUrl +'/api/order/save?t='+Math.random(),
+                            url: apiUrl +'/business/user/guide?t='+Math.random(),
                             data:{
-                                'type': '1',
-                                'legalPerson': legalPerson,
-                                'idcardNum': idcardNum
+                                'property': 1,
+                                'forms': 2
                             },
                             success:function(resp){
                                 if (resp.code == "1" ) {
-
                                 } else {
                                     if (typeof(resp.msg) == 'string') {
                                         ui_alert("alert-error",resp.msg);
@@ -202,6 +199,33 @@ var guide = function () {
 
             $('#form_wizard_1').find('.button-previous').hide();
             $('#form_wizard_1 .button-submit').hide();
+            $('#form_wizard_1 .button-submit').click(function(){
+                ajax_jquery({
+                    url: apiUrl +'/business/user/guide?t='+Math.random(),
+                    data:{
+                        'bank_name': 1,
+                        'bank_branch': 2,
+                        'bank_account_name': 1,
+                        'bank_account_id': 1,
+                        'priv_bank_name': 1,
+                        'priv_bank_branch': 1,
+                        'priv_bank_account_name': 1,
+                        'priv_bank_account_id': 1
+                    },
+                    success:function(resp){
+                        if (resp.code == "1" ) {
+                            ui_alert("alert-success",'提交成功')
+                        } else {
+                            ui_alert("alert-success",'提交成功')
+                            if (typeof(resp.msg) == 'string') {
+                                ui_alert("alert-error",resp.msg);
+                                return false;
+                            }                 
+                        }
+                    }
+                });
+            });
+
         }
 
     };
