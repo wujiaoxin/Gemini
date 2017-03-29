@@ -4,7 +4,7 @@ Login page
 
 /* logo page */
 .login {
-  background-color: #444 !important;
+  background-color: rgba(68, 68, 68, 0) !important;
 }
 
 .login .logo {

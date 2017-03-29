@@ -1,3 +1,18 @@
+(function ($) {
+    "use strict";
+    $.fn.select2.locales = [];
+    $.fn.select2.locales['zh-CN'] = {
+        formatNoMatches: function () { return "没有找到匹配项"; },
+        formatInputTooShort: function (input, min) { var n = min - input.length; return "请再输入" + n + "个字符";},
+        formatInputTooLong: function (input, max) { var n = input.length - max; return "请删掉" + n + "个字符";},
+        formatSelectionTooBig: function (limit) { return "你只能选择最多" + limit + "项"; },
+        formatLoadMore: function (pageNumber) { return "加载结果中…"; },
+        formatSearching: function () { return "搜索中…"; }
+    };
+
+    $.extend($.fn.select2.defaults, $.fn.select2.locales['zh-CN']);
+})(jQuery);
+
 function Location() {
 	this.items	= {
 	'0':{1:'北京市',22:'天津市',44:'上海市',66:'重庆市',108:'河北省',406:'山西省',622:'内蒙古',804:'辽宁省',945:'吉林省',1036:'黑龙江省',1226:'江苏省',1371:'浙江省',1500:'安徽省',1679:'福建省',1812:'江西省',1992:'山东省',2197:'河南省',2456:'湖北省',2613:'湖南省',2822:'广东省',3015:'广西',3201:'海南省',3235:'四川省',3561:'贵州省',3728:'云南省',3983:'西藏',4136:'陕西省',4334:'甘肃省',4499:'青海省',4588:'宁夏',4624:'新疆',4802:'香港',4822:'澳门',4825:'台湾省'},
@@ -405,73 +420,55 @@ Location.prototype.fillOption	= function(el_id , loc_id , selected_id) {
 }
 
 
-
-
-
-
-function showLocation(province , city , town) {
+function showLocation(contentId , province , city , town) {
 	var loc	= new Location();
 	var title	= ['省份' , '地级市' , '市、县、区'];
 	$.each(title , function(k , v) {
 		title[k]	= '<option value="">'+v+'</option>';
 	})
 	
-	$('#loc_province').append(title[0]);
-	$('#loc_city').append(title[1]);
-	$('#loc_town').append(title[2]);
+	$('#'+contentId+'_province').append(title[0]);
+	$('#'+contentId+'_city').append(title[1]);
+	$('#'+contentId+'_town').append(title[2]);
 	
-	$("#loc_province,#loc_city,#loc_town").select2()
-	$('#loc_province').change(function() {
-		$('#loc_city').empty();
-		$('#loc_city').append(title[1]);
-		loc.fillOption('loc_city' , '0,'+$('#loc_province').val());
-		$('#loc_city').change()
+	$('#'+contentId+'_province,#'+contentId+'_city,#'+contentId+'_town').select2()
+	$('#'+contentId+'_province').change(function() {
+		$('#'+contentId+'_city').empty();
+		$('#'+contentId+'_city').append(title[1]);
+		loc.fillOption(contentId+'_city' , '0,'+$('#'+contentId+'_province').val());
+		$('#'+contentId+'_city').change()
 	})
 	
-	$('#loc_city').change(function() {
-		$('#loc_town').empty();
-		$('#loc_town').append(title[2]);
-		loc.fillOption('loc_town' , '0,' + $('#loc_province').val() + ',' + $('#loc_city').val());
+	$('#'+contentId+'_city').change(function() {
+		$('#'+contentId+'_town').empty();
+		$('#'+contentId+'_town').append(title[2]);
+		loc.fillOption(contentId+'_town' , '0,' + $('#'+contentId+'_province').val() + ',' + $('#'+contentId+'_city').val());
 	})
 	
-	$('#loc_town').change(function() {
-		$('input[@name=location_id]').val($(this).val());
+	$('#'+contentId+'_town').change(function() {
+		// $('input[@name=location_id]').val($(this).val());
 	})
 	
 	if (province) {
-		loc.fillOption('loc_province' , '0' , province);
+		loc.fillOption(contentId+'_province' , '0' , province);
 		
 		if (city) {
-			loc.fillOption('loc_city' , '0,'+province , city);
+			loc.fillOption(contentId+'_city' , '0,'+province , city);
 			
 			if (town) {
-				loc.fillOption('loc_town' , '0,'+province+','+city , town);
+				loc.fillOption(contentId+'_town' , '0,'+province+','+city , town);
 			}
 		}
 		
 	} else {
-		loc.fillOption('loc_province' , '0');
+		loc.fillOption(contentId+'_province' , '0');
 	}
 		
 }
 
 $(function(){
-	showLocation();
+	showLocation('loc');
 })
 
-/**
- * Select2 Chinese translation
- */
-// (function ($) {
-//     "use strict";
-//     $.fn.select2.locales['zh-CN'] = {
-//         formatNoMatches: function () { return "没有找到匹配项"; },
-//         formatInputTooShort: function (input, min) { var n = min - input.length; return "请再输入" + n + "个字符";},
-//         formatInputTooLong: function (input, max) { var n = input.length - max; return "请删掉" + n + "个字符";},
-//         formatSelectionTooBig: function (limit) { return "你只能选择最多" + limit + "项"; },
-//         formatLoadMore: function (pageNumber) { return "加载结果中…"; },
-//         formatSearching: function () { return "搜索中…"; }
-//     };
 
-//     $.extend($.fn.select2.defaults, $.fn.select2.locales['zh-CN']);
-// })(jQuery);
+

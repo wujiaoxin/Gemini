@@ -25,9 +25,13 @@
 	<!-- END PAGE LEVEL STYLES -->
 	<link rel="shortcut icon" href="/public/business/lib/metronic/image/favicon.ico" />
 	<style type="text/css">
-		body{
+		html{
+			height: 100%;
 			background: url('/public/business/img/bg_login.jpg');
 			background-size: cover;
+		}
+		.login {
+			background-color:rgba(68, 68, 68, 0);
 		}
 		.controls{
 			position: relative;
@@ -264,8 +268,12 @@
 	<script src="/public/business/js/login.js" type="text/javascript"></script>  
 	<script>
 		jQuery(document).ready(function() {     
-		  App.init();
-		  Login.init();
+		  	App.init();
+		  	Login.init();
+		  	var t = getUrlParam('t');
+			if(t == 1){
+				$('#register-btn').click();
+			}
 		});
 
 	</script>
