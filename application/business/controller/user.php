@@ -56,7 +56,7 @@ class User extends Base {
 		$uid = session("uid");
 		if($mobile == null || $uid == null){
 			return $this->error("请重新登录",url("/business/user/login"));
-		}		
+		}
 		$modelDealer = model('Dealer');		
 		if (IS_POST) {
 			$data = input('post.');
@@ -85,16 +85,59 @@ class User extends Base {
 				'info'    => $info,
 				'infoStr' => json_encode($info),
 			);
+			prinf($data);
 			$this->assign($data);
 			return $this->fetch();
 		}
 	}
 
 	public function myStaff() {
+		//商家员工
+		$uid = session("uid");
+		$uid = db('Dealer')->alias('d')->field('id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
+//		prinf($uid);
+		$members = db('member_info')->where('did',$uid['id'])->select();
+		foreach($members as $k => $v){
+			$members[$k]['effect'] = '';
+			if($v['status'] == '1'){
+				$members[$k]['status']= '正常';
+			}else{
+				$members[$k]['status']= '停用';
+			}
+			if($v['is_effect'] == '1'){
+				$members[$k]['effect']= '启用';
+			}else{
+				$members[$k]['effect']= '停用';
+			}
+		}
+		$data = array(
+				'info'    => $members,
+				'infoStr' => json_encode($members),
+		);
+//		prinf($data);
+		$this->assign($data);
 		return $this->fetch();
 	}
 
 	public function newStaff() {
+		//商家添加新用户
+		$uid = session("uid");
+		$uid = db('Dealer')->alias('d')->field('id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
+		$id = db('member_info')->where('did',$uid['id'])->field('sum(bid) as id')->find();
+		if ($id){
+			$userd['id'] = $id['id']+1;
+			$this->assign('userd',$userd['id']);
+		}else{
+			$this->assign('userd','10000');
+		}
+		if (IS_POST){
+			$data = input('post.');
+			if ($data) {
+				
+			}
+
+//			db('user')->insert($data);
+		}
 		return $this->fetch();
 	}
 
