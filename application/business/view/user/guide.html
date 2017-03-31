@@ -14,6 +14,13 @@
 	.webuploader-pick-file-close .close{
 		background: inherit;
 	}
+
+	.webuploader-pick {
+	    color: #333;
+	    margin-top: 0;
+	    font-size: 12px;
+	    border: 1px solid #666;
+}
 </style>
 <script type="text/javascript">
 	var BASE_URL = "";
@@ -82,7 +89,7 @@
 								<div class="control-group">
 									<label class="control-label">企业名称</label>
 									<div class="controls">
-										<input type="text" id="Enterprise" name="Enterprise" placeholder="请输入车商名称" class="m-wrap large" />
+										<input type="text" id="name" name="name" placeholder="请输入车商名称" class="m-wrap large" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -106,7 +113,7 @@
 								<div class="control-group">
 									<label class="control-label">详细地址</label>
 									<div class="controls">
-										<input type="text" id="address" name="address" placeholder="请输入具体地址" class="m-wrap large" />
+										<input type="text" id="addr" name="addr" placeholder="请输入具体地址" class="m-wrap large" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -118,18 +125,28 @@
 								<div class="control-group">
 									<label class="control-label">上传营业资格证</label>
 									<div class="controls">
-										<input id="licencePic" type="file" multiple="multiple" name="file" />
+										<div class="picker-box span3">
+									<div id="picker_dealer_lic_pic" class="picker_button">上传图片</div>
+									<input type="hidden" name="dealer_lic_pic" id="field_dealer_lic_pic" {if condition="$info['dealer_lic_pic'] neq '0'"}value="{$info['dealer_lic_pic']|default=''}"{/if}>
+									<div id="fileList_dealer_lic_pic" class="upload-file-list-info" style="width:250px;">
+										{if $info['dealer_lic_pic'] != 0}
+											{php}
+												$images = get_cover($info['dealer_lic_pic']);
+											{/php}
+											<li class="affix-list-item" id="WU_FILE_100">
+                                                <div class="upload-file-info">
+                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_100" data-id="{$info['dealer_lic_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
+                                                    <span class="fname"></span>
+                                                    <span class="fsize">上传时间:{$images['create_time']|date='Y-m-d H:i',###}</span>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="filebox image">
+                                                    <img src="{$images['path']|default=''}" class="img-responsive">
+                                                </div>
+                                            </li>
+										{/if}
 									</div>
 								</div>
-								<div class="control-group">
-									<label class="control-label">上传营业资格证</label>
-									<div class="controls">
-										<div class="picker-box span3">
-											<div id="picker_dealer_lic_pic" class="picker_button">上传图片</div>
-											<input type="hidden" name="dealer_lic_pic" id="field_dealer_lic_pic">
-											<div id="fileList_dealer_lic_pic" class="upload-file-list-info" style="width:250px;">
-											</div>
-										</div>
 									</div>
 								</div>
 							</div>
@@ -138,7 +155,7 @@
 								<div class="control-group">
 									<label class="control-label">法人姓名</label>
 									<div class="controls">
-										<input type="text" id="legalPerson" name="legalPerson" placeholder="请输入法人姓名" class="m-wrap medium" />
+										<input type="text" id="rep" name="rep" placeholder="请输入法人姓名" class="m-wrap medium" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -148,9 +165,53 @@
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">上传身份证正反面照片</label>
+									<label class="control-label">上传身份证照片</label>
 									<div class="controls">
-										<input id="idcardPic" type="file" multiple="multiple" name="file" />
+										<div class="picker-box span3">
+											<div id="picker_rep_idcard_pic" class="picker_button">身份证正面照</div>
+											<input type="hidden" name="rep_idcard_pic" id="field_rep_idcard_pic" {if condition="$info['rep_idcard_pic'] neq '0'"}value="{$info['rep_idcard_pic']|default=''}"{/if} ">
+											<div id="fileList_rep_idcard_pic" class="upload-file-list-info" style="width:250px;">
+												{if $info['rep_idcard_pic'] != 0}
+													{php}
+														$images = get_cover($info['rep_idcard_pic']);
+													{/php}
+													<li class="affix-list-item" id="WU_FILE_100">
+		                                                <div class="upload-file-info">
+		                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_100" data-id="{$info['rep_idcard_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
+		                                                    <span class="fname"></span>
+		                                                    <span class="fsize">上传时间:{$images['create_time']|date='Y-m-d H:i',###}</span>
+		                                                    <div class="clearfix"></div>
+		                                                </div>
+		                                                <div class="filebox image">
+		                                                    <img src="{$images['path']|default=''}" class="img-responsive">
+		                                                </div>
+		                                            </li>
+												{/if}									
+											</div>
+										</div>
+										<div class="span3"></div>
+										<div class="picker-box span3">
+											<div id="picker_contacts_pic" class="picker_button">身份证反面照</div>
+											<input type="hidden" name="contacts_pic" id="field_contacts_pic" {if condition="$info['contacts_pic'] neq '0'"}value="{$info['contacts_pic']|default=''}"{/if}>
+											<div id="fileList_contacts_pic" class="upload-file-list-info" style="width:250px;">
+												{if $info['contacts_pic'] != 0}
+													{php}
+														$images = get_cover($info['contacts_pic']);
+													{/php}
+													<li class="affix-list-item" id="WU_FILE_100">
+		                                                <div class="upload-file-info">
+		                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_100" data-id="{$info['contacts_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
+		                                                    <span class="fname"></span>
+		                                                    <span class="fsize">上传时间:{$images['create_time']|date='Y-m-d H:i',###}</span>
+		                                                    <div class="clearfix"></div>
+		                                                </div>
+		                                                <div class="filebox image">
+		                                                    <img src="{$images['path']|default=''}" class="img-responsive">
+		                                                </div>
+		                                            </li>
+												{/if}
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -166,9 +227,9 @@
 								<div class="control-group">
 									<label class="control-label">合作形式</label>
 									<div class="controls">
-										<label class="checkbox"><input type="checkbox" name="businessForm" value="1"/>按揭垫资</label>
-										<label class="checkbox"><input type="checkbox" name="businessForm" value="2"/>二手车垫资</label>
-										<label class="checkbox"><input type="checkbox" name="businessForm" value="3"/>车抵贷</label>
+										<label class="checkbox"><input type="checkbox" name="forms" value="1"/>按揭垫资</label>
+										<label class="checkbox"><input type="checkbox" name="forms" value="2"/>二手车垫资</label>
+										<label class="checkbox"><input type="checkbox" name="forms" value="3"/>车抵贷</label>
 									</div>
 								</div>	
 							</div>
@@ -180,31 +241,31 @@
 										<div class="control-group">
 											<label class="control-label">开户人</label>
 											<div class="controls">
-												<input type="text" id="public-name" name="public-name" placeholder="请输入开户人姓名" class="m-wrap medium" />
+												<input type="text" id="bank_account_name" name="bank_account_name" placeholder="请输入开户人姓名" class="m-wrap medium" />
 											</div>
 										</div>
 										<div class="control-group">
 											<label class="control-label">开户银行</label>
 											<div class="controls">
-												<input type="text" id="public-bank-name" name="public-bank-name" placeholder="请输入开户银行" class="m-wrap medium" />
+												<input type="text" id="bank_name" name="bank_name" placeholder="请输入开户银行" class="m-wrap medium" />
 											</div>
 										</div>
 										<div class="control-group">
 											<label class="control-label">银行账号</label>
 											<div class="controls">
-												<input type="text" id="public-bank-account" name="public-bank-account" placeholder="请输入银行账号" class="m-wrap medium" />
+												<input type="text" id="bank_account_id" name="bank_account_id" placeholder="请输入银行账号" class="m-wrap medium" />
 											</div>
 										</div>
-										<div class="control-group">
+										<!-- <div class="control-group">
 											<label class="control-label">所在地区</label>
 											<div class="controls">
 												<input type="text" id="public-bank-address" name="public-bank-address" placeholder="请输入所在地区" class="m-wrap medium" />
 											</div>
-										</div>
+										</div> -->
 										<div class="control-group">
 											<label class="control-label">支行名称</label>
 											<div class="controls">
-												<input type="text" id="public-bank-branch" name="public-bank-branch" placeholder="请输入支行名称" class="m-wrap medium" />
+												<input type="text" id="bank_branch" name="bank_branch" placeholder="请输入支行名称" class="m-wrap medium" />
 											</div>
 										</div>
 									</div>
@@ -213,31 +274,31 @@
 										<div class="control-group">
 											<label class="control-label">开户人</label>
 											<div class="controls">
-												<input type="text" id="public-name" name="public-name" placeholder="请输入开户人姓名" class="m-wrap medium" />
+												<input type="text" id="priv_bank_account_name" name="priv_bank_account_name" placeholder="请输入开户人姓名" class="m-wrap medium" />
 											</div>
 										</div>
 										<div class="control-group">
 											<label class="control-label">开户银行</label>
 											<div class="controls">
-												<input type="text" id="public-bank-name" name="public-bank-name" placeholder="请输入开户银行" class="m-wrap medium" />
+												<input type="text" id="priv_bank_name" name="priv_bank_name" placeholder="请输入开户银行" class="m-wrap medium" />
 											</div>
 										</div>
 										<div class="control-group">
 											<label class="control-label">银行账号</label>
 											<div class="controls">
-												<input type="text" id="public-bank-account" name="public-bank-account" placeholder="请输入银行账号" class="m-wrap medium" />
+												<input type="text" id="priv_bank_account_id" name="priv_bank_account_id" placeholder="请输入银行账号" class="m-wrap medium" />
 											</div>
 										</div>
-										<div class="control-group">
+										<!-- <div class="control-group">
 											<label class="control-label">所在地区</label>
 											<div class="controls">
 												<input type="text" id="public-bank-address" name="public-bank-address" placeholder="请输入所在地区" class="m-wrap medium" />
 											</div>
-										</div>
+										</div> -->
 										<div class="control-group">
 											<label class="control-label">支行名称</label>
 											<div class="controls">
-												<input type="text" id="public-bank-branch" name="public-bank-branch" placeholder="请输入支行名称" class="m-wrap medium" />
+												<input type="text" id="priv_bank_branch" name="priv_bank_branch" placeholder="请输入支行名称" class="m-wrap medium" />
 											</div>
 										</div>
 									</div>
@@ -270,40 +331,61 @@
 	<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.bootstrap.wizard.min.js"></script>
 	<script type="text/javascript" src="/public/business/lib/metronic/js/chosen.jquery.min.js"></script>
 	<script type="text/javascript" src="/public/business/js/selectArea.js"></script>
-	<script type="text/javascript" src="/public/business/js/guide.js"></script>
 	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
 	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.custom.js"></script>
+	<script type="text/javascript" src="/public/business/js/guide.js"></script>
+	
 	<script>
 		jQuery(document).ready(function() {       
 		   // App.init();
 		   guide.init();
-		   function btnSentUploader(picName){
-				$("#picker_" + picName).SentUploader({
-					fileNumLimit:1,
-					uploadEvents: {
-						uploadComplete:function(file){}
-					},
-					listName : 'fileList_' + picName,
-					hiddenName: 'field_' + picName,
-					hiddenValType:1,
-					fileSingleSizeLimit:20*1024*1024,
-					closeX:true,
-					compress:{
-						width: 1024,
-						quality: 90,
-						allowMagnify: false,
-						crop: false,
-						preserveHeaders: true,
-						noCompressIfLarger: false,
-						compressSize: 0
-					}
-				},
-				{
-					fileType: 'service',
-					filename : 'images',
-				});
+		    function btnSentUploader(picName){
+			    $("#picker_" + picName).SentUploader({
+			        fileNumLimit:1,
+			        uploadEvents: {
+			            uploadComplete:function(file){}
+			        },
+			        listName : 'fileList_' + picName,
+			        hiddenName: 'field_' + picName,
+			        hiddenValType:1,
+			        fileSingleSizeLimit:20*1024*1024,
+			        closeX:true,
+			        compress:{
+			            width: 1024,
+			            quality: 90,
+			            allowMagnify: false,
+			            crop: false,
+			            preserveHeaders: true,
+			            noCompressIfLarger: false,
+			            compressSize: 0
+			        }
+			    },
+			    {
+			        fileType: 'service',
+			        filename : 'images',
+			    });
 			};
 			btnSentUploader("dealer_lic_pic");
+			btnSentUploader("rep_idcard_pic");
+			btnSentUploader("contacts_pic");
+
+			//初始化表单
+			$("input[type=text]").each(function(i){
+			    var name = $(this).attr('name');
+			    if(typeof(info[name]) == "string" &&info[name] !=''){
+			        $(this).val(info[name]);
+			    }
+			});
+
+			initCheckBox('property');
+			initCheckBox('forms');
+
+			if(typeof(info['city']) == "string" && info['city'] != ''){
+			    var city = info['city'].split(',');
+			    $("#loc_province").select2('val',city[0]).trigger("change");
+			    $("#loc_city").select2('val',city[1]).trigger("change");
+			    $("#loc_town").select2('val',city[2]).trigger("change");
+			}
 		});
 	</script>     
 {/block}
