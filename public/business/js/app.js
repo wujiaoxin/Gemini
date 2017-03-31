@@ -1,7 +1,7 @@
 /**
 Core script to handle the entire layout and base functions
 **/
-var apiUrl = "http://lo.vpdai.com";
+var apiUrl = "http://test.vpdai.com";
 var App = function () {
 
     // IE mode
