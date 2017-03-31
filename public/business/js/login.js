@@ -251,6 +251,7 @@ var Login = function () {
 	                        ui_alert("alert-error","验证码发送失败");
 	                    }
 	                    doRefreshVerfiy();
+	                    return false;
 	                }
 	            }
 	        });
