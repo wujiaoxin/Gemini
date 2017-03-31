@@ -148,8 +148,8 @@ var Login = function () {
 		            },
 		            success:function(resp){
 		                if (resp.code == "1" ) {
-		                		ui_alert("alert-success","注册成功");
-		                        window.location.href = "/business/index/index";
+		                		ui_alert("alert-success","注册成功，请登录");
+		                        window.location.href = "/business/user/login";
 		                } else {
 		                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 		                        ui_alert("alert-error",resp.msg);

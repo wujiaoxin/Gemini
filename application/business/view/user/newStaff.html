@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css" />
 {/block}
 {block name="body"}
-<form action="#" class="form-horizontal">
+<div class="form-horizontal">
 	<h4 class="form-section">新增员工</h4>
 	<div class="row-fluid">
 		<div class="span4">
@@ -88,10 +88,10 @@
 		</div>
 	</div>
 	<div class="form-actions">
-		<button type="submit" class="btn blue"><i class="icon-ok"></i>添加</button>
-		<button type="button" class="btn">取消</button>
+		<button id="submit" class="btn blue"><i class="icon-ok"></i>添加</button>
+		<button type="button" class="btn green">取消</button>
 	</div>
-</form>
+</div>
 {/block}
 {block name="script"}
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>

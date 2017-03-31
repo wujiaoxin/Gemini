@@ -1,6 +1,4 @@
 var guide = function () {
-
-
     return {
         //main function to initiate the module
         init: function () {
@@ -14,19 +12,19 @@ var guide = function () {
                 'previousSelector': '.button-previous',
                 onTabClick: function (tab, navigation, index) {
                     // ui_alert("alert-error",'on tab click disabled');
-                    return false;
+                    // return false;
                 },
                 onNext: function (tab, navigation, index) {
                     if(index == 1){
-                        var Enterprise = $("#Enterprise").val();
+                        var name = $("#name").val();
                         var businessLicense = $("input[name='businessLicense']:checked").val();
                         var loc_province = $("#loc_province").val();
                         var loc_city = $("#loc_city").val();
                         var loc_town = $("#loc_town").val();
                         var loc_address = loc_province + ',' + loc_city  + ',' + loc_town;
-                        var address = $("#address").val();
+                        var addr = $("#addr").val();
                         var termOfValidity = $("#termOfValidity").val();
-                        if(Enterprise == ""){
+                        if(name == ""){
                             ui_alert("alert-error","请输入企业名称");
                             return false;
                         }else if(!businessLicense){
@@ -35,7 +33,7 @@ var guide = function () {
                         }else if(!loc_province && !loc_city && !loc_town){
                             ui_alert("alert-error","请选择单位所在地");
                             return false;
-                        }else if(address == ""){
+                        }else if(addr == ""){
                             ui_alert("alert-error","请填写详细地址");
                             return false;
                         }else if(termOfValidity == ""){
@@ -45,10 +43,10 @@ var guide = function () {
                         ajax_jquery({
                             url: apiUrl +'/business/user/guide?t='+Math.random(),
                             data:{
-                                'name': Enterprise,
+                                'name': name,
                                 'businessLicense': businessLicense,
                                 'city': loc_address,
-                                'addr': address,
+                                'addr': addr,
                                 'termOfValidity': termOfValidity
                             },
                             success:function(resp){
@@ -63,9 +61,9 @@ var guide = function () {
                             }
                         });
                     }else if(index == 2){
-                        var legalPerson = $("#legalPerson").val();
+                        var rep = $("#rep").val();
                         var idcardNum = $("#idcardNum").val();
-                        if(legalPerson == ""){
+                        if(rep == ""){
                             ui_alert("alert-error","请填写法人姓名");
                             return false;
                         }else if(idcardNum == ""){
@@ -78,7 +76,7 @@ var guide = function () {
                         ajax_jquery({
                             url: apiUrl +'/business/user/guide?t='+Math.random(),
                             data:{
-                                'rep': legalPerson,
+                                'rep': rep,
                                 'idcardNum': idcardNum
                             },
                             success:function(resp){
@@ -93,24 +91,21 @@ var guide = function () {
                             }
                         });
                     }else if(index == 3){
-
-                        // var legalPerson = $("#legalPerson").val();
-                        // var idcardNum = $("#idcardNum").val();
-                        // if(legalPerson == ""){
-                        //     ui_alert("alert-error","请填写法人姓名");
-                        //     return false;
-                        // }else if(idcardNum == ""){
-                        //     ui_alert("alert-error","请填写法人身份证号");
-                        //     return false;
-                        // }else if(!validateBankNum(idcardNum)){
-                        //     ui_alert("alert-error","身份证号填写有误");
-                        //     return false;
-                        // }
+                        var property = encodeCheckbox('property');
+                        var forms = encodeCheckbox('forms');
+                       
+                        if(property == ""){
+                            ui_alert("alert-error","请选择门店属性");
+                            return false;
+                        }else if(forms == ""){
+                            ui_alert("alert-error","请选择合作形式");
+                            return false;
+                        }
                         ajax_jquery({
                             url: apiUrl +'/business/user/guide?t='+Math.random(),
                             data:{
-                                'property': 1,
-                                'forms': 2
+                                'property': property,
+                                'forms': forms
                             },
                             success:function(resp){
                                 if (resp.code == "1" ) {
@@ -132,7 +127,6 @@ var guide = function () {
 
                     var total = navigation.find('li').length;
                     var current = index + 1;
-                    console.log(current)
                     // set wizard title
                     $('.step-title', $('#form_wizard_1')).text('Step ' + (index + 1) + ' of ' + total);
                     // set done steps
@@ -200,23 +194,64 @@ var guide = function () {
             $('#form_wizard_1').find('.button-previous').hide();
             $('#form_wizard_1 .button-submit').hide();
             $('#form_wizard_1 .button-submit').click(function(){
+                var bank_account_name = $("#bank_account_name").val();
+                var bank_name = $("#bank_name").val();
+                var bank_account_id = $("#bank_account_id").val();
+                var bank_branch = $("#bank_branch").val();
+                var priv_bank_account_name = $("#priv_bank_account_name").val();
+                var priv_bank_name = $("#priv_bank_name").val();
+                var priv_bank_account_id = $("#priv_bank_account_id").val();
+                var priv_bank_branch = $("#priv_bank_branch").val();
+
+                if(bank_account_name == ""){
+                    ui_alert("alert-error","请输入公户开户人姓名");
+                    return false;
+                }else if(bank_name == ""){
+                    ui_alert("alert-error","请输入公户开户银行");
+                    return false;
+                }else if(bank_account_id == ""){
+                    ui_alert("alert-error","请输入公户开户银行账号");
+                    return false;
+                }else if(!validateBankNum(bank_account_id)){
+                    ui_alert("alert-error","公户开户银行账号输入有误");
+                    return false;
+                }else if(bank_branch == ""){
+                    ui_alert("alert-error","请输入公户开户支行名称");
+                    return false;
+                }else if(priv_bank_account_name == ""){
+                    ui_alert("alert-error","请输入私户开户人姓名");
+                    return false;
+                }else if(priv_bank_name == ""){
+                    ui_alert("alert-error","请输入私户开户银行");
+                    return false;
+                }else if(priv_bank_account_id == ""){
+                    ui_alert("alert-error","请输入私户开户银行账号");
+                    return false;
+                }else if(!validateBankNum(priv_bank_account_id)){
+                    ui_alert("alert-error","私户银行账号输入有误");
+                    return false;
+                }else if(priv_bank_branch == ""){
+                    ui_alert("alert-error","请输入私户开户支行名称");
+                    return false;
+                }
+
                 ajax_jquery({
                     url: apiUrl +'/business/user/guide?t='+Math.random(),
                     data:{
-                        'bank_name': 1,
-                        'bank_branch': 2,
-                        'bank_account_name': 1,
-                        'bank_account_id': 1,
-                        'priv_bank_name': 1,
-                        'priv_bank_branch': 1,
-                        'priv_bank_account_name': 1,
-                        'priv_bank_account_id': 1
+                        'bank_account_name': bank_account_name,
+                        'bank_name': bank_name,
+                        'bank_account_id': bank_account_id,
+                        'bank_branch': bank_branch,
+                        'priv_bank_account_name': priv_bank_account_name,
+                        'priv_bank_name': priv_bank_name,
+                        'priv_bank_account_id': priv_bank_account_id,
+                        'priv_bank_branch': priv_bank_branch
                     },
                     success:function(resp){
                         if (resp.code == "1" ) {
                             ui_alert("alert-success",'提交成功')
+                            window.location.href = "/business/index/index";
                         } else {
-                            ui_alert("alert-success",'提交成功')
                             if (typeof(resp.msg) == 'string') {
                                 ui_alert("alert-error",resp.msg);
                                 return false;
@@ -225,9 +260,54 @@ var guide = function () {
                     }
                 });
             });
-
         }
-
     };
-
 }();
+
+//格式化checkBox
+function encodeCheckbox(name){
+    var data='';
+    $("input[name="+name+"]:checkbox:checked").each(function() {
+        data += $(this).val() + ',';
+    })
+    data = data.substring(0, data.length - 1);
+    return data;
+} 
+
+//初始化checkBox
+function initCheckBox(name){
+    var initData = {};
+    if( typeof(info[name]) == "string" && info[name] != ''){
+       initData = info[name].split(',');
+        for(var i in initData){
+            $("input[name="+name+"]").eq(initData[i]-1).click();
+        }
+    }    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
