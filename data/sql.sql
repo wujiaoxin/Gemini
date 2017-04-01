@@ -1224,9 +1224,11 @@ CREATE TABLE `gemini_member` (
   `access_group_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '用户组id',
   `invite_code` varchar(32) NOT NULL DEFAULT '0' COMMENT '车商邀请码',
   `addr` varchar(255) NOT NULL DEFAULT '' COMMENT '联系地址',
+  `desc` varchar(255) DEFAULT NULL COMMENT '备注',
+  `tel` varchar(255) DEFAULT NULL COMMENT '固定电话',
   PRIMARY KEY (`uid`),
   KEY `status` (`status`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='会员表';
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='会员表';
 
 -- ----------------------------
 -- Records of gemini_member

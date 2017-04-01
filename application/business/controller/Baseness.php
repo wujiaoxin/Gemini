@@ -8,14 +8,15 @@
 // +----------------------------------------------------------------------
 
 namespace app\business\controller;
-use app\business\controller\Baseness;
-
-class Index extends Baseness {
-	public function index() {
+use app\common\controller\Base;
+class Baseness extends base{
+	public function _initialize(){
+		parent::_initialize();
+		$mobile = session("mobile");
 		$uid = session("uid");
-		if($uid == null){
-			return $this->error("请先登录",url("/business/user/login"));
+		if($mobile == null || $uid == null){
+//			return $this->error("请重新登录",url("/business/login/login"));
+			return $this->redirect("/business/login/login");
 		}
-		return $this->fetch();
 	}
 }

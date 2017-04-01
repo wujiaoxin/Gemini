@@ -8,56 +8,11 @@
 // +----------------------------------------------------------------------
 
 namespace app\business\controller;
-use app\common\controller\Base;
-
-class User extends Base {
-	
-	public function login($mobile = '', $password = '') {
-		if (IS_POST) {
-			$resp["code"] = 0;
-			$resp["msg"] = '未知错误！';
-			
-			if (!$mobile || !$password) {
-				$resp["code"] = 0;
-				$resp["msg"] = '用户名或者密码不能为空！';
-				return json($resp);
-			}
-
-			$user = model('User');
-			$uid  = $user->login($mobile, $password);
-
-			if ($uid > 0) {
-				$resp["code"] = 1;
-				$resp["msg"] = '登录成功！';
-				session("mobile", $mobile);
-				session("uid", $uid);
-				return json($resp);
-			} else {
-				switch ($uid) {
-				case -1:$error = '用户不存在或被禁用！';
-					break; //系统级别禁用
-				case -2:$error = '密码错误！';
-					break;
-				default:$error = '未知错误！';
-					break; // 0-接口参数错误（调试阶段使用）
-				}
-				$resp["code"] = 0;
-				$resp["msg"] = $error;
-				return json($resp);
-			}
-		} else {
-			return $this->fetch();
-		}
-
-	}
-
-	public function guide() {		
+use app\business\controller\Baseness;
+ class User extends Baseness {
+	public function guide() {
 		$mobile = session("mobile");
-		$uid = session("uid");
-		if($mobile == null || $uid == null){
-			return $this->error("请重新登录",url("/business/user/login"));
-		}
-		$modelDealer = model('Dealer');		
+		$modelDealer = model('Dealer');
 		if (IS_POST) {
 			$data = input('post.');
 			if ($data) {
@@ -85,7 +40,7 @@ class User extends Base {
 				'info'    => $info,
 				'infoStr' => json_encode($info),
 			);
-			prinf($data);
+//			 prinf($data);
 			$this->assign($data);
 			return $this->fetch();
 		}
@@ -94,34 +49,37 @@ class User extends Base {
 	public function myStaff() {
 		//商家员工
 		$uid = session("uid");
-		$uid = db('Dealer')->alias('d')->field('id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
-//		prinf($uid);
-		$members = db('member_info')->where('did',$uid['id'])->select();
-		foreach($members as $k => $v){
-			$members[$k]['effect'] = '';
-			if($v['status'] == '1'){
-				$members[$k]['status']= '正常';
-			}else{
-				$members[$k]['status']= '停用';
-			}
-			if($v['is_effect'] == '1'){
-				$members[$k]['effect']= '启用';
-			}else{
-				$members[$k]['effect']= '停用';
-			}
-		}
+		$members = db('member')->alias('m')->join('__DEALER__ d','m.invite_code = d.invite_code')->field("m.uid,m.username,m.mobile,m.reg_time,m.status,m.access_group_id")->select();
 		$data = array(
 				'info'    => $members,
 				'infoStr' => json_encode($members),
 		);
-//		prinf($data);
 		$this->assign($data);
 		return $this->fetch();
 	}
-
+	/*
+	 * 商家操作员工是否有效
+	 * */
+	public function editStaff(){
+		if (IS_POST) {
+			$data = input('post.');
+			if($data){
+				$status = db('Member')->where('mobile',$data['mobile'])->setField('status',$data['status']);
+				if ($status) {
+					$data['code'] = '1';
+					$data['msg'] = '更新成功';
+				}else{
+					$data['code'] = '0';
+					$data['msg'] = '更新失败';
+				}
+			}
+			return json($data);
+		}
+	}
 	public function newStaff() {
-		//商家添加新用户
-		$uid = session("uid");
+
+		//商家员工编号
+		/*$uid = session("uid");
 		$uid = db('Dealer')->alias('d')->field('id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
 		$id = db('member_info')->where('did',$uid['id'])->field('sum(bid) as id')->find();
 		if ($id){
@@ -129,16 +87,45 @@ class User extends Base {
 			$this->assign('userd',$userd['id']);
 		}else{
 			$this->assign('userd','10000');
-		}
+		}*/
+		return $this->fetch();
+	}
+	/*
+	 * 商户新增员工接口
+	 * */
+	public function addStaff(){
 		if (IS_POST){
 			$data = input('post.');
 			if ($data) {
-				
+				$invit = db('Dealer')->alias('d')->field('d.invite_code')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
+				$user = model('User');
+				$uid = $user->registerByMobile($data['mobile'], $data['password']);
+				if ($uid > 0) {
+					$userinfo['nickname'] = $data['name'];
+					$userinfo['mobile'] = $data['mobile'];
+					$userinfo['status'] = 0;
+					$userinfo['invite_code'] = $invit['invite_code'];
+					$userinfo['access_group_id'] = $data['job'];
+					$userinfo['desc'] = $data['remark'];
+					$userinfo['tel'] = $data['telphone'];
+					$userinfo['reg_time'] = time();
+					//保存信息
+					if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
+						$resp["code"] = 0;
+						$resp["msg"] = '注册失败！！';
+						return json($resp);
+					} else {
+						$resp["code"] = 1;
+						$resp["msg"] = '注册成功！';
+						return json($resp);
+					}
+				} else {
+					$resp["code"] = 0;
+					$resp["msg"] = $user->getError();
+					return json($resp);
+				}
 			}
-
-//			db('user')->insert($data);
 		}
-		return $this->fetch();
 	}
 
 	public function myShop() {
