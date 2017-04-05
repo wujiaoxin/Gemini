@@ -5,11 +5,11 @@
 {block name="body"}
 <div class="form-horizontal">
 	<h4 class="form-section">新增员工</h4>
+	<div class="alert hide">
+      	<a class="close"></a>
+      	<span></span>
+    </div>
 	<div class="row-fluid">
-		<div class="alert hide">
-          	<a class="close"></a>
-          	<span></span>
-        </div>
 		<div class="span4">
 			<div class="control-group">
 				<label class="control-label">用户编号</label>
@@ -132,7 +132,7 @@
 		   		return;
 		   	}
 		   	ajax_jquery({
-	            url: apiUrl +'/business/user/newStaff',
+	            url: apiUrl +'/business/user/addStaff',
 	            data:{
 	            	"name": name,
 	            	"mobile": mobile,
