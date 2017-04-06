@@ -969,19 +969,10 @@ function setNavActive (navId) {
 }
 setNavActive("page-sidebar-menu");
 
-function formatAmount(n) {
-    n = parseFloat(n).toFixed(2);
-    n = n.toString().replace(/\B(?=(?:\d{3})+\b)/g, ',');
-    return n;
-}
-
 function logout(n) {
     var token = localStorage.getItem('token');
     ajax_jquery({
-        url: apiUrl +'/api/login/logout?t='+Math.random(),
-        data:{
-            'token': token
-        },
+        url: apiUrl +'/business/login/logout',
         success:function(resp){
             if (resp.code == "1" ) {
                     window.location.href = "/business/login/login";
@@ -1038,8 +1029,39 @@ $("#editPasswordBtn").click(function(event) {
         }
     });
 });
+    // 格式化数字20,000,00.00    
+    function formatAmount(n) {
+        n = parseFloat(n).toFixed(2);
+        n = n.toString().replace(/\B(?=(?:\d{3})+\b)/g, ',');
+        return n;
+    }
 
+    function formatDatetime(timeStr){
+        var timeStr = timeStr*1000;
+        var now =new Date(timeStr);
+        var year=now.getFullYear();     
+        var month=now.getMonth()+1;     
+        var date=now.getDate();     
+        var hour=fillZero(now.getHours());     
+        var minute=fillZero(now.getMinutes());     
+        var second=fillZero(now.getSeconds());    
+        return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+    };
+    function formatDate(timeStr){
+        var timeStr = timeStr*1000;
+        var now = new Date(timeStr);
+        var year = now.getFullYear();     
+        var month = fillZero(now.getMonth()+1);     
+        var date = fillZero(now.getDate());       
+        return   year+"-"+month+"-"+date;     
+    };
 
+    function fillZero(i){
+        if (i<10){
+            i="0" + i;
+        }
+        return i
+    };
 
 
 
