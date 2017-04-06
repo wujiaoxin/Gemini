@@ -1226,6 +1226,7 @@ CREATE TABLE `gemini_member` (
   `addr` varchar(255) NOT NULL DEFAULT '' COMMENT '联系地址',
   `desc` varchar(255) DEFAULT NULL COMMENT '备注',
   `tel` varchar(255) DEFAULT NULL COMMENT '固定电话',
+  `realname` varchar(32) DEFAULT NULL COMMENT '真实姓名',
   PRIMARY KEY (`uid`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='会员表';
@@ -1418,6 +1419,7 @@ DROP TABLE IF EXISTS `gemini_order`;
 CREATE TABLE `gemini_order` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '订单标识ID',
   `sn` varchar(32) NOT NULL DEFAULT '' COMMENT '订单编号',
+  `mid` int(11) NOT NULL COMMENT '车商uid',
   `uid` int(10) NOT NULL DEFAULT '0' COMMENT '报单人用户ID ',
   `bank_uid` int(10) NOT NULL DEFAULT '0' COMMENT '银行审核人员ID ',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1:新车垫资 2：二手车垫资 3:车抵贷 4:其他订单',
@@ -1435,6 +1437,8 @@ CREATE TABLE `gemini_order` (
   `reject_reason` tinyint(1) NOT NULL DEFAULT '0' COMMENT '拒绝原因',
   `addr` varchar(255) NOT NULL DEFAULT '' COMMENT '签单地址 ',
   `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
+  `endtime` int(11) NOT NULL COMMENT '借款期限',
+  `free` int(11) NOT NULL COMMENT '借款费用',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
 
@@ -1608,6 +1612,12 @@ CREATE TABLE `gemini_dealer` (
   `create_time` int(11) DEFAULT NULL,
   `update_time` int(11) DEFAULT NULL,
   `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
+  `idno` varchar(20) NOT NULL DEFAULT '' COMMENT '身份证号码',
+  `is_old` tinyint(1) NOT NULL DEFAULT '0' COMMENT '证照状态',
+  `radiotime` int(10) NOT NULL DEFAULT '0' COMMENT '营业时间',
+  `money` decimal(20,2) NOT NULL COMMENT '总金额',
+  `lines` decimal(20,2) NOT NULL COMMENT '信用额度',
+  `b_money` decimal(20,2) NOT NULL COMMENT '保证金金额',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='车商信息表';
 
@@ -1708,3 +1718,45 @@ CREATE TABLE `gemini_sync_login` (
   `refresh_token` varchar(255) NOT NULL,
   `status` tinyint(4) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+DROP TABLE IF EXISTS `gemini_payment`;
+CREATE TABLE `gemini_payment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '充值商户id',
+  `pay_id` int(11) NOT NULL COMMENT '充值订单号',
+  `is_pay` int(11) NOT NULL DEFAULT '0' COMMENT '是否充值0未充值1已充值-1审核中',
+  `money` int(11) NOT NULL COMMENT '充值金额',
+  `pay_type` tinyint(1) NOT NULL COMMENT '充值方式',
+  `create_time` int(11) NOT NULL COMMENT '充值创建时间',
+  `bank_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
+  `descr` varchar(255) NOT NULL COMMENT '充值备注',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `gemini_carry`;
+CREATE TABLE `gemini_carry` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '提现商户id',
+  `carry_billon` int(11) NOT NULL COMMENT '提现订单号',
+  `is_pay` int(11) NOT NULL DEFAULT '0' COMMENT '是否提现0未提现1已提现',
+  `money` int(11) NOT NULL COMMENT '提现金额',
+  `pay_type` tinyint(1) NOT NULL COMMENT '提现方式',
+  `create_time` int(11) NOT NULL COMMENT '提现创建时间',
+  `update_time` int(11) NOT NULL COMMENT '更新提现时间',
+  `bank_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `gemini_dealer_money`;
+CREATE TABLE `gemini_dealer_money` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL COMMENT '商户id',
+  `account_money` decimal(20,2) NOT NULL COMMENT '操作金额',
+  `desc` varchar(255) NOT NULL COMMENT '备注',
+  `type` tinyint(2) NOT NULL COMMENT '0支付款项，1垫资到账，2垫资还款，3充值，4提现',
+  `deal_other` tinyint(1) NOT NULL COMMENT '0系统，1商户',
+  `create_time` int(11) NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
