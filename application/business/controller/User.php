@@ -13,6 +13,11 @@ use app\business\controller\Baseness;
 	public function guide() {
 		$mobile = session("mobile");
 		$modelDealer = model('Dealer');
+		// 检测商户是否已经录入信息
+		$is_success = $modelDealer->field('priv_bank_account_id')->where('mobile',$mobile)->find();
+		if (!$is_success) {
+			return $this->fetch();
+		}
 		if (IS_POST) {
 			$data = input('post.');
 			if ($data) {
@@ -40,7 +45,6 @@ use app\business\controller\Baseness;
 				'info'    => $info,
 				'infoStr' => json_encode($info),
 			);
-//			 prinf($data);
 			$this->assign($data);
 			return $this->fetch();
 		}
@@ -49,7 +53,7 @@ use app\business\controller\Baseness;
 	public function myStaff() {
 		//商家员工
 		$uid = session("uid");
-		$members = db('member')->alias('m')->join('__DEALER__ d','m.invite_code = d.invite_code')->field("m.uid,m.username,m.mobile,m.reg_time,m.status,m.access_group_id")->select();
+		$members = db('member')->alias('m')->join('__DEALER__ d','m.invite_code = d.invite_code')->field("m.uid,m.realname,m.mobile,m.reg_time,m.status,m.access_group_id")->select();
 		$data = array(
 				'info'    => $members,
 				'infoStr' => json_encode($members),
@@ -77,17 +81,6 @@ use app\business\controller\Baseness;
 		}
 	}
 	public function newStaff() {
-
-		//商家员工编号
-		/*$uid = session("uid");
-		$uid = db('Dealer')->alias('d')->field('id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
-		$id = db('member_info')->where('did',$uid['id'])->field('sum(bid) as id')->find();
-		if ($id){
-			$userd['id'] = $id['id']+1;
-			$this->assign('userd',$userd['id']);
-		}else{
-			$this->assign('userd','10000');
-		}*/
 		return $this->fetch();
 	}
 	/*
@@ -101,7 +94,7 @@ use app\business\controller\Baseness;
 				$user = model('User');
 				$uid = $user->registerByMobile($data['mobile'], $data['password']);
 				if ($uid > 0) {
-					$userinfo['nickname'] = $data['name'];
+					$userinfo['realname'] = $data['name'];
 					$userinfo['mobile'] = $data['mobile'];
 					$userinfo['status'] = 0;
 					$userinfo['invite_code'] = $invit['invite_code'];
@@ -133,6 +126,12 @@ use app\business\controller\Baseness;
 	}
 
 	public function loanItem() {
+		$uid = session('uid');
+		$result = db('order')->where('mid',$uid)->select();
+		foreach ($result as $k => $v) {
+			$result[$k]['realname'] = serch_real($v['uid']);
+		}
+		$this->assign($result);
 		return $this->fetch();
 	}
 
