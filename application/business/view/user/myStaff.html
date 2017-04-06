@@ -2,6 +2,14 @@
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css" />
 <link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css" />
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
 {/block}
 
 {block name="body"}
@@ -26,7 +34,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="odd gradeX">
+				<!-- <tr class="odd gradeX">
 					<td>100001</td>
 					<td>王三</td>
 					<td>13456679797</td>
@@ -34,106 +42,7 @@
 					<td>2017-10-12</td>	
 					<td>正常</td>
 					<td>停用</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>100002</td>
-					<td>张三</td>
-					<td>13456679797</td>
-					<td>业务员</td>
-					<td>2017-10-12</td>	
-					<td>正常</td>
-					<td>停用</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>100003</td>
-					<td>张三</td>
-					<td>13456679797</td>
-					<td>业务员</td>
-					<td>2017-10-12</td>	
-					<td>正常</td>
-					<td>停用</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>100004</td>
-					<td>张三</td>
-					<td>13456679797</td>
-					<td>业务员</td>
-					<td>2017-10-12</td>	
-					<td>正常</td>
-					<td>停用</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>100005</td>
-					<td>张三</td>
-					<td>13456679797</td>
-					<td>业务员</td>
-					<td>2017-10-12</td>	
-					<td>正常</td>
-					<td>停用</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>100006</td>
-					<td>张三</td>
-					<td>13456679797</td>
-					<td>业务员</td>
-					<td>2017-10-12</td>	
-					<td>正常</td>
-					<td>停用</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>100001</td>
-					<td>张三</td>
-					<td>13456679797</td>
-					<td>业务员</td>
-					<td>2017-10-12</td>	
-					<td>正常</td>
-					<td>停用</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>100001</td>
-					<td>张三</td>
-					<td>13456679797</td>
-					<td>业务员</td>
-					<td>2017-10-12</td>	
-					<td>正常</td>
-					<td>停用</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>100001</td>
-					<td>张三</td>
-					<td>13456679797</td>
-					<td>业务员</td>
-					<td>2017-10-12</td>	
-					<td>正常</td>
-					<td>停用</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>100001</td>
-					<td>张三</td>
-					<td>13456679797</td>
-					<td>业务员</td>
-					<td>2017-10-12</td>	
-					<td>正常</td>
-					<td>停用</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>100001</td>
-					<td>张三</td>
-					<td>13456679797</td>
-					<td>业务员</td>
-					<td>2017-10-12</td>	
-					<td>正常</td>
-					<td>停用</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>100001</td>
-					<td>张三</td>
-					<td>13456679797</td>
-					<td>业务员</td>
-					<td>2017-10-12</td>	
-					<td>正常</td>
-					<td>停用</td>
-				</tr>
+				</tr> -->
 			</tbody>
 		</table>
 	</div>
@@ -145,9 +54,79 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
 <script type="text/javascript" src="/public/business/js/table-managed.js"></script>    
 <script>
+	// 按照指定长度为数字前面补零
+	function PrefixInteger(num, length) {  
+	 	return (Array(length).join('0') + num).slice(-length);  
+	}  
+
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+			var job = data[index].access_group_id == '8'?"财务":"业务员";
+			var status = '';
+			var opera = '';
+			if(data[index].status){
+				status = '正常';
+				opera = '停用';
+			}else{
+				status = '停用';
+				opera = '启用';
+			}
+
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + PrefixInteger(index+1,6) + '</td>'
+		  		+'<td>'+ data[index].realname +'</td>'
+		  		+'<td>'+ data[index].mobile +'</td>'
+		  		+'<td>'+ job +'</td>'
+		  		+'<td>'+ formatDate(data[index].reg_time) +'</td>'
+		  		+'<td data-status="'+ data[index].status +'">'+ status +'</td>'
+		  		+'<td><a class="updateStatus" data-id="'+ data[index].mobile +'">'+ opera +'</a></td>'
+		  		+'</tr>';
+			}
+		}
+		return html;
+	};
+	$('#table-myStaff tbody').html(tpl(info));
+
 	jQuery(document).ready(function() {       
 	   // App.init();
 	   TableManaged.init();
+	   $('#table-myStaff').on('click','.updateStatus',function(){
+	   	    var self = this;
+	   		var mobile = $(this).attr('data-id');
+	   		var statusTd = $(this).parent('td').prev('td');
+	   		var status = $(statusTd).attr('data-status');
+	   		console.log(status);
+	   		status = status>0?0:1; //更改stautus
+	   		console.log(status);
+	   		ajax_jquery({
+		        url: apiUrl +'/business/user/editStaff',
+		        data:{
+		            'mobile': mobile,
+		            'status': status
+		        },
+		        success:function(resp){
+		            if (resp.code == "1" ) {
+		            	$(statusTd).attr('data-status',status);
+	                    if(status){
+	                    	$(statusTd).text('正常');
+	                    	$(self).text('停用');
+	                    }else{
+	                    	$(statusTd).text('停用');
+	                    	$(self).text('启用');
+	                    }
+		            } else {
+		                if (typeof(resp.msg) == 'string') {
+		                    ui_alert("alert-error",resp.msg);
+		                    window.location.reload();
+		                }                 
+		            }
+		        }
+    		});
+	   });
+
+
 	});
 </script>
 {/block}	

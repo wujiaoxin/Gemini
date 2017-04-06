@@ -60,6 +60,9 @@ var guide = function () {
                                 }
                             }
                         });
+                        btnSentUploader("rep_idcard_pic");
+                        btnSentUploader("contacts_pic");
+
                     }else if(index == 2){
                         var rep = $("#rep").val();
                         var idcardNum = $("#idcardNum").val();
@@ -284,6 +287,8 @@ function initCheckBox(name){
         }
     }    
 }
+
+
 
 
 
