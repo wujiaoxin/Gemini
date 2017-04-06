@@ -25,6 +25,7 @@ var Login = function () {
 	        	var username = jQuery('#login-username').val();
 	        	var password = jQuery('#login-password').val();
 	        	var imgverify = jQuery("#login-rvalicode").val();
+	        	var remember = jQuery("input[name='remember']").prop('checked');
 	        	if(username == ""){
 	        		ui_alert("alert-error","请输入手机号");
 	        		return false;
@@ -41,8 +42,15 @@ var Login = function () {
         			ui_alert("alert-error","请输入图形验证码");
         			return false;
         		}
+        		if(remember){
+        			localStorage.setItem('rememberUsername',username);
+        		}else {
+        			localStorage.removeItem('rememberUsername');
+        		}
+
+        		
 		        ajax_jquery({
-		            url: apiUrl +'/business/user/login?t=' + Math.random(),
+		            url: apiUrl +'/business/login/login?t=' + Math.random(),
 		            data:{
 		            	"mobile": username,
 		            	"password": password,
@@ -207,14 +215,6 @@ var Login = function () {
     };
 
 }();
-	
-    function doRefreshVerfiy(id) {
-	    var verify=$(id).attr('src');
-	    if(verify){
-	        var verifyUrl= verify.split('?');
-	        $(id).attr('src', verifyUrl[0] + '?' + Math.random());
-	    }
-	}
 
 	function sendSmsVerify(id) {
 		var formName = $(id).attr('data-form');
@@ -258,9 +258,27 @@ var Login = function () {
 	    }
 	    //return false;
 	}
+	
+    function doRefreshVerfiy(id) {
+	    var verify=$(id).attr('src');
+	    if(verify){
+	        var verifyUrl= verify.split('?');
+	        $(id).attr('src', verifyUrl[0] + '?' + Math.random());
+	    }
+	}
+
 
 	function getUrlParam(name) {  
 		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); 
 		var r = window.location.search.substr(1).match(reg);
 		if (r != null) return unescape(r[2]); return null;
+	}
+
+	var t = getUrlParam('t');
+	if(t == 1){
+		$('#register-btn').click();
+	}
+	var rememberUsername = localStorage.getItem('rememberUsername');
+	if(rememberUsername){
+		$("#username").val('rememberUsername');
 	}

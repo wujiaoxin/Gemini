@@ -1,7 +1,7 @@
 /**
 Core script to handle the entire layout and base functions
 **/
-var apiUrl = "http://test.vpdai.com";
+var apiUrl = "http://lo.vpdai.com";
 var App = function () {
 
     // IE mode
@@ -978,17 +978,16 @@ function formatAmount(n) {
 function logout(n) {
     var token = localStorage.getItem('token');
     ajax_jquery({
-        url: apiUrl +'/api/user/logout?t='+Math.random(),
+        url: apiUrl +'/api/login/logout?t='+Math.random(),
         data:{
             'token': token
         },
         success:function(resp){
             if (resp.code == "1" ) {
-                    window.location.href = "/business/user/login";
+                    window.location.href = "/business/login/login";
             } else {
                 if (typeof(resp.msg) == 'string') {
                     ui_alert("alert-error",resp.msg);
-                    return false;
                 }                 
             }
         }

@@ -12,7 +12,7 @@ var guide = function () {
                 'previousSelector': '.button-previous',
                 onTabClick: function (tab, navigation, index) {
                     // ui_alert("alert-error",'on tab click disabled');
-                    // return false;
+                    return false;
                 },
                 onNext: function (tab, navigation, index) {
                     if(index == 1){
