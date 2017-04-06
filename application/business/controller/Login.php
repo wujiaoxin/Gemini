@@ -45,6 +45,10 @@ class Login extends Base {
 				return json($resp);
 			}
 		} else {
+			$is_success = db('dealer')->field('bank_account_id')->where('mobile',$mobile)->find();
+			if ($is_success['bank_account_id']){
+				return $this->redirect("/business/user/guide");
+			}
 			return $this->fetch();
 		}
 
