@@ -1,84 +1,74 @@
 {extend name="base"/}
 {block name="style"}
 <link rel="stylesheet" href="/public/business/lib/metronic/css/glyphicons.css">
-<link rel="stylesheet" href="/public/business/lib/metronic/css/halflings.css">
-<link rel="stylesheet" href="/public/business/lib/metronic/css/jquery.gritter.css">
 <link rel="stylesheet" href="/public/business/css/accountIndex.css">
 {/block}
 {block name="body"}
 <!--账号设置-->
-<div class="row-fluid account-index">
-	<div class="span12" style="margin-left: 0">
-		<div class="protraid f-fl"><img src="/public/business/lib/metronic/image/avatar1_small.jpg"></div>
-		<div class="f-fl" style="width: 300px;margin-right: 10px">
-			<h4>您的账号安全度 <span class="high">90%</span></h4>
-			<div class="progress progress-success">
-				<div class="bar" style="width: 90%;"></div>
-			</div>
-		</div>
-		<div class="f-fl">
-			<span class="grade high">高</span>
-			<span class="grade medium">中</span>
-			<span class="grade low">低</span>
+<div class="account-index">
+	<div class="row-fluid">
+		<div class="protrait span1"><img src="/public/business/lib/metronic/image/avatar1_small.jpg"></div>
+		<div class="span3">
+			<h3>车商名称</h3>
 		</div>
 	</div>
-	<div class="span12">
-		<div class="protraid f-fl"><a href="#" class="glyphicons no-js user"><i></i></a></div>
-		<div class="f-fl" style="width: 300px;margin-right: 10px">
+	<div class="row-fluid account-item">
+		<div class="protrait span1"><a href="#" class="glyphicons user"><i></i></a></div>
+		<div class="span3">
 			<h4>法人认证</h4>
 			<p class="sub-title">实名操作，保证信息真实性</p>
 		</div>
-		<div class="f-fl index-info">
+		<div class="index-info span5">
 			<a href="#" class="glyphicons no-js circle_ok"><i class="f-colgreen"></i></a>
-			** 123****11111
+			<span>330123********2321</span>
 		</div>
 	</div>
-	<div class="span12">
-		<div class="protraid f-fl"><a href="#" class="glyphicons no-js building"><i></i></a></div>
-		<div class="f-fl" style="width: 300px;margin-right: 10px">
+	<div class="row-fluid account-item">
+		<div class="protrait span1"><a href="#" class="glyphicons building"><i></i></a></div>
+		<div class="span3">
 			<h4>企业认证</h4>
 			<p class="sub-title">企业认证</p>
 		</div>
-		<div class="f-fl index-info">
-			<a href="#" class="glyphicons no-js circle_ok"><i class="f-colgreen"></i></a>
-			机构代码  xxxxxxxxxxxxxxx
+		<div class="index-info span5">
+			<a href="#" class="glyphicons circle_ok"><i class="f-colgreen"></i></a>
+			<span>机构代码  xxxxxxxxxxxxxxx</span>
 		</div>
 	</div>
-	<div class="span12">
-		<div class="protraid f-fl"><a href="#" class="glyphicons no-js lock"><i></i></a></div>
-		<div class="f-fl" style="width: 300px;margin-right: 10px">
+	<div class="row-fluid account-item">
+		<div class="protrait span1"><a href="#" class="glyphicons lock"><i></i></a></div>
+		<div class="span3">
 			<h4>交易密码</h4>
-			<p class="sub-title">账户资金变动，修改账户信息时需要输入的密码</p>
+			<p class="sub-title">账户资金变动时需要输入的密码</p>
 		</div>
-		<div class="f-fl index-info">
-			<a href="#" class="glyphicons no-js circle_exclamation_mark"><i class="colyellow"></i></a>
-			未设置
+		<div class="index-info span5">
+			<a href="#" class="glyphicons circle_exclamation_mark"><i class="colyellow"></i></a>
+			<span>未设置</span>
 		</div>
-		<button type="button" class="btn set-btn">设置</button>
+		<div class="span2 account-item-btn"><a data-toggle="modal" href="#payPasswordModal" class="btn">设置</a></div>
 	</div>
-	<div class="span12">
-		<div class="protraid f-fl"><a href="#" class="glyphicons no-js iphone_shake"><i></i></a></div>
-		<div class="f-fl" style="width: 300px;margin-right: 10px">
+	<div class="row-fluid account-item">
+		<div class="protrait span1"><a href="#" class="glyphicons iphone_shake"><i></i></a></div>
+		<div class="span3">
 			<h4>绑定手机</h4>
 			<p class="sub-title">账户资金变动，实时通知</p>
 		</div>
-		<div class="f-fl index-info">
+		<div class="index-info span5">
 			<a href="#" class="glyphicons no-js circle_ok"><i class="f-colgreen"></i></a>
-			已绑定  132****1293
+			<span>已绑定  132****1293</span>
 		</div>
-		<button type="button" class="btn set-btn">修改</button>
+		<div class="span2 account-item-btn"><a data-toggle="modal" href="#" class="btn">修改</a></div>
 	</div>
-	<div class="span12">
-		<div class="protraid f-fl"><a href="#" class="glyphicons no-js envelope"><i></i></a></div>
-		<div class="f-fl" style="width: 300px;margin-right: 10px">
+	<div class="row-fluid account-item">
+		<div class="protrait span1"><a href="#" class="glyphicons envelope"><i></i></a></div>
+		<div class="span3">
 			<h4>绑定邮箱</h4>
 			<p class="sub-title">找回密码，接收最新消息</p>
 		</div>
-		<div class="f-fl index-info">
-			<a href="#" class="glyphicons no-js circle_exclamation_mark"><i class="colyellow"></i></a>
+		<div class="index-info span5">
+			<a href="#" class="glyphicons circle_exclamation_mark"><i class="colyellow"></i></a>
 			未绑定
 		</div>
-		<button type="button" class="btn set-btn">设置</button>
+		<div class="span2 account-item-btn"><a data-toggle="modal" href="#" class="btn">设置</a></div>
 	</div>
 </div>
 
