@@ -8,7 +8,7 @@ alter table gemini_member  add tel varchar(255) null COMMENT '固定电话';/*�
 /*
 **20170406添加
 */
-alter table gemini_member  realname varchar(20)  null  COMMENT '真实姓名';/*真实姓名*/
+alter table gemini_member add realname varchar(20)  null  COMMENT '真实姓名';/*真实姓名*/
 alter table gemini_dealer  add idno varchar(20) NOT null  COMMENT '法人身份证号码';/*法人身份证*/
 alter table gemini_dealer  add is_old tinyint(1) NOT null  COMMENT '证照状态';/*证照状态*/
 alter table gemini_dealer  add radiotime int(10) NOT null  COMMENT '营业时间';/*营业时间*/
@@ -18,7 +18,12 @@ alter table gemini_dealer  add b_money numeric(20,2) NOT null  COMMENT '保证�
 alter table gemini_order  add mid int(11) NOT null  COMMENT '车商id';/*车商id*/
 alter table gemini_order  add endtime int(11) NOT null  COMMENT '借款期限';/*借款期限*/
 alter table gemini_order  add free int(11) NOT null  COMMENT '借款费用';/*借款费用*/
-
+alter table gemini_dealer  add paypassword varchar(32) NOT null  COMMENT '交易密码';
+alter table gemini_payment  add pwd_type tinyint(1) NOT null  COMMENT '支付方式';
+alter table gemini_carry add free numeric(20,2) NOT null  COMMENT '提现费用';
+alter table gemini_carry add status tinyint(1) NOT null  COMMENT '0待审核，1已付款，2未通过，3待付款';
+alter table gemini_carry add bankzon varchar(255) null  COMMENT '银行流水号';
+alter table gemini_carry add descr varchar(255) null  COMMENT '提现备注';
 /*
 **充值记录表
 */

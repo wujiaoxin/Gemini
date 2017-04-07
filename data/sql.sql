@@ -1618,6 +1618,7 @@ CREATE TABLE `gemini_dealer` (
   `money` decimal(20,2) NOT NULL COMMENT '总金额',
   `lines` decimal(20,2) NOT NULL COMMENT '信用额度',
   `b_money` decimal(20,2) NOT NULL COMMENT '保证金金额',
+  `paypassword` varchar(255) NOT NULL COMMENT '交易密码',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='车商信息表';
 
@@ -1731,6 +1732,7 @@ CREATE TABLE `gemini_payment` (
   `create_time` int(11) NOT NULL COMMENT '充值创建时间',
   `bank_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
   `descr` varchar(255) NOT NULL COMMENT '充值备注',
+  `pwd_type` tinyint(1) NOT NULL COMMENT '支付方式',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -1746,6 +1748,10 @@ CREATE TABLE `gemini_carry` (
   `create_time` int(11) NOT NULL COMMENT '提现创建时间',
   `update_time` int(11) NOT NULL COMMENT '更新提现时间',
   `bank_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
+  `free` decimal(20,2) NOT NULL COMMENT '提现费用',
+  `status` tinyint(1) NOT NULL COMMENT '0待审核，1已付款，2未通过，3待付款',
+  `bankzon` varchar(255) DEFAULT NULL COMMENT '银行流水号',
+  `descr` varchar(255) DEFAULT NULL COMMENT '提现描述',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
