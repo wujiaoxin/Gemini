@@ -1,27 +1,25 @@
-.f-fl {
-	float: left;
+.account-index .protrait {
+	width: 80px;
+	height: 80px;
 }
-.account-index .span12 {
-	margin-left: 0;
-	padding-right: 90px;
-	border-bottom: 1px solid #ddd;
-	position: relative;
-	min-width:900px;
-}
-.account-index .protraid {
-	width: 90px;
-}
-.account-index .protraid img{
+.account-index .protrait img{
 	width: 60px;
-	height: 60px;
+	width: 60px;
 }
-.account-index .protraid i:before {
+.account-index .protrait i:before {
 	font: 50px/1em "Glyphicons";
 	color: #ddd;
 	top: 50%;
 }
+
+.account-item {
+	border-top: 1px solid #dedede;
+	height: 80px;
+	padding-top: 10px;
+}
 .account-index .sub-title {
 	color: #999;
+	margin: 0;
 }
 .account-index .index-info {
 	font-size: 24px;
@@ -36,26 +34,10 @@ i.f-colgreen:before {
 i.colyellow:before {
 	color: #f9bf0d;
 }
-.grade {
-	font-size: 48px;
-	line-height: 1;
+
+.account-item-btn {
+	margin-top: 18px;
 }
-.high {
-	color: #25c398;
-}
-.medium {
-	color: #f9bf0d;
-}
-.low {
-	color: #e12222;
-}
-.set-btn {
-	position: absolute;
-	right: 90px;
-	width: 100px;
-	top: 50%;
-	transform: translateY(-50%);
-}
-.progress-success .bar {
-	background-color: #25c398;
-}
+
+
+

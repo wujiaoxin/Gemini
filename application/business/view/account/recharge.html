@@ -1,21 +1,25 @@
 {extend name="base"/}
 {block name="body"}
 <!--账户充值-->
+<div class="alert hide">
+  	<a class="close"></a>
+  	<span></span>
+</div>
 <div class="row-fluid">
 	<div class="span12">
 		<div class="portlet box">
 			<div class="portlet-body form">
-				<form action="#" class="form-horizontal">
+				<form class="form-horizontal">
 					<div class="control-group">
 						<label class="control-label">充值金额</label>
 						<div class="controls">
-							<input type="number" placeholder="充值金额" class="m-wrap small">
+							<input type="number" id="amount" placeholder="充值金额" class="m-wrap small">
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">充值方式</label>
 						<div class="controls">
-							<select class="small m-wrap" tabindex="1">
+							<select id="rechargeMode" class="small m-wrap">
 								<option value="1">线下转账</option>
 								<!-- <option value="2">线下转账2</option> -->
 							</select>
@@ -45,22 +49,21 @@
 					<div class="control-group">
 						<label class="control-label">充值备注</label>
 						<div class="controls">
-							<textarea class="medium m-wrap" rows="3"></textarea>
+							<textarea id="desc" class="medium m-wrap" rows="3"></textarea>
 						</div>
 					</div>
-					<div class="form-actions" style="margin-bottom: 20px!important;border-bottom:1px dashed #ddd;">
-						<button type="submit" class="btn blue">
-							<i class="icon-ok"></i>
-							确认提交
-						</button>
+					<div class="control-group">
+						<label class="control-label">温馨提示:</label>
+						<div class="controls">
+							<ol>
+								<li>----</li>
+								<li>----</li>
+							</ol>
+						</div>
 					</div>
-					<div class="control-group" style="padding-left: 105px;">
-						温馨提示：
-						<ol>
-							<li>----</li>
-							<li>----</li>
-						</ol>
-					</div>
+					<div class="form-actions">
+						<button id="submit" class="btn blue"><i class="icon-ok"></i>确认提交</button>
+					</div>	
 				</form>
 			</div>
 		</div>
@@ -68,4 +71,46 @@
 </div>
 {/block}
 {block name="script"}
+<script type="text/javascript">
+$(function(){
+	$('#submit').on('click',function(){
+		var amount = $('#amount').val();
+		var rechargeMode = $('#rechargeMode').val
+		var desc = $('#desc').val();
+		if(amount == ""){
+			ui_alert("alert-error","请输入充值金额");
+	        return false;
+		}else if(rechargeMode == ""){
+			ui_alert("alert-error","请选择充值方式");
+	        return false;
+		}
+
+		ajax_jquery({
+	        url: apiUrl +'/business/account/recharge',
+	        data:{
+	        	'money': amount,
+	        	'pay_type': rechargeMode,
+	        	'descr': desc 
+	        },
+	        success:function(resp){
+	            if (resp.code == "1" ) {
+                    ui_alert("alert-success","充值成功");
+                    return false;
+	            }else{
+	                if (typeof(resp.msg) == 'string') {
+	                    ui_alert("alert-error",resp.msg);
+	                    return false;
+	                }                 
+	            }
+	        }
+	    });
+	})
+})
+</script>
+
+
+
+
+
+
 {/block}
