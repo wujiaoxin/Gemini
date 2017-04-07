@@ -95,7 +95,7 @@ $(function(){
 	        success:function(resp){
 	            if (resp.code == "1" ) {
                     ui_alert("alert-success","充值成功");
-                    return false;
+                    setTimeout('window.location.reload()',5000);
 	            }else{
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);

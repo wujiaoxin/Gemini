@@ -1,45 +1,62 @@
 {extend name="base"/}
 {block name="style"}
-<style>
-	.firm-info label {
-		float: left;
-		margin-right: 10px;
-		margin-top: 0;
-		width: 100px;
-		text-align: right;
+<link rel="stylesheet" type="text/css" href="/public/business/css/selectArea.css">
+<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
 	}
-	.infor .portlet-body{
-		padding-left: 20px;
-	}
-</style>
+
+	info.city='4499,4533,4536';
+</script>
 {/block}
 {block name="body"}
-<div class="row-fluid infor">
-	<div class="span12">
+<div class="row-fluid info">
+	<div class="span12 form-horizontal">
 		<div class="portlet">
 			<div class="portlet-title">
 				<div class="caption">企业</div>
 			</div>
 			<div class="portlet-body">
-				<div class="control-group firm-info">
+				<div class="control-group">
 					<label class="control-label">企业名称</label>
-					<span>***</span>
+					<div class="controls">
+						<span id="name" class="info-item"></span>
+					</div>
 				</div>
-				<div class="control-group firm-info">
-					<label class="control-label">信用证</label>
-					<span>***</span>
+				<div class="control-group">
+					<label class="control-label">单位所在地</label>
+					<div class="controls">
+						<span id="province"></span>
+						<span id="city"></span>
+						<span id="town"></span>
+					</div>
+					<div class="controls" id="loc" style="display: none;">
+						<select id="loc_province" class="selectArea"></select>
+						<select id="loc_city" class="selectArea"></select>
+						<select id="loc_town" class="selectArea"></select>
+					</div>
 				</div>
-				<div class="control-group firm-info">
-					<label class="control-label">单位地址</label>
-					<span>***</span>
-				</div>
-				<div class="control-group firm-info">
+				<div class="control-group">
 					<label class="control-label">详细地址</label>
-					<span>***</span>
+					<div class="controls">
+						<span id="addr" class="info-item"></span>
+					</div>
 				</div>
-				<div class="control-group firm-info">
+				<div class="control-group">
 					<label class="control-label">签约业务</label>
-					<span>***</span>
+					<div class="controls">
+						<span id="forms" class="info-item"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">营业执照照片</label>
+					<div class="controls">
+						<span id="dealer_lic_pic" class="info-item"></span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -48,16 +65,61 @@
 				<div class="caption">法人</div>
 			</div>
 			<div class="portlet-body">
-				<div class="control-group firm-info">
+				<div class="control-group">
 					<label class="control-label">法人姓名</label>
-					<span>***</span>
+					<div class="controls">
+						<span id="rep" class="info-item"></span>
+					</div>
 				</div>
-				<div class="control-group firm-info">
+				<div class="control-group">
 					<label class="control-label">身份证号</label>
-					<span>***</span>
+					<div class="controls">
+						<span id="idno" class="info-item"></span>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js" ></script>
+<script type="text/javascript" src="/public/business/js/selectArea.js"></script>
+<script type="text/javascript">
+	 
+$(function(){
+	//初始化表单
+	$("span.info_item").each(function(i){
+	    var name = $(this).attr('id');
+	    if(typeof(info[name]) == "string" &&info[name] !=''){
+	        $(this).text(info[name]);
+	    }
+	});
+
+	if(info['forms']!=""){
+		var forms =['按揭垫资','二手车垫资','车抵贷'];
+		var formsData = info['forms'].split(',');
+		var formsText = "";
+		for(var i in formsData){
+	       formsText += forms[formsData[i]];
+	    }
+	}
+	//初始化三级联动city
+	if(typeof(info['city']) == "string" && info['city'] != ''){
+	    var city = info['city'].split(',');
+	   $("#loc_province").select2('val',city[0]).trigger("change");
+	    $("#loc_city").select2('val',city[1]).trigger("change");
+	    $("#loc_town").select2('val',city[2]).trigger("change");
+	    var loc_province = $('#loc_province').select2('data').text;
+	    var loc_city = $('#loc_city').select2('data').text;
+	    var loc_town = $('#loc_town').select2('data').text;
+	    console.log(loc_province)
+	    $('#province').text(loc_province);
+	    $('#city').text(loc_city);
+	    $('#town').text(loc_town);
+	}
+
+
+})
+</script>
 {/block}

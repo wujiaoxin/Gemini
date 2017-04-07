@@ -47,7 +47,7 @@ var guide = function () {
                                 'businessLicense': businessLicense,
                                 'city': loc_address,
                                 'addr': addr,
-                                'termOfValidity': termOfValidity
+                                'radiotime': termOfValidity
                             },
                             success:function(resp){
                                 if (resp.code == "1" ) {
@@ -60,9 +60,6 @@ var guide = function () {
                                 }
                             }
                         });
-                        btnSentUploader("rep_idcard_pic");
-                        btnSentUploader("contacts_pic");
-
                     }else if(index == 2){
                         var rep = $("#rep").val();
                         var idcardNum = $("#idcardNum").val();
@@ -80,7 +77,7 @@ var guide = function () {
                             url: apiUrl +'/business/user/guide?t='+Math.random(),
                             data:{
                                 'rep': rep,
-                                'idcardNum': idcardNum
+                                'idno': idcardNum
                             },
                             success:function(resp){
                                 if (resp.code == "1" ) {
