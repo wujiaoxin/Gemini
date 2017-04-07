@@ -34,41 +34,45 @@ class Account extends Baseness {
      * 充值
      * */
 	public function recharge() {
-        if(IS_POST){
-            $data = input('post.');
-            prinf($data);
-            $uid = session('uid');
-            $pay_id = mt_rand(0,999).time();
-            if (is_numeric($data['money'])){
-                /*
-                 * 资金记录
-                 * */
-                $data_money = array(
-                    'uid'=>$uid,
-                    'account_money'=>$data['money'],
-                    'deal_other'=>'1',
-                    'descr'=>$data['descr'],
-                    'create_time'=>time()
-                );
-                db('dealer_money')->insert($data_money);
-                /*
-                 * 充值记录
-                 * */
-                $data_money = array(
-                    'user_id'=>$uid,
-                    'pay_id'=>$pay_id,
-                    'is_pay'=>'-1',
-                    'money'=>$data['money'],
-                    'pay_type'=>$data['pay_type'],
-                    'bank_name'=>$data['bank_name'],
-                    'descr'=>$data['descr'],
-                    'create_time'=>time()
-                );
-                db('dealer_money')->insert($data_money);
-            }else{
-                $this->redirect('/business/account/cash');
-            }
-
+      if(IS_POST){
+          $data = input('post.');
+          $uid = session('uid');
+          $pay_id = mt_rand(0,999).time();
+          if (is_numeric($data['money'])){
+              /*
+               * 资金记录
+               * */
+              $data_money = array(
+                  'uid'=>$uid,
+                  'account_money'=>$data['money'],
+                  'deal_other'=>'0',
+                  'descr'=>$data['descr'],
+                  'create_time'=>time()
+              );
+              db('dealer_money')->insert($data_money);
+              /*
+               * 充值记录
+               * */
+              $rec_money = array(
+                  'user_id'=>$uid,
+                  'pay_id'=>$pay_id,
+                  'is_pay'=>'-1',
+                  'money'=>$data['money'],
+                  'pay_type'=>$data['pay_type'],
+                  'descr'=>$data['descr'],
+                  'create_time'=>time()
+              );
+              $result = db('payment')->insert($rec_money);
+              if ($result){
+                  $resp["code"] = 1;
+                  $resp["msg"] = '处理中';
+                  return json($resp);
+              }else{
+                  $resp["code"] = 0;
+                  $resp["msg"] = '充值失败';
+                  return json($resp);
+              }
+          }
         }else{
             return $this->fetch();
         }
@@ -77,16 +81,26 @@ class Account extends Baseness {
      * 提现
      * */
   public function withdraw() {
+      $mobile = session('mobile');
+      $uid = session('uid');
       if(IS_POST){
           $data = input('post.');
 
       }else{
-          $mobile = session('mobile');
-          $uid = session('uid');
-          $deals =db('dealer')->field('bank_account_id,priv_bank_account_id')->where('mobile',$mobile)->find();
-          $orders =db('order')->where('uid',$uid)->select();
-          $this->assign($deals);
-          $this->assign($orders);
+          $deals =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+          $orders =db('order')->where('mid',$uid)->select();
+          foreach ($orders as $k => $v) {
+              $orders[$k]['realname'] = serch_real($v['uid']);
+          }
+          $info = array(
+              'info'=>$deals,
+              'orders'=>$orders
+          );
+          $data = array(
+              'info'    => $info,
+              'infoStr' => json_encode($info),
+          );
+          $this->assign($data);
           return $this->fetch();
       }
   }
@@ -110,7 +124,6 @@ class Account extends Baseness {
       if($deals){
           $data['code'] = '1';
           $data['info'] = json_encode($deals);
-
           $this->assign($data);
       }
       return $this->fetch();

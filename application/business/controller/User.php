@@ -24,7 +24,14 @@ use app\business\controller\Baseness;
 				unset($data['id']);
 				unset($data['status']);
 				unset($data['mobile']);
-				$result = $modelDealer->save($data, array('mobile' => $mobile));
+				$is_deal = db('Dealer')->where(array('mobile' => $mobile))->find();
+				if(!$is_deal){
+					$data['mobile'] = $mobile;
+					$data['invite_code'] = $modelDealer->buildInviteCode();
+					$result = $modelDealer->insert($data);
+				}else{
+					$result = $modelDealer->save($data, array('mobile' => $mobile));
+				}
 				if ($result) {
 					return $this->success("修改成功！", url(''));
 				} else {
@@ -34,19 +41,27 @@ use app\business\controller\Baseness;
 				return $this->error($modelDealer->getError());
 			}
 		} else {
-			$info = db('Dealer')->where(array('mobile' => $mobile))->find();			
-			if(!$info){
-				$data['mobile'] = $mobile;
-				$data['invite_code'] = $modelDealer->buildInviteCode();
-				$result = $modelDealer->save($data);
+			$is_deal = db('Dealer')->where(array('mobile' => $mobile))->find();
+			if($is_deal){
 				$info = db('Dealer')->where(array('mobile' => $mobile))->find();
+				$data = array(
+						'info'    => $info,
+						'infoStr' => json_encode($info),
+				);
+				$this->assign($data);
+				return $this->fetch();
+			}else{
+				$info['rep_idcard_pic'] = '';
+				$info['dealer_lic_pic'] = '';
+				$info['contacts_pic'] = '';
+				$info['info_pic'] = '';
+				$data = array(
+						'info'=>$info,
+						'infoStr' =>json_encode($info),
+				);
+				$this->assign($data);
+				return $this->fetch();
 			}
-			$data = array(
-				'info'    => $info,
-				'infoStr' => json_encode($info),
-			);
-			$this->assign($data);
-			return $this->fetch();
 		}
 	}
 
@@ -122,6 +137,22 @@ use app\business\controller\Baseness;
 	}
 
 	public function myShop() {
+		$uid = session('uid');
+		/*
+		 * 按照金额排行
+		 * */
+		$result = db('order')->where('mid',$uid)->order('loan_limit desc')->limit(10)->select();
+		foreach ($result as $k => $v) {
+			$result[$k]['realname'] = serch_real($v['uid']);
+		}
+		/*
+		 * 按照订单排行
+		 * */
+
+		/*
+		 * 按照均价排行
+		 * */
+		$this->assign($result);
 		return $this->fetch();
 	}
 
