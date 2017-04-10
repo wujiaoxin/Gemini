@@ -1,7 +1,7 @@
 {extend name="base"}
 {block name="style"}
 <style>
-	.pop-container {
+	/* .pop-container {
 		position: fixed;
 		left: 50%;
 		top: 50%;
@@ -15,64 +15,16 @@
 	}
 	.pop-container .controls {
 		margin-left: 120px;
-	}
+	} */
 </style>
 {/block}
 {block name="body"}
 <!--信用额度-->
+<div class="alert hide">
+  	<a class="close"></a>
+  	<span></span>
+</div>
 <div class="row-fluid">
-	<div id="payDeposit" class="modal hide fade">
-		<div class="span4 pop-container">
-			<div class="portlet">
-				<div class="portlet-title" style="margin: 10px 0 10px 10px;">
-					<div class="caption">
-						保证金补缴页
-					</div>
-				</div>
-				<div class="portlet-body">
-					<form action="#" class="form-horizontal">
-						<div class="control-group">
-							<label class="control-label">补缴金额</label>
-							<div class="controls">
-								<input type="number" placeholder="补缴金额" class="m-wrap small" />
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">补缴方式</label>
-							<div class="controls">
-								<select class="small m-wrap" tabindex="1">
-									<option value="Category 1">线下转账</option>
-								</select>
-							</div>
-						</div>
-			<!-- 			<div class="control-group">
-							<label class="control-label">选择账户</label>
-							<div class="controls">
-								<label class="radio line">
-									<input type="radio" name="optionsRadios2" value="option1" />
-									银行账户1: ********
-								</label>
-								<label class="radio line">
-									<input type="radio" name="optionsRadios2" value="option2" checked />
-									银行账户2: ********
-								</label>
-							</div>
-						</div> -->
-						<div class="control-group">
-							<label class="control-label">充值备注</label>
-							<div class="controls">
-								<textarea class="medium m-wrap" rows="3"></textarea>
-							</div>
-						</div>
-						<div class="form-actions">
-							<button type="submit" class="btn blue"><i class="icon-ok"></i>提交</button>
-							<button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i>关闭</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="span12">
 		<div class="tabbable tabbable-custom">
 			<ul class="nav nav-tabs">
@@ -81,30 +33,30 @@
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="tab_1_1">
-					<form action="#" class="form-horizontal">
+					<div class="form-horizontal">
 						<div class="control-group">
 							<label class="control-label">申请金额</label>
 							<div class="controls">
-								<input type="number" placeholder="" class="m-wrap medium" />
+								<input id="creditLimit" type="number" placeholder="" class="m-wrap medium">
 								<span class="help-inline">万元</span>
 							</div>
 						</div>
 						<div class="control-group">
 							<label class="control-label">备注说明</label>
 							<div class="controls">
-								<textarea class="large m-wrap" rows="3"></textarea>
+								<textarea class="large m-wrap" rows="3" id="desc"></textarea>
 							</div>
 						</div>
 						<div class="form-actions">
-							<button type="submit" class="btn blue"><i class="icon-ok"></i>确认提交</button>
+							<a id="applyLimitBtn" class="btn blue"><i class="icon-ok"></i>确认提交</a>
 						</div>
-					</form>
+					</div>
 				</div>
 				<div class="tab-pane" id="tab_1_2">
-					<form action="#" class="form-horizontal">
+					<form class="form-horizontal">
 						<div class="control-group">
-							<label class="control-label" style="text-align:left;">申请状态</label>
-							<div class="controls" style="float:left;margin-left: 0;">
+							<label class="control-label">申请状态</label>
+							<div class="controls"">
 								<label class="radio">
 									<div class="radio">
 										<span class="checked">
@@ -140,7 +92,7 @@
 							</div>
 						</div>
 					</form>
-					<div class="span12" style="margin-left: 0;">
+					<div class="span12">
 						<div class="portlet">
 							<div class="portlet-body">
 								<table class="table table-bordered table-hover">
@@ -165,16 +117,6 @@
 										<td>-</td>
 										<td>-</td>
 										<td>-</td>
-										<td>-</td>
-									</tr>
-									<tr>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
 										<td><a data-toggle="modal" href="#payDeposit">补缴</a></td>
 									</tr>
 									</tbody>
@@ -187,7 +129,91 @@
 		</div>
 	</div>
 </div>
+
+<div id="payDeposit" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	    <h3>保证金补缴页</h3>
+	</div>
+	<div class="modal-body">
+	    <div class="alert hide">
+	      	<a class="close"></a>
+	      	<span></span>
+	    </div>
+	    <div class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label">补缴金额</label>
+				<div class="controls">
+					<input type="number" placeholder="补缴金额" class="m-wrap small" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">补缴方式</label>
+				<div class="controls">
+					<select class="small m-wrap" tabindex="1">
+						<option value="Category 1">线下转账</option>
+					</select>
+				</div>
+			</div>
+		<!--<div class="control-group">
+				<label class="control-label">选择账户</label>
+				<div class="controls">
+					<label class="radio line">
+						<input type="radio" name="optionsRadios2" value="option1" />
+						银行账户1: ********
+					</label>
+					<label class="radio line">
+						<input type="radio" name="optionsRadios2" value="option2" checked />
+						银行账户2: ********
+					</label>
+				</div>
+			</div> -->
+			<div class="control-group">
+				<label class="control-label">充值备注</label>
+				<div class="controls">
+					<textarea class="medium m-wrap" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button type="submit" class="btn blue"><i class="icon-ok"></i>提交</button>
+				<button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i>关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
 {/block}
 {block name="script"}
-<script src="/public/business/js/lineOfCredit.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$('#applyLimitBtn').click(function(){
+			var creditLimit = $('#creditLimit').val();
+			var desc = $('#desc').val();
+			if(creditLimit == ""){
+				ui_alert("alert-error","请输入申请额度");
+        		return false;
+			}
+			console.log('aaa')
+			ajax_jquery({
+	            url: apiUrl +'/business/account/lineOfCredit',
+	            data:{
+	            	"creditLimit": creditLimit,
+	            	"desc": desc
+	            },
+	            success:function(resp){
+	                if (resp.code == "1" ) {
+	                		ui_alert("alert-success","申请成功,正在处理");
+	                        window.location.href = "/business/account/lineOfCredit";
+	                } else {
+	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+	                        ui_alert("alert-error",resp.msg);
+	                    } else {
+	                        ui_alert("alert-error","申请失败，请重试!");
+	                    }
+	                    return false;          
+	                }
+	            }
+	        });
+		})
+	})
+</script>
 {/block}

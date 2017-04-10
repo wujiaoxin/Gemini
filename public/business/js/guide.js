@@ -278,10 +278,14 @@ function encodeCheckbox(name){
 function initCheckBox(name){
     var initData = {};
     if( typeof(info[name]) == "string" && info[name] != ''){
-       initData = info[name].split(',');
-        for(var i in initData){
-            $("input[name="+name+"]").eq(initData[i]-1).click();
-        }
+        initData = info[name].split(',');
+        $("input[name="+name+"]:checkbox").each(function() {
+            var thisValue = $(this).val();
+            var isInArray = initData.indexOf(thisValue);
+            if(isInArray != '-1'){
+                $(this).click();
+            }
+        })
     }    
 }
 

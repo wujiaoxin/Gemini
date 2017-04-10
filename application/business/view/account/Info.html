@@ -2,6 +2,12 @@
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="/public/business/css/selectArea.css">
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
+<style type="text/css">
+	.info-item {
+		display: inline-block;
+    	margin-top: 7px;
+	}
+</style>
 <script type="text/javascript">
 	var info = {};
 	try {
@@ -9,8 +15,6 @@
 	} catch (e) {
 		alert("数据异常");
 	}
-
-	info.city='4499,4533,4536';
 </script>
 {/block}
 {block name="body"}
@@ -53,7 +57,7 @@
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label">营业执照照片</label>
+					<label class="control-label">营业执照</label>
 					<div class="controls">
 						<span id="dealer_lic_pic" class="info-item"></span>
 					</div>
@@ -89,9 +93,12 @@
 	 
 $(function(){
 	//初始化表单
-	$("span.info_item").each(function(i){
+	$("span.info-item").each(function(i){
 	    var name = $(this).attr('id');
 	    if(typeof(info[name]) == "string" &&info[name] !=''){
+	    	if(name == 'idno'){
+	        	info[name] = encryptID(info[name]);
+	        }
 	        $(this).text(info[name]);
 	    }
 	});
@@ -101,8 +108,9 @@ $(function(){
 		var formsData = info['forms'].split(',');
 		var formsText = "";
 		for(var i in formsData){
-	       formsText += forms[formsData[i]];
+	       formsText += (forms[formsData[i]-1]+' ');
 	    }
+	    $('#forms').text(formsText);
 	}
 	//初始化三级联动city
 	if(typeof(info['city']) == "string" && info['city'] != ''){
@@ -113,7 +121,6 @@ $(function(){
 	    var loc_province = $('#loc_province').select2('data').text;
 	    var loc_city = $('#loc_city').select2('data').text;
 	    var loc_town = $('#loc_town').select2('data').text;
-	    console.log(loc_province)
 	    $('#province').text(loc_province);
 	    $('#city').text(loc_city);
 	    $('#town').text(loc_town);

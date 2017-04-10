@@ -28,7 +28,7 @@
 .account-index .index-info i:before {
 	margin-top: -12px;
 }
-i.f-colgreen:before {
+i.colgreen:before {
 	color: #25c398;
 }
 i.colyellow:before {
@@ -77,6 +77,20 @@ i.colyellow:before {
 }
 .card_selected {
 	border: 2px solid #ff9090;
+}
+
+.rel {
+	position: relative;
+}		
+.getcode{
+	position: absolute;
+	top:1px;
+	right:0; 
+	padding:0 20px; 
+	display: block;  
+	line-height: 34px; 
+	height: 32px; 
+	font-size: 0.6rem;
 }
 
 

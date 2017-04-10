@@ -899,10 +899,11 @@ var App = function () {
 function ui_alert(classname,message){
         jQuery('.alert').removeClass('alert-error alert-success').children('span').text(message).end()
                 .addClass(classname).show();
+        setTimeout("$('.alert').slideUp('slow')",5000);
     };
-    jQuery('.alert > .close').click(function(){
-        jQuery(this).parent('.alert').removeClass('alert-error').hide();
-    });
+jQuery('.alert > .close').click(function(){
+    jQuery('.alert').removeClass('alert-error alert-success').hide();
+});
 
 function ajax_jquery(options) {
     if (options == undefined) {
@@ -1062,6 +1063,51 @@ $("#editPasswordBtn").click(function(event) {
         }
         return i
     };
+
+    //发送短信验证码
+    var isimgverify = 0;
+    function sendSmsVerify(id) {
+        var formName = $(id).attr('data-form');
+        var mobile = $('#'+formName+'-username').val();
+        var imgverify = $('#'+formName+'-rvalicode').val();
+        if (mobile == "") {
+            ui_alert("alert-error","请输入手机号!");
+        } else if (!validatePhoneNumber(mobile)) {
+            ui_alert("alert-error","请输入正确的手机号!");
+        } else if (isimgverify && imgverify == "") {
+            ui_alert("alert-error","请输入图形验证码");
+        } else {
+            var param = {
+                "mobile": mobile,
+                "imgverify": imgverify
+            };
+            ajax_jquery({
+                url: apiUrl + '/api/user/sendSmsVerify?t=' + Math.random(),
+                data: param,
+                success: function (resp) {
+                    if (resp.code == "1") {
+                        ui_alert("alert-success","验证码发送成功,请注意查收");
+                    } else {
+                        if(resp.code == "-2" || resp.code == "1001"){
+                            isimgverify = 1;
+                            $(".rvalicode-cont").show();
+                        }else {
+                            isimgverify = 0;
+                            $(".rvalicode-cont").hide();
+                        }
+                        if (typeof(resp.msg) == 'string' && resp.msg != '') {
+                            ui_alert("alert-error",resp.msg);
+                        } else {
+                            ui_alert("alert-error","验证码发送失败");
+                        }
+                        // doRefreshVerfiy();
+                        return false;
+                    }
+                }
+            });
+        }
+        //return false;
+    }
 
 
 

@@ -216,48 +216,48 @@ var Login = function () {
 
 }();
 
-	function sendSmsVerify(id) {
-		var formName = $(id).attr('data-form');
-	    var mobile = $('#'+formName+'-username').val();
-	    var imgverify = $('#'+formName+'-rvalicode').val();
-	    if (mobile == "") {
-	        ui_alert("alert-error","请输入手机号!");
-	    } else if (!validatePhoneNumber(mobile)) {
-	        ui_alert("alert-error","请输入正确的手机号!");
-	    } else if (isimgverify && imgverify == "") {
-	        ui_alert("alert-error","请输入图形验证码");
-	    } else {
-	        var param = {
-	            "mobile": mobile,
-	            "imgverify": imgverify
-	        };
-	        ajax_jquery({
-	            url: apiUrl + '/api/user/sendSmsVerify?t=' + Math.random(),
-	            data: param,
-	            success: function (resp) {
-	                if (resp.code == "1") {
-	                    ui_alert("alert-success","验证码发送成功,请注意查收");
-	                } else {
-	                    if(resp.code == "-2" || resp.code == "1001"){
-	                        isimgverify = 1;
-	                        $(".rvalicode-cont").show();
-	                    }else {
-	                        isimgverify = 0;
-	                        $(".rvalicode-cont").hide();
-	                    }
-	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
-	                       	ui_alert("alert-error",resp.msg);
-	                    } else {
-	                        ui_alert("alert-error","验证码发送失败");
-	                    }
-	                    doRefreshVerfiy();
-	                    return false;
-	                }
-	            }
-	        });
-	    }
-	    //return false;
-	}
+	// function sendSmsVerify(id) {
+	// 	var formName = $(id).attr('data-form');
+	//     var mobile = $('#'+formName+'-username').val();
+	//     var imgverify = $('#'+formName+'-rvalicode').val();
+	//     if (mobile == "") {
+	//         ui_alert("alert-error","请输入手机号!");
+	//     } else if (!validatePhoneNumber(mobile)) {
+	//         ui_alert("alert-error","请输入正确的手机号!");
+	//     } else if (isimgverify && imgverify == "") {
+	//         ui_alert("alert-error","请输入图形验证码");
+	//     } else {
+	//         var param = {
+	//             "mobile": mobile,
+	//             "imgverify": imgverify
+	//         };
+	//         ajax_jquery({
+	//             url: apiUrl + '/api/user/sendSmsVerify?t=' + Math.random(),
+	//             data: param,
+	//             success: function (resp) {
+	//                 if (resp.code == "1") {
+	//                     ui_alert("alert-success","验证码发送成功,请注意查收");
+	//                 } else {
+	//                     if(resp.code == "-2" || resp.code == "1001"){
+	//                         isimgverify = 1;
+	//                         $(".rvalicode-cont").show();
+	//                     }else {
+	//                         isimgverify = 0;
+	//                         $(".rvalicode-cont").hide();
+	//                     }
+	//                     if (typeof(resp.msg) == 'string' && resp.msg != '') {
+	//                        	ui_alert("alert-error",resp.msg);
+	//                     } else {
+	//                         ui_alert("alert-error","验证码发送失败");
+	//                     }
+	//                     doRefreshVerfiy();
+	//                     return false;
+	//                 }
+	//             }
+	//         });
+	//     }
+	//     //return false;
+	// }
 	
     function doRefreshVerfiy(id) {
 	    var verify=$(id).attr('src');
