@@ -9,6 +9,7 @@
 
 namespace app\business\controller;
 use app\business\controller\Baseness;
+use app\common\model;
 
 class Account extends Baseness {
 	public function index() {
@@ -34,48 +35,17 @@ class Account extends Baseness {
      * 充值
      * */
 	public function recharge() {
-      if(IS_POST){
-          $data = input('post.');
-          $uid = session('uid');
-          $pay_id = mt_rand(0,999).time();
-          if (is_numeric($data['money'])){
-              /*
-               * 资金记录
-               * */
-              $data_money = array(
-                  'uid'=>$uid,
-                  'account_money'=>$data['money'],
-                  'deal_other'=>'0',
-                  'descr'=>$data['descr'],
-                  'create_time'=>time()
-              );
-              db('dealer_money')->insert($data_money);
-              /*
-               * 充值记录
-               * */
-              $rec_money = array(
-                  'user_id'=>$uid,
-                  'pay_id'=>$pay_id,
-                  'is_pay'=>'-1',
-                  'money'=>$data['money'],
-                  'pay_type'=>$data['pay_type'],
-                  'descr'=>$data['descr'],
-                  'create_time'=>time()
-              );
-              $result = db('payment')->insert($rec_money);
-              if ($result){
-                  $resp["code"] = 1;
-                  $resp["msg"] = '处理中';
-                  return json($resp);
-              }else{
-                  $resp["code"] = 0;
-                  $resp["msg"] = '充值失败';
-                  return json($resp);
-              }
-          }
-        }else{
-            return $this->fetch();
+    if(IS_POST){
+        $data = input('post.');
+        // var_dump($data);die;
+        $uid = session('uid');
+        if (is_numeric($data['money'])){
+            modify_account($data,$uid,'3','0','member_money','INSERT');
+            modify_account($data,$uid,'rechange','INSERT');
         }
+      }else{
+          return $this->fetch();
+      }
 	}
     /*
      * 提现
@@ -84,24 +54,33 @@ class Account extends Baseness {
       $mobile = session('mobile');
       $uid = session('uid');
       if(IS_POST){
-          $data = input('post.');
-
+        $data = input('post.');
+        foreach ($data['withdrawOrders'] as $k => $v) {
+          cl_order($v,$data['bank_card']);
+        }
       }else{
-          $deals =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
-          $orders =db('order')->where('mid',$uid)->select();
-          foreach ($orders as $k => $v) {
-              $orders[$k]['realname'] = serch_real($v['uid']);
-          }
-          $info = array(
-              'info'=>$deals,
-              'orders'=>$orders
+        $bankone =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+        $banktwo =db('dealer')->field('priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+        $map = array(
+            'mid'=>$uid,
+            'status'=>'10'
           );
-          $data = array(
-              'info'    => $info,
-              'infoStr' => json_encode($info),
-          );
-          $this->assign($data);
-          return $this->fetch();
+        $orders =db('order')->where($map)->select();
+        foreach ($orders as $k => $v) {
+            $orders[$k]['realname'] = serch_real($v['uid']);
+        }
+        $bankcard =[$bankone,$banktwo];
+        $info = array(
+            'bankcard'=>$bankcard,
+            'orders'=>$orders
+        );
+        $data = array(
+            'info'    => $info,
+            'infoStr' => json_encode($info),
+        );
+        // var_dump($data);die;
+        $this->assign($data);
+        return $this->fetch();
       }
   }
 
@@ -120,10 +99,12 @@ class Account extends Baseness {
   }
   public function info() {
       $mobile = session('mobile');
-      $deals = db('dealer')->field('name,credit_code,addr,forms,rep,rep_idcard_pic')->where('mobile',$mobile)->find();
+      $deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic')->where('mobile',$mobile)->find();
       if($deals){
           $data['code'] = '1';
-          $data['info'] = json_encode($deals);
+          $data['info']=$deals;
+          $data['infoStr'] = json_encode($deals);
+          // var_dump($data);die;
           $this->assign($data);
       }
       return $this->fetch();
@@ -131,12 +112,12 @@ class Account extends Baseness {
   public function message() {
     return $this->fetch();
   }
-    /*
-     * 账户设置
-     * */
-    public function addacout(){
-        if (IS_POST){
-
-        }
+    //设置手机号和邮箱
+    public function setemail(){
+      
+    }
+    //修改手机号和邮箱
+    public function editeamil(){
+      
     }
 }

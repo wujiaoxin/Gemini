@@ -18,12 +18,11 @@ class Baseness extends base{
 //			return $this->error("请重新登录",url("/business/login/login"));
 			return $this->redirect("/business/login/login");
 		}
-		$is_success = db('Dealer')->field('idno')->where('mobile',$mobile)->find();
+		/*$is_success = db('Dealer')->field('idno')->where('mobile',$mobile)->find();
 		if ($_SERVER['REDIRECT_URL'] != '/business/user/guide.html'){
-			if(!$is_success){
+			if(!$is_success['idno']){
 				$this->redirect('user/guide');
 			}
-		}
-
+		}*/
 	}
 }

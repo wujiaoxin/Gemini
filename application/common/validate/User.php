@@ -20,6 +20,8 @@ class Member extends Base{
 		'mobile'     => 'unique:member',
 		'password'   => 'require',
 		'repassword' => 'confirm:password'
+		'paypassword'   => 'require',
+		'repaypassword' => 'confirm:paypassword'
 	);
 	protected $message = array(
 		'username.require'    => '用户名必须',
@@ -29,10 +31,13 @@ class Member extends Base{
 		'mobile.unique'    => '手机号已存在',
 		'password.require' => '密码必须',
 		'repassword.require'    => '确认密码和密码必须一致',
+		'paypassword.require' => '支付密码必须',
+		'repaypassword.require'    => '确认支付密码和支付密码必须一致',
 	);
 	protected $scene = array(
 		'edit'     => 'email,mobile',
 		'password' => 'password,repassword'
+		'paypassword' => 'paypassword,repaypassword'
 	);
 
 }

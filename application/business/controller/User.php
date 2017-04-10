@@ -14,24 +14,13 @@ use app\business\controller\Baseness;
 		$mobile = session("mobile");
 		$modelDealer = model('Dealer');
 		// 检测商户是否已经录入信息
-		$is_success = $modelDealer->field('priv_bank_account_id')->where('mobile',$mobile)->find();
-		if (!$is_success) {
-			return $this->fetch();
-		}
 		if (IS_POST) {
 			$data = input('post.');
 			if ($data) {
 				unset($data['id']);
 				unset($data['status']);
 				unset($data['mobile']);
-				$is_deal = db('Dealer')->where(array('mobile' => $mobile))->find();
-				if(!$is_deal){
-					$data['mobile'] = $mobile;
-					$data['invite_code'] = $modelDealer->buildInviteCode();
-					$result = $modelDealer->insert($data);
-				}else{
-					$result = $modelDealer->save($data, array('mobile' => $mobile));
-				}
+				$result = $modelDealer->save($data, array('mobile' => $mobile));
 				if ($result) {
 					return $this->success("修改成功！", url(''));
 				} else {
@@ -41,27 +30,19 @@ use app\business\controller\Baseness;
 				return $this->error($modelDealer->getError());
 			}
 		} else {
-			$is_deal = db('Dealer')->where(array('mobile' => $mobile))->find();
-			if($is_deal){
+			$info = db('Dealer')->where(array('mobile' => $mobile))->find();			
+			if(!$info){
+				$data['mobile'] = $mobile;
+				$data['invite_code'] = $modelDealer->buildInviteCode();
+				$result = $modelDealer->save($data);
 				$info = db('Dealer')->where(array('mobile' => $mobile))->find();
-				$data = array(
-						'info'    => $info,
-						'infoStr' => json_encode($info),
-				);
-				$this->assign($data);
-				return $this->fetch();
-			}else{
-				$info['rep_idcard_pic'] = '';
-				$info['dealer_lic_pic'] = '';
-				$info['contacts_pic'] = '';
-				$info['info_pic'] = '';
-				$data = array(
-						'info'=>$info,
-						'infoStr' =>json_encode($info),
-				);
-				$this->assign($data);
-				return $this->fetch();
 			}
+			$data = array(
+				'info'    => $info,
+				'infoStr' => json_encode($info),
+			);
+			$this->assign($data);
+			return $this->fetch();
 		}
 	}
 
@@ -102,6 +83,7 @@ use app\business\controller\Baseness;
 	 * 商户新增员工接口
 	 * */
 	public function addStaff(){
+		// var_dump($GLOBALS);die;
 		if (IS_POST){
 			$data = input('post.');
 			if ($data) {
@@ -137,22 +119,6 @@ use app\business\controller\Baseness;
 	}
 
 	public function myShop() {
-		$uid = session('uid');
-		/*
-		 * 按照金额排行
-		 * */
-		$result = db('order')->where('mid',$uid)->order('loan_limit desc')->limit(10)->select();
-		foreach ($result as $k => $v) {
-			$result[$k]['realname'] = serch_real($v['uid']);
-		}
-		/*
-		 * 按照订单排行
-		 * */
-
-		/*
-		 * 按照均价排行
-		 * */
-		$this->assign($result);
 		return $this->fetch();
 	}
 
@@ -167,10 +133,62 @@ use app\business\controller\Baseness;
 	}
 
 	public function repayItem() {
-		return $this->fetch();
+		$uid =session('uid');
+		if (IS_POST) {
+			$data = input('post.');
+
+			return $this->fetch();
+		}else{
+			$order_repay = db('order_repay')->where('mid',$uid)->order('status ASC')->select();
+			foreach ($order_repay as $k => $v) {
+				$uid = serch_order($v['order_id']);
+				$order_repay[$k]['yewu_realname'] = serch_real($uid);
+			}
+			// var_dump($order_repay);die;
+			$this->assign($order_repay);
+			return $this->fetch();
+		}
+		
 	}
 
 	public function payItem() {
+		
 		return $this->fetch();
+	}
+	//设置交易密码
+	public function setpay(){
+		$mobile = session("mobile");
+		$user = model('User');
+		// $newPassword = '123456';
+		if (IS_POST) {
+			$data = input('post.');
+			if ($data['paypassword'] === $data['repaypassword']) {
+				$result = $user->setpaypw($mobile,$data['paypassword']);
+				if($result){
+					return ['code'=>1,'msg'=>'支付密码设置成功'];
+				}
+			}else{
+				return ['code'=>1003,'msg'=>'两次密码不一致'];
+			}
+		}
+		
+	}
+	//修改交易密码
+	public function resetpay(){
+		if (IS_POST) {
+			$user = model('User');
+			$data = $this->request->post();
+
+			$res = $user->editpaypw($data);
+			if ($res) {
+				return $this->success('修改密码成功！');
+			} else {
+				return $this->error($user->getError());
+			}
+		} else {
+			$this->setMeta('修改密码');
+			return $this->fetch();
+		}
+
 	}
 }
