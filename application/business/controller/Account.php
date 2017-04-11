@@ -107,8 +107,7 @@ class Account extends Baseness {
            return ['code'=>'0','msg'=>'交易密码错误'];
         }
       }else{
-        $bankone =db('dealer')->field('bank_account_id,bank_name')->where('mobile',$mobile)->find();
-        $banktwo =db('dealer')->field('priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+        $bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
         $map = array(
             'mid'=>$uid,
             'status'=>'10'
@@ -117,7 +116,6 @@ class Account extends Baseness {
         foreach ($orders as $k => $v) {
             $orders[$k]['realname'] = serch_real($v['uid']);
         }
-        $bankcard =[$bankone,$banktwo];
         $info = array(
             'bankcard'=>$bankcard,
             'orders'=>$orders
@@ -135,9 +133,7 @@ class Account extends Baseness {
   public function bankcard() {
       $mobile = session('mobile');
       $uid = session('uid');
-      $bankone =db('dealer')->field('bank_account_id,bank_name')->where('mobile',$mobile)->find();
-        $banktwo =db('dealer')->field('priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
-      $bankcard =[$bankone,$banktwo];
+      $bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
       $data = array(
       		'info'=>$bankcard,
       		'infoStr'=>json_encode($bankcard)
