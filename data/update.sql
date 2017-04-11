@@ -74,3 +74,9 @@ alter table gemini_dealer MODIFY radiotime VARCHAR(20);
 alter table gemini_payment MODIFY pay_id VARCHAR(255)  NOT NULL COMMENT '充值订单号';
 alter table gemini_carry MODIFY carry_billon VARCHAR(255)  NOT NULL COMMENT '提现订单号';
 alter table gemini_member  paypassword varchar(255)  null  COMMENT '商家支付密码';/*真实姓名*/
+
+
+/*
+20170411
+*/
+alter table gemini_dealer  rep_idcard_back_pic int(11)  NOT NULL  COMMENT '法人身份证反面照片';

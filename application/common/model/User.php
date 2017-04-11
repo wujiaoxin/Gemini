@@ -70,7 +70,7 @@ class User extends Base{
 		return md5($value.$data['salt']);
 	}
 	protected function setPaypasswordAttr($value, $data){
-		return md5($value.$data['paypassword']);
+		return md5($value.$data['mobile']);
 	}
 
 	/**
@@ -279,6 +279,7 @@ class User extends Base{
 
 	public function setpaypw($mobile,$passwd){
 		$data['paypassword'] = $passwd;
+		$data['mobile'] = $mobile;
 		return $this->save($data, array('mobile'=>$mobile));
 	}
 	public function editpaypw($data, $is_reset = false){
