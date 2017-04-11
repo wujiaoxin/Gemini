@@ -21,7 +21,7 @@ class User extends Base{
 	protected $type = array(
 		'uid'  => 'integer',
 	);
-	protected $insert = array('salt', 'password', 'status', 'reg_time');
+	protected $insert = array('salt', 'password', 'status', 'reg_time','paypassword');
 	protected $update = array();
 
 	public $editfield = array(
@@ -68,6 +68,9 @@ class User extends Base{
 
 	protected function setPasswordAttr($value, $data){
 		return md5($value.$data['salt']);
+	}
+	protected function setPaypasswordAttr($value, $data){
+		return md5($value.$data['paypassword']);
 	}
 
 	/**
@@ -274,6 +277,30 @@ class User extends Base{
 		return $this->save($data, array('mobile'=>$mobile));
 	}
 
+	public function setpaypw($mobile,$passwd){
+		$data['paypassword'] = $passwd;
+		return $this->save($data, array('mobile'=>$mobile));
+	}
+	public function editpaypw($data, $is_reset = false){
+		$uid = $is_reset ? $data['uid'] : session('user_auth.uid');
+		if (!$is_reset) {
+			
+			//后台修改用户时可修改用户密码时设置为true
+			$result = $this->checkPaypassword($uid,$data['oldpaypassword']);
+			if(!$result){
+				return false;
+			}
+
+			$validate = $this->validate('member.paypassword');
+			if (false === $validate) {
+				return false;
+			}
+		}
+
+		$data['salt'] = rand_string(6);
+
+		return $this->save($data, array('uid'=>$uid));
+	}
 
 	protected function checkPassword($uid,$password){
 		
@@ -283,6 +310,20 @@ class User extends Base{
 		}	
 		$user = $this->where(array('uid'=>$uid))->find();
 		if (md5($password.$user['salt']) === $user['password']) {
+			return true;
+		}else{
+			$this->error = '原始密码错误！';
+			return false;
+		}
+	}
+	protected function checkPaypassword($uid,$paypassword){
+		
+		if (!$uid || !$password) {
+			$this->error = '原始用户UID和密码不能为空';
+			return false;
+		}	
+		$user = $this->where(array('uid'=>$uid))->find();
+		if (md5($password.$user['password']) === $user['paypassword']) {
 			return true;
 		}else{
 			$this->error = '原始密码错误！';
