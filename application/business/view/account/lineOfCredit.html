@@ -1,21 +1,7 @@
 {extend name="base"}
 {block name="style"}
 <style>
-	/* .pop-container {
-		position: fixed;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
-		z-index: 999999;
-		border: 1px solid #ddd;
-		background: #fff;
-	}
-	.pop-container .control-label {
-		width: 100px;
-	}
-	.pop-container .controls {
-		margin-left: 120px;
-	} */
+
 </style>
 {/block}
 {block name="body"}
@@ -44,7 +30,7 @@
 						<div class="control-group">
 							<label class="control-label">备注说明</label>
 							<div class="controls">
-								<textarea class="large m-wrap" rows="3" id="desc"></textarea>
+								<textarea class="large m-wrap" rows="3" id="descr"></textarea>
 							</div>
 						</div>
 						<div class="form-actions">
@@ -53,77 +39,59 @@
 					</div>
 				</div>
 				<div class="tab-pane" id="tab_1_2">
-					<form class="form-horizontal">
+					<div class="form-horizontal">
 						<div class="control-group">
 							<label class="control-label">申请状态</label>
-							<div class="controls"">
+							<div class="controls">
 								<label class="radio">
 									<div class="radio">
-										<span class="checked">
-											<input type="radio" name="optionsRadios1" value="option1" checked>
-										</span>
-									</div>
-									全部
+										<span class="checked"><input type="radio" name="optionsRadios1" value="1" checked></span>
+									</div>全部
 								</label>
 								<label class="radio">
 									<div class="radio">
-										<span>
-											<input type="radio" name="optionsRadios1" value="option2">
-										</span>
-									</div>
-									未通过
+										<span><input type="radio" name="optionsRadios1" value="2"></span>
+									</div>未通过
 								</label>
 								<label class="radio">
 									<div class="radio">
-											<span>
-												<input type="radio" name="optionsRadios1" value="option2">
-											</span>
-									</div>
-									审核中
+										<span><input type="radio" name="optionsRadios1" value="3"></span>
+									</div>审核中
 								</label>
 								<label class="radio">
 									<div class="radio">
-											<span>
-												<input type="radio" name="optionsRadios1" value="option2">
-											</span>
-									</div>
-									冻结
+										<span><input type="radio" name="optionsRadios1" value="option2"></span>
+									</div>冻结
 								</label>
-							</div>
-						</div>
-					</form>
-					<div class="span12">
-						<div class="portlet">
-							<div class="portlet-body">
-								<table class="table table-bordered table-hover">
-									<thead>
-									<tr>
-										<th>时间</th>
-										<th>操作额度</th>
-										<th>现有额度</th>
-										<th>状态</th>
-										<th>保证金比例</th>
-										<th>需补缴保证金</th>
-										<th>备注</th>
-										<th>操作</th>
-									</tr>
-									</thead>
-									<tbody>
-									<tr>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td><a data-toggle="modal" href="#payDeposit">补缴</a></td>
-									</tr>
-									</tbody>
-								</table>
 							</div>
 						</div>
 					</div>
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>时间</th>
+								<th>操作额度</th>
+								<th>现有额度</th>
+								<th>状态</th>
+								<th>保证金比例</th>
+								<th>需补缴保证金</th>
+								<th>备注</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td><a data-toggle="modal" href="#payDeposit">补缴</a></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -144,38 +112,25 @@
 			<div class="control-group">
 				<label class="control-label">补缴金额</label>
 				<div class="controls">
-					<input type="number" placeholder="补缴金额" class="m-wrap small" />
+					<input id="depositLimit" type="number" placeholder="补缴金额" class="m-wrap small">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">补缴方式</label>
 				<div class="controls">
-					<select class="small m-wrap" tabindex="1">
-						<option value="Category 1">线下转账</option>
+					<select class="small m-wrap" tabindex="1" id="payDepositMode">
+						<option value="1">线下转账</option>
 					</select>
 				</div>
 			</div>
-		<!--<div class="control-group">
-				<label class="control-label">选择账户</label>
-				<div class="controls">
-					<label class="radio line">
-						<input type="radio" name="optionsRadios2" value="option1" />
-						银行账户1: ********
-					</label>
-					<label class="radio line">
-						<input type="radio" name="optionsRadios2" value="option2" checked />
-						银行账户2: ********
-					</label>
-				</div>
-			</div> -->
 			<div class="control-group">
 				<label class="control-label">充值备注</label>
 				<div class="controls">
-					<textarea class="medium m-wrap" rows="3"></textarea>
+					<textarea id="depositDescr" class="medium m-wrap" rows="3"></textarea>
 				</div>
 			</div>
 			<div class="form-actions">
-				<button type="submit" class="btn blue"><i class="icon-ok"></i>提交</button>
+				<a id="payDepositBtn" class="btn blue"><i class="icon-ok"></i>提交</a>
 				<button type="button" data-dismiss="modal" class="btn"><i class="icon-remove"></i>关闭</button>
 			</div>
 		</div>
@@ -187,17 +142,16 @@
 	$(function(){
 		$('#applyLimitBtn').click(function(){
 			var creditLimit = $('#creditLimit').val();
-			var desc = $('#desc').val();
+			var descr = $('#descr').val();
 			if(creditLimit == ""){
 				ui_alert("alert-error","请输入申请额度");
         		return false;
 			}
-			console.log('aaa')
 			ajax_jquery({
 	            url: apiUrl +'/business/account/lineOfCredit',
 	            data:{
 	            	"creditLimit": creditLimit,
-	            	"desc": desc
+	            	"descr": descr
 	            },
 	            success:function(resp){
 	                if (resp.code == "1" ) {
@@ -214,6 +168,35 @@
 	            }
 	        });
 		})
+		$('#payDepositBtn').click(function(){
+			var depositLimit = $('#depositLimit').val();
+			var payDepositMode = $('#payDepositMode').val();
+			var depositDescr = $('#depositDescr').val();
+			if(depositLimit == ""){
+				ui_alert("alert-error","请输入补缴金额");
+        		return false;
+			}
+			ajax_jquery({
+	            url: apiUrl +'/business/account/lineOfCredit',
+	            data:{
+	            	"depositLimit": depositLimit,
+	            	"depositDescr": depositDescr
+	            },
+	            success:function(resp){
+	                if (resp.code == "1" ) {
+	                		ui_alert("alert-success","申请成功,正在处理");
+	                        window.location.href = "/business/account/lineOfCredit";
+	                } else {
+	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+	                        ui_alert("alert-error",resp.msg);
+	                    } else {
+	                        ui_alert("alert-error","申请失败，请重试!");
+	                    }
+	                    return false;          
+	                }
+	            }
+	        });
+	    })
 	})
 </script>
 {/block}
