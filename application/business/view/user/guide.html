@@ -192,16 +192,16 @@
 										</div>
 										<div class="span3"></div>
 										<div class="picker-box span3">
-											<div id="picker_contacts_pic" class="picker_button">身份证反面照</div>
-											<input type="hidden" name="contacts_pic" id="field_contacts_pic" {if condition="$info['contacts_pic'] neq '0'"}value="{$info['contacts_pic']|default=''}"{/if}>
-											<div id="fileList_contacts_pic" class="upload-file-list-info" style="width:250px;">
-												{if $info['contacts_pic'] != 0}
+											<div id="picker_rep_idcard_back_pic" class="picker_button">身份证反面照</div>
+											<input type="hidden" name="rep_idcard_back_pic" id="field_rep_idcard_back_pic" {if condition="$info['rep_idcard_back_pic'] neq '0'"}value="{$info['rep_idcard_back_pic']|default=''}"{/if}>
+											<div id="fileList_rep_idcard_back_pic" class="upload-file-list-info" style="width:250px;">
+												{if $info['rep_idcard_back_pic'] != 0}
 													{php}
-														$images = get_cover($info['contacts_pic']);
+														$images = get_cover($info['rep_idcard_back_pic']);
 													{/php}
 													<li class="affix-list-item" id="WU_FILE_100">
 		                                                <div class="upload-file-info">
-		                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_100" data-id="{$info['contacts_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
+		                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_100" data-id="{$info['rep_idcard_back_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
 		                                                    <span class="fname"></span>
 		                                                    <span class="fsize">上传时间:{$images['create_time']|date='Y-m-d H:i',###}</span>
 		                                                    <div class="clearfix"></div>
@@ -364,7 +364,7 @@
 			};
 		btnSentUploader("dealer_lic_pic");
 		btnSentUploader("rep_idcard_pic");
-        btnSentUploader("contacts_pic");			
+        btnSentUploader("rep_idcard_back_pic");			
 
 		jQuery(document).ready(function() {       
 		   // App.init();

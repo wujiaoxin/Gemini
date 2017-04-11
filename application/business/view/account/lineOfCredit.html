@@ -45,28 +45,28 @@
 							<div class="controls">
 								<label class="radio">
 									<div class="radio">
-										<span class="checked"><input type="radio" name="optionsRadios1" value="1" checked></span>
+										<span class="checked"><input type="radio" name="depositStatus" value="1" checked></span>
 									</div>全部
 								</label>
 								<label class="radio">
 									<div class="radio">
-										<span><input type="radio" name="optionsRadios1" value="2"></span>
+										<span><input type="radio" name="depositStatus" value="2"></span>
 									</div>未通过
 								</label>
 								<label class="radio">
 									<div class="radio">
-										<span><input type="radio" name="optionsRadios1" value="3"></span>
+										<span><input type="radio" name="depositStatus" value="3"></span>
 									</div>审核中
 								</label>
 								<label class="radio">
 									<div class="radio">
-										<span><input type="radio" name="optionsRadios1" value="option2"></span>
+										<span><input type="radio" name="depositStatus" value="4"></span>
 									</div>冻结
 								</label>
 							</div>
 						</div>
 					</div>
-					<table class="table table-bordered table-hover">
+					<table class="table table-bordered table-hover" id="table-deposit">
 						<thead>
 							<tr>
 								<th>时间</th>
@@ -80,7 +80,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+							<!-- <tr>
 								<td>-</td>
 								<td>-</td>
 								<td>-</td>
@@ -89,7 +89,7 @@
 								<td>-</td>
 								<td>-</td>
 								<td><a data-toggle="modal" href="#payDeposit">补缴</a></td>
-							</tr>
+							</tr> -->
 						</tbody>
 					</table>
 				</div>
@@ -139,6 +139,53 @@
 {/block}
 {block name="script"}
 <script type="text/javascript">
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+			for(var index = 0; index < data.length; index++){ 
+				html += '<tr>'
+				  		+'<td>' + formatDate(data[index].date) + '</td>'
+				  		+'<td>'+ data[index].operaLimit +'</td>'
+				  		+'<td>'+ data[index].currentLimit +'</td>'
+				  		+'<td>'+ data[index].status +'</td>'
+				  		+'<td>'+ data[index].depositPercent +'</td>'
+				  		+'<td>'+ data[index].payDeposit +'</td>'
+				  		+'<td>'+ data[index].descr +'</td>'
+				  		+'<td>'+ data[index].opera +'</td>'
+			  		+'</tr>';
+			}
+		}
+		return html;
+	} 
+
+	function ajaxDeposit(){
+		var status = $('input[name=depositStatus]:checked').val();
+		console.log(status)
+		ajax_jquery({
+	        url: apiUrl +'/business/account/lineOfCredit',
+	        data:{
+	            'status': status
+	        },
+	        success:function(resp){
+	            if (resp.code == "1" ) {
+	            	$(statusTd).attr('data-status',status);
+                    if(status){
+                    	$(statusTd).text('正常');
+                    	$(self).text('停用');
+                    }else{
+                    	$(statusTd).text('停用');
+                    	$(self).text('启用');
+                    }
+	            } else {
+	                if (typeof(resp.msg) == 'string') {
+	                    ui_alert("alert-error",resp.msg);
+	                    window.location.reload();
+	                }                 
+	            }
+	        }
+		});
+	}
+
 	$(function(){
 		$('#applyLimitBtn').click(function(){
 			var creditLimit = $('#creditLimit').val();
@@ -197,6 +244,10 @@
 	            }
 	        });
 	    })
+
+
+
+
 	})
 </script>
 {/block}

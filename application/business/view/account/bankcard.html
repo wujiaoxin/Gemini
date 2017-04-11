@@ -3,6 +3,11 @@
 <link rel="stylesheet" href="/public/business/css/account.css">
 <script type="text/javascript">
 	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
 
 </script>
 {/block}
@@ -26,9 +31,9 @@
 {block name="script"}
 <script>
 	//初始化银行卡
-	$('#bank_name').text(info.bankcard.bank_name);
-	$('#bank_account_id').text(encryptBankcard(info.bankcard.bank_account_id));
-	$('#priv_bank_name').text(info.bankcard.bank_name);
-	$('#priv_bank_account_id').text(encryptBankcard(info.bankcard.priv_bank_account_id));
+	$('#bank_name').text(info.bank_name);
+	$('#bank_account_id').text(encryptBankcard(info.bank_account_id));
+	$('#priv_bank_name').text(info.priv_bank_name);
+	$('#priv_bank_account_id').text(encryptBankcard(info.priv_bank_account_id));
 </script>
 {/block}

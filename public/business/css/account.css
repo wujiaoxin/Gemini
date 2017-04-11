@@ -66,13 +66,13 @@ i.colyellow:before {
 .bank_name{
 	position: absolute;
 	top: 3%;
-	left: 14%;
+	left: 5%;
 	font-size: 16px;
 }
 .card_num{
 	position: absolute;
 	top: 54%;
-	left: 14%;
+	left: 5%;
 	font-size: 16px;
 }
 .card_selected {

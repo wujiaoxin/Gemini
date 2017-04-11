@@ -24,6 +24,8 @@ var guide = function () {
                         var loc_address = loc_province + ',' + loc_city  + ',' + loc_town;
                         var addr = $("#addr").val();
                         var termOfValidity = $("#termOfValidity").val();
+                        var field_dealer_lic_pic = $("#field_dealer_lic_pic").val();
+                        console.log(field_dealer_lic_pic)
                         if(name == ""){
                             ui_alert("alert-error","请输入企业名称");
                             return false;
@@ -39,6 +41,9 @@ var guide = function () {
                         }else if(termOfValidity == ""){
                             ui_alert("alert-error","请填写营业期限");
                             return false;
+                        }else if(field_dealer_lic_pic == ""){
+                            ui_alert("alert-error","请上传营业执照照片");
+                            return false;
                         }
                         ajax_jquery({
                             url: apiUrl +'/business/user/guide?t='+Math.random(),
@@ -47,11 +52,11 @@ var guide = function () {
                                 'businessLicense': businessLicense,
                                 'city': loc_address,
                                 'addr': addr,
-                                'radiotime': termOfValidity
+                                'radiotime': termOfValidity,
+                                'field_dealer_lic_pic': field_dealer_lic_pic
                             },
                             success:function(resp){
                                 if (resp.code == "1" ) {
-                                    console.log('1')
                                 } else {
                                     if (typeof(resp.msg) == 'string') {
                                         ui_alert("alert-error",resp.msg);
@@ -63,6 +68,8 @@ var guide = function () {
                     }else if(index == 2){
                         var rep = $("#rep").val();
                         var idcardNum = $("#idcardNum").val();
+                        var field_rep_idcard_pic = $("#field_rep_idcard_pic").val();
+                        var field_rep_idcard_back_pic = $("#field_rep_idcard_back_pic").val();
                         if(rep == ""){
                             ui_alert("alert-error","请填写法人姓名");
                             return false;
@@ -72,16 +79,24 @@ var guide = function () {
                         }else if(!validateBankNum(idcardNum)){
                             ui_alert("alert-error","身份证号填写有误");
                             return false;
+                        }else if(field_rep_idcard_pic == ""){
+                            ui_alert("alert-error","请上传身份证正面照");
+                            return false;
+                        }else if(field_rep_idcard_back_pic == ""){
+                            ui_alert("alert-error","请上传身份证反面照");
+                            return false;
                         }
+
                         ajax_jquery({
                             url: apiUrl +'/business/user/guide?t='+Math.random(),
                             data:{
                                 'rep': rep,
-                                'idno': idcardNum
+                                'idno': idcardNum,
+                                'field_rep_idcard_pic': field_rep_idcard_pic,
+                                'field_rep_idcard_back_pic': field_rep_idcard_back_pic
                             },
                             success:function(resp){
                                 if (resp.code == "1" ) {
-                                    console.log('2')
                                 } else {
                                     if (typeof(resp.msg) == 'string') {
                                         ui_alert("alert-error",resp.msg);
@@ -93,7 +108,6 @@ var guide = function () {
                     }else if(index == 3){
                         var property = encodeCheckbox('property');
                         var forms = encodeCheckbox('forms');
-                       
                         if(property == ""){
                             ui_alert("alert-error","请选择门店属性");
                             return false;

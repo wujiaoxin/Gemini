@@ -97,9 +97,7 @@
 	   		var mobile = $(this).attr('data-id');
 	   		var statusTd = $(this).parent('td').prev('td');
 	   		var status = $(statusTd).attr('data-status');
-	   		console.log(status);
 	   		status = status>0?0:1; //更改stautus
-	   		console.log(status);
 	   		ajax_jquery({
 		        url: apiUrl +'/business/user/editStaff',
 		        data:{
