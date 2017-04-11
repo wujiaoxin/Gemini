@@ -1,24 +1,23 @@
 <?php
-    /*
-     *查询真实姓名
-     * */
-    function serch_real($uid){
-        $real = db('member')->where('uid',$uid)->find();
-        return $real['realname'];
-    }
+  //查询真实姓名
+  function serch_real($uid){
+    $real = db('member')->where('uid',$uid)->find();
+    return $real['realname'];
+  }
   function editmd($mid,$content){
-        $result = db('member')->where('uid',$mid)->update($content);
-          eco($result);
-        return $result;
+    $result = db('member')->where('uid',$mid)->update($content);
+    return $result;
   }
   function serch_order($order_id){
     $result =db('order')->field('uid')->where('sn',$order_id)->find();
     return $result['uid'];
   }
-
   /*
-  **操作资金
-  **name 
+  ** 操作资金
+  ** name 操作类型(数字)
+  ** money_type 操作金额
+  ** type 操作类型
+  ** momod 操作方法
   */
   function modify_account($data,$uid,$name=0,$money_type=0,$type=0,$memod=0){
     if(isset($data['money']) && $memod == 'INSERT'){
@@ -78,7 +77,6 @@
             }
         }
     }
-
   }
   /*
   **生成还款列表
@@ -133,5 +131,56 @@
       }
       // var_dump($data);
       return $data;
+    }
+  }
+  //发送验证码
+  function sendSms($mobile, $content){
+    //TODO: move to config module;
+    $uid = '161110_hwj_hnkj';
+    $pwd = 'me1989';
+    $http = 'http://61.174.50.42:8080/sms/ylSend3.do';
+    if (empty($mobile) || empty($content)) {
+      return false;
+    }
+    $content = mb_convert_encoding($content, 'gbk', 'utf-8');//utf8 to gbk
+    $data = array(
+      'uid' => $uid, //用户账号
+      'pwd' => $pwd,//strtolower(md5($pwd)), //MD5位32密码
+      'rev' => $mobile, //号码
+      'msg' => $content, //内容
+      'sdt' => '', //定时发送
+      'snd' => '101', //子扩展号
+      //'encode' => 'utf8',
+    );
+    $param = '';
+    while (list($k, $v) = each($data)) {
+      $param .= rawurlencode($k) . "=" . rawurlencode($v) . "&"; //转URL标准码
+    }
+    $param = substr($param, 0, -1);   
+    $url = $http.'?'.$param;    
+    $rc = file_get_contents($url);    
+    //TODO: 判断RC;   
+    return true;
+    /*
+    $re = $this->postSMS($http, $data); //POST方式提交
+    if (trim($re) == '100') {
+      return true;
+    } else {
+      return "发送失败! 状态：" . $re;
+    }*/
+  }
+  /*
+  ** type 操作类型
+  ** data 操作内容（数组）
+  */
+  function editemail($data,$type){
+    if ($type == 'newPayPwd') {
+     
+    }
+    if ($type =='newMobile') {
+      
+    }
+    if ($type =='mail') {
+      
     }
   }

@@ -13,19 +13,63 @@ use app\common\model;
 
 class Account extends Baseness {
 	public function index() {
-        $mobile = session("mobile");
-        $account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email')->where('m.mobile',$mobile)->find();
-        if ($account){
-            $data['code'] = '1';
-            $data['info'] = $account;
-            $accounst = json_encode($data);
-            $this->assign($accounst);
-        } else{
-          $data['code'] = '1';
-          $data['msg'] = '信息出错';
-          $this->assign(json_encode($data));
+		if (IS_POST) {
+			$data = input('post.');
+      $mobile = session("mobile");
+      if (isset($data['smsVerify'])) {
+        $storeSmsCode = session('smsCode');
+          if($data['smsVerify'] != $storeSmsCode){
+            return ['code'=>1005,'msg'=>'短信验证码错误'];
+          }
+      }
+			// 修改交易密码
+			if (isset($data['newPayPwd'])) {
+        $user = model('User');
+        $result = $user->setpaypw($mobile,$data['newPayPwd']);
+        if($result){
+          return ['code'=>1,'msg'=>'支付密码设置成功'];
+        }else{
+          return ['code'=>1003,'msg'=>'两次密码不一致'];
         }
-		return $this->fetch();
+			}
+			//修改手机号
+			if (isset($data['newMobile'])) {
+          $result = db('member')->where('mobile',$mobile)->setField('mobile', $data['newMobile']);
+				  $result1 = db('dealer')->where('mobile',$mobile)->setField('mobile', $data['newMobile']);
+          if ($result && $result1) {
+            session('mobile',$data['newMobile']);
+            return ['code'=>1,'msg'=>'手机号修改成功'];
+          }else{
+            return ['code'=>1000,'msg'=>'手机号修改失败'];
+          }
+			}
+			//修改邮箱
+			if (isset($data['mail'])) {
+  			$result = db('member')->where('mobile',$mobile)->setField('email', $data['mail']);
+          if ($result) {
+            return ['code'=>1,'msg'=>'邮箱添加成功'];
+          }else{
+            return ['code'=>1001,'msg'=>'邮箱修改失败'];
+          }
+  		}
+		}else{
+			$mobile = session("mobile");
+      $account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword')->where('m.mobile',$mobile)->find();
+      if ($account){
+          $data['infoStr'] = json_encode($account);
+          $data = array(
+          		'info'=>$account,
+          		'infoStr'=>json_encode($account)
+          	);
+          // var_dump($data);die;
+          $this->assign($data);
+      } else{
+        $data['code'] = '1';
+        $data['msg'] = '信息出错';
+        $this->assign(json_encode($data));
+      }
+			return $this->fetch();
+		}
 	}
 	
 	public function balance() {
@@ -55,11 +99,15 @@ class Account extends Baseness {
       $uid = session('uid');
       if(IS_POST){
         $data = input('post.');
-        foreach ($data['withdrawOrders'] as $k => $v) {
-          cl_order($v,$data['bank_card']);
+        if(md5($password.$mobile) === $data['paypassword']){
+          foreach ($data['withdrawOrders'] as $k => $v) {
+            cl_order($v,$data['bank_card']);
+          }
+        }else{
+           return ['code'=>'0','msg'=>'交易密码错误'];
         }
       }else{
-        $bankone =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+        $bankone =db('dealer')->field('bank_account_id,bank_name')->where('mobile',$mobile)->find();
         $banktwo =db('dealer')->field('priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
         $map = array(
             'mid'=>$uid,
@@ -87,8 +135,15 @@ class Account extends Baseness {
   public function bankcard() {
       $mobile = session('mobile');
       $uid = session('uid');
-      $deals =db('dealer')->field('bank_name,bank_account_id,priv_bank_name,priv_bank_account_id')->where('mobile',$mobile)->find();
-      $this->assign($deals);
+      $bankone =db('dealer')->field('bank_account_id,bank_name')->where('mobile',$mobile)->find();
+        $banktwo =db('dealer')->field('priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+      $bankcard =[$bankone,$banktwo];
+      $data = array(
+      		'info'=>$bankcard,
+      		'infoStr'=>json_encode($bankcard)
+      	);
+      // var_dump($data);die;
+      $this->assign($data);
       return $this->fetch();
   }
   public function transaction() {
@@ -110,14 +165,15 @@ class Account extends Baseness {
       return $this->fetch();
   }
   public function message() {
+    $password = '011316';
+    $mobile = session('mobile');
+    $user = db('member')->where('mobile',$mobile)->find();
+    // echo $user['paypassword'].'<br>';
+    // echo md5($password.$mobile);
+    // die;
+    if(md5($password.$user['mobile']) === $user['paypassword']){
+        // echo 111;die;
+    }
     return $this->fetch();
   }
-    //设置手机号和邮箱
-    public function setemail(){
-      
-    }
-    //修改手机号和邮箱
-    public function editeamil(){
-      
-    }
 }

@@ -124,11 +124,28 @@ use app\business\controller\Baseness;
 
 	public function loanItem() {
 		$uid = session('uid');
-		$result = db('order')->where('mid',$uid)->select();
+		if (IS_POST) {
+			$data = input('post.');
+			$map['mid'] =$uid;
+			if ($data['type'] !='') {
+				$map['type'] = $data['type'];
+			}
+			if ($data['status'] !='') {
+				$map['status'] = $data['status'];
+			}
+			$result = db('order')->where($map)->select();
+		}else{
+			$result = db('order')->where('mid',$uid)->select();
+		}
 		foreach ($result as $k => $v) {
 			$result[$k]['realname'] = serch_real($v['uid']);
 		}
-		$this->assign($result);
+		$data = array(
+			'info'=>$result,
+			'infoStr'=>json_encode($result)
+		);
+		// var_dump($data);die;
+		$this->assign($data);
 		return $this->fetch();
 	}
 
@@ -136,30 +153,60 @@ use app\business\controller\Baseness;
 		$uid =session('uid');
 		if (IS_POST) {
 			$data = input('post.');
-
-			return $this->fetch();
+			$map['mid'] =$uid;
+			if ($data['type'] !='') {
+				$map['type'] = $data['type'];
+			}
+			if ($data['status'] !='') {
+				$map['status'] = $data['status'];
+			}
+			$result = db('order')->where($map)->order('status ASC')->select();
 		}else{
 			$order_repay = db('order_repay')->where('mid',$uid)->order('status ASC')->select();
-			foreach ($order_repay as $k => $v) {
-				$uid = serch_order($v['order_id']);
-				$order_repay[$k]['yewu_realname'] = serch_real($uid);
-			}
-			// var_dump($order_repay);die;
-			$this->assign($order_repay);
-			return $this->fetch();
+			
 		}
-		
+		foreach ($order_repay as $k => $v) {
+			$uid = serch_order($v['order_id']);
+			$order_repay[$k]['yewu_realname'] = serch_real($uid);
+		}
+		$data = array(
+			'info'=>$order_repay,
+			'infoStr'=>json_encode($order_repay)
+		);
+		$this->assign($data);
+		return $this->fetch();
 	}
 
 	public function payItem() {
-		
+		$uid =session('uid');
+		if (IS_POST) {
+			$data = input('post.');
+			$map['mid'] =$uid;
+			if ($data['type'] !='') {
+				$map['type'] = $data['type'];
+			}
+			if ($data['status'] !='') {
+				$map['status'] = $data['status'];
+			}
+			$result = db('order')->where($map)->order('status ASC')->select();
+		}else{
+			$order = db('order')->where('mid',$uid)->order('status ASC')->select();
+			
+		}
+		foreach ($order as $k => $v) {
+			$order[$k]['realname'] = serch_real($v['uid']);
+		}
+		$data = array(
+			'info'=>$order,
+			'infoStr'=>json_encode($order)
+		);
+		$this->assign($data);
 		return $this->fetch();
 	}
 	//设置交易密码
 	public function setpay(){
 		$mobile = session("mobile");
 		$user = model('User');
-		// $newPassword = '123456';
 		if (IS_POST) {
 			$data = input('post.');
 			if ($data['paypassword'] === $data['repaypassword']) {
@@ -190,5 +237,43 @@ use app\business\controller\Baseness;
 			return $this->fetch();
 		}
 
+	}
+	//发送验证码
+	public function sendSmsVerify($mobile = "", $imgVerify = null){
+		if(!preg_match("/^1[34578]{1}\d{9}$/",$mobile)){
+			$resp["code"] = 0;
+			$resp["msg"] = "手机号格式错误";
+			return $resp;
+		}
+		$lastSmsSendTime = session('lastSmsSendTime');
+		if($lastSmsSendTime != null){
+			$nowTime = time();
+			if($nowTime - $lastSmsSendTime < 30){
+				session('needImgVerify', 1);
+				$resp["code"] = -3;
+				$resp["msg"] = "发送间隔少于30秒!";
+				return $resp;
+			}
+		}
+		//TODO:验证码多次输入错误或反复发送验证码
+		//$errorTimes = $session('errorTimes');
+		//$errorTimes = $errorTimes?0:$errorTimes;
+
+		$content = "";		
+		$smsCode = rand(100000,999999);
+		$smsMsg = '您的验证码为:' . $smsCode;
+		//if(1){
+		if(sendSms($mobile,$smsMsg)){
+			session('smsCode',$smsCode);
+			session('mobile',$mobile);
+			session('lastSmsSendTime',time());
+			$resp["code"] = 1;
+			$resp["msg"] = "发送成功！";
+		}else{
+			//session('errorTimes',$errorTimes++);
+			$resp["code"] = 0;
+			$resp["msg"] = "发送失败！";
+		}
+		return $resp;
 	}
 }
