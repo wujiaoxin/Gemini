@@ -9,8 +9,8 @@
     return $result;
   }
   function serch_order($order_id){
-    $result =db('order')->field('uid')->where('sn',$order_id)->find();
-    return $result['uid'];
+    $result =db('order')->field('uid,type')->where('sn',$order_id)->find();
+    return $result;
   }
   /*
   ** 操作资金
@@ -36,11 +36,11 @@
             if ($result){
                 $resp["code"] = 1;
                 $resp["msg"] = '处理中';
-                return json($resp);
+                return json_encode($resp);
             }else{
                 $resp["code"] = 0;
                 $resp["msg"] = '充值失败';
-                return json($resp);
+                return json_encode($resp);
             }
         }
         if($type == 'member_money'){
@@ -69,11 +69,11 @@
           if ($result){
                 $resp["code"] = 1;
                 $resp["msg"] = '处理中';
-                return json($resp);
+                return json_encode($resp);
             }else{
                 $resp["code"] = 0;
                 $resp["msg"] = '提现失败';
-                return json($resp);
+                return json_encode($resp);
             }
         }
     }
@@ -183,4 +183,99 @@
     if ($type =='mail') {
       
     }
+  }
+  /*
+  ** 资金记录
+  ** uid 车商uid
+  ** type 资金类型
+  */
+  function get_money($uid,$type){
+    $mobile = session('mobile');
+    if($type == 'money'){
+      //可用资金(记录为可提订单金额)
+        $map = array(
+          'mobile'=>$mobile,
+          'status'=>'11'
+          );
+        $money = db('order')->where($map)->sum('loan_limit');
+      //借款金额（记录为状态未审核通过）
+        $where = array(
+            'mobile'=>$mobile,
+            'status'=>'12'
+          );
+        $money_jk = db('order')->where($where)->sum('loan_limit');
+      //待还资金
+        $repay_money = db('order_repay')->where('mid',$uid)->sum('repay_money');
+        $data = array(
+          'money'=>$money,
+          'money_jk'=>$money_jk,
+          'repay_money'=>(string)$repay_money
+          );
+    }
+    if ($type =='lines') {
+      # code...
+    }
+    return $data;
+  }
+
+  /*
+  ** 订单排行
+  ** type 业务类型
+  ** money 金额排行
+  ** num 数量排行
+  ** avg 均价排行
+  */
+  function get_order($mid,$uid,$type){
+    if ($type =='money') {
+      $map = array(
+          'uid'=>$uid,
+          'status'=>'11'
+        );
+      $money = db('order')->where($map)->sum('loan_limit');
+      $real_name = serch_real($uid);
+      $data = array(
+        'money'=>$money,
+        'realname'=>$realname
+        );
+    }
+    if ($type =='num') {
+     
+    }
+    if ($type =='avg') {
+     
+    }
+    return $data;
+  }
+  /*
+  ** status 订单状态
+  ** type 业务类型
+  */
+  function get_orders($mid,$status=0,$type){
+    if ($type == 'order') {
+       $data = db('order')->where('mid',$mid)->limit(4)->order('status ASC,id DESC')->select();
+       foreach ($data as $k => $v) {
+         if ($v['status'] == '-1') {
+            $data[$k]['progress'] = '1';
+         }elseif ($v['status'] >='0' && $v['status']<'3') {
+           $data[$k]['progress'] = '30';
+         }elseif ($v['status'] == '3') {
+           $data[$k]['progress'] = '40';
+         }elseif ($v['status'] == '4') {
+           $data[$k]['progress'] = '45';
+         }elseif ($v['status'] == '5') {
+           $data[$k]['progress'] = '50';
+         }elseif ($v['status'] == '6') {
+           $data[$k]['progress'] = '80';
+         }elseif ($v['status'] >= '10') {
+           $data[$k]['progress'] = '90';
+         }
+       }
+    }
+    if ($type == 'order_repay') {
+       $data = db('order_repay')->where('mid',$mid)->limit(4)->select();
+    }
+    if ($type == 'dealer_money') {
+      $data = db('order_repay')->where('status ','>',3)->where('mid',$mid)->limit(4)->select();
+    }
+    return $data;
   }
