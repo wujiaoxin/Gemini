@@ -117,11 +117,11 @@
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradeX">'
 					+'<td><input type="checkbox" class="checkboxes"></td>'
-					+'<td class="order_id">' + data[index].order_id + '</td>'
-					+'<td>￥<span class="order_amount" data-amount="'+ data[index].order_amount +'">' + formatAmount(data[index].order_amount) + '</span></td>'
-					+'<td>' + data[index].order_type + '</td>'
-					+'<td>' + formatDatetime(data[index].apply_time) + '</td>'
-					+'<td>' + formatDatetime(data[index].lend_time) + '</td>'
+					+'<td class="order_id">' + data[index].sn + '</td>'
+					+'<td>￥<span class="order_amount" data-amount="'+ data[index].loan_limit +'">' + formatAmount(data[index].loan_limit) + '</span></td>'
+					+'<td>' + data[index].type + '</td>'
+					+'<td>' + formatDatetime(data[index].create_time) + '</td>'
+					+'<td>' + formatDatetime(data[index].update_time) + '</td>'
 					+'<td>' + data[index].name + '</td>'
 				+'</tr>';
 			}
