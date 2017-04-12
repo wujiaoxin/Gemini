@@ -119,6 +119,36 @@ use app\business\controller\Baseness;
 	}
 
 	public function myShop() {
+		$uid =session('uid');
+		$mobile = session('uid');
+		//分组统计
+		$result = db('order')->field('mid,uid,sum(loan_limit) as total_money')->order('total_money DESC')->group('uid')->select();
+		foreach ($result as $k => $v) {
+			$result[$k]['realname'] = serch_real($v['uid']);
+		}
+		$num = db('order')->field('mid,uid,count(id) as num')->order('num DESC')->group('uid')->select();
+		foreach ($num as $k => $v) {
+			$num[$k]['realname'] = serch_real($v['uid']);
+		}
+		$avg = db('order')->field('mid,uid,avg(loan_limit) as avg')->order('avg DESC')->group('uid')->select();
+		foreach ($num as $k => $v) {
+			$avg[$k]['realname'] = serch_real($v['uid']);
+		}
+
+		//一个月内每天的订单数量
+		$time =db('order')->field("FROM_UNIXTIME(create_time,'%Y-%m-%d') as time,count(id) as num,sum(loan_limit) as total_money")->group('time')->limit('30')->order('time DESC')->select();
+		$info = array(
+				'money'=>$result,
+				'num'=>$num,
+				'avg'=>$avg,
+				'time'=>$time
+			);
+		// var_dump($info);die;
+		$data = array(
+				'info'=>$info,
+				'infoStr'=>json_encode($info)
+			);
+		$this->assign($data);
 		return $this->fetch();
 	}
 
@@ -151,6 +181,7 @@ use app\business\controller\Baseness;
 
 	public function repayItem() {
 		$uid =session('uid');
+		$mobile = session('mobie');
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
@@ -166,19 +197,28 @@ use app\business\controller\Baseness;
 			
 		}
 		foreach ($order_repay as $k => $v) {
-			$uid = serch_order($v['order_id']);
-			$order_repay[$k]['yewu_realname'] = serch_real($uid);
+			$result = serch_order($v['order_id']);
+			$order_repay[$k]['yewu_realname'] = serch_real($result['uid']);
+			$order_repay[$k]['type']=$result['type'];
 		}
+
+		$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+		$info = array(
+				'order_repay'=>$order_repay,
+				'bankcard'=>$bankcard
+			);
 		$data = array(
-			'info'=>$order_repay,
-			'infoStr'=>json_encode($order_repay)
+			'info'=>$info,
+			'infoStr'=>json_encode($info)
 		);
+		// var_dump($data);die;
 		$this->assign($data);
 		return $this->fetch();
 	}
 
 	public function payItem() {
 		$uid =session('uid');
+		$mobile = session('mobile');
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
@@ -188,17 +228,22 @@ use app\business\controller\Baseness;
 			if ($data['status'] !='') {
 				$map['status'] = $data['status'];
 			}
-			$result = db('order')->where($map)->order('status ASC')->select();
+			$order_pay = db('order')->where($map)->order('status ASC')->select();
 		}else{
-			$order = db('order')->where('mid',$uid)->order('status ASC')->select();
+			$order_pay = db('order')->where('mid',$uid)->order('status ASC')->select();
 			
 		}
-		foreach ($order as $k => $v) {
-			$order[$k]['realname'] = serch_real($v['uid']);
+		foreach ($order_pay as $k => $v) {
+			$order_pay[$k]['realname'] = serch_real($v['uid']);
 		}
+		$money = db('dealer')->field('money')->where('money',$mobile)->find();
+		$info = array(
+			'money'=>$money,
+			'order'=>$order_pay
+			);
 		$data = array(
-			'info'=>$order,
-			'infoStr'=>json_encode($order)
+			'info'=>$info,
+			'infoStr'=>json_encode($info)
 		);
 		$this->assign($data);
 		return $this->fetch();
