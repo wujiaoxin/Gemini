@@ -14,10 +14,6 @@ use app\business\controller\Baseness;
 		$mobile = session("mobile");
 		$modelDealer = model('Dealer');
 		// 检测商户是否已经录入信息
-		$is_success = $modelDealer->field('priv_bank_account_id')->where('mobile',$mobile)->find();
-		if (!$is_success) {
-			return $this->fetch();
-		}
 		if (IS_POST) {
 			$data = input('post.');
 			if ($data) {
@@ -87,6 +83,7 @@ use app\business\controller\Baseness;
 	 * 商户新增员工接口
 	 * */
 	public function addStaff(){
+		// var_dump($GLOBALS);die;
 		if (IS_POST){
 			$data = input('post.');
 			if ($data) {
@@ -122,24 +119,206 @@ use app\business\controller\Baseness;
 	}
 
 	public function myShop() {
+		$uid =session('uid');
+		$mobile = session('uid');
+		//分组统计
+		$result = db('order')->field('mid,uid,sum(loan_limit) as total_money')->order('total_money DESC')->group('uid')->select();
+		foreach ($result as $k => $v) {
+			$result[$k]['realname'] = serch_real($v['uid']);
+		}
+		$num = db('order')->field('mid,uid,count(id) as num')->order('num DESC')->group('uid')->select();
+		foreach ($num as $k => $v) {
+			$num[$k]['realname'] = serch_real($v['uid']);
+		}
+		$avg = db('order')->field('mid,uid,avg(loan_limit) as avg')->order('avg DESC')->group('uid')->select();
+		foreach ($num as $k => $v) {
+			$avg[$k]['realname'] = serch_real($v['uid']);
+		}
+
+		//一个月内每天的订单数量
+		$time =db('order')->field("FROM_UNIXTIME(create_time,'%Y-%m-%d') as time,count(id) as num,sum(loan_limit) as total_money")->group('time')->limit('30')->order('time DESC')->select();
+		$info = array(
+				'money'=>$result,
+				'num'=>$num,
+				'avg'=>$avg,
+				'time'=>$time
+			);
+		// var_dump($info);die;
+		$data = array(
+				'info'=>$info,
+				'infoStr'=>json_encode($info)
+			);
+		$this->assign($data);
 		return $this->fetch();
 	}
 
 	public function loanItem() {
 		$uid = session('uid');
-		$result = db('order')->where('mid',$uid)->select();
+		if (IS_POST) {
+			$data = input('post.');
+			$map['mid'] =$uid;
+			if ($data['type'] !='') {
+				$map['type'] = $data['type'];
+			}
+			if ($data['status'] !='') {
+				$map['status'] = $data['status'];
+			}
+			$result = db('order')->where($map)->select();
+		}else{
+			$result = db('order')->where('mid',$uid)->select();
+		}
 		foreach ($result as $k => $v) {
 			$result[$k]['realname'] = serch_real($v['uid']);
 		}
-		$this->assign($result);
+		$data = array(
+			'info'=>$result,
+			'infoStr'=>json_encode($result)
+		);
+		// var_dump($data);die;
+		$this->assign($data);
 		return $this->fetch();
 	}
 
 	public function repayItem() {
+		$uid =session('uid');
+		$mobile = session('mobie');
+		if (IS_POST) {
+			$data = input('post.');
+			$map['mid'] =$uid;
+			if ($data['type'] !='') {
+				$map['type'] = $data['type'];
+			}
+			if ($data['status'] !='') {
+				$map['status'] = $data['status'];
+			}
+			$result = db('order')->where($map)->order('status ASC')->select();
+		}else{
+			$order_repay = db('order_repay')->where('mid',$uid)->order('status ASC')->select();
+			
+		}
+		foreach ($order_repay as $k => $v) {
+			$result = serch_order($v['order_id']);
+			$order_repay[$k]['yewu_realname'] = serch_real($result['uid']);
+			$order_repay[$k]['type']=$result['type'];
+		}
+
+		$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+		$info = array(
+				'order_repay'=>$order_repay,
+				'bankcard'=>$bankcard
+			);
+		$data = array(
+			'info'=>$info,
+			'infoStr'=>json_encode($info)
+		);
+		// var_dump($data);die;
+		$this->assign($data);
 		return $this->fetch();
 	}
 
 	public function payItem() {
+		$uid =session('uid');
+		$mobile = session('mobile');
+		if (IS_POST) {
+			$data = input('post.');
+			$map['mid'] =$uid;
+			if ($data['type'] !='') {
+				$map['type'] = $data['type'];
+			}
+			if ($data['status'] !='') {
+				$map['status'] = $data['status'];
+			}
+			$order_pay = db('order')->where($map)->order('status ASC')->select();
+		}else{
+			$order_pay = db('order')->where('mid',$uid)->order('status ASC')->select();
+			
+		}
+		foreach ($order_pay as $k => $v) {
+			$order_pay[$k]['realname'] = serch_real($v['uid']);
+		}
+		$money = db('dealer')->field('money')->where('money',$mobile)->find();
+		$info = array(
+			'money'=>$money,
+			'order'=>$order_pay
+			);
+		$data = array(
+			'info'=>$info,
+			'infoStr'=>json_encode($info)
+		);
+		$this->assign($data);
 		return $this->fetch();
+	}
+	//设置交易密码
+	public function setpay(){
+		$mobile = session("mobile");
+		$user = model('User');
+		if (IS_POST) {
+			$data = input('post.');
+			if ($data['paypassword'] === $data['repaypassword']) {
+				$result = $user->setpaypw($mobile,$data['paypassword']);
+				if($result){
+					return ['code'=>1,'msg'=>'支付密码设置成功'];
+				}
+			}else{
+				return ['code'=>1003,'msg'=>'两次密码不一致'];
+			}
+		}
+		
+	}
+	//修改交易密码
+	public function resetpay(){
+		if (IS_POST) {
+			$user = model('User');
+			$data = $this->request->post();
+
+			$res = $user->editpaypw($data);
+			if ($res) {
+				return $this->success('修改密码成功！');
+			} else {
+				return $this->error($user->getError());
+			}
+		} else {
+			$this->setMeta('修改密码');
+			return $this->fetch();
+		}
+
+	}
+	//发送验证码
+	public function sendSmsVerify($mobile = "", $imgVerify = null){
+		if(!preg_match("/^1[34578]{1}\d{9}$/",$mobile)){
+			$resp["code"] = 0;
+			$resp["msg"] = "手机号格式错误";
+			return $resp;
+		}
+		$lastSmsSendTime = session('lastSmsSendTime');
+		if($lastSmsSendTime != null){
+			$nowTime = time();
+			if($nowTime - $lastSmsSendTime < 30){
+				session('needImgVerify', 1);
+				$resp["code"] = -3;
+				$resp["msg"] = "发送间隔少于30秒!";
+				return $resp;
+			}
+		}
+		//TODO:验证码多次输入错误或反复发送验证码
+		//$errorTimes = $session('errorTimes');
+		//$errorTimes = $errorTimes?0:$errorTimes;
+
+		$content = "";		
+		$smsCode = rand(100000,999999);
+		$smsMsg = '您的验证码为:' . $smsCode;
+		//if(1){
+		if(sendSms($mobile,$smsMsg)){
+			session('smsCode',$smsCode);
+			session('mobile',$mobile);
+			session('lastSmsSendTime',time());
+			$resp["code"] = 1;
+			$resp["msg"] = "发送成功！";
+		}else{
+			//session('errorTimes',$errorTimes++);
+			$resp["code"] = 0;
+			$resp["msg"] = "发送失败！";
+		}
+		return $resp;
 	}
 }
