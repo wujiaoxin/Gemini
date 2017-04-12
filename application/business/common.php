@@ -4,6 +4,7 @@
     $real = db('member')->where('uid',$uid)->find();
     return $real['realname'];
   }
+  
   function editmd($mid,$content){
     $result = db('member')->where('uid',$mid)->update($content);
     return $result;
