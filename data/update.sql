@@ -80,3 +80,17 @@ alter table gemini_member  paypassword varchar(255)  null  COMMENT '商家支付
 20170411
 */
 alter table gemini_dealer  rep_idcard_back_pic int(11)  NOT NULL  COMMENT '法人身份证反面照片';
+
+/*
+20170412
+*/
+DROP TABLE IF EXISTS `gemini_dealer_credit`;
+CREATE TABLE `gemini_dealer_credit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `use_cred` decimal(20,2) NOT NULL COMMENT '操作额度',
+  `lock_cred` decimal(20,2) NOT NULL COMMENT '冻结信用额度',
+  `status` tinyint(1) NOT NULL COMMENT '状态 -1审核不通过，0审核中，1审核通过',
+  `create_time` int(11) NOT NULL COMMENT '申请时间',
+  `desrc` varchar(255) NOT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='信用额度记录表';
