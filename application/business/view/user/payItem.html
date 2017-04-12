@@ -167,9 +167,8 @@
 
 	jQuery(document).ready(function() {       
 	   	// App.init();
-
 	   	TableManaged.init();
-	   	ajaxPayItem('0','0','0');
+	   	$('#table-payItem tbody').html(tpl(info));
 	   	$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var orderType = $('.selectOrderType li.active').attr('data');
