@@ -158,9 +158,7 @@
 		return html;
 	} 
 
-	function ajaxDeposit(){
-		var status = $('input[name=depositStatus]:checked').val();
-		console.log(status)
+	function ajaxDeposit(status){
 		ajax_jquery({
 	        url: apiUrl +'/business/account/lineOfCredit',
 	        data:{
@@ -168,18 +166,11 @@
 	        },
 	        success:function(resp){
 	            if (resp.code == "1" ) {
-	            	$(statusTd).attr('data-status',status);
-                    if(status){
-                    	$(statusTd).text('正常');
-                    	$(self).text('停用');
-                    }else{
-                    	$(statusTd).text('停用');
-                    	$(self).text('启用');
-                    }
+	            	$('#table-deposit tbody').html(tpl(resp.data));
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
-	                    window.location.reload();
+	                    return false;
 	                }                 
 	            }
 	        }
@@ -215,6 +206,7 @@
 	            }
 	        });
 		})
+
 		$('#payDepositBtn').click(function(){
 			var depositLimit = $('#depositLimit').val();
 			var payDepositMode = $('#payDepositMode').val();
@@ -224,7 +216,7 @@
         		return false;
 			}
 			ajax_jquery({
-	            url: apiUrl +'/business/account/lineOfCredit',
+	            url: apiUrl +'/business/account/creditRecord',
 	            data:{
 	            	"depositLimit": depositLimit,
 	            	"depositDescr": depositDescr
@@ -244,6 +236,12 @@
 	            }
 	        });
 	    })
+
+	    $('input[name=depositStatus]').change(function(){
+	    	var status = $(this).val();
+	    	ajaxDeposit(status);
+	    });
+
 
 
 

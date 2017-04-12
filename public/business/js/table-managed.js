@@ -133,7 +133,6 @@ var TableManaged = function () {
                     null,
                     null,
                     null,
-                    null,
                     null   
                 ],
                 "aLengthMenu": [

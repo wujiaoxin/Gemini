@@ -25,7 +25,6 @@ var guide = function () {
                         var addr = $("#addr").val();
                         var termOfValidity = $("#termOfValidity").val();
                         var field_dealer_lic_pic = $("#field_dealer_lic_pic").val();
-                        console.log(field_dealer_lic_pic)
                         if(name == ""){
                             ui_alert("alert-error","请输入企业名称");
                             return false;
@@ -53,7 +52,7 @@ var guide = function () {
                                 'city': loc_address,
                                 'addr': addr,
                                 'radiotime': termOfValidity,
-                                'field_dealer_lic_pic': field_dealer_lic_pic
+                                'dealer_lic_pic': field_dealer_lic_pic
                             },
                             success:function(resp){
                                 if (resp.code == "1" ) {
@@ -92,8 +91,8 @@ var guide = function () {
                             data:{
                                 'rep': rep,
                                 'idno': idcardNum,
-                                'field_rep_idcard_pic': field_rep_idcard_pic,
-                                'field_rep_idcard_back_pic': field_rep_idcard_back_pic
+                                'rep_idcard_pic': field_rep_idcard_pic,
+                                'rep_idcard_back_pic': field_rep_idcard_back_pic
                             },
                             success:function(resp){
                                 if (resp.code == "1" ) {

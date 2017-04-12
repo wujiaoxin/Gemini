@@ -169,7 +169,7 @@
 <div id="editMailModal" class="modal hide fade">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-	    <h3>修改注册手机号</h3>
+	    <h3>修改邮箱</h3>
 	</div>
 	<div class="modal-body">
 	    <div class="alert hide">
@@ -221,8 +221,8 @@
 		}
 
 		if(typeof(info['email']) != 'undefined'){
-			var mail = encryptMail(info['mail']);
-			hasData('item-mail','已绑定 '+mail);
+			var email = encryptMail(info['email']);
+			hasData('item-mail','已绑定 '+email);
 		}else{
 			hasNoData('item-mail','未绑定');
 		}
@@ -305,18 +305,18 @@
 		});
 
 		$('#editMailBtn').click(function(){
-			var mail = $('#newMail').val();
-			if(mail == ""){
+			var email = $('#newMail').val();
+			if(email == ""){
         		ui_alert("alert-error","请输入邮箱地址");
         		return false;
-        	}else if(!checkEmail(mail)){
+        	}else if(!checkEmail(email)){
 				ui_alert("alert-error","请输入正确邮箱地址");
         		return false;
         	}
 	        ajax_jquery({
 	            url: apiUrl +'/business/account/index',
 	            data:{
-	            	"mail": mail
+	            	"email": email
 	            },
 	            success:function(resp){
 	                if (resp.code == "1" ) {
