@@ -3,6 +3,14 @@
 <link rel="stylesheet" href="/public/business/lib/metronic/css/select2_metro.css">
 <link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css">
 <link rel="stylesheet" href="/public/business/css/myItem.css">
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
 {/block}
 
 {block name="body"}
@@ -36,6 +44,7 @@
 			<li data='0' class="active">全部</li>
 			<li data='1'>待支付</li>
 			<li data='2'>已支付</li>
+			<li data='3'>逾期</li>
 		</ul>
 	</div>
 </div>
@@ -58,7 +67,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="odd gradeX">
+				<!-- <tr class="odd gradeX">
 					<td class="order_sn">201703160392</td>
 					<td>车抵贷</td>
 					<td>2018-03-16</td>
@@ -67,7 +76,7 @@
 					<td>￥200</td>	
 					<td>未支付</td>
 					<td><a class="orderOpera" data-toggle="modal">支付</a></td>
-				</tr>
+				</tr> -->
 			</tbody>
 		</table>
 	</div>
@@ -85,22 +94,24 @@
 	</div>
 	<div class="modal-body">
 		<div class="form-horizontal">
+			<input type="hidden" id="pay_orderId">
+			<input type="hidden" id="pay_amount">
 			<div class="control-group">
-				<label class="control-label">费用金额</label>
+				<label class="control-label">支付金额</label>
 				<div class="controls">
-					<span>￥2,000</span>
+					<span id="modal-payAmount"></span>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">可用余额</label>
 				<div class="controls">
-					<span>￥10,000</span>
+					<span id="modal-availbaleAmount"></span>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">剩余金额</label>
 				<div class="controls">
-					<span>￥8,000</span>
+					<span id="modal-remainingAmount"></span>
 				</div>
 			</div>
 			<input type="hidden" id="payOrder">
@@ -129,15 +140,21 @@
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
+			if(data[index].status == '10'){
+				orderStatus = '未支付';
+				orderOpera = '<a class="orderOpera" data-toggle="modal">支付</a>'
+			}else{
+				orderStatus = '已支付';
+			}
 		  	html += '<tr class="odd gradex">'
 		  		+'<td class="order_sn">' + data[index].sn + '</td>'
 		  		+'<td>'+ data[index].type +'</td>'
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
-		  		+'<td>'+ data[index].yewu_realname +'</td>'
+		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
-		  		+'<td data="'+ data[index].free +'>￥'+ formatAmount(data[index].free) +'</td>'
-		  		+'<td>'+ data[index].stauts +'</td>'
-		  		+'<td><a class="orderOpera" data-toggle="modal">'+  +'</a></td>'
+		  		+'<td class="order_fee" data="'+ data[index].free +'">￥'+ formatAmount(data[index].free) +'</td>'
+		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ orderOpera +'</td>'
 		  		 +'</tr>';
 			}
 		}
@@ -168,7 +185,7 @@
 	jQuery(document).ready(function() {       
 	   	// App.init();
 	   	TableManaged.init();
-	   	$('#table-payItem tbody').html(tpl(info));
+	   	$('#table-payItem tbody').html(tpl(info.order));
 	   	$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var orderType = $('.selectOrderType li.active').attr('data');
@@ -176,11 +193,19 @@
 	   		var orderStatus = $('.selectOrderStatus li.active').attr('data'); 
 	   		ajaxPayItem(orderType,orderDateRange,orderStatus);
 	   	})
+
 	   	$('#table-payItem  tr').on('click','.orderOpera',function(){
-	   		var payOrder = $(this).parent('td').siblings('.order_sn').text();
-	   		$('#payOrder').val(payOrder);
+	   		var pay_orderId = $(this).parent('td').siblings('.order_sn').text();
+	   		var pay_amount = $(this).parent('td').siblings('.order_fee').attr('data');
+	   		var remainingAmount =Number(info['availbaleAmount'])-Number(pay_amount);
+	   		$('#pay_orderId').val(pay_orderId);
+	   		$('#pay_amount').val(pay_amount);
+	   		$('#modal-payAmount').text(formatAmount(pay_amount));
+	   		$('#modal-availbaleAmount').text(formatAmount(info['availbaleAmount']));
+	   		$('#modal-remainingAmount').text(formatAmount(remainingAmount));
 	   		$(this).attr('href',"#payOrderModal");
 	   	});
+
 	   	$('#payOrderBtn').click(function(){
 	   	 	var payPwd = $('#payPassword').val();
 	   	 	var payOrder = $('#payOrder').val();

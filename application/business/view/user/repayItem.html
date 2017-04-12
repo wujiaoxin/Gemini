@@ -90,19 +90,7 @@
 			<div class="control-group">
 				<label class="control-label">还款金额</label>
 				<div class="controls">
-					￥<span id="modal-repayAmount"></span>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">可用余额</label>
-				<div class="controls">
-					￥<span id="modal-availbaleAmount"></span>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">剩余金额</label>
-				<div class="controls">
-					￥<span id="modal-remainingAmount"></span>
+					<span id="modal-repayAmount"></span>
 				</div>
 			</div>
 			<div class="control-group">
@@ -183,7 +171,7 @@
 	jQuery(document).ready(function() {       
 	   // App.init();
 	   TableManaged.init();
-	   $('#table-repayItem tbody').html(tpl(info));
+	   $('#table-repayItem tbody').html(tpl(info.order_repay));
 	   $('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var orderType = $('.selectOrderType li.active').attr('data');
@@ -194,13 +182,10 @@
 
 	   $('#table-repayItem  tr').on('click','.orderOpera',function(){
 	   		var repay_orderId = $(this).parent('td').siblings('.order_id').text();
-	   		var repay_amount = $(this).parent('td').siblings('.order_loanLimit').text();
-	   		var remainingAmount =Number(info['availbaleAmount'])-Number(repay_amount);
+	   		var repay_amount = $(this).parent('td').siblings('.order_loanLimit').attr('data');
 	   		$('#repay_orderId').val(repay_orderId);
 	   		$('#repay_amount').val(repay_amount);
 	   		$('#modal-repayAmount').text(formatAmount(repay_amount));
-	   		$('#modal-availbaleAmount').text(formatAmount(info['availbaleAmount']));
-	   		$('#modal-remainingAmount').text(formatAmount(remainingAmount));
 	   		$(this).attr('href',"#repayOrderModal");
 	   	});
 	   	$('#repayOrderBtn').click(function(){

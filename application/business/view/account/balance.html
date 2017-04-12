@@ -25,15 +25,15 @@
 		<div class="span6">
 			<div class="span4 text-center">
 				<div>账户总额</div>
-				<div><span id=""></span>元</div>
+				<div><span id="totalAccount"></span>元</div>
 			</div>
 			<div class="span4 text-center">
 				<div>可用资产</div>
-				<div><span id=""></span>元</div>
+				<div><span id="availableAssets"></span>元</div>
 			</div>
 			<div class="span4 text-center">
 				<div>待还资产</div>
-				<div><span id=""></span>元</div>
+				<div><span id="pendingAssets"></span>元</div>
 			</div>
 		</div>
 		<a class="btn blue span2" href="/business/account/recharge.html">充值</a>
@@ -202,6 +202,9 @@
 		});
 	}
 	jQuery(document).ready(function(){
+		$('#totalAccount').text(formatAmount(info['money']));
+		$('#availableAssets').text(formatAmount(info['money_jk']));
+		$('#pendingAssets').text(formatAmount(info['repay_money']));
 		ajaxBalance('1','0','0');
 		$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');

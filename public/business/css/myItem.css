@@ -13,7 +13,7 @@
 	background-color: #dedede;
 }
 
-#payOrderModal .controls {
-	line-height: 36px;
+.modal .controls {
+	line-height: 34px;
 	height: 30px
 }
