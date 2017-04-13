@@ -55,7 +55,7 @@ var TableManaged = function () {
                     null,
                     null,
                     null,
-                    null,
+                    // null,
                     null   
                 ],
                 "aLengthMenu": [
@@ -127,7 +127,6 @@ var TableManaged = function () {
             $('#table-payItem').dataTable({
                 "aoColumns": [
                     { "bSortable": true },
-                    null,
                     null,
                     null,
                     null,

@@ -8,24 +8,22 @@
 	.selectArea {
 		width: 120px;
 	}
-/* 	.radio input[type="radio"], .checkbox input[type="checkbox"] {
-		margin-left: 0;
-	} */
 	.bankAccount-style-title {
 		text-align: center;
 	}
 	.webuploader-pick-file-close .close{
 		background: inherit;
 	}
-
 	.webuploader-pick {
 	    color: #333;
 	    margin-top: 0;
 	    font-size: 12px;
 	    border: 1px solid #666;
+	    width: 218px;
+	    height: 20px;
 	}
 </style>
-<script type="text/javascript">
+<script>
 	var BASE_URL = "";
 	
 	var info = {};
@@ -47,7 +45,7 @@
 				</div>
 			</div>
 			<div class="portlet-body form">
-				<form action="#" class="form-horizontal" id="submit_form">
+				<form class="form-horizontal" id="submit_form">
 					<div class="form-wizard">
 						<div class="navbar steps">
 							<div class="navbar-inner">
@@ -129,27 +127,27 @@
 									<label class="control-label">上传营业资格证</label>
 									<div class="controls">
 										<div class="picker-box span3">
-									<div id="picker_dealer_lic_pic" class="picker_button">上传图片</div>
-									<input type="hidden" name="dealer_lic_pic" id="field_dealer_lic_pic" {if condition="$info['dealer_lic_pic'] neq '0'"}value="{$info['dealer_lic_pic']|default=''}"{/if}>
-									<div id="fileList_dealer_lic_pic" class="upload-file-list-info" style="width:250px;">
-										{if $info['dealer_lic_pic'] != 0}
-											{php}
-												$images = get_cover($info['dealer_lic_pic']);
-											{/php}
-											<li class="affix-list-item" id="WU_FILE_100">
-                                                <div class="upload-file-info">
-                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_100" data-id="{$info['dealer_lic_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
-                                                    <span class="fname"></span>
-                                                    <span class="fsize">上传时间:{$images['create_time']|date='Y-m-d H:i',###}</span>
-                                                    <div class="clearfix"></div>
-                                                </div>
-                                                <div class="filebox image">
-                                                    <img src="{$images['path']|default=''}" class="img-responsive">
-                                                </div>
-                                            </li>
-										{/if}
-									</div>
-								</div>
+											<div id="picker_dealer_lic_pic" class="picker_button">上传图片</div>
+											<input type="hidden" name="dealer_lic_pic" id="field_dealer_lic_pic" {if condition="$info['dealer_lic_pic'] neq '0'"}value="{$info['dealer_lic_pic']|default=''}"{/if}>
+											<div id="fileList_dealer_lic_pic" class="upload-file-list-info" style="width:250px;">
+												{if $info['dealer_lic_pic'] != 0}
+													{php}
+														$images = get_cover($info['dealer_lic_pic']);
+													{/php}
+													<li class="affix-list-item" id="WU_FILE_100">
+		                                                <div class="upload-file-info">
+		                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_100" data-id="{$info['dealer_lic_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
+		                                                    <span class="fname"></span>
+		                                                    <span class="fsize">上传时间:{$images['create_time']|date='Y-m-d H:i',###}</span>
+		                                                    <div class="clearfix"></div>
+		                                                </div>
+		                                                <div class="filebox image">
+		                                                    <img src="{$images['path']|default=''}" class="img-responsive">
+		                                                </div>
+		                                            </li>
+												{/if}
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -164,7 +162,7 @@
 								<div class="control-group">
 									<label class="control-label">身份证号</label>
 									<div class="controls">
-										<input type="text" id="idcardNum" name="idcardNum" placeholder="请输入身份证号" class="m-wrap medium" />
+										<input type="text" id="idcardNum" name="idno" placeholder="请输入身份证号" class="m-wrap medium" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -194,16 +192,16 @@
 										</div>
 										<div class="span3"></div>
 										<div class="picker-box span3">
-											<div id="picker_contacts_pic" class="picker_button">身份证反面照</div>
-											<input type="hidden" name="contacts_pic" id="field_contacts_pic" {if condition="$info['contacts_pic'] neq '0'"}value="{$info['contacts_pic']|default=''}"{/if}>
-											<div id="fileList_contacts_pic" class="upload-file-list-info" style="width:250px;">
-												{if $info['contacts_pic'] != 0}
+											<div id="picker_rep_idcard_back_pic" class="picker_button">身份证反面照</div>
+											<input type="hidden" name="rep_idcard_back_pic" id="field_rep_idcard_back_pic" {if condition="$info['rep_idcard_back_pic'] neq '0'"}value="{$info['rep_idcard_back_pic']|default=''}"{/if}>
+											<div id="fileList_rep_idcard_back_pic" class="upload-file-list-info" style="width:250px;">
+												{if $info['rep_idcard_back_pic'] != 0}
 													{php}
-														$images = get_cover($info['contacts_pic']);
+														$images = get_cover($info['rep_idcard_back_pic']);
 													{/php}
 													<li class="affix-list-item" id="WU_FILE_100">
 		                                                <div class="upload-file-info">
-		                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_100" data-id="{$info['contacts_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
+		                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_100" data-id="{$info['rep_idcard_back_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
 		                                                    <span class="fname"></span>
 		                                                    <span class="fsize">上传时间:{$images['create_time']|date='Y-m-d H:i',###}</span>
 		                                                    <div class="clearfix"></div>
@@ -335,7 +333,7 @@
 	<script type="text/javascript" src="/public/business/lib/metronic/js/chosen.jquery.min.js"></script>
 	<script type="text/javascript" src="/public/business/js/selectArea.js"></script>
 	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
-	<script type="text/javascript" src="/public/plugs/webuploader/webuploader.custom.js"></script>
+	<script type="text/javascript" src="/public/business/js/webuploader.custom.js"></script>
 	<script type="text/javascript" src="/public/business/js/guide.js"></script>
 	<script>
 		function btnSentUploader(picName){
@@ -364,8 +362,9 @@
 			        filename : 'images',
 			    });
 			};
-			btnSentUploader("dealer_lic_pic");
-			
+		btnSentUploader("dealer_lic_pic");
+		btnSentUploader("rep_idcard_pic");
+        btnSentUploader("rep_idcard_back_pic");			
 
 		jQuery(document).ready(function() {       
 		   // App.init();

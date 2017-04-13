@@ -1,51 +1,56 @@
 {extend name="base"/}
 {block name="style"}
-<link rel="stylesheet" href="/public/business/lib/metronic/css/select2_metro.css" />
-<link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css" />
+<link rel="stylesheet" href="/public/business/lib/metronic/css/select2_metro.css">
+<link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css">
 <link rel="stylesheet" href="/public/business/css/myItem.css">
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
 {/block}
 
 {block name="body"}
+<div class="alert hide">
+	<a class="close"></a>
+	<span></span>
+</div>
 <div>
 	<div class="select-block">
 		<span class="selectParm-title">业务类型:</span>
-		<ul class="selectParm">
-			<li><a class="selectOrderType" href="javascript:;">全部</a></li>
-			<li><a class="selectOrderType" href="javascript:;">按揭垫资</a></li>
-			<li><a class="selectOrderType" href="javascript:;">车抵贷</a></li>
+		<ul class="selectParm selectOrderType">
+			<li data='0' class="active" >全部</li>
+			<li data='1'>按揭垫资</li>
+			<li data='2'>车抵贷</a></li>
 		</ul>
 	</div>
 	<div class="select-block">
 		<span class="selectParm-title">日期范围:</span>
-		<ul class="selectParm">
-			<li><a class="selectOrderDate" href="javascript:;">全部</a></li>
-			<li><a class="selectOrderDate" href="javascript:;">今天</a></li>
-			<li><a class="selectOrderDate" href="javascript:;">最近7天</a></li>
-			<li><a class="selectOrderDate" href="javascript:;">1个月</a></li>
-			<li><a class="selectOrderDate" href="javascript:;">2个月</a></li>
-			<li><a class="selectOrderDate" href="javascript:;">3个月</a></li>
+		<ul class="selectParm selectOrderDate">
+			<li data='0' class="active">全部</li>
+			<li data='1'>今天</li>
+			<li data='2'>最近7天</li>
+			<li data='3'>1个月</li>
+			<li data='4'>2个月</li>
+			<li data='5'>3个月</li>
 		</ul>
-		<span>具体日期>></span>
-		<div class="input-append">
-			<input type="date" name="selectParm-orderDate" id="selectParm-orderDate">
-			<span class="add-on"><i class="icon-calendar"></i></span>
-		</div>
 	</div>
 	<div class="select-block">
 		<span class="selectParm-title">交易状态:</span>
-		<ul class="selectParm">
-			<li><a class="selectOrderStatus" href="javascript:;">全部</a></li>
-			<li><a class="selectOrderStatus" href="javascript:;">进件初审</a></li>
-			<li><a class="selectOrderStatus" href="javascript:;">资料审核</a></li>
-			<li><a class="selectOrderStatus" href="javascript:;">补充资料</a></li>
-			<li><a class="selectOrderStatus" href="javascript:;">审核失败</a></li>
-			<li><a class="selectOrderStatus" href="javascript:;">垫资放款</a></li>
+		<ul class="selectParm selectOrderStatus">
+			<li data='0' class="active">全部</li>
+			<li data='1'>待支付</li>
+			<li data='2'>已支付</li>
+			<li data='3'>逾期</li>
 		</ul>
 	</div>
 </div>
 <div class="portlet box grey">
 	<div class="portlet-title">
-		<div class="caption">借款项目</div>
+		<div class="caption">支付项目</div>
 	</div>
 	<div class="portlet-body">
 		<table class="table table-striped table-bordered table-hover" id="table-payItem">
@@ -57,100 +62,70 @@
 					<th>业务员</th>
 					<th>借款金额</th>
 					<th>费用</th>
-					<th>借款期限</th>
-					<th>借款进度</th>
+					<th>支付状态</th>
 					<th>操作</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="odd gradeX">
-					<td>201703160392</td>
+				<!-- <tr class="odd gradeX">
+					<td class="order_sn">201703160392</td>
 					<td>车抵贷</td>
 					<td>2018-03-16</td>
 					<td>李博</td>
 					<td>￥3,000</td>
 					<td>￥200</td>	
-					<td>7天</span></td>
-					<td>进件初审</td>
-					<td><a class="orderOpera" data-toggle="modal" href="#payOrderModal">支付</a></td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>201703160392</td>
-					<td>车抵贷</td>
-					<td>2017-03-16</td>
-					<td>李三</td>
-					<td>￥3,000</td>
-					<td>￥220</td>	
-					<td>7天</span></td>
-					<td>进件初审</td>
-					<td><a>支付</a></td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>201703160392</td>
-					<td>车抵贷</td>
-					<td>2017-03-16</td>
-					<td>陈老</td>
-					<td>￥3,000</td>
-					<td>￥12200</td>	
-					<td>7天</span></td>
-					<td>进件初审</td>
-					<td><a>支付</a></td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>201703160392</td>
-					<td>车抵贷</td>
-					<td>2017-03-16</td>
-					<td>李隆基</td>
-					<td>￥3,000</td>
-					<td>￥202</td>	
-					<td>7天</span></td>
-					<td>进件初审</td>
-					<td><a>支付</a></td>
-				</tr>
+					<td>未支付</td>
+					<td><a class="orderOpera" data-toggle="modal">支付</a></td>
+				</tr> -->
 			</tbody>
 		</table>
-		<div id="payOrderModal" class="modal hide fade">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-				<h3>订单支付页</h3>
-				<div class="alert hide">
-					<a class="close"></a>
-					<span></span>
+	</div>
+</div>
+
+<!-- 支付弹窗 -->
+<div id="payOrderModal" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<h3>订单支付页</h3>
+		<div class="alert hide">
+			<a class="close"></a>
+			<span></span>
+		</div>
+	</div>
+	<div class="modal-body">
+		<div class="form-horizontal">
+			<input type="hidden" id="pay_orderId">
+			<input type="hidden" id="pay_amount">
+			<div class="control-group">
+				<label class="control-label">支付金额</label>
+				<div class="controls">
+					<span id="modal-payAmount"></span>
 				</div>
 			</div>
-			<div class="modal-body">
-				<form class="form-horizontal">
-					<div class="control-group">
-						<label class="control-label">费用金额</label>
-						<div class="controls">
-							<span>￥2,000</span>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">可用余额</label>
-						<div class="controls">
-							<span>￥10,000</span>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">剩余金额</label>
-						<div class="controls">
-							<span>￥8,000</span>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">交易密码</label>
-						<div class="controls">
-							<input type="password" class="m-wrap" maxlength="6">
-						</div>	
-					</div>
-				</form>
+			<div class="control-group">
+				<label class="control-label">可用余额</label>
+				<div class="controls">
+					<span id="modal-availbaleAmount"></span>
+				</div>
 			</div>
-			<div class="modal-footer">
-				<button type="button" data-dismiss="modal" class="btn">关闭</button>
-				<button type="button" class="btn red" id="payOrderBtn">确认支付</button>
+			<div class="control-group">
+				<label class="control-label">剩余金额</label>
+				<div class="controls">
+					<span id="modal-remainingAmount"></span>
+				</div>
+			</div>
+			<input type="hidden" id="payOrder">
+			<div class="control-group">
+				<label class="control-label">交易密码</label>
+				<div class="controls">
+					<input id="payPassword" type="password" class="m-wrap" maxlength="6">
+				</div>	
 			</div>
 		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" data-dismiss="modal" class="btn">关闭</button>
+		<a type="button" class="btn red" id="payOrderBtn">确认支付</a>
 	</div>
 </div>
 
@@ -161,9 +136,106 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
 <script type="text/javascript" src="/public/business/js/table-managed.js"></script>    
 <script>
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+			if(data[index].status == '10'){
+				orderStatus = '未支付';
+				orderOpera = '<a class="orderOpera" data-toggle="modal">支付</a>'
+			}else{
+				orderStatus = '已支付';
+			}
+		  	html += '<tr class="odd gradex">'
+		  		+'<td class="order_sn">' + data[index].sn + '</td>'
+		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
+		  		+'<td>'+ data[index].realname +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
+		  		+'<td class="order_fee" data="'+ data[index].free +'">￥'+ formatAmount(data[index].free) +'</td>'
+		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ orderOpera +'</td>'
+		  		 +'</tr>';
+			}
+		}
+		return html;
+	};
+
+	function ajaxPayItem(type,dateRange,status){
+		ajax_jquery({
+	        url: apiUrl +'/business/user/payItem',
+	        data:{
+	            'type': type,
+	            'dateRange': dateRange,
+	            'status': status
+	        },
+	        success:function(resp){
+	            if (resp.code == "1" ) {
+	            	$('#table-payItem tbody').html(tpl(resp.data));
+	            } else {
+	                if (typeof(resp.msg) == 'string') {
+	                    ui_alert("alert-error",resp.msg);
+	                    return false;
+	                }                 
+	            }
+	        }
+		});
+	}
+
 	jQuery(document).ready(function() {       
-	   // App.init();
-	   TableManaged.init();
+	   	// App.init();
+	   	TableManaged.init();
+	   	$('#table-payItem tbody').html(tpl(info.order));
+	   	$('.selectParm').on('click','li',function(){
+	   		$(this).addClass('active').siblings('li').removeClass('active');
+	   		var orderType = $('.selectOrderType li.active').attr('data');
+	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
+	   		var orderStatus = $('.selectOrderStatus li.active').attr('data'); 
+	   		ajaxPayItem(orderType,orderDateRange,orderStatus);
+	   	})
+
+	   	$('#table-payItem  tr').on('click','.orderOpera',function(){
+	   		var pay_orderId = $(this).parent('td').siblings('.order_sn').text();
+	   		var pay_amount = $(this).parent('td').siblings('.order_fee').attr('data');
+	   		var remainingAmount =Number(info['availbaleAmount'])-Number(pay_amount);
+	   		$('#pay_orderId').val(pay_orderId);
+	   		$('#pay_amount').val(pay_amount);
+	   		$('#modal-payAmount').text(formatAmount(pay_amount));
+	   		$('#modal-availbaleAmount').text(formatAmount(info['availbaleAmount']));
+	   		$('#modal-remainingAmount').text(formatAmount(remainingAmount));
+	   		$(this).attr('href',"#payOrderModal");
+	   	});
+
+	   	$('#payOrderBtn').click(function(){
+	   	 	var payPwd = $('#payPassword').val();
+	   	 	var payOrder = $('#payOrder').val();
+	   	 	if(payPwd == ''){
+	   	 		ui_alert("alert-error","请输入交易密码");
+	            return false;
+	   	 	}else if(payOrder == ""){
+	   	 		ui_alert("alert-error","未获取订单号，请重试");
+	            return false;
+	   	 	}
+	   	 	ajax_jquery({
+		        url: apiUrl +'/business/user/payItem',
+		        data:{
+		            'payPwd': payPwd,
+		            'payOrder': payOrder
+		        },
+		        success:function(resp){
+		            if (resp.code == "1" ) {
+		            	ui_alert("alert-success","支付成功");
+		            	ajaxPayItem('0','0','0');
+		            } else {
+		                if (typeof(resp.msg) == 'string') {
+		                    ui_alert("alert-error",resp.msg);
+		                    return false;
+		                }                 
+		            }
+		        }
+			});
+	   	})
+
 	});
 </script>
 {/block}	

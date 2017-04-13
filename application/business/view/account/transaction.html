@@ -1,151 +1,50 @@
 {extend name="base"}
 {block name="style"}
-<link rel="stylesheet" href="/public/business/lib/metronic/css/jquery-ui-1.10.1.custom.min.css">
+<link rel="stylesheet" href="/public/business/css/myItem.css">
 {/block}
 {block name="body"}
 <!--资金记录-->
 <div class="row-fluid">
 	<div class="span12">
 		<div class="portlet">
-			<form action="#" class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" style="text-align: left">日期范围</label>
-					<div class="controls" style="float:left;margin-left: 0;">
-						<label class="radio">
-							<div class="radio">
-								<span class="checked">
-									<div class="radio"><span><input type="radio" name="optionsRadios1" value="option1" checked=""></span></div>
-								</span>
-							</div>
-							全部
-						</label>
-						<label class="radio">
-							<div class="radio">
-								<span>
-									<div class="radio"><span><input type="radio" name="optionsRadios1" value="option2"></span></div>
-								</span>
-							</div>
-							最近7天
-						</label>
-						<label class="radio">
-							<div class="radio">
-								<span>
-									<div class="radio"><span><input type="radio" name="optionsRadios1" value="option2"></span></div>
-								</span>
-							</div>
-							1个月
-						</label>
-						<label class="radio">
-							<div class="radio">
-								<span>
-									<div class="radio"><span><input type="radio" name="optionsRadios1" value="option2"></span></div>
-								</span>
-							</div>
-							2个月
-						</label>
-						<label class="radio">
-							<div class="radio">
-								<span>
-									<div class="radio"><span><input type="radio" name="optionsRadios1" value="option2"></span></div>
-								</span>
-							</div>
-							3个月
-						</label>
-					</div>
-					<label class="control-label" style="padding-top: 6px;padding-right:5px;width: auto;">具体日期</label>
-					<div class="controls">
-						<div class="input-append" id="ui_date_picker_trigger">
-							<input type="text" class="m-wrap medium" style="border-right: 1px solid #e5e5e5!important;">
-						</div>
-					</div>
+			<div>
+				<div class="select-block">
+					<span class="selectParm-title">日期范围:</span>
+					<ul class="selectParm selectOrderDate">
+						<li data='0' class="active">全部</li>
+						<li data='1'>今天</li>
+						<li data='2'>最近7天</li>
+						<li data='3'>1个月</li>
+						<li data='4'>2个月</li>
+						<li data='5'>3个月</li>
+					</ul>
 				</div>
-				<div class="control-group">
-					<label class="control-label" style="text-align: left">交易状态</label>
-					<div class="controls" style="float:left;margin-left: 0;">
-						<label class="radio">
-							<div class="radio">
-								<span class="checked">
-									<input type="radio" name="optionsRadios1" value="option1" checked>
-								</span>
-							</div>
-							全部
-						</label>
-						<label class="radio">
-							<div class="radio">
-								<span>
-									<input type="radio" name="optionsRadios1" value="option2">
-								</span>
-							</div>
-							支付款项
-						</label>
-						<label class="radio">
-							<div class="radio">
-								<span>
-									<input type="radio" name="optionsRadios1" value="option2">
-								</span>
-							</div>
-							垫资到账
-						</label>
-						<label class="radio">
-							<div class="radio">
-								<span>
-									<input type="radio" name="optionsRadios1" value="option2">
-								</span>
-							</div>
-							垫资还款
-						</label>
-						<label class="radio">
-							<div class="radio">
-								<span>
-									<input type="radio" name="optionsRadios1" value="option2">
-								</span>
-							</div>
-							充值
-						</label>
-						<label class="radio">
-							<div class="radio">
-								<span>
-									<input type="radio" name="optionsRadios1" value="option2">
-								</span>
-							</div>
-							提现
-						</label>
-					</div>
-					<label class="control-label" style="width: auto;text-align: left;margin-right: 5px">更多类型</label>
-					<div class="controls">
-						<select class="small m-wrap" tabindex="1">
-							<option value="Category 1">Category 1</option>
-							<option value="Category 2">Category 2</option>
-							<option value="Category 3">Category 5</option>
-							<option value="Category 4">Category 4</option>
-						</select>
-					</div>
+				<div class="select-block">
+					<span class="selectParm-title">交易类型:</span>
+					<ul class="selectParm selectOrderType">
+						<li data='0' class="active">全部</li>
+						<li data='1'>支付款项</li>
+						<li data='2'>垫资到账</li>
+						<li data='3'>充值</li>
+						<li data='4'>提现</li>
+					</ul>
 				</div>
-			</form>
-			<div class="span12" style="margin-left: 0;">
-				<div class="portlet box">
-					<div class="portlet-body">
-						<table class="table table-hover table-bordered">
-							<thead>
-								<tr>
-									<th>时间</th>
-									<th>类型</th>
-									<th>交易对方</th>
-									<th>操作金额</th>
-									<th>备注</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>-</td>
-									<td>-</td>
-									<td>-</td>
-									<td>-</td>
-									<td>-</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+			</div>
+			<div class="portlet box">
+				<div class="portlet-body">
+					<table class="table table-hover table-bordered" id="table-transaction">
+						<thead>
+							<tr>
+								<th>时间</th>
+								<th>类型</th>
+								<th>交易对方</th>
+								<th>操作金额</th>
+								<th>备注</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -154,10 +53,49 @@
 {/block}
 {block name="script"}
 <script src="/public/business/lib/metronic/js/app.js"></script>
-<script src="/public/business/lib/metronic/js/ui-jqueryui.js"></script>
 <script>
-	jQuery(document).ready(function () {
-		UIJQueryUI.init();
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + data[index].date + '</td>'
+		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ data[index].object+'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].amount) +'</td>'
+		  		+'<td>￥'+ data[index].descr +'</td>'	
+		  		 +'</tr>'
+			}
+		}
+		return html;
+	};
+	function ajaxTransaction(dateRange,type){
+		ajax_jquery({
+	        url: apiUrl +'/business/account/transaction',
+	        data:{
+	            'dateRange': dateRange,
+	            'type': type
+	        },
+	        success:function(resp){
+	            if (resp.code == "1" ) {
+            		$('#table-transaction tbody').html(tpl(resp.data));
+	            } else {
+	                if (typeof(resp.msg) == 'string') {
+	                    ui_alert("alert-error",resp.msg);
+	                    return false;
+	                }                 
+	            }
+	        }
+		});
+	}
+	jQuery(document).ready(function(){
+		ajaxTransaction('0','0');
+		$('.selectParm').on('click','li',function(){
+	   		$(this).addClass('active').siblings('li').removeClass('active');
+	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
+	   		var Type = $('.selectOrderType li.active').attr('data'); 
+	   		ajaxTransaction(orderDateRange,Type);
+	   })
 	});
 </script>
 {/block}
