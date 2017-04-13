@@ -99,19 +99,19 @@
 			<div class="control-group">
 				<label class="control-label">支付金额</label>
 				<div class="controls">
-					<span id="modal-payAmount"></span>
+					<span class="text" id="modal-payAmount"></span>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">可用余额</label>
 				<div class="controls">
-					<span id="modal-availbaleAmount"></span>
+					<span class="text" id="modal-availbaleAmount"></span>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">剩余金额</label>
 				<div class="controls">
-					<span id="modal-remainingAmount"></span>
+					<span class="text" id="modal-remainingAmount"></span>
 				</div>
 			</div>
 			<input type="hidden" id="payOrder">
@@ -140,6 +140,8 @@
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
+			var orderStatus = '';
+			var orderOpera = '';
 			if(data[index].status == '10'){
 				orderStatus = '未支付';
 				orderOpera = '<a class="orderOpera" data-toggle="modal">支付</a>'
@@ -162,6 +164,7 @@
 	};
 
 	function ajaxPayItem(type,dateRange,status){
+		$('#table-payItem').dataTable().fnClearTable();//清空原数据
 		ajax_jquery({
 	        url: apiUrl +'/business/user/payItem',
 	        data:{
@@ -170,8 +173,7 @@
 	            'status': status
 	        },
 	        success:function(resp){
-	            if (resp.code == "1" ) {
-	            	$('#table-payItem').dataTable().fnClearTable();//清空原数据
+	            if (resp.code == "1" ) {	
 	            	$('#table-payItem tbody').html(tpl(resp.data));
 	            	$('#table-payItem').dataTable({"bDestroy":true});
 	            } else {
@@ -197,21 +199,21 @@
 	   		ajaxPayItem(orderType,orderDateRange,orderStatus);
 	   	})
 
-	   	$('#table-payItem  tr').on('click','.orderOpera',function(){
+	   	$('#table-payItem').on('click','.orderOpera',function(){
 	   		var pay_orderId = $(this).parent('td').siblings('.order_sn').text();
 	   		var pay_amount = $(this).parent('td').siblings('.order_fee').attr('data');
-	   		var remainingAmount =Number(info['availbaleAmount'])-Number(pay_amount);
+	   		var remainingAmount =Number(info['money'])-Number(pay_amount);
 	   		$('#pay_orderId').val(pay_orderId);
 	   		$('#pay_amount').val(pay_amount);
 	   		$('#modal-payAmount').text(formatAmount(pay_amount));
-	   		$('#modal-availbaleAmount').text(formatAmount(info['availbaleAmount']));
+	   		$('#modal-availbaleAmount').text(formatAmount(info['money']));
 	   		$('#modal-remainingAmount').text(formatAmount(remainingAmount));
 	   		$(this).attr('href',"#payOrderModal");
 	   	});
 
 	   	$('#payOrderBtn').click(function(){
 	   	 	var payPwd = $('#payPassword').val();
-	   	 	var payOrder = $('#payOrder').val();
+	   	 	var payOrder = $('#pay_orderId').val();
 	   	 	if(payPwd == ''){
 	   	 		ui_alert("alert-error","请输入交易密码");
 	            return false;

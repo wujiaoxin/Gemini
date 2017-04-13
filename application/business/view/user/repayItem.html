@@ -90,14 +90,28 @@
 			<div class="control-group">
 				<label class="control-label">还款金额</label>
 				<div class="controls">
-					<span id="modal-repayAmount"></span>
+					<span class="text" id="modal-repayAmount"></span>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">银行卡</label>
 				<div class="controls">
-					<input id="repay_bankcard" type="number" class="m-wrap" maxlength="19">
-				</div>	
+					<label class="radio">
+						<div class="radio">
+							<span><input type="radio" name="bankcard" value="bankcard"></span>
+						</div><input type="number" id="bankcard" disabled="disabled">
+					</label>
+					<label class="radio line">
+						<div class="radio">
+							<span><input type="radio" name="bankcard" value="priv_bankcard"></span>
+						</div><input type="number" id="priv_bankcard" disabled="disabled">
+					</label>
+					<label class="radio">
+						<div class="radio">
+							<span><input type="radio" name="bankcard" value="otherBankcard"></span>
+						</div><input type="number" id="otherBankcard" placeholder="其他银行卡">
+					</label>
+				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">交易密码</label>
@@ -170,6 +184,9 @@
 		});
 	}
 
+	$('#bankcard').val(info.bank_account_id);
+	$('#priv_bankcard').val(info.priv_bank_account_id);
+
 	jQuery(document).ready(function() {       
 	   // App.init();
 	   TableManaged.init();
@@ -182,7 +199,7 @@
 	   		ajaxRepayItem(orderType,orderDateRange,orderStatus);
 	   });
 
-	   $('#table-repayItem  tr').on('click','.orderOpera',function(){
+	   $('#table-repayItem').on('click','.orderOpera',function(){
 	   		var repay_orderId = $(this).parent('td').siblings('.order_id').text();
 	   		var repay_amount = $(this).parent('td').siblings('.order_loanLimit').attr('data');
 	   		$('#repay_orderId').val(repay_orderId);
@@ -193,12 +210,14 @@
 	   	$('#repayOrderBtn').click(function(){
 	   	 	var orderId = $('#repay_orderId').val();
 	   		var orderAmount = $('#repay_amount').val();
-	   		var bankcard = $('#repay_bankcard').val();
+	   		// var bankcard = $('#repay_bankcard').val();
 	   		var payPwd = $('#payPassword').val();
+	   		var bankcardChecked = $('input[name="bankcard"]:checked').val();
+	   		var bankcard = $('#'+bankcardChecked).val();
 	   		if(bankcard == ''){
 				ui_alert("alert-error","请选择还款银行卡");
 	            return false;
-	   		}else if(payPwd == ''){
+	   	 	}else if(payPwd == ''){
 	   	 		ui_alert("alert-error","请输入交易密码");
 	            return false;
 	   	 	}else if(orderId == ""){

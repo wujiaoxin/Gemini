@@ -8,12 +8,7 @@
 	text-align: center;
 	cursor: pointer;
 }
-
 .selectParm li.active {
 	background-color: #dedede;
 }
 
-.modal .controls {
-	line-height: 34px;
-	height: 30px
-}
