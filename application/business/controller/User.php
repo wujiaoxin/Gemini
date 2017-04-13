@@ -168,12 +168,15 @@ use app\business\controller\Baseness;
 			foreach ($result as $k => $v) {
 				$result[$k]['realname'] = serch_real($v['uid']);
 			}
-			$resp = array(
-				'code'=>'1',
-				'msg'=>'数据正常',
-				'data'=>$result
-			);
-			$this->assign(json_encode($resp));
+			if ($result) {
+				$resp['code'] = '1';
+				$resp['msg'] = '数据正常';
+				$resp['date']= $result;
+			}else{
+				$resp['code'] = '0';
+				$resp['msg'] = '未查到数据';
+			}
+			return json($resp);
 		}
 		return $this->fetch();
 	}
@@ -190,29 +193,26 @@ use app\business\controller\Baseness;
 			if ($data['status']) {
 				$map['status'] = $data['status'];
 			}
-			$result = db('order')->where($map)->order('status ASC')->select();
+			$order_repay = db('order_repay')->where($map)->order('status ASC')->select();
+			foreach ($order_repay as $k => $v) {
+				$result = serch_order($v['order_id']);
+				$order_repay[$k]['yewu_realname'] = serch_real($result['uid']);
+				$order_repay[$k]['type']=$result['type'];
+			}
+			if ($result) {
+				$resp['code'] = '1';
+				$resp['msg'] = '数据正常';
+				$resp['date']= $order_repay;
+			}else{
+				$resp['code'] = '0';
+				$resp['msg'] = '未查到数据';
+			}
+			return json($resp);
 		}else{
-			$order_repay = db('order_repay')->where('mid',$uid)->order('status ASC')->select();
-			
+			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+			$data = json_decode($bankcard)
+			$this->assign($data);
 		}
-		foreach ($order_repay as $k => $v) {
-			$result = serch_order($v['order_id']);
-			$order_repay[$k]['yewu_realname'] = serch_real($result['uid']);
-			$order_repay[$k]['type']=$result['type'];
-		}
-
-		$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
-		$info = array(
-				'order_repay'=>$order_repay,
-				'bankcard'=>$bankcard
-			);
-		$data = array(
-			'code'=>'1',
-			'info'=>$info,
-			'infoStr'=>json_encode($info)
-		);
-		// var_dump($data);die;
-		$this->assign($data);
 		return $this->fetch();
 	}
 
@@ -229,25 +229,23 @@ use app\business\controller\Baseness;
 				$map['status'] = $data['status'];
 			}
 			$order_pay = db('order')->where($map)->order('status ASC')->select();
+			foreach ($order_pay as $k => $v) {
+				$order_pay[$k]['realname'] = serch_real($v['uid']);
+			}
+			if ($result) {
+				$resp['code'] = '1';
+				$resp['msg'] = '数据正常';
+				$resp['date']= $order_pay;
+			}else{
+				$resp['code'] = '0';
+				$resp['msg'] = '未查到数据';
+			}
+			return json($resp);
 		}else{
-			$order_pay = db('order')->where('mid',$uid)->order('status ASC')->select();
-			
+			$money = db('dealer')->field('money')->where('money',$mobile)->find();
+			$data = json_decode($money)
+			$this->assign($data);
 		}
-		foreach ($order_pay as $k => $v) {
-			$order_pay[$k]['realname'] = serch_real($v['uid']);
-		}
-		$money = db('dealer')->field('money')->where('money',$mobile)->find();
-		$info = array(
-			'money'=>$money,
-			'order'=>$order_pay
-			);
-		$data = array(
-			'code'=>'1',
-			'info'=>$info,
-			'infoStr'=>json_encode($info)
-		);
-		// var_dump($order_pay);die;
-		$this->assign($data);
 		return $this->fetch();
 	}
 	//设置交易密码
