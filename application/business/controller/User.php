@@ -112,7 +112,7 @@ use app\business\controller\Baseness;
 				} else {
 					$resp["code"] = 0;
 					$resp["msg"] = $user->getError();
-					return json($resp);
+					return $resp;
 				}
 			}
 		}
@@ -229,33 +229,19 @@ use app\business\controller\Baseness;
 				$map['type'] = $data['type'];
 			}
 			if ($data['dateRange']) {
-				switch ($data['dateRange']) {
-					case '1':
-						$begintime = date('Y-m-d 00:00:00',time());
-						$endtime = date('Y-m-d 23:59:59',time());
-						// $time = ' between UNIX_TIMESTAMP("'.$begintime.'") and UNIX_TIMESTAMP("'.$endtime.'") ';
-						break;
-					case '2':
-						break;
-					case '3':
-						break;
-					case '4':
-						break;
-					case '5':
-						break;
-					default:
-						
-						break;
-				}
-				// 
-				// $map['create_time'] = $time;
+				$result = to_datetime($data['dateRange']);
+				$endtime =$result['endtime'];
+				$begintime = $result['begintime'];
 			}
-			// var_dump($map);die;
 			if ($data['status']) {
 				$map['status'] = $data['status'];
 			}
-			// var_dump($map);die;
-			$order_pay = db('order')->where($map)->order('status ASC')->select();
+			if ($result){
+				$order_pay = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('status ASC')->select();
+			}else{
+				$order_pay = db('order')->where($map)->order('status ASC')->select();
+			}
+			// $order_pay = db('order')->where($map)->order('status ASC')->select();
 			// var_dump($order_pay);die;
 			foreach ($order_pay as $k => $v) {
 				$order_pay[$k]['realname'] = serch_real($v['uid']);
@@ -279,6 +265,7 @@ use app\business\controller\Baseness;
 		}
 		return $this->fetch();
 	}
+	
 	//设置交易密码
 	public function setpay(){
 		$mobile = session("mobile");
@@ -351,5 +338,8 @@ use app\business\controller\Baseness;
 			$resp["msg"] = "发送失败！";
 		}
 		return $resp;
+	}
+	public function waiting(){
+		return $this->fetch();
 	}
 }
