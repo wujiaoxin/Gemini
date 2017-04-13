@@ -157,14 +157,16 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
-			var_dump($data);die;
-			if ($data['type'] !='') {
+			// var_dump($data);die;
+			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
-			if ($data['status'] !='') {
+			if ($data['status']) {
 				$map['status'] = $data['status'];
 			}
+			// var_dump($map);die;
 			$result = db('order')->where($map)->select();
+			// var_dump($result);die;
 		}else{
 			$result = db('order')->where('mid',$uid)->select();
 		}
@@ -186,10 +188,10 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
-			if ($data['type'] !='') {
+			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
-			if ($data['status'] !='') {
+			if ($data['status']) {
 				$map['status'] = $data['status'];
 			}
 			$result = db('order')->where($map)->order('status ASC')->select();
@@ -223,10 +225,10 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
-			if ($data['type'] !='') {
+			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
-			if ($data['status'] !='') {
+			if ($data['status']) {
 				$map['status'] = $data['status'];
 			}
 			$order_pay = db('order')->where($map)->order('status ASC')->select();
