@@ -122,15 +122,15 @@ use app\business\controller\Baseness;
 		$uid =session('uid');
 		$mobile = session('uid');
 		//分组统计
-		$result = db('order')->field('mid,uid,sum(loan_limit) as total_money')->order('total_money DESC')->group('uid')->select();
+		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->order('result DESC')->group('uid')->select();
 		foreach ($result as $k => $v) {
 			$result[$k]['realname'] = serch_real($v['uid']);
 		}
-		$num = db('order')->field('mid,uid,count(id) as num')->order('num DESC')->group('uid')->select();
+		$num = db('order')->field('mid,uid,count(id) as result')->order('result DESC')->group('uid')->select();
 		foreach ($num as $k => $v) {
 			$num[$k]['realname'] = serch_real($v['uid']);
 		}
-		$avg = db('order')->field('mid,uid,avg(loan_limit) as avg')->order('avg DESC')->group('uid')->select();
+		$avg = db('order')->field('mid,uid,avg(loan_limit) as result')->order('result DESC')->group('uid')->select();
 		foreach ($num as $k => $v) {
 			$avg[$k]['realname'] = serch_real($v['uid']);
 		}
@@ -143,7 +143,6 @@ use app\business\controller\Baseness;
 				'avg'=>$avg,
 				'time'=>$time
 			);
-		// var_dump($info);die;
 		$data = array(
 				'info'=>$info,
 				'infoStr'=>json_encode($info)
@@ -166,19 +165,16 @@ use app\business\controller\Baseness;
 			}
 			// var_dump($map);die;
 			$result = db('order')->where($map)->select();
-			// var_dump($result);die;
-		}else{
-			$result = db('order')->where('mid',$uid)->select();
+			foreach ($result as $k => $v) {
+				$result[$k]['realname'] = serch_real($v['uid']);
+			}
+			$resp = array(
+				'code'=>'1',
+				'msg'=>'数据正常',
+				'data'=>$result
+			);
+			$this->assign(json_encode($resp));
 		}
-		foreach ($result as $k => $v) {
-			$result[$k]['realname'] = serch_real($v['uid']);
-		}
-		$data = array(
-			'info'=>$result,
-			'infoStr'=>json_encode($result)
-		);
-		// var_dump($data);die;
-		$this->assign($data);
 		return $this->fetch();
 	}
 
@@ -211,6 +207,7 @@ use app\business\controller\Baseness;
 				'bankcard'=>$bankcard
 			);
 		$data = array(
+			'code'=>'1',
 			'info'=>$info,
 			'infoStr'=>json_encode($info)
 		);
@@ -245,9 +242,11 @@ use app\business\controller\Baseness;
 			'order'=>$order_pay
 			);
 		$data = array(
+			'code'=>'1',
 			'info'=>$info,
 			'infoStr'=>json_encode($info)
 		);
+		// var_dump($order_pay);die;
 		$this->assign($data);
 		return $this->fetch();
 	}
