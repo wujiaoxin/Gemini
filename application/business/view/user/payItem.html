@@ -152,7 +152,7 @@
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
-		  		+'<td class="order_fee" data="'+ data[index].free +'">￥'+ formatAmount(data[index].free) +'</td>'
+		  		+'<td class="order_fee" data="'+ data[index].fee +'">￥'+ formatAmount(data[index].fee) +'</td>'
 		  		+'<td>'+ data[index].status +'</td>'
 		  		+'<td>'+ orderOpera +'</td>'
 		  		 +'</tr>';
@@ -172,6 +172,7 @@
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	$('#table-payItem tbody').html(tpl(resp.data));
+	            	TableManaged.init();
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
@@ -184,8 +185,8 @@
 
 	jQuery(document).ready(function() {       
 	   	// App.init();
-	   	TableManaged.init();
-	   	$('#table-payItem tbody').html(tpl(info.order));
+	   	ajaxPayItem(0,0,0);
+	   	
 	   	$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var orderType = $('.selectOrderType li.active').attr('data');

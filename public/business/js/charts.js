@@ -20,41 +20,7 @@ var Charts = function () {
             //myShop页近30天订单金额走势图 id="chart_orderTotal"
 
             function chart2() {
-                function randValue() {
-                    return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
-                }
-                var orderTotal = [
-                    [1, randValue()],
-                    [2, randValue()],
-                    [3, 2 + randValue()],
-                    [4, 3 + randValue()],
-                    [5, 5 + randValue()],
-                    [6, 10 + randValue()],
-                    [7, 15 + randValue()],
-                    [8, 20 + randValue()],
-                    [9, 25 + randValue()],
-                    [10, 30 + randValue()],
-                    [11, 35 + randValue()],
-                    [12, 25 + randValue()],
-                    [13, 15 + randValue()],
-                    [14, 20 + randValue()],
-                    [15, 45 + randValue()],
-                    [16, 50 + randValue()],
-                    [17, 65 + randValue()],
-                    [18, 70 + randValue()],
-                    [19, 85 + randValue()],
-                    [20, 80 + randValue()],
-                    [21, 75 + randValue()],
-                    [22, 80 + randValue()],
-                    [23, 75 + randValue()],
-                    [24, 70 + randValue()],
-                    [25, 65 + randValue()],
-                    [26, 75 + randValue()],
-                    [27, 80 + randValue()],
-                    [28, 85 + randValue()],
-                    [29, 90 + randValue()],
-                    [30, 95 + randValue()]
-                ];
+                // var orderTotal =[];
                 var plot = $.plot($("#chart_orderTotal"), [{
                             data: orderTotal,
                             label: "订单金额"
