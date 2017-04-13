@@ -7,10 +7,10 @@
 // | Author: molong <molong@tensent.cn> <http://www.tensent.cn>
 // +----------------------------------------------------------------------
 
-namespace app\bairong\controller;
+namespace app\riskmgr\controller;
 use app\common\controller\Base;
 
-class Index extends Base {
+class Bairong extends Base {
 	public function index() {
 		return $this->fetch();
 	}
@@ -53,12 +53,12 @@ class Index extends Base {
 		$filename="query_log.txt";
 		$handle=fopen($filename,"a+");
 		if($handle){
-			fwrite($handle,"======================\r\n");
+			fwrite($handle,"=========百融=============\r\n");
 			fwrite($handle, date("Y-m-d h:i:sa")."\r\n");
 			fwrite($handle,$name."\r\n");
 			fwrite($handle,$idcard."\r\n");
 			fwrite($handle,$results."\r\n");
-			fwrite($handle,"======================\r\n\r\n");
+			fwrite($handle,"==========================\r\n\r\n");
 		}
 		fclose($handle);
 		
