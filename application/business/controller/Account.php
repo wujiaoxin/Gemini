@@ -78,15 +78,25 @@ class Account extends Baseness {
 	    $uid = session('uid');
 	    if (IS_POST) {
 	    	$data = input('post.');
+	    	/*// var_dump($data);die;
 	    	if ($data['type'] == '1') {
 	    		$carrys = db('dealer_money')->where('uid',$uid)->where('type','3')->select();
 	    	}
 	    	
-			$payment = db('dealer_money')->where('uid',$uid)->where('type','4')->select();
+	    	if ($data['dateRange']) {
+				$result = to_datetime($data['dateRange']);
+				$endtime =$result['endtime'];
+				$begintime = $result['begintime'];
+				
+				$payment = db('dealer_money')->whereTime('repay_time','between',["$endtime","$begintime"])->where('uid',$uid)->where('type','4')->select();
+			}else{
+				$payment = db('dealer_money')->where('uid',$uid)->where('type','4')->select();
+			}
+			
 			$info = array(
 			  'carrys'=>$carrys,
 			  'payment'=>$payment
-			);
+			);*/
 	    }else{
 	      //资金记录
 	      $info = get_money($uid,'money');
@@ -177,7 +187,15 @@ class Account extends Baseness {
 			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
-			$info = db('dealer_money')->where($map)->order('id DESC')->select();
+			if ($data['dateRange']) {
+				$result = to_datetime($data['dateRange']);
+				$endtime =$result['endtime'];
+				$begintime = $result['begintime'];
+				$info = db('dealer_money')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('id DESC')->select();
+			}else{
+				$info = db('dealer_money')->where($map)->order('id DESC')->select();
+			}
+			// var_dump($info);die;
 			if ($info) {
 				$resp['code'] = '1';
 				$resp['msg'] = 'OK';
