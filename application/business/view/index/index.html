@@ -9,13 +9,6 @@
 		line-height: 40px;
 		height: 125px;
 	}
-/* 	.btn-block {
-		margin: 0 40px;
-	}
-	.btn-block a {
-		text-decoration: none;
-		color: #0000de;
-	} */
 	.availableAsset-title,
 	.availableAsset{
 		font-size: 18px;
@@ -32,6 +25,15 @@
 	 	background: #35aa47;
 	}
 </style>
+<script>
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+	
+</script>
 {/block}
 {block name="body"}
 <div class="row-fluid">
@@ -41,7 +43,7 @@
 				<div class="availableAsset-title">可用资产:</div>
 				<div><span class="availableAsset">320,000.00</span><span>元</span></div>
 			</div>
-			<div class="span4">
+			<div class="span5">
 				<div class="">
 					<span>总信用额度:</span>
 					<span class="creditLine">500,000.00</span>
@@ -51,7 +53,7 @@
 					<span class="availableCreditLine">40,000.00</span>
 				</div>
 			</div>
-			<div class="row-fluid span4">
+			<div class="row-fluid span3">
 				<div><a href="/business/account/recharge.html" class="btn green">充值</a></div>
 				<div><a href="/business/account/withdraw.html" class="btn blue">提现</a></div>
 			</div>	
@@ -109,42 +111,6 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="odd gradeX">
-								<td>按揭垫资</td>
-								<td>￥12,0000</td>
-								<td>20</td>
-								<td>7天</td>
-								<td>2016-12-29</td>
-								<td>90%</td>
-								<td>审核</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td>车抵贷</td>
-								<td>￥2,0000</td>
-								<td>210</td>
-								<td>7天</td>
-								<td>2014-12-29</td>
-								<td>70%</td>
-								<td>审核</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td>按揭垫资</td>
-								<td>￥122,0000</td>
-								<td>200</td>
-								<td>71天</td>
-								<td>2016-1-29</td>
-								<td>90%</td>
-								<td>还款</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td>按揭垫资</td>
-								<td>￥2,0000</td>
-								<td>20</td>
-								<td>7天</td>
-								<td>2016-12-29</td>
-								<td>90%</td>
-								<td>借款</td>
-							</tr>
 						</tbody>
 					</table>
 					<a href="/business/user/loanItem.html">查看更多借款项目>></a>
@@ -167,42 +133,6 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="odd gradeX">
-								<td>按揭垫资</td>
-								<td>￥12,0000</td>
-								<td>20</td>
-								<td>7天</td>
-								<td>2016-12-29</td>
-								<td>90%</td>
-								<td>审核</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td>车抵贷</td>
-								<td>￥2,0000</td>
-								<td>210</td>
-								<td>7天</td>
-								<td>2014-12-29</td>
-								<td>70%</td>
-								<td>审核</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td>按揭垫资</td>
-								<td>￥122,0000</td>
-								<td>200</td>
-								<td>71天</td>
-								<td>2016-1-29</td>
-								<td>90%</td>
-								<td>还款</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td>按揭垫资</td>
-								<td>￥2,0000</td>
-								<td>20</td>
-								<td>7天</td>
-								<td>2016-12-29</td>
-								<td>90%</td>
-								<td>借款</td>
-							</tr>
 						</tbody>
 					</table>
 					<a href="/business/user/repayItem.html">查看更多还款项目>></a>
@@ -225,42 +155,6 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="odd gradeX">
-								<td>按揭垫资</td>
-								<td>￥12,0000</td>
-								<td>20</td>
-								<td>7天</td>
-								<td>2016-12-29</td>
-								<td>90%</td>
-								<td>审核</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td>车抵贷</td>
-								<td>￥2,0000</td>
-								<td>210</td>
-								<td>7天</td>
-								<td>2014-12-29</td>
-								<td>70%</td>
-								<td>审核</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td>按揭垫资</td>
-								<td>￥122,0000</td>
-								<td>200</td>
-								<td>71天</td>
-								<td>2016-1-29</td>
-								<td>90%</td>
-								<td>还款</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td>按揭垫资</td>
-								<td>￥2,0000</td>
-								<td>20</td>
-								<td>7天</td>
-								<td>2016-12-29</td>
-								<td>90%</td>
-								<td>借款</td>
-							</tr>
 						</tbody>
 					</table>
 					<a href="/business/user/payItem.html">查看更多交易记录>></a>
@@ -272,8 +166,10 @@
 {/block}
 {block name="script"}
 <script>
+	$('.availableAsset').text(info[])
 	jQuery(document).ready(function() {    
 	   // App.init(); // initlayout and core plugins
+
 	});
 </script>
 

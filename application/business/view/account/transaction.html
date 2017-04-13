@@ -59,11 +59,11 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + data[index].date + '</td>'
+		  		+'<td>' + formatDatetime(data[index].create_time) + '</td>'
 		  		+'<td>'+ data[index].type +'</td>'
-		  		+'<td>'+ data[index].object+'</td>'
-		  		+'<td>￥'+ formatAmount(data[index].amount) +'</td>'
-		  		+'<td>￥'+ data[index].descr +'</td>'	
+		  		+'<td>'+ data[index].deal_other+'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].account_money) +'</td>'
+		  		+'<td>'+ data[index].desc +'</td>'	
 		  		 +'</tr>'
 			}
 		}

@@ -263,7 +263,7 @@ var guide = function () {
                     success:function(resp){
                         if (resp.code == "1" ) {
                             ui_alert("alert-success",'提交成功')
-                            window.location.href = "/business/index/index";
+                            window.location.href = "/business/user/waiting.html";
                         } else {
                             if (typeof(resp.msg) == 'string') {
                                 ui_alert("alert-error",resp.msg);
