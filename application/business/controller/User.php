@@ -163,8 +163,15 @@ use app\business\controller\Baseness;
 			if ($data['status']) {
 				$map['status'] = $data['status'];
 			}
-			// var_dump($map);die;
-			$result = db('order')->where($map)->select();
+			if ($data['dateRange']) {
+				$result = to_datetime($data['dateRange']);
+				$endtime =$result['endtime'];
+				$begintime = $result['begintime'];
+				$result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+			}else{
+				$result = db('order')->where($map)->select();
+			}
+			
 			foreach ($result as $k => $v) {
 				$result[$k]['realname'] = serch_real($v['uid']);
 			}
@@ -193,8 +200,15 @@ use app\business\controller\Baseness;
 			if ($data['status']) {
 				$map['o.status'] = $data['status'];
 			}
+			if ($data['dateRange']) {
+				$result = to_datetime($data['dateRange']);
+				$endtime =$result['endtime'];
+				$begintime = $result['begintime'];
+				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.sn = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
+			}else{
+				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.sn = o.order_id')->where($map)->order('o.status ASC')->select();
+			}
 			// var_dump($map);die;
-			$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.sn = o.order_id')->where($map)->order('o.status ASC')->select();
 			foreach ($order_repay as $k => $v) {
 				$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
 			}
