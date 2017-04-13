@@ -122,9 +122,12 @@ class Account extends Baseness {
 		$uid = session('uid');
 		if(IS_POST){
 			$data = input('post.');
-			if(md5($password.$mobile) === $data['paypassword']){
+			$paypassword = $data['paypassword'];
+			$pay = db('member')->field('paypassword')->where('mobile',$mobile)->find();
+			if(md5($paypassword.$mobile) == $pay['paypassword']){
 			  foreach ($data['withdrawOrders'] as $k => $v) {
-			    cl_order($v,$data['bank_card']);
+			   $resp=  cl_order($v,$data['bank_card']);
+			   return $resp;
 			  }
 			}else{
 			   return ['code'=>'0','msg'=>'交易密码错误'];
