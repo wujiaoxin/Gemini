@@ -11,14 +11,6 @@
 		alert("数据异常");
 	}
 
-	 // info.bankcard = [['建设银行',12345678901212121],['农业银行',634567328910982]];
-  //    info.order =[{order_id:1,
-  //   	order_amount:10000,
-  //   	order_type:1,
-  //   	apply_time:'1491470348',
-  //   	lend_time:'1491531940',
-  //   	name:'dabenfn'
-  //   	},{},{},{},{},{},{},{},{},{},{}]
 </script>
 {/block}
 {block name="body"}
@@ -36,11 +28,11 @@
 			<div class="portlet-body">
 				<div class="card horizontal">
 					<span class="bank_name" id="bank_name"></span>
-					<span class="card_num" id="bank_account_id"></span></span>
+					<span class="card_num" id="bank_account_id"></span>
 				</div>
 				<div class="card horizontal">
 					<span class="bank_name" id="priv_bank_name"></span>
-					<span class="card_num" id="priv_bank_account_id"></span></span>
+					<span class="card_num" id="priv_bank_account_id"></span>
 				</div>
 			</div>
 		</div>
@@ -76,7 +68,7 @@
 				<div class="control-group">
 					<label class="control-label">交易密码</label>
 					<div class="controls">
-						<input type="password" placeholder="password" class="m-wrap small" />
+						<input type="password" placeholder="password" class="m-wrap small" id="payPwd">
 					</div>
 				</div>
 				<div class="control-group">
@@ -105,9 +97,9 @@
 <script>
 	//初始化银行卡
 	$('#bank_name').text(info.bankcard.bank_name);
-	$('#bank_account_id').text(encryptBankcard(info.bankcard.bank_account_id));
+	$('#bank_account_id').text(encryptBankcard(info.bankcard.bank_account_id)).attr('data',info.bankcard.bank_account_id);
 	$('#priv_bank_name').text(info.bankcard.priv_bank_name);
-	$('#priv_bank_account_id').text(encryptBankcard(info.bankcard.priv_bank_account_id));
+	$('#priv_bank_account_id').text(encryptBankcard(info.bankcard.priv_bank_account_id)).attr('data',info.bankcard.priv_bank_account_id);
 
 
 	//初始化订单表
@@ -153,7 +145,8 @@
         });
 
         $("#submit").click(function(){
-        	var bank_card = $('.card.card_selected').attr('data-card');
+        	var bank_card = $('.card.card_selected > .card_num').attr('data');
+        	var payPwd =$('#payPwd').val();
 			var withdrawOrders = [];
 			jQuery('#table-withdraw tbody .checkboxes:checked').each(function (i,n) {     	
 	            withdrawOrders[i] = $(this).parents('tr').find('.order_id').text();
@@ -164,12 +157,16 @@
             }else if(withdrawOrders == ''){
             	ui_alert('alert-error','请选择提现订单');
             	return false;
+            }else if(payPwd == ''){
+            	ui_alert('alert-error','请输入交易密码');
+            	return false;
             }
             ajax_jquery({
                 url: apiUrl +'/business/account/withdraw',
                 data:{
                     'bank_card': bank_card,
-                    'withdrawOrders': withdrawOrders
+                    'withdrawOrders': withdrawOrders,
+                    'paypassword':payPwd
                 },
                 success:function(resp){
                     if (resp.code == "1" ) {

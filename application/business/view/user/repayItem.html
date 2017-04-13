@@ -157,8 +157,9 @@
 	        },
 	        success:function(resp){
 	            if (resp.code == "1" ) {
+	            	$('#table-repayItem').dataTable().fnClearTable();//清空原数据
 	            	$('#table-repayItem tbody').html(tpl(resp.data));
-	            	TableManaged.init();
+	            	$('#table-repayItem').dataTable({"bDestroy":true});
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
@@ -171,8 +172,7 @@
 
 	jQuery(document).ready(function() {       
 	   // App.init();
-
-	   
+	   TableManaged.init();
 	   ajaxRepayItem(0,0,0);
 	   $('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');

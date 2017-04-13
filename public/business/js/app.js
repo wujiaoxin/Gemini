@@ -899,7 +899,7 @@ var App = function () {
 function ui_alert(classname,message){
         jQuery('.alert').removeClass('alert-error alert-success').children('span').text(message).end()
                 .addClass(classname).show();
-        setTimeout("$('.alert').slideUp('slow')",5000);
+        setTimeout("$('.alert').slideUp('slow')",3000);
     };
 jQuery('.alert > .close').click(function(){
     jQuery('.alert').removeClass('alert-error alert-success').hide();
