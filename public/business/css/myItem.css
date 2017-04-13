@@ -6,7 +6,7 @@
 	display: inline-block;
 	width: 80px;
 	text-align: center;
-	cursor: default;
+	cursor: pointer;
 }
 
 .selectParm li.active {
