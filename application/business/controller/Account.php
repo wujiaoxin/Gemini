@@ -168,15 +168,23 @@ class Account extends Baseness {
 	public function transaction() {
 		$uid = session('uid');
 		if (IS_POST) {
-			$result = input('post.');
-		}else{
-			$info = db('dealer_money')->where('uid',$uid)->order('id DESC')->select();
+			$data = input('post.');
+			// var_dump($data);die;
+			$map['uid']=$uid;
+			if ($data['type']) {
+				$map['type'] = $data['type'];
+			}
+			$info = db('dealer_money')->where($map)->order('id DESC')->select();
+			if ($info) {
+				$resp['code'] = '1';
+				$resp['msg'] = 'OK';
+				$resp['data'] = $info;
+			}else{
+				$resp['code'] = '1';
+				$resp['msg'] = '暂无数据';
+			}
+			return json($resp);
 		}
-		$data = array(
-			'info'=>$info,
-			'infoStr'=>json_encode($info)
-			);
-		$this->assign($data);
 		return $this->fetch();
 	}
 	public function lineOfCredit() {

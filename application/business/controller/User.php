@@ -210,7 +210,7 @@ use app\business\controller\Baseness;
 			return json($resp);
 		}else{
 			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
-			$data = json_decode($bankcard)
+			$data = json_decode($bankcard);
 			$this->assign($data);
 		}
 		return $this->fetch();
@@ -243,7 +243,7 @@ use app\business\controller\Baseness;
 			return json($resp);
 		}else{
 			$money = db('dealer')->field('money')->where('money',$mobile)->find();
-			$data = json_decode($money)
+			$data = json_decode($money);
 			$this->assign($data);
 		}
 		return $this->fetch();
