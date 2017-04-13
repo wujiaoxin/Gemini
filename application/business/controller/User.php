@@ -157,6 +157,7 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
+			var_dump($data);die;
 			if ($data['type'] !='') {
 				$map['type'] = $data['type'];
 			}
