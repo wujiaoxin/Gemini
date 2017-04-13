@@ -171,7 +171,7 @@ use app\business\controller\Baseness;
 			if ($result) {
 				$resp['code'] = '1';
 				$resp['msg'] = '数据正常';
-				$resp['date']= $result;
+				$resp['data']= $result;
 			}else{
 				$resp['code'] = '0';
 				$resp['msg'] = '未查到数据';
@@ -183,26 +183,26 @@ use app\business\controller\Baseness;
 
 	public function repayItem() {
 		$uid =session('uid');
-		$mobile = session('mobie');
+		$mobile = session('mobile');
 		if (IS_POST) {
 			$data = input('post.');
-			$map['mid'] =$uid;
+			$map['o.mid'] =$uid;
 			if ($data['type']) {
-				$map['type'] = $data['type'];
+				$map['d.type'] = $data['type'];
 			}
 			if ($data['status']) {
-				$map['status'] = $data['status'];
+				$map['o.status'] = $data['status'];
 			}
-			$order_repay = db('order_repay')->where($map)->order('status ASC')->select();
+			// var_dump($map);die;
+			$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.sn = o.order_id')->where($map)->order('o.status ASC')->select();
 			foreach ($order_repay as $k => $v) {
-				$result = serch_order($v['order_id']);
-				$order_repay[$k]['yewu_realname'] = serch_real($result['uid']);
-				$order_repay[$k]['type']=$result['type'];
+				$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
 			}
-			if ($result) {
+			// var_dump($order_repay);die;
+			if ($order_repay) {
 				$resp['code'] = '1';
 				$resp['msg'] = '数据正常';
-				$resp['date']= $order_repay;
+				$resp['data']= $order_repay;
 			}else{
 				$resp['code'] = '0';
 				$resp['msg'] = '未查到数据';
@@ -210,7 +210,10 @@ use app\business\controller\Baseness;
 			return json($resp);
 		}else{
 			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
-			$data = json_decode($bankcard);
+			$data = array(
+					'info'=>$bankcard,
+					'infoStr'=>json_encode($bankcard)
+				);
 			$this->assign($data);
 		}
 		return $this->fetch();
@@ -225,17 +228,42 @@ use app\business\controller\Baseness;
 			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
+			if ($data['dateRange']) {
+				switch ($data['dateRange']) {
+					case '1':
+						$begintime = date('Y-m-d 00:00:00',time());
+						$endtime = date('Y-m-d 23:59:59',time());
+						// $time = ' between UNIX_TIMESTAMP("'.$begintime.'") and UNIX_TIMESTAMP("'.$endtime.'") ';
+						break;
+					case '2':
+						break;
+					case '3':
+						break;
+					case '4':
+						break;
+					case '5':
+						break;
+					default:
+						
+						break;
+				}
+				// 
+				// $map['create_time'] = $time;
+			}
+			// var_dump($map);die;
 			if ($data['status']) {
 				$map['status'] = $data['status'];
 			}
+			// var_dump($map);die;
 			$order_pay = db('order')->where($map)->order('status ASC')->select();
+			// var_dump($order_pay);die;
 			foreach ($order_pay as $k => $v) {
 				$order_pay[$k]['realname'] = serch_real($v['uid']);
 			}
-			if ($result) {
+			if ($order_pay) {
 				$resp['code'] = '1';
 				$resp['msg'] = '数据正常';
-				$resp['date']= $order_pay;
+				$resp['data']= $order_pay;
 			}else{
 				$resp['code'] = '0';
 				$resp['msg'] = '未查到数据';
@@ -243,7 +271,10 @@ use app\business\controller\Baseness;
 			return json($resp);
 		}else{
 			$money = db('dealer')->field('money')->where('money',$mobile)->find();
-			$data = json_decode($money);
+			$data =array(
+					'info'=>$money,
+					'infoStr'=>json_decode($money)
+				);
 			$this->assign($data);
 		}
 		return $this->fetch();

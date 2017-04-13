@@ -1227,6 +1227,7 @@ CREATE TABLE `gemini_member` (
   `desc` varchar(255) DEFAULT NULL COMMENT '备注',
   `tel` varchar(255) DEFAULT NULL COMMENT '固定电话',
   `realname` varchar(32) DEFAULT NULL COMMENT '真实姓名',
+  `paypassword` varchar(255) DEFAULT '' COMMENT '商家支付密码',
   PRIMARY KEY (`uid`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='会员表';
