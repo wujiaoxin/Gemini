@@ -271,5 +271,16 @@ class User extends Api {
 		}
 	}
 	
+	public function updateBaseInfo($realname = null, $idcard = null, $bankcard = null ) {
+		$resp['code'] = 0;
+		$resp['msg'] = '未知错误';
+
+		
+		$resp['code'] = 1;
+		$resp['msg'] = '更新成功';
+ 
+		return json($resp);
+	}
+	
 }
 
