@@ -211,7 +211,7 @@ class Account extends Baseness {
 	}
   	public function info() {
 		$mobile = session('mobile');
-		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic')->where('mobile',$mobile)->find();
+		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic,dealer_lic_pic')->where('mobile',$mobile)->find();
 		if($deals){
 			$data['code'] = '1';
 			$data['info']=$deals;
