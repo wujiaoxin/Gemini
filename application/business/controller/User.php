@@ -352,7 +352,4 @@ use app\business\controller\Baseness;
 		}
 		return $resp;
 	}
-	public function waiting(){
-		return $this->fetch();
-	}
 }
