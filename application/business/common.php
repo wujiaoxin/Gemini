@@ -258,7 +258,7 @@
   */
   function get_orders($mid,$status=0,$type){
     if ($type == 'order') {
-       $data = db('order')->where('mid',$mid)->limit(4)->order('status ASC,id DESC')->select();
+       $data = db('order')->where('mid',$mid)->limit(5)->order('status ASC,id DESC')->select();
        foreach ($data as $k => $v) {
          if ($v['status'] == '-1') {
             $data[$k]['progress'] = '1';
@@ -278,10 +278,11 @@
        }
     }
     if ($type == 'order_repay') {
-       $data = db('order_repay')->where('mid',$mid)->limit(4)->select();
+        $data = db('order_repay')->alias('o')->field('o.*,d.type')->join('__ORDER__ d','o.order_id = d.sn')->select();
+       // $data = db('order_repay')->where('mid',$mid)->limit(4)->select();
     }
     if ($type == 'dealer_money') {
-      $data = db('order_repay')->where('status ','>',3)->where('mid',$mid)->limit(4)->select();
+      $data = db('order_repay')->where('status ','>',3)->where('mid',$mid)->limit(5)->select();
     }
     return $data;
   }
