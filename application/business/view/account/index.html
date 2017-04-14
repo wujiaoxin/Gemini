@@ -16,7 +16,7 @@
 <!--账号设置-->
 <div class="account-index">
 	<div class="row-fluid">
-		<div class="protrait span1"><img src="/public/business/lib/metronic/image/avatar1_small.jpg"></div>
+		<div class="protrait span1"><img src="/public/business/lib/metronic/image/avatar.png"></div>
 		<div class="span3">
 			<h3 id="dealer_name"></h3>
 		</div>
@@ -27,7 +27,7 @@
 			<h4>法人认证</h4>
 			<p class="sub-title">实名操作，保证信息真实性</p>
 		</div>
-		<div class="index-info span5">
+		<div class="index-info span5" id="item-idno">
 			<a href="#" class="glyphicons circle_ok"><i class="colgreen"></i></a>
 			<span id="dealer_idno"></span>
 		</div>
@@ -207,12 +207,16 @@
 	}
 
 	jQuery(document).ready(function () {
-		var idno = encryptID(info['idno']);
 		var mobile = encryptMobile(info['mobile']);
 		$('#dealer_name').text(info['name']);
-		$('#dealer_idno').text(idno);
-		$('#dealer_mobile').text('已绑定 '+mobile);
+		$('#dealer_mobile').text(mobile);
 		$('.originalMobile').val(info['mobile']);
+
+		if(typeof(info['idno']) == 'string'){
+			hasData('item-idno',encryptID(info['idno']));
+		}else{
+			hasNoData('item-idno','未设置');
+		}
 
 		if(typeof(info['paypassword']) == 'string'){
 			hasData('item-payPwd','已设置');

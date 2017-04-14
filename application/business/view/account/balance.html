@@ -85,6 +85,8 @@
 											<th>充值备注</th>
 										</tr>
 									</thead>
+									<tbody>
+									</tbody>
 								</table>
 							</div>
 						</div>
@@ -117,16 +119,18 @@
 							<div class="portlet-body">
 								<table class="table table-bordered table-hover" id="table-withdraw">
 									<thead>
-									<tr>
-										<th>时间</th>
-										<th>订单号</th>
-										<th>提现流水号</th>
-										<th>提现银行账户</th>
-										<th>提现金额（元）</th>
-										<th>手续费</th>
-										<th>状态</th>
-									</tr>
+										<tr>
+											<th>时间</th>
+											<th>订单号</th>
+											<th>提现流水号</th>
+											<th>提现银行账户</th>
+											<th>提现金额（元）</th>
+											<th>手续费</th>
+											<th>状态</th>
+										</tr>
 									</thead>
+									<tbody>
+									</tbody>
 								</table>
 							</div>
 						</div>
@@ -150,7 +154,7 @@
 		  		+'<td>银行卡</td>'//支付方式data[index].pay_type
 		  		+'<td>￥'+ formatAmount(data[index].money) +'</td>'
 		  		+'<td>'+ data[index].is_pay +'</td>'
-		  		+'<td>￥'+ data[index].descr +'</td>'	
+		  		+'<td>'+ data[index].descr +'</td>'	
 		  		 +'</tr>'
 			}
 		}
@@ -161,12 +165,12 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + data[index].create_time + '</td>'
+		  		+'<td>' + formatDate(data[index].create_time) + '</td>'
 		  		+'<td>' + data[index].carry_billon + '</td>'
 		  		+'<td>'+ data[index].serial_num +'</td>'
 		  		+'<td>'+ data[index].bank_account+'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].money) +'</td>'
-		  		+'<td>'+ formatAmount(data[index].fee) +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].fee) +'</td>'
 		  		+'<td>'+ data[index].is_pay +'</td>'	
 		  		 +'</tr>'
 			}
