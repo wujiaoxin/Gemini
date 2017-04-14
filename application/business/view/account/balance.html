@@ -186,7 +186,6 @@
 	            'status': status
 	        },
 	        success:function(resp){
-	        	console.log(resp)
 	            if (resp.code == "1" ) {
 	            	if(resp['type'] == '1' ){
 	            		$('#table-recharge tbody').html(tplRecharge(resp.data));
