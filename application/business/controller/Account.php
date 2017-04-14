@@ -55,8 +55,9 @@ class Account extends Baseness {
 				}
 			}
 			//修改邮箱
-			if (isset($data['mail'])) {
-				$result = db('member')->where('mobile',$mobile)->setField('email', $data['mail']);
+			if (isset($data['email'])) {
+				$result = db('member')->where('mobile',$mobile)->setField('email', $data['email']);
+				// var_dump($result);die;
 				if ($result) {
 					$resp['code'] = '1';
 					$resp['msg'] = '邮箱添加成功';
