@@ -18,19 +18,25 @@ class Account extends Baseness {
 	      	// var_dump($data);die;
 	      	$mobile = session("mobile");
 			if (isset($data['smsVerify'])) {
-			$storeSmsCode = session('smsCode');
-			  if($data['smsVerify'] != $storeSmsCode){
-			    return ['code'=>1005,'msg'=>'短信验证码错误'];
-			  }
+				$storeSmsCode = session('smsCode');
+				if($data['smsVerify'] != $storeSmsCode){
+					$resp['code'] = '1005';
+					$resp['msg'] = '短信验证码错误';
+					return json($resp);
+				}
 			}
 			// 修改交易密码
 			if (isset($data['newPayPwd'])) {
 			    $user = model('User');
 			    $result = $user->setpaypw($mobile,$data['newPayPwd']);
 			    if($result){
-			      return ['code'=>1,'msg'=>'支付密码设置成功'];
+					$resp['code'] = '1';
+					$resp['msg'] = '支付密码设置成功';
+					return json($resp);
 			    }else{
-			      return ['code'=>1003,'msg'=>'两次密码不一致'];
+			    	$resp['code'] = '1';
+					$resp['msg'] = '两次密码不一致';
+					return json($resp);
 			    }
 			}
 			//修改手机号
@@ -39,18 +45,27 @@ class Account extends Baseness {
 				$result1 = db('dealer')->where('mobile',$mobile)->setField('mobile', $data['newMobile']);
 				if ($result && $result1) {
 					session('mobile',$data['newMobile']);
-					return ['code'=>1,'msg'=>'手机号修改成功'];
+					$resp['code'] = '1';
+					$resp['msg'] = '手机号修改成功';
+					return json($resp);
 				}else{
-					return ['code'=>1000,'msg'=>'手机号修改失败'];
+					$resp['code'] = '1000';
+					$resp['msg'] = '手机号修改失败';
+					return json($resp);
 				}
 			}
 			//修改邮箱
-			if (isset($data['mail'])) {
-				$result = db('member')->where('mobile',$mobile)->setField('email', $data['mail']);
+			if (isset($data['email'])) {
+				$result = db('member')->where('mobile',$mobile)->setField('email', $data['email']);
+				// var_dump($result);die;
 				if ($result) {
-					return ['code'=>1,'msg'=>'邮箱添加成功'];
+					$resp['code'] = '1';
+					$resp['msg'] = '邮箱添加成功';
+					return json($resp);
 				}else{
-					return ['code'=>1001,'msg'=>'邮箱修改失败'];
+					$resp['code'] = '1001';
+					$resp['msg'] = '邮箱添加失败';
+					return json($resp);
 				}
   			}
 		}else{
