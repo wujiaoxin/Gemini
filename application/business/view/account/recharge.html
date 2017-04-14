@@ -62,7 +62,7 @@
 						</div>
 					</div>
 					<div class="form-actions">
-						<button id="submit" class="btn blue"><i class="icon-ok"></i>确认提交</button>
+						<a id="rechargeBtn" class="btn blue"><i class="icon-ok"></i>确认提交</a>
 					</div>	
 				</form>
 			</div>
@@ -73,9 +73,9 @@
 {block name="script"}
 <script type="text/javascript">
 $(function(){
-	$('#submit').on('click',function(){
+	$('#rechargeBtn').on('click',function(){
 		var amount = $('#amount').val();
-		var rechargeMode = $('#rechargeMode').val
+		var rechargeMode = $('#rechargeMode').val();
 		var desc = $('#desc').val();
 		if(amount == ""){
 			ui_alert("alert-error","请输入充值金额");
@@ -95,7 +95,7 @@ $(function(){
 	        success:function(resp){
 	            if (resp.code == "1" ) {
                     ui_alert("alert-success","充值成功");
-                    return false;
+                    setTimeout('window.location.reload()',1000);
 	            }else{
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);

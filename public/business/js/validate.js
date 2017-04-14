@@ -8,6 +8,17 @@ function validatePhoneNumber(mobile) {
     }
 }
 
+//验证交易密码
+function validatePayPwd(pwd) {
+    var myreg = /^\d{6}$/;
+    if (!myreg.test(pwd)) {
+        return false;
+    } else {
+        return true
+    }
+}
+
+//验证密码
 function validatePassword(pass) {
     if (pass.length < 8 || pass.length > 16 || pass.match(/[^a-zA-Z0-9]+/)) {
         return false;
@@ -26,6 +37,8 @@ function validatePassword(pass) {
     }
 }
 
+
+//验证银行卡号
 function validateBankNum(banknum) {
     if (banknum.length < 16 || banknum.length > 19) {
         return false;
@@ -66,3 +79,33 @@ function validateIdCard(pId) {
 
     return pId.length == 18 && pId != Ai ? false : true;
 }
+
+//验证email
+function checkEmail(str){
+    var re = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/; 
+    if (!re.test(str)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+//*加密身份证、手机号、银行卡、邮箱
+function encryptID(idcard){
+    return idcard = idcard.replace(/^(\d{6})\d+(\d{4})$/,"$1********$2");
+}
+
+function encryptMobile(mobile){
+    return mobile = mobile.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2');
+}
+
+function encryptBankcard(bankcard){
+    return bankcard = bankcard.replace(/\d+(\d{4})$/,"**** **** **** $1");
+}
+
+function encryptMail(mail){
+    return mail = mail.replace(/^(\w?)(\w+)(\w)(@\w+\.[a-z]+(\.[a-z]+)?)$/, "$1****$3$4");
+}
+
+      
+

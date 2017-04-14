@@ -1,7 +1,16 @@
 {extend name="base"/}
 {block name="style"}
-<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css" />
-<link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
+<link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css">
+<script>
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+	
+</script>
 {/block}
 
 {block name="body"}
@@ -29,26 +38,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="odd gradeX">
+						<!-- <tr class="odd gradeX">
 							<td>1</td>
 							<td>王三</td>
 							<td>13456</td>
-						</tr>
-						<tr class="odd gradeX">
-							<td>2</td>
-							<td>王三</td>
-							<td>13456</td>
-						</tr>
-						<tr class="odd gradeX">
-							<td>3</td>
-							<td>王三</td>
-							<td>13456</td>
-						</tr>
-						<tr class="odd gradeX">
-							<td>4</td>
-							<td>王三</td>
-							<td>13456</td>
-						</tr>
+						</tr> -->
 					</tbody>
 				</table>
 			</div>
@@ -69,26 +63,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="odd gradeX">
+						<!-- <tr class="odd gradeX">
 							<td>1</td>
 							<td>王三</td>
 							<td>13</td>
-						</tr>
-						<tr class="odd gradeX">
-							<td>2</td>
-							<td>王三</td>
-							<td>156</td>
-						</tr>
-						<tr class="odd gradeX">
-							<td>3</td>
-							<td>王三</td>
-							<td>156</td>
-						</tr>
-						<tr class="odd gradeX">
-							<td>4</td>
-							<td>王三</td>
-							<td>156</td>
-						</tr>
+						</tr> -->
 					</tbody>
 				</table>
 			</div>
@@ -109,26 +88,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="odd gradeX">
+						<!-- <tr class="odd gradeX">
 							<td>1</td>
 							<td>王一</td>
 							<td>13456</td>
-						</tr>
-						<tr class="odd gradeX">
-							<td>2</td>
-							<td>王三</td>
-							<td>13456</td>
-						</tr>
-						<tr class="odd gradeX">
-							<td>3</td>
-							<td>王二</td>
-							<td>13456</td>
-						</tr>
-						<tr class="odd gradeX">
-							<td>4</td>
-							<td>王四</td>
-							<td>13456</td>
-						</tr>
+						</tr> -->
 					</tbody>
 				</table>
 			</div>
@@ -140,8 +104,33 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/jquery.flot.js"></script>
 <script type="text/javascript" src="/public/business/js/charts.js"></script>
 <script>
+	function tpl(data,type){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+			var i = index +1 ;
+			var result = type>0?formatAmount(data[index].result):data[index].result;
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + i+ '</td>'
+		  		+'<td>'+ data[index].realname +'</td>'
+		  		+'<td>'+ result +'</td>'
+		  		+'</tr>';
+			}
+		}
+		return html;
+	};
+	$('#table-orderTotal-top10 tbody').html(tpl(info.money,1));
+	$('#table-orderQuantity-top10 tbody').html(tpl(info.num,0));
+	$('#table-orderAverage-top10 tbody').html(tpl(info.avg,1));
+
+	var orderTotal = [];
+	$.each(info['time'], function(i, n) {
+    	orderTotal[i] = [i+1,n.total_money]
+	});
+
 	jQuery(document).ready(function() {       
 	   // App.init();
+
 	   Charts.initCharts();
 	});
 </script>

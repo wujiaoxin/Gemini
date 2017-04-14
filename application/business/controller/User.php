@@ -112,7 +112,7 @@ use app\business\controller\Baseness;
 				} else {
 					$resp["code"] = 0;
 					$resp["msg"] = $user->getError();
-					return json($resp);
+					return $resp;
 				}
 			}
 		}
@@ -122,15 +122,15 @@ use app\business\controller\Baseness;
 		$uid =session('uid');
 		$mobile = session('uid');
 		//分组统计
-		$result = db('order')->field('mid,uid,sum(loan_limit) as total_money')->order('total_money DESC')->group('uid')->select();
+		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->order('result DESC')->group('uid')->select();
 		foreach ($result as $k => $v) {
 			$result[$k]['realname'] = serch_real($v['uid']);
 		}
-		$num = db('order')->field('mid,uid,count(id) as num')->order('num DESC')->group('uid')->select();
+		$num = db('order')->field('mid,uid,count(id) as result')->order('result DESC')->group('uid')->select();
 		foreach ($num as $k => $v) {
 			$num[$k]['realname'] = serch_real($v['uid']);
 		}
-		$avg = db('order')->field('mid,uid,avg(loan_limit) as avg')->order('avg DESC')->group('uid')->select();
+		$avg = db('order')->field('mid,uid,avg(loan_limit) as result')->order('result DESC')->group('uid')->select();
 		foreach ($num as $k => $v) {
 			$avg[$k]['realname'] = serch_real($v['uid']);
 		}
@@ -143,7 +143,6 @@ use app\business\controller\Baseness;
 				'avg'=>$avg,
 				'time'=>$time
 			);
-		// var_dump($info);die;
 		$data = array(
 				'info'=>$info,
 				'infoStr'=>json_encode($info)
@@ -157,62 +156,80 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
-			if ($data['type'] !='') {
+			// var_dump($data);die;
+			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
-			if ($data['status'] !='') {
+			if ($data['status']) {
 				$map['status'] = $data['status'];
 			}
-			$result = db('order')->where($map)->select();
-		}else{
-			$result = db('order')->where('mid',$uid)->select();
+			if ($data['dateRange']) {
+				$result = to_datetime($data['dateRange']);
+				$endtime =$result['endtime'];
+				$begintime = $result['begintime'];
+				$result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+			}else{
+				$result = db('order')->where($map)->select();
+			}
+			
+			foreach ($result as $k => $v) {
+				$result[$k]['realname'] = serch_real($v['uid']);
+			}
+			if ($result) {
+				$resp['code'] = '1';
+				$resp['msg'] = '数据正常';
+				$resp['data']= $result;
+			}else{
+				$resp['code'] = '0';
+				$resp['msg'] = '未查到数据';
+			}
+			return json($resp);
 		}
-		foreach ($result as $k => $v) {
-			$result[$k]['realname'] = serch_real($v['uid']);
-		}
-		$data = array(
-			'info'=>$result,
-			'infoStr'=>json_encode($result)
-		);
-		// var_dump($data);die;
-		$this->assign($data);
 		return $this->fetch();
 	}
 
 	public function repayItem() {
 		$uid =session('uid');
-		$mobile = session('mobie');
+		$mobile = session('mobile');
 		if (IS_POST) {
 			$data = input('post.');
-			$map['mid'] =$uid;
-			if ($data['type'] !='') {
-				$map['type'] = $data['type'];
+			$map['o.mid'] =$uid;
+			if ($data['type']) {
+				$map['d.type'] = $data['type'];
 			}
-			if ($data['status'] !='') {
-				$map['status'] = $data['status'];
+			if ($data['status']) {
+				$map['o.status'] = $data['status'];
 			}
-			$result = db('order')->where($map)->order('status ASC')->select();
+			if ($data['dateRange']) {
+				$result = to_datetime($data['dateRange']);
+				$endtime =$result['endtime'];
+				$begintime = $result['begintime'];
+				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.sn = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
+			}else{
+				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.sn = o.order_id')->where($map)->order('o.status ASC')->select();
+			}
+			// var_dump($map);die;
+			foreach ($order_repay as $k => $v) {
+				$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
+			}
+			// var_dump($order_repay);die;
+			if ($order_repay) {
+				$resp['code'] = '1';
+				$resp['msg'] = '数据正常';
+				$resp['data']= $order_repay;
+			}else{
+				$resp['code'] = '0';
+				$resp['msg'] = '未查到数据';
+			}
+			return json($resp);
 		}else{
-			$order_repay = db('order_repay')->where('mid',$uid)->order('status ASC')->select();
-			
+			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+			$data = array(
+					'info'=>$bankcard,
+					'infoStr'=>json_encode($bankcard)
+				);
+			$this->assign($data);
 		}
-		foreach ($order_repay as $k => $v) {
-			$result = serch_order($v['order_id']);
-			$order_repay[$k]['yewu_realname'] = serch_real($result['uid']);
-			$order_repay[$k]['type']=$result['type'];
-		}
-
-		$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
-		$info = array(
-				'order_repay'=>$order_repay,
-				'bankcard'=>$bankcard
-			);
-		$data = array(
-			'info'=>$info,
-			'infoStr'=>json_encode($info)
-		);
-		// var_dump($data);die;
-		$this->assign($data);
 		return $this->fetch();
 	}
 
@@ -222,32 +239,46 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
-			if ($data['type'] !='') {
+			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
-			if ($data['status'] !='') {
+			
+			if ($data['status']) {
 				$map['status'] = $data['status'];
 			}
-			$order_pay = db('order')->where($map)->order('status ASC')->select();
+			if ($data['dateRange']) {
+				$result = to_datetime($data['dateRange']);
+				$endtime =$result['endtime'];
+				$begintime = $result['begintime'];
+				$order_pay = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('status ASC')->select();
+			}else{
+				$order_pay = db('order')->where($map)->order('status ASC')->select();
+			}
+			// $order_pay = db('order')->where($map)->order('status ASC')->select();
+			// var_dump($order_pay);die;
+			foreach ($order_pay as $k => $v) {
+				$order_pay[$k]['realname'] = serch_real($v['uid']);
+			}
+			if ($order_pay) {
+				$resp['code'] = '1';
+				$resp['msg'] = '数据正常';
+				$resp['data']= $order_pay;
+			}else{
+				$resp['code'] = '0';
+				$resp['msg'] = '未查到数据';
+			}
+			return json($resp);
 		}else{
-			$order_pay = db('order')->where('mid',$uid)->order('status ASC')->select();
-			
+			$money = db('dealer')->field('money')->where('mobile',$mobile)->find();
+			$data =array(
+					'info'=>$money,
+					'infoStr'=>json_encode($money)
+				);
+			$this->assign($data);
 		}
-		foreach ($order_pay as $k => $v) {
-			$order_pay[$k]['realname'] = serch_real($v['uid']);
-		}
-		$money = db('dealer')->field('money')->where('money',$mobile)->find();
-		$info = array(
-			'money'=>$money,
-			'order'=>$order_pay
-			);
-		$data = array(
-			'info'=>$info,
-			'infoStr'=>json_encode($info)
-		);
-		$this->assign($data);
 		return $this->fetch();
 	}
+	
 	//设置交易密码
 	public function setpay(){
 		$mobile = session("mobile");
@@ -320,5 +351,8 @@ use app\business\controller\Baseness;
 			$resp["msg"] = "发送失败！";
 		}
 		return $resp;
+	}
+	public function waiting(){
+		return $this->fetch();
 	}
 }

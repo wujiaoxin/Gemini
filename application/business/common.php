@@ -29,7 +29,7 @@
                 'pay_id'=>$pay_id,
                 'is_pay'=>'-1',
                 'money'=>$data['money'],
-                'pay_type'=>$data['pay_type'],
+                'payment_type'=>$data['pay_type'],
                 'descr'=>$data['descr'],
                 'create_time'=>time()
             );
@@ -37,11 +37,11 @@
             if ($result){
                 $resp["code"] = 1;
                 $resp["msg"] = '处理中';
-                return json_encode($resp);
+                return $resp;
             }else{
                 $resp["code"] = 0;
                 $resp["msg"] = '充值失败';
-                return json_encode($resp);
+                return $resp;
             }
         }
         if($type == 'member_money'){
@@ -91,7 +91,7 @@
           'order_id'=>$order_id,
           'mid'=>$uid,
           'repay_money'=>$order[0]['loan_limit'],
-          'manage_money'=>$order[0]['free'],
+          'manage_money'=>$order[0]['fee'],
           'repay_time'=>$repay_time,
           'status'=>'-1',
           'has_repay'=>'0',
@@ -109,7 +109,7 @@
     $uid = session('uid');
     $order = db('order')->where('sn',$o_id)->select();
     if ($order) {
-      $is_success = db('order')->where('sn',$o_id)->setField('status','14');
+      $is_success = db('order')->where('sn',$o_id)->setField('status','15');
       if ($is_success) {
         $datas =array(
             'carry_billon'=>$o_id,
@@ -123,15 +123,14 @@
         modify_account($datas,$uid,'4','1','withdraw','INSERT');
         modify_account($datas,$uid,'4','1','member_money','INSERT');
         set_order_repay($o_id);
-        $data['code'] = '1';
-        $data['msg']='提现成功';
+        $resp['code'] = '1';
+        $resp['msg']='提现成功';
 
       }else{
-        $data['code'] = '1';
-        $data['msg']='提现失败';
+        $resp['code'] = '1';
+        $resp['msg']='提现失败';
       }
-      // var_dump($data);
-      return $data;
+      return json($resp);
     }
   }
   //发送验证码
@@ -207,10 +206,16 @@
         $money_jk = db('order')->where($where)->sum('loan_limit');
       //待还资金
         $repay_money = db('order_repay')->where('mid',$uid)->sum('repay_money');
+        // 借款中的订单
+        $order_loan = db('order')->where('mid',$uid)->count('id');
+        //还款中的订单
+        $order_repay = db('order_repay')->where('mid',$uid)->count('id');
         $data = array(
-          'money'=>$money,
-          'money_jk'=>$money_jk,
-          'repay_money'=>(string)$repay_money
+          'available_money'=>$money,
+          'loan_money'=>$money_jk,
+          'repay_money'=>(string)$repay_money,
+          'order_loan_num'=>$order_loan,
+          'order_repay_num'=>$order_repay,
           );
     }
     if ($type =='lines') {
@@ -253,7 +258,7 @@
   */
   function get_orders($mid,$status=0,$type){
     if ($type == 'order') {
-       $data = db('order')->where('mid',$mid)->limit(4)->order('status ASC,id DESC')->select();
+       $data = db('order')->where('mid',$mid)->limit(5)->order('status ASC,id DESC')->select();
        foreach ($data as $k => $v) {
          if ($v['status'] == '-1') {
             $data[$k]['progress'] = '1';
@@ -273,10 +278,48 @@
        }
     }
     if ($type == 'order_repay') {
-       $data = db('order_repay')->where('mid',$mid)->limit(4)->select();
+        $data = db('order_repay')->alias('o')->field('o.*,d.type')->join('__ORDER__ d','o.order_id = d.sn')->limit(5)->select();
+       // $data = db('order_repay')->where('mid',$mid)->limit(4)->select();
     }
     if ($type == 'dealer_money') {
-      $data = db('order_repay')->where('status ','>',3)->where('mid',$mid)->limit(4)->select();
+      $data = db('order_repay')->where('status ','>',3)->where('mid',$mid)->limit(5)->select();
     }
     return $data;
+  }
+
+  /*
+  **时间类型
+  */
+  function to_datetime($dateRange){
+    $begintime =strtotime(date('Y-m-d 23:59:59',time()));//开始时间
+    switch ($dateRange) {
+      case '1':
+        $endtime = strtotime(date('Y-m-d 00:00:00',time()+3600*24));//结束时间    
+        break;
+      case '2':
+      //7
+        $endtime = strtotime(date('Y-m-d 00:00:00',time()-3600*24*7));//结束时间
+        break;
+      case '3':
+      //one month
+        $endtime = strtotime(date('Y-m-d 00:00:00',time()-3600*24*30));//结束时间
+        break;
+      case '4':
+      // two moneth
+        $endtime = strtotime(date('Y-m-d 00:00:00',time()-3600*24*60));//结束时间
+        break;
+      case '5':
+        // three month
+        $endtime = strtotime(date('Y-m-d 00:00:00',time()-3600*24*90));//结束时间
+        break;
+      default:
+        break;
+    }
+    // $time = ' between '.$begintime.' and '.$endtime.' ';
+    // $map['create_time'] = $time;
+    $result = array(
+      'endtime'=>$endtime,
+      'begintime'=>$begintime
+      );
+    return $result;
   }

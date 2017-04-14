@@ -899,10 +899,11 @@ var App = function () {
 function ui_alert(classname,message){
         jQuery('.alert').removeClass('alert-error alert-success').children('span').text(message).end()
                 .addClass(classname).show();
+        setTimeout("$('.alert').slideUp('slow')",3000);
     };
-    jQuery('.alert > .close').click(function(){
-        jQuery(this).parent('.alert').removeClass('alert-error').hide();
-    });
+jQuery('.alert > .close').click(function(){
+    jQuery('.alert').removeClass('alert-error alert-success').hide();
+});
 
 function ajax_jquery(options) {
     if (options == undefined) {
@@ -1029,39 +1030,74 @@ $("#editPasswordBtn").click(function(event) {
         }
     });
 });
-    // 格式化数字20,000,00.00    
-    function formatAmount(n) {
-        n = parseFloat(n).toFixed(2);
-        n = n.toString().replace(/\B(?=(?:\d{3})+\b)/g, ',');
-        return n;
+
+// 格式化数字20,000,00.00    
+function formatAmount(n) {
+    n = parseFloat(n).toFixed(2);
+    n = n.toString().replace(/\B(?=(?:\d{3})+\b)/g, ',');
+    return n;
+}
+
+// 格式化日期时间
+function formatDatetime(timeStr){
+    var timeStr = timeStr*1000;
+    var now =new Date(timeStr);
+    var year=now.getFullYear();     
+    var month=now.getMonth()+1;     
+    var date=now.getDate();     
+    var hour=fillZero(now.getHours());     
+    var minute=fillZero(now.getMinutes());     
+    var second=fillZero(now.getSeconds());    
+    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+}
+
+// 格式化日期
+function formatDate(timeStr){
+    var timeStr = timeStr*1000;
+    var now = new Date(timeStr);
+    var year = now.getFullYear();     
+    var month = fillZero(now.getMonth()+1);     
+    var date = fillZero(now.getDate());       
+    return   year+"-"+month+"-"+date;     
+}
+
+function fillZero(i){
+    if (i<10){
+        i="0" + i;
     }
+    return i
+}
 
-    function formatDatetime(timeStr){
-        var timeStr = timeStr*1000;
-        var now =new Date(timeStr);
-        var year=now.getFullYear();     
-        var month=now.getMonth()+1;     
-        var date=now.getDate();     
-        var hour=fillZero(now.getHours());     
-        var minute=fillZero(now.getMinutes());     
-        var second=fillZero(now.getSeconds());    
-        return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
-    };
-    function formatDate(timeStr){
-        var timeStr = timeStr*1000;
-        var now = new Date(timeStr);
-        var year = now.getFullYear();     
-        var month = fillZero(now.getMonth()+1);     
-        var date = fillZero(now.getDate());       
-        return   year+"-"+month+"-"+date;     
-    };
-
-    function fillZero(i){
-        if (i<10){
-            i="0" + i;
+//发送短信验证码
+function sendSms(id) {
+    var formName = $(id).attr('data-form');
+    var mobile = $('#'+formName+'-username').val();
+    var imgverify = $('#'+formName+'-rvalicode').val();
+    if (mobile == "") {
+        ui_alert("alert-error","请输入手机号!");
+    }else if (!validatePhoneNumber(mobile)) {
+        ui_alert("alert-error","请输入正确的手机号!");
+    } 
+    ajax_jquery({
+        url: apiUrl + '/business/user/sendSmsVerify',
+        data: {
+            "mobile": mobile,
+         },
+        success: function (resp) {
+            if (resp.code == "1") {
+                ui_alert("alert-success","验证码发送成功,请注意查收");
+            } else {
+                if (typeof(resp.msg) == 'string' && resp.msg != '') {
+                    ui_alert("alert-error",resp.msg);
+                } else {
+                    ui_alert("alert-error","验证码发送失败");
+                }
+                return false;
+            }
         }
-        return i
-    };
+    });
+}
+  
 
 
 

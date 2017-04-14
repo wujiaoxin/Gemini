@@ -1,4 +1,39 @@
 {extend name="base"/}
+{block name="style"}
+<link rel="stylesheet" href="/public/business/css/account.css">
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+
+</script>
+{/block}
 {block name="body"}
-bank
+<div class="portlet">
+	<div class="portlet-title">
+		<div class="caption"></div>
+	</div>
+	<div class="portlet-body">
+		<div class="card horizontal">
+			<span class="bank_name" id="bank_name"></span>
+			<span class="card_num" id="bank_account_id"></span></span>
+		</div>
+		<div class="card horizontal">
+			<span class="bank_name" id="priv_bank_name"></span>
+			<span class="card_num" id="priv_bank_account_id"></span></span>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<script>
+	//初始化银行卡
+	$('#bank_name').text(info.bank_name);
+	$('#bank_account_id').text(encryptBankcard(info.bank_account_id));
+	$('#priv_bank_name').text(info.priv_bank_name);
+	$('#priv_bank_account_id').text(encryptBankcard(info.priv_bank_account_id));
+</script>
 {/block}

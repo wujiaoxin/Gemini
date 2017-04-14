@@ -78,15 +78,51 @@ class Account extends Baseness {
 	    $uid = session('uid');
 	    if (IS_POST) {
 	    	$data = input('post.');
+	    	$map['user_id'] = $uid;
+	    	if ($data['status']) {
+				$map['is_pay'] = $data['status'];
+			}
 	    	if ($data['type'] == '1') {
-	    		$carrys = db('dealer_money')->where('uid',$uid)->where('type','3')->select();
+	    		if ($data['dateRange']) {
+					$result = to_datetime($data['dateRange']);
+					$endtime =$result['endtime'];
+					$begintime = $result['begintime'];
+					$carrys = db('carry')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+				}else{
+					$carrys = db('carry')->where($map)->select();
+				}
+	    		if ($carrys) {
+					$resp['code'] = '1';
+					$resp['msg'] = '数据正常';
+					$resp['type'] = '1';
+					$resp['data']= $carrys;
+				}else{
+					$resp['code'] = '0';
+					$resp['msg'] = '未查到数据';
+				}
 	    	}
 	    	
-			$payment = db('dealer_money')->where('uid',$uid)->where('type','4')->select();
-			$info = array(
-			  'carrys'=>$carrys,
-			  'payment'=>$payment
-			);
+	    	if ($data['type'] == '2') {
+	    		if ($data['dateRange']) {
+					$result = to_datetime($data['dateRange']);
+					$endtime =$result['endtime'];
+					$begintime = $result['begintime'];
+					$payment = db('payment')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+				}else{
+					$payment = db('payment')->where($map)->select();
+				}
+				if ($payment) {
+					$resp['code'] = '1';
+					$resp['msg'] = '数据正常';
+					$resp['type'] = '2';
+					$resp['data']= $payment;
+				}else{
+					$resp['code'] = '0';
+					$resp['msg'] = '未查到数据';
+				}
+	    	}
+			return json($resp);
+	    	
 	    }else{
 	      //资金记录
 	      $info = get_money($uid,'money');
@@ -106,9 +142,12 @@ class Account extends Baseness {
 		if(IS_POST){
 			$data = input('post.');
 			$uid = session('uid');
+			// var_dump($data);die;
 			if (is_numeric($data['money'])){
 			    modify_account($data,$uid,'3','0','member_money','INSERT');
-			    modify_account($data,$uid,'rechange','INSERT');
+			    $resp = modify_account($data,$uid,'rechange','INSERT');
+			    // var_dump($resp);die;
+			    return json($resp);
 			}
 		}else{
 		  return $this->fetch();
@@ -122,9 +161,12 @@ class Account extends Baseness {
 		$uid = session('uid');
 		if(IS_POST){
 			$data = input('post.');
-			if(md5($password.$mobile) === $data['paypassword']){
+			$paypassword = $data['paypassword'];
+			$pay = db('member')->field('paypassword')->where('mobile',$mobile)->find();
+			if(md5($paypassword.$mobile) == $pay['paypassword']){
 			  foreach ($data['withdrawOrders'] as $k => $v) {
-			    cl_order($v,$data['bank_card']);
+			   $resp=  cl_order($v,$data['bank_card']);
+			   return $resp;
 			  }
 			}else{
 			   return ['code'=>'0','msg'=>'交易密码错误'];
@@ -168,15 +210,31 @@ class Account extends Baseness {
 	public function transaction() {
 		$uid = session('uid');
 		if (IS_POST) {
-			$result = input('post.');
-		}else{
-			$info = db('dealer_money')->where('uid',$uid)->order('id DESC')->select();
+			$data = input('post.');
+			// var_dump($data);die;
+			$map['uid']=$uid;
+			if ($data['type']) {
+				$map['type'] = $data['type'];
+			}
+			if ($data['dateRange']) {
+				$result = to_datetime($data['dateRange']);
+				$endtime =$result['endtime'];
+				$begintime = $result['begintime'];
+				$info = db('dealer_money')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('id DESC')->select();
+			}else{
+				$info = db('dealer_money')->where($map)->order('id DESC')->select();
+			}
+			// var_dump($info);die;
+			if ($info) {
+				$resp['code'] = '1';
+				$resp['msg'] = 'OK';
+				$resp['data'] = $info;
+			}else{
+				$resp['code'] = '1';
+				$resp['msg'] = '暂无数据';
+			}
+			return json($resp);
 		}
-		$data = array(
-			'info'=>$info,
-			'infoStr'=>json_encode($info)
-			);
-		$this->assign($data);
 		return $this->fetch();
 	}
 	public function lineOfCredit() {
@@ -211,7 +269,7 @@ class Account extends Baseness {
 	}
   	public function info() {
 		$mobile = session('mobile');
-		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic')->where('mobile',$mobile)->find();
+		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic,dealer_lic_pic')->where('mobile',$mobile)->find();
 		if($deals){
 			$data['code'] = '1';
 			$data['info']=$deals;

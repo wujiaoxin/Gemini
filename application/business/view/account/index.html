@@ -1,7 +1,16 @@
 {extend name="base"/}
 {block name="style"}
 <link rel="stylesheet" href="/public/business/lib/metronic/css/glyphicons.css">
-<link rel="stylesheet" href="/public/business/css/accountIndex.css">
+<link rel="stylesheet" href="/public/business/css/account.css">
+<script>
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+
+</script>
 {/block}
 {block name="body"}
 <!--账号设置-->
@@ -9,7 +18,7 @@
 	<div class="row-fluid">
 		<div class="protrait span1"><img src="/public/business/lib/metronic/image/avatar1_small.jpg"></div>
 		<div class="span3">
-			<h3>车商名称</h3>
+			<h3 id="dealer_name"></h3>
 		</div>
 	</div>
 	<div class="row-fluid account-item">
@@ -19,30 +28,30 @@
 			<p class="sub-title">实名操作，保证信息真实性</p>
 		</div>
 		<div class="index-info span5">
-			<a href="#" class="glyphicons no-js circle_ok"><i class="f-colgreen"></i></a>
-			<span>330123********2321</span>
+			<a href="#" class="glyphicons circle_ok"><i class="colgreen"></i></a>
+			<span id="dealer_idno"></span>
 		</div>
 	</div>
-	<div class="row-fluid account-item">
+	<!-- <div class="row-fluid account-item">
 		<div class="protrait span1"><a href="#" class="glyphicons building"><i></i></a></div>
 		<div class="span3">
 			<h4>企业认证</h4>
 			<p class="sub-title">企业认证</p>
 		</div>
 		<div class="index-info span5">
-			<a href="#" class="glyphicons circle_ok"><i class="f-colgreen"></i></a>
+			<a href="#" class="glyphicons circle_ok"><i class="colgreen"></i></a>
 			<span>机构代码  xxxxxxxxxxxxxxx</span>
 		</div>
-	</div>
+	</div> -->
 	<div class="row-fluid account-item">
 		<div class="protrait span1"><a href="#" class="glyphicons lock"><i></i></a></div>
 		<div class="span3">
 			<h4>交易密码</h4>
-			<p class="sub-title">账户资金变动时需要输入的密码</p>
+			<p class="sub-title">账户资金变动密码</p>
 		</div>
-		<div class="index-info span5">
-			<a href="#" class="glyphicons circle_exclamation_mark"><i class="colyellow"></i></a>
-			<span>未设置</span>
+		<div class="index-info span5" id="item-payPwd">
+			<a href="#" class="glyphicons"><i class=""></i></a>
+			<span></span>
 		</div>
 		<div class="span2 account-item-btn"><a data-toggle="modal" href="#payPasswordModal" class="btn">设置</a></div>
 	</div>
@@ -50,28 +59,29 @@
 		<div class="protrait span1"><a href="#" class="glyphicons iphone_shake"><i></i></a></div>
 		<div class="span3">
 			<h4>绑定手机</h4>
-			<p class="sub-title">账户资金变动，实时通知</p>
+			<p class="sub-title">账户动态实时通知</p>
 		</div>
-		<div class="index-info span5">
-			<a href="#" class="glyphicons no-js circle_ok"><i class="f-colgreen"></i></a>
-			<span>已绑定  132****1293</span>
+		<div class="index-info span5" id="item-mobile">
+			<a href="#" class="glyphicons circle_ok"><i class="colgreen"></i></a>
+			<span id="dealer_mobile"></span>
 		</div>
-		<div class="span2 account-item-btn"><a data-toggle="modal" href="#" class="btn">修改</a></div>
+		<div class="span2 account-item-btn"><a data-toggle="modal" href="#editMobileModal" class="btn">修改</a></div>
 	</div>
 	<div class="row-fluid account-item">
 		<div class="protrait span1"><a href="#" class="glyphicons envelope"><i></i></a></div>
 		<div class="span3">
 			<h4>绑定邮箱</h4>
-			<p class="sub-title">找回密码，接收最新消息</p>
+			<p class="sub-title">接收最新消息</p>
 		</div>
-		<div class="index-info span5">
-			<a href="#" class="glyphicons circle_exclamation_mark"><i class="colyellow"></i></a>
-			未绑定
+		<div class="index-info span5" id="item-mail">
+			<a href="#" class="glyphicons"><i class=""></i></a>
+			<span></span>
 		</div>
-		<div class="span2 account-item-btn"><a data-toggle="modal" href="#" class="btn">设置</a></div>
+		<div class="span2 account-item-btn"><a data-toggle="modal" href="#editMailModal" class="btn">设置</a></div>
 	</div>
 </div>
 
+<!-- 交易密码弹窗 -->
 <div id="payPasswordModal" class="modal hide fade">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -82,47 +92,249 @@
 	      	<a class="close"></a>
 	      	<span></span>
 	    </div>
-	    <div class="form-horizontal">
+	    <div class="form-horizontal payPwd">
 	      	<div class="control-group">
 		        <label class="control-label">注册手机</label>
 		        <div class="controls">
-		          	<input type="number" class="m-wrap" id="payPasswordmobile" value="13723456789">
+		          	<input type="number" class="m-wrap originalMobile" id="payPwd-username" disabled="disabled">
 		        </div>
 		    </div>
+		    <div class="control-group">
+	        	<label class="control-label">手机验证码</label>
+	        	<div class="controls rel">                       
+					<input class="m-wrap" type="number" placeholder="请输入短信验证码" id="payPwd-smsVerify">
+					<a class="getcode" data-form='payPwd' onclick="sendSms(this)" href="javascript:void(0);">发送验证码</a>
+	        	</div>
+	      	</div>
 	      	<div class="control-group">
 	        	<label class="control-label">新密码</label>
 	        	<div class="controls">
-	          		<input type="password" class="m-wrap" id="newPassword">
+	          		<input type="password" class="m-wrap" id="newPayPwd" maxlength="6">
 	        	</div>
 	      	</div>
 	      	<div class="control-group">
 	        	<label class="control-label">确认密码</label>
 	        	<div class="controls">
-	          		<input type="password" class="m-wrap" id="confirmPassword">
-	        	</div>
-	      	</div>
-	      	<div class="control-group">
-	        	<label class="control-label">手机验证码</label>
-	        	<div class="controls">
-	          		<div class="input-icon left">
-						<i class="icon-envelope"></i>                        
-						<input class="m-wrap placeholder-no-fix" type="number" placeholder="请输入短信验证码" id="reset-smsVerify">
-						<a class="getcode" data-form='reset' onclick="sendSmsVerify(this)" href="javascript:void(0);">发送验证码</a>
-					</div>
+	          		<input type="password" class="m-wrap" id="confirmPayPwd" maxlength="6">
 	        	</div>
 	      	</div>
 	    </div>
 	</div>
 	<div class="modal-footer">
 	    <button type="button" data-dismiss="modal" class="btn">关闭</button>
-	    <button type="button" class="btn blue" id="payPasswordBtn">确认修改</button>
+	    <a class="btn blue" id="payPasswordBtn">确认修改</a>
+	</div>
+</div>
+
+<!-- 绑定手机号弹窗 -->
+<div id="editMobileModal" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	    <h3>修改注册手机号</h3>
+	</div>
+	<div class="modal-body">
+	    <div class="alert hide">
+	      	<a class="close"></a>
+	      	<span></span>
+	    </div>
+	    <div class="form-horizontal editMobile">
+	      	<div class="control-group">
+		        <label class="control-label">注册手机</label>
+		        <div class="controls">
+		          	<input type="number" class="m-wrap originalMobile" id="editMobile-username" disabled="disabled">
+		        </div>
+		    </div>
+		    <div class="control-group">
+	        	<label class="control-label">手机验证码</label>
+	        	<div class="controls rel">                       
+					<input class="m-wrap" type="number" placeholder="请输入短信验证码" id="editMobile-smsVerify">
+					<a class="getcode" data-form='editMobile' onclick="sendSms(this)" href="javascript:void(0);">发送验证码</a>
+	        	</div>
+	      	</div>
+	      	<div class="control-group">
+	        	<label class="control-label">新手机</label>
+	        	<div class="controls">
+	          		<input type="number" class="m-wrap" id="newMobile">
+	        	</div>
+	      	</div>
+	    </div>
+	</div>
+	<div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn">关闭</button>
+	    <button type="button" class="btn blue" id="editMobileBtn">确认修改</button>
+	</div>
+</div>
+
+<!-- 修改邮箱弹窗 -->
+<div id="editMailModal" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	    <h3>修改邮箱</h3>
+	</div>
+	<div class="modal-body">
+	    <div class="alert hide">
+	      	<a class="close"></a>
+	      	<span></span>
+	    </div>
+	    <div class="form-horizontal editMail">
+	      	<div class="control-group">
+		        <label class="control-label">新邮箱</label>
+		        <div class="controls">
+		          	<input type="text" id="newMail" class="m-wrap">
+		        </div>
+		    </div>
+	    </div>
+	</div>
+	<div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn">关闭</button>
+	    <button type="button" class="btn blue" id="editMailBtn">确认修改</button>
 	</div>
 </div>
 {/block}
 {block name="script"}
-<script src="/public/business/lib/metronic/js/ui-jqueryui.js" type="text/javascript"></script>
+<script src="/public/business/js/validate.js" type="text/javascript"></script>
 <script>
+	function hasData(id,spanText){
+		$('#'+id).find('.glyphicons').addClass('circle_ok')
+						.children('i').addClass('colgreen').end()
+						.next('span').text(spanText);
+	}
+
+	function hasNoData(id,spanText){
+		$('#'+id).find('.glyphicons').addClass('circle_exclamation_mark')
+						.children('i').addClass('colyellow').end()
+						.next('span').text(spanText);
+	}
+
 	jQuery(document).ready(function () {
+		var idno = encryptID(info['idno']);
+		var mobile = encryptMobile(info['mobile']);
+		$('#dealer_name').text(info['name']);
+		$('#dealer_idno').text(idno);
+		$('#dealer_mobile').text('已绑定 '+mobile);
+		$('.originalMobile').val(info['mobile']);
+
+		if(typeof(info['paypassword']) == 'string'){
+			hasData('item-payPwd','已设置');
+		}else{
+			hasNoData('item-payPwd','未设置');
+		}
+
+		if(typeof(info['email']) == 'string'){
+			var email = encryptMail(info['email']);
+			hasData('item-mail','已绑定 '+email);
+		}else{
+			hasNoData('item-mail','未绑定');
+		}
+
+		$('#payPasswordBtn').click(function(){
+			var smsVerify = $('#payPwd-smsVerify').val();
+			var newPayPwd = $('#newPayPwd').val();
+			var confirmPayPwd = $('#confirmPayPwd').val();
+			if(smsVerify == ""){
+        		ui_alert("alert-error","请输入短信验证码");
+        		return false;
+        	}else if(newPayPwd == ""){
+				ui_alert("alert-error","请输入交易密码");
+        		return false;
+        	}else if(!validatePayPwd(newPayPwd)){
+        		ui_alert("alert-error","请输入6位数字交易密码");
+        		return false;
+        	}else if(confirmPayPwd == ""){
+        		ui_alert("alert-error","请确认交易密码");
+        		return false;
+    		}else if(confirmPayPwd != newPayPwd){
+    			ui_alert("alert-error","两次输入密码不一致");
+        		return false;
+    		}
+	        ajax_jquery({
+	            url: apiUrl +'/business/account/index',
+	            data:{
+	            	"smsVerify": smsVerify,
+	            	"newPayPwd": newPayPwd
+	            },
+	            success:function(resp){
+	                if (resp.code == "1" ) {
+	                		ui_alert("alert-success","交易密码修改成功");
+	                        window.location.href = "/business/account/index";
+	                } else {
+	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+	                        ui_alert("alert-error",resp.msg);
+	                    } else {
+	                        ui_alert("alert-error","修改失败，请重试!");
+	                    }
+	                    return false;          
+	                }
+	            }
+	        });
+		});
+
+		$('#editMobileBtn').click(function(){
+			var smsVerify = $('#editMobile-smsVerify').val();
+			var newMobile = $('#newMobile').val();
+			if(smsVerify == ""){
+        		ui_alert("alert-error","请输入短信验证码");
+        		return false;
+        	}else if(newMobile == ""){
+				ui_alert("alert-error","请输入新手机号");
+        		return false;
+        	}else if(!validatePhoneNumber(newMobile)){
+        		ui_alert("alert-error","请输入正确手机号");
+        		return false;
+        	}
+	        ajax_jquery({
+	            url: apiUrl +'/business/account/index',
+	            data:{
+	            	"smsVerify": smsVerify,
+	            	"newMobile": newMobile
+	            },
+	            success:function(resp){
+	                if (resp.code == "1" ) {
+	                		ui_alert("alert-success","手机号修改成功");
+	                        window.location.href = "/business/account/index";
+	                } else {
+	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+	                        ui_alert("alert-error",resp.msg);
+	                    } else {
+	                        ui_alert("alert-error","修改失败，请重试!");
+	                    }
+	                    return false;          
+	                }
+	            }
+	        });
+		});
+
+		$('#editMailBtn').click(function(){
+			var email = $('#newMail').val();
+			if(email == ""){
+        		ui_alert("alert-error","请输入邮箱地址");
+        		return false;
+        	}else if(!checkEmail(email)){
+				ui_alert("alert-error","请输入正确邮箱地址");
+        		return false;
+        	}
+	        ajax_jquery({
+	            url: apiUrl +'/business/account/index',
+	            data:{
+	            	"email": email
+	            },
+	            success:function(resp){
+	                if (resp.code == "1" ) {
+	                		ui_alert("alert-success","邮箱修改成功");
+	                        window.location.href = "/business/account/index";
+	                } else {
+	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+	                        ui_alert("alert-error",resp.msg);
+	                    } else {
+	                        ui_alert("alert-error","修改失败，请重试!");
+	                    }
+	                    return false;          
+	                }
+	            }
+	        });
+		});
+
+
 	});
 </script>
 {/block}

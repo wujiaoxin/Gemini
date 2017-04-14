@@ -2,38 +2,38 @@
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css" />
 <link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css">
-<style>
-	html, body, .page-container, .page-content {
-    height: inherit;
-}
-	.card {
-		width: 300px;
-		height: 230px;
-		display: inline-block;
-		/* border: 1px dashed #ddd; */
-		background: url(/public/business/img/card_background.png) no-repeat;
-		background-size: cover;
-		position: relative;
+<link rel="stylesheet" href="/public/business/css/account.css">
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
 	}
-	.card_num{
-		position: absolute;
-		top: 62%;
-		left: 15%;
-		font-size: 16px;
-	}
-</style>
+
+</script>
 {/block}
 {block name="body"}
 <!--账户提现-->
-<div class="row-fluid value">
+<div class="alert hide">
+  	<a class="close"></a>
+  	<span></span>
+</div>
+<div class="row-fluid">
 	<div class="span12">
 		<div class="portlet">
 			<div class="portlet-title">
 				<div class="caption">提现银行卡</div>
 			</div>
 			<div class="portlet-body">
-				<div class="card"><span class="card_num">*** **** **** 6323</span></div>
-				<div class="card"><span class="card_num">*** **** **** 6323</span></div>
+				<div class="card horizontal">
+					<span class="bank_name" id="bank_name"></span>
+					<span class="card_num" id="bank_account_id"></span>
+				</div>
+				<div class="card horizontal">
+					<span class="bank_name" id="priv_bank_name"></span>
+					<span class="card_num" id="priv_bank_account_id"></span>
+				</div>
 			</div>
 		</div>
 		<div class="portlet">
@@ -57,69 +57,6 @@
 						</tr>
 						</thead>
 						<tbody>
-							<tr class="odd gradeX">
-								<td><input type="checkbox" class="checkboxes"></td>
-								<td>10001</td>
-								<td>￥<span class="order_amount">1000</span></td>
-								<td>类型</td>
-								<td>****-**-** **:**:**</td>
-								<td>****-**-** **:**:**</td>
-								<td>---</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td><input type="checkbox" class="checkboxes"></td>
-								<td>10002</td>
-								<td>￥<span class="order_amount">2000</span></td>
-								<td>类型</td>
-								<td>****-**-** **:**:**</td>
-								<td>****-**-** **:**:**</td>
-								<td>---</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td><input type="checkbox" class="checkboxes"></td>
-								<td>10003</td>
-								<td>￥<span class="order_amount">3000</span></td>
-								<td>类型</td>
-								<td>****-**-** **:**:**</td>
-								<td>****-**-** **:**:**</td>
-								<td>---</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td><input type="checkbox" class="checkboxes"></td>
-								<td>10004</td>
-								<td>￥<span class="order_amount">3000</span></td>
-								<td>类型</td>
-								<td>****-**-** **:**:**</td>
-								<td>****-**-** **:**:**</td>
-								<td>---</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td><input type="checkbox" class="checkboxes"></td>
-								<td>10005</td>
-								<td>￥<span class="order_amount">3000</span></td>
-								<td>类型</td>
-								<td>****-**-** **:**:**</td>
-								<td>****-**-** **:**:**</td>
-								<td>---</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td><input type="checkbox" class="checkboxes"></td>
-								<td>10006</td>
-								<td>￥<span class="order_amount">3000</span></td>
-								<td>类型</td>
-								<td>****-**-** **:**:**</td>
-								<td>****-**-** **:**:**</td>
-								<td>---</td>
-							</tr>
-							<tr class="odd gradeX">
-								<td><input type="checkbox" class="checkboxes"></td>
-								<td>10007</td>
-								<td>￥<span class="order_amount">3000</span></td>
-								<td>类型</td>
-								<td>****-**-** **:**:**</td>
-								<td>****-**-** **:**:**</td>
-								<td>---</td>
-							</tr>
 						</tbody>
 					</table>
 					<div class="control-group">
@@ -131,7 +68,7 @@
 				<div class="control-group">
 					<label class="control-label">交易密码</label>
 					<div class="controls">
-						<input type="password" placeholder="password" class="m-wrap small" />
+						<input type="password" placeholder="password" class="m-wrap small" id="payPwd">
 					</div>
 				</div>
 				<div class="control-group">
@@ -145,7 +82,7 @@
 				</div>
 				</div>
 				<div class="form-actions">
-					<button type="submit" class="btn blue"><i class="icon-ok"></i>确认提现</button>
+					<button id="submit" class="btn blue"><i class="icon-ok"></i>确认提现</button>
 				</div>
 			</div>
 		</div>
@@ -158,18 +95,93 @@
 <script src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
 <script src="/public/business/js/table-managed.js"></script>
 <script>
+	//初始化银行卡
+	$('#bank_name').text(info.bankcard.bank_name);
+	$('#bank_account_id').text(encryptBankcard(info.bankcard.bank_account_id)).attr('data',info.bankcard.bank_account_id);
+	$('#priv_bank_name').text(info.bankcard.priv_bank_name);
+	$('#priv_bank_account_id').text(encryptBankcard(info.bankcard.priv_bank_account_id)).attr('data',info.bankcard.priv_bank_account_id);
+
+
+	//初始化订单表
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html += '<tr class="odd gradeX">'
+					+'<td><input type="checkbox" class="checkboxes"></td>'
+					+'<td class="order_id">' + data[index].sn + '</td>'
+					+'<td>￥<span class="order_amount" data-amount="'+ data[index].loan_limit +'">' + formatAmount(data[index].loan_limit) + '</span></td>'
+					+'<td>' + data[index].type + '</td>'
+					+'<td>' + formatDatetime(data[index].create_time) + '</td>'
+					+'<td>' + formatDatetime(data[index].update_time) + '</td>'
+					+'<td>' + data[index].name + '</td>'
+				+'</tr>';
+			}
+		}
+		return html;
+	};
+	$('#table-withdraw tbody').html(tpl(info.orders));
+
 	jQuery(document).ready(function () {
 		TableManaged.init();
+
+		//点击选择银行卡
+		$('.card').click(function () {
+		  	$(this).addClass('card_selected')
+		  		.siblings().removeClass('card_selected');
+		});
+
+		//checkbox选择统计交易金额
 		jQuery('#table-withdraw tbody').on('change','.checkboxes',function () {	
 			var amount = '';
 			$('#amount').val(amount);
             jQuery('#table-withdraw tbody .checkboxes').each(function () {      	
             	if($(this).is(":checked")){
-	               var order_amount = $(this).parents('tr').find('.order_amount').text();
+	               var order_amount = $(this).parents('tr').find('.order_amount').attr('data-amount');
 	               amount = Number(amount)+parseFloat(order_amount);
                }
             });
         	$('#amount').val(amount);
+        });
+
+        $("#submit").click(function(){
+        	var bank_card = $('.card.card_selected > .card_num').attr('data');
+        	var payPwd =$('#payPwd').val();
+			var withdrawOrders = [];
+			jQuery('#table-withdraw tbody .checkboxes:checked').each(function (i,n) {     	
+	            withdrawOrders[i] = $(this).parents('tr').find('.order_id').text();
+            });
+            if(typeof bank_card == 'undefined' || bank_card == ''){
+            	ui_alert('alert-error','请选择提现银行卡');
+            	return false;
+            }else if(withdrawOrders == ''){
+            	ui_alert('alert-error','请选择提现订单');
+            	return false;
+            }else if(payPwd == ''){
+            	ui_alert('alert-error','请输入交易密码');
+            	return false;
+            }
+            ajax_jquery({
+                url: apiUrl +'/business/account/withdraw',
+                data:{
+                    'bank_card': bank_card,
+                    'withdrawOrders': withdrawOrders,
+                    'paypassword':payPwd
+                },
+                success:function(resp){
+                    if (resp.code == "1" ) {
+                       	ui_alert("alert-success","提现成功");
+                    	setTimeout('window.location.reload()',5000);
+                    } else {
+                        if (typeof(resp.msg) == 'string') {
+                            ui_alert("alert-error",resp.msg);
+                            return false;
+                        }                 
+                    }
+                }
+            });
+
+
         });
 	});
 </script>

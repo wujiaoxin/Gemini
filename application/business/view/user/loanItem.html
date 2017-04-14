@@ -3,43 +3,45 @@
 <link rel="stylesheet" href="/public/business/lib/metronic/css/select2_metro.css">
 <link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css">
 <link rel="stylesheet" href="/public/business/css/myItem.css">
+<script type="text/javascript">
+
+</script>
 {/block}
 
 {block name="body"}
+<div class="alert hide">
+	<a class="close"></a>
+	<span></span>
+</div>
 <div>
 	<div class="select-block">
 		<span class="selectParm-title">业务类型:</span>
-		<ul class="selectParm">
-			<li><a class="selectOrderType" href="javascript:;">全部</a></li>
-			<li><a class="selectOrderType" href="javascript:;">按揭垫资</a></li>
-			<li><a class="selectOrderType" href="javascript:;">车抵贷</a></li>
+		<ul class="selectParm selectOrderType">
+			<li data='0' class="active" >全部</li>
+			<li data='1'>按揭垫资</li>
+			<li data='2'>车抵贷</a></li>
 		</ul>
 	</div>
 	<div class="select-block">
 		<span class="selectParm-title">日期范围:</span>
-		<ul class="selectParm">
-			<li><a class="selectOrderDate" href="javascript:;">全部</a></li>
-			<li><a class="selectOrderDate" href="javascript:;">今天</a></li>
-			<li><a class="selectOrderDate" href="javascript:;">最近7天</a></li>
-			<li><a class="selectOrderDate" href="javascript:;">1个月</a></li>
-			<li><a class="selectOrderDate" href="javascript:;">2个月</a></li>
-			<li><a class="selectOrderDate" href="javascript:;">3个月</a></li>
+		<ul class="selectParm selectOrderDate">
+			<li data='0' class="active">全部</li>
+			<li data='1'>今天</li>
+			<li data='2'>最近7天</li>
+			<li data='3'>1个月</li>
+			<li data='4'>2个月</li>
+			<li data='5'>3个月</li>
 		</ul>
-		<span>具体日期>></span>
-		<div class="input-append date">
-			<input type="date" name="selectParm-orderDate" id="selectParm-orderDate">
-			<span class="add-on"><i class="icon-calendar"></i></span>
-		</div>
 	</div>
 	<div class="select-block">
 		<span class="selectParm-title">交易状态:</span>
-		<ul class="selectParm">
-			<li><a class="selectOrderStatus" href="javascript:;">全部</a></li>
-			<li><a class="selectOrderStatus" href="javascript:;">进件初审</a></li>
-			<li><a class="selectOrderStatus" href="javascript:;">资料审核</a></li>
-			<li><a class="selectOrderStatus" href="javascript:;">补充资料</a></li>
-			<li><a class="selectOrderStatus" href="javascript:;">审核失败</a></li>
-			<li><a class="selectOrderStatus" href="javascript:;">垫资放款</a></li>
+		<ul class="selectParm selectOrderStatus">
+			<li data='0' class="active">全部</li>
+			<li data='1'>进件初审</li>
+			<li data='2'>资料审核</li>
+			<li data='3'>补充资料</li>
+			<li data='4'>审核失败</li>
+			<li data='5'>垫资放款</li>
 		</ul>
 	</div>
 </div>
@@ -58,12 +60,11 @@
 					<th>借款金额</th>
 					<th>费用</th>
 					<th>借款期限</th>
-					<th>借款进度</th>
 					<th>状态</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="odd gradeX">
+				<!-- <tr class="odd gradeX">
 					<td>201703160392</td>
 					<td>车抵贷</td>
 					<td>2018-03-16</td>
@@ -73,40 +74,7 @@
 					<td>7天</span></td>
 					<td>进件初审</td>
 					<td>处理中</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>201703160392</td>
-					<td>车抵贷</td>
-					<td>2017-03-16</td>
-					<td>李三</td>
-					<td>￥3,000</td>
-					<td>￥220</td>	
-					<td>7天</span></td>
-					<td>进件初审</td>
-					<td>处理中</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>201703160392</td>
-					<td>车抵贷</td>
-					<td>2017-03-16</td>
-					<td>陈老</td>
-					<td>￥3,000</td>
-					<td>￥12200</td>	
-					<td>7天</span></td>
-					<td>进件初审</td>
-					<td>处理中</td>
-				</tr>
-				<tr class="odd gradeX">
-					<td>201703160392</td>
-					<td>车抵贷</td>
-					<td>2017-03-16</td>
-					<td>李隆基</td>
-					<td>￥3,000</td>
-					<td>￥202</td>	
-					<td>7天</span></td>
-					<td>进件初审</td>
-					<td>处理中</td>
-				</tr>
+				</tr> -->
 			</tbody>
 		</table>
 	</div>
@@ -118,9 +86,60 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
 <script type="text/javascript" src="/public/business/js/table-managed.js"></script>    
 <script>
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + data[index].sn + '</td>'
+		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
+		  		+'<td>'+ data[index].realname +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].fee) +'</td>'
+		  		+'<td>'+ data[index].endtime +'</td>'
+		  		+'<td>'+ data[index].status +'</td>'
+		  		 +'</tr>'
+			}
+		}
+		return html;
+	};
+
+	function ajaxLoanItem(type,dateRange,status){
+		$('#table-loanItem').dataTable().fnClearTable();//清空原数据
+		ajax_jquery({
+	        url: apiUrl +'/business/user/loanItem',
+	        data:{
+	            'type': type,
+	            'dateRange': dateRange,
+	            'status': status
+	        },
+	        success:function(resp){
+	            if (resp.code == "1" ) {
+	            	$('#table-loanItem tbody').html(tpl(resp.data));
+	            	$('#table-loanItem').dataTable({"bDestroy":true});
+	            } else {
+	                if (typeof(resp.msg) == 'string') {
+	                    ui_alert("alert-error",resp.msg);
+	                    return false;
+	                }                 
+	            }
+	        }
+		});
+	}
+
 	jQuery(document).ready(function() {       
 	   // App.init();
 	   TableManaged.init();
+	   ajaxLoanItem(0,0,0);
+	     
+	   $('.selectParm').on('click','li',function(){
+	   		$(this).addClass('active').siblings('li').removeClass('active');
+	   		var orderType = $('.selectOrderType li.active').attr('data');
+	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
+	   		var orderStatus = $('.selectOrderStatus li.active').attr('data'); 
+	   		ajaxLoanItem(orderType,orderDateRange,orderStatus);
+	   })
 	});
 </script>
 {/block}	

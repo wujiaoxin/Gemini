@@ -25,18 +25,21 @@ class Index extends Baseness {
 	public function index() {
 		$mobile = session('mobile');
 		$uid = session('uid');
-		$order = get_orders($uid,'0','order');//借款项目
+		$order_loan = get_orders($uid,'0','order');//借款项目
 		$order_repay = get_orders($uid,'0','order_repay');//还款项目
-		$dealer_money = get_orders($uid,'0','dealer_money');//交易记录
+		// var_dump($order_repay);die;
+		$order_pay = db('dealer_money')->where('uid',$uid)->order('id DESC')->limit(5)->select();;//交易记录
+		// var_dump($order_pay);die;
 		$money = get_money($uid,'money');//资金
-		$lines = db('dealer')->field('money,lines,lines_ky')->where('mobile',$mobile)->find();
+		$lines = db('dealer')->field('lines,lines_ky')->where('mobile',$mobile)->find();
 		$info = array(
-			'order'=>$order,
+			'order_loan'=>$order_loan,
 			'money'=>$money,
 			'lines'=>$lines,
 			'order_repay'=>$order_repay,
-			'dealer_money'=>$dealer_money,
+			'order_pay'=>$order_pay,
 			);
+		// var_dump($info);die;
 		$data = array(
 				'info'=>$info,
 				'infoStr'=>json_encode($info)
