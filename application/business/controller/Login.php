@@ -59,4 +59,9 @@ class Login extends Base {
 		session(null);
 		return $resp;
 	}
+	public function waiting(){
+		$mobile = session('mobile');
+		db('member')->where('mobile',$mobile)->setField('status','3');
+		return $this->fetch();
+	}
 }

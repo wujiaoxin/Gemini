@@ -15,14 +15,11 @@ class Baseness extends base{
 		$mobile = session("mobile");
 		$uid = session("uid");
 		if($mobile == null || $uid == null){
-//			return $this->error("请重新登录",url("/business/login/login"));
 			return $this->redirect("/business/login/login");
 		}
-		/*$is_success = db('Dealer')->field('idno')->where('mobile',$mobile)->find();
-		if ($_SERVER['REDIRECT_URL'] != '/business/user/guide.html'){
-			if(!$is_success['idno']){
-				$this->redirect('user/guide');
-			}
-		}*/
+		$result = db('member')->field('status')->where('mobile',$mobile)->find();
+		if ($result['status'] == '3') {
+			return $this->redirect('/business/login/waiting');
+		}
 	}
 }
