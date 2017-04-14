@@ -83,7 +83,6 @@
 											<th>充值金额（元）</th>
 											<th>状态</th>
 											<th>充值备注</th>
-											<th>充值审核</th>
 										</tr>
 									</thead>
 								</table>
@@ -126,7 +125,6 @@
 										<th>提现金额（元）</th>
 										<th>手续费</th>
 										<th>状态</th>
-										<th>审核备注</th>
 									</tr>
 									</thead>
 								</table>
@@ -146,14 +144,13 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + data[index].date + '</td>'
-		  		+'<td>'+ data[index].serial +'</td>'
-		  		+'<td>'+ data[index].rechargeMode+'</td>'
-		  		+'<td>'+ data[index].payMode +'</td>'
-		  		+'<td>￥'+ formatAmount(data[index].amount) +'</td>'
-		  		+'<td>'+ data[index].status +'</td>'
-		  		+'<td>￥'+ data[index].descr +'</td>'
-		  		+'<td>'+ data[index].examine +'</td>'	
+		  		+'<td>' + formatDate(data[index].create_time) + '</td>'
+		  		+'<td>'+ data[index].pay_id +'</td>'
+		  		+'<td>线下充值</td>' //充值方式data[index].payment_type
+		  		+'<td>银行卡</td>'//支付方式data[index].pay_type
+		  		+'<td>￥'+ formatAmount(data[index].money) +'</td>'
+		  		+'<td>'+ data[index].is_pay +'</td>'
+		  		+'<td>￥'+ data[index].descr +'</td>'	
 		  		 +'</tr>'
 			}
 		}
@@ -164,14 +161,13 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + data[index].date + '</td>'
-		  		+'<td>' + data[index].order_id + '</td>'
-		  		+'<td>'+ data[index].serial +'</td>'
+		  		+'<td>' + data[index].create_time + '</td>'
+		  		+'<td>' + data[index].carry_billon + '</td>'
+		  		+'<td>'+ data[index].serial_num +'</td>'
 		  		+'<td>'+ data[index].bank_account+'</td>'
-		  		+'<td>￥'+ formatAmount(data[index].amount) +'</td>'
-		  		+'<td>'+ data[index].fee +'</td>'
-		  		+'<td>'+ data[index].status +'</td>'
-		  		+'<td>￥'+ data[index].descr +'</td>'	
+		  		+'<td>￥'+ formatAmount(data[index].money) +'</td>'
+		  		+'<td>'+ formatAmount(data[index].fee) +'</td>'
+		  		+'<td>'+ data[index].is_pay +'</td>'	
 		  		 +'</tr>'
 			}
 		}
@@ -187,10 +183,10 @@
 	        },
 	        success:function(resp){
 	            if (resp.code == "1" ) {
-	            	if(resp['carrys'] != '' ){
-	            		$('#table-recharge tbody').html(tpl(resp.data));
+	            	if(resp['type'] == '1' ){
+	            		$('#table-recharge tbody').html(tplRecharge(resp.data));
 	            	}else{
-	            		$('#table-withdraw tbody').html(tpl(resp.data));
+	            		$('#table-withdraw tbody').html(tplWithdraw(resp.data));
 	            	}
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
@@ -206,9 +202,10 @@
 		$('#availableAssets').text(formatAmount(info['money_jk']));
 		$('#pendingAssets').text(formatAmount(info['repay_money']));
 		ajaxBalance('1','0','0');
+		ajaxBalance('2','0','0');
 		$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
-	   		var type = $('tab-pane active').attr('data');
+	   		var type = $('.tab-pane.active').attr('data');
 	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
 	   		var orderStatus = $('.selectOrderStatus li.active').attr('data'); 
 	   		ajaxBalance(type,orderDateRange,orderStatus);
