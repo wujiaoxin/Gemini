@@ -57,7 +57,7 @@
           <li class="dropdown" id="header_inbox_bar">
             <a href="/business/account/message.html" class="dropdown-toggle" >
             <i class="icon-envelope"></i>
-            <span class="badge">1</span>
+            <span class="badge"></span>
             </a>
             <ul class="dropdown-menu extended inbox">
             </ul>
@@ -65,8 +65,8 @@
           <!-- BEGIN USER LOGIN DROPDOWN -->
           <li class="dropdown user">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <img alt="" src="/public/business/lib/metronic/image/avatar1_small.jpg" />
-            <span class="username">杭州VP贷</span>
+            <img alt="" src="/public/business/lib/metronic/image/avatar_small.png" />
+            <span class="username" id="nav-username">杭州VP贷</span>
             <i class="icon-angle-down"></i>
             </a>
             <ul class="dropdown-menu">
@@ -227,6 +227,9 @@
   <!-- BEGIN PAGE LEVEL SCRIPTS -->
   <script src="/public/business/js/app.js"></script>
   <script>
+  if(typeof(localStorage.getItem('username')) == 'string'){
+          $('#nav-username').text(localStorage.getItem('username'));
+        }
     jQuery(document).ready(function() {    
        App.init();
     });

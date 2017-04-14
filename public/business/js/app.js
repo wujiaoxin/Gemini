@@ -1033,6 +1033,9 @@ $("#editPasswordBtn").click(function(event) {
 
 // 格式化数字20,000,00.00    
 function formatAmount(n) {
+    if(!n){
+        return '0.00';
+    }
     n = parseFloat(n).toFixed(2);
     n = n.toString().replace(/\B(?=(?:\d{3})+\b)/g, ',');
     return n;
