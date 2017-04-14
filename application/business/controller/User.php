@@ -242,15 +242,14 @@ use app\business\controller\Baseness;
 			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
+			
+			if ($data['status']) {
+				$map['status'] = $data['status'];
+			}
 			if ($data['dateRange']) {
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
-			}
-			if ($data['status']) {
-				$map['status'] = $data['status'];
-			}
-			if ($result){
 				$order_pay = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('status ASC')->select();
 			}else{
 				$order_pay = db('order')->where($map)->order('status ASC')->select();
@@ -270,10 +269,10 @@ use app\business\controller\Baseness;
 			}
 			return json($resp);
 		}else{
-			$money = db('dealer')->field('money')->where('money',$mobile)->find();
+			$money = db('dealer')->field('money')->where('mobile',$mobile)->find();
 			$data =array(
 					'info'=>$money,
-					'infoStr'=>json_decode($money)
+					'infoStr'=>json_encode($money)
 				);
 			$this->assign($data);
 		}

@@ -78,11 +78,60 @@ class Account extends Baseness {
 	    $uid = session('uid');
 	    if (IS_POST) {
 	    	$data = input('post.');
-	    	/*// var_dump($data);die;
+	    	// var_dump($data);die;
+	    	$map['uid'] = $uid;
+	    	if ($data['status']) {
+				$map['status'] = $data['status'];
+			}
 	    	if ($data['type'] == '1') {
-	    		$carrys = db('dealer_money')->where('uid',$uid)->where('type','3')->select();
+				$map['type'] = '3';
+	    		if ($data['dateRange']) {
+					$result = to_datetime($data['dateRange']);
+					$endtime =$result['endtime'];
+					$begintime = $result['begintime'];
+					$carrys = db('dealer_money')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->select();
+				}else{
+					$carrys = db('dealer_money')->where($map)->select();
+				}
+	    		if ($carrys) {
+					$resp['code'] = '1';
+					$resp['msg'] = '数据正常';
+					$resp['type'] = '1';
+					$resp['data']= $carrys;
+				}else{
+					$resp['code'] = '0';
+					$resp['msg'] = '未查到数据';
+				}
 	    	}
 	    	
+	    	if ($data['type'] == '2') {
+				$map['type'] = '4';
+	    		if ($data['dateRange']) {
+					$result = to_datetime($data['dateRange']);
+					$endtime =$result['endtime'];
+					$begintime = $result['begintime'];
+					$payment = db('dealer_money')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->select();
+				}else{
+					$payment = db('dealer_money')->where($map)->select();
+				}
+				if ($payment) {
+					$resp['code'] = '1';
+					$resp['msg'] = '数据正常';
+					$resp['type'] = '2';
+					$resp['data']= $payment;
+				}else{
+					$resp['code'] = '0';
+					$resp['msg'] = '未查到数据';
+				}
+	    	}
+			return json($resp);
+
+
+
+
+
+
+
 	    	if ($data['dateRange']) {
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
@@ -96,7 +145,7 @@ class Account extends Baseness {
 			$info = array(
 			  'carrys'=>$carrys,
 			  'payment'=>$payment
-			);*/
+			);
 	    }else{
 	      //资金记录
 	      $info = get_money($uid,'money');
