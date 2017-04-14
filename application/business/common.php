@@ -29,7 +29,7 @@
                 'pay_id'=>$pay_id,
                 'is_pay'=>'-1',
                 'money'=>$data['money'],
-                'pay_type'=>$data['pay_type'],
+                'payment_type'=>$data['pay_type'],
                 'descr'=>$data['descr'],
                 'create_time'=>time()
             );
@@ -37,11 +37,11 @@
             if ($result){
                 $resp["code"] = 1;
                 $resp["msg"] = '处理中';
-                return json_encode($resp);
+                return $resp;
             }else{
                 $resp["code"] = 0;
                 $resp["msg"] = '充值失败';
-                return json_encode($resp);
+                return $resp;
             }
         }
         if($type == 'member_money'){
@@ -278,7 +278,7 @@
        }
     }
     if ($type == 'order_repay') {
-        $data = db('order_repay')->alias('o')->field('o.*,d.type')->join('__ORDER__ d','o.order_id = d.sn')->select();
+        $data = db('order_repay')->alias('o')->field('o.*,d.type')->join('__ORDER__ d','o.order_id = d.sn')->limit(5)->select();
        // $data = db('order_repay')->where('mid',$mid)->limit(4)->select();
     }
     if ($type == 'dealer_money') {

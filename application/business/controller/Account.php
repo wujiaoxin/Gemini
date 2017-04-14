@@ -89,7 +89,7 @@ class Account extends Baseness {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$carrys = db('dealer_money')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->select();
+					$carrys = db('carry')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
 				}else{
 					$carrys = db('dealer_money')->where($map)->select();
 				}
@@ -110,9 +110,9 @@ class Account extends Baseness {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$payment = db('dealer_money')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->select();
+					$payment = db('payment')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
 				}else{
-					$payment = db('dealer_money')->where($map)->select();
+					$payment = db('payment')->where($map)->select();
 				}
 				if ($payment) {
 					$resp['code'] = '1';
@@ -165,9 +165,12 @@ class Account extends Baseness {
 		if(IS_POST){
 			$data = input('post.');
 			$uid = session('uid');
+			// var_dump($data);die;
 			if (is_numeric($data['money'])){
 			    modify_account($data,$uid,'3','0','member_money','INSERT');
-			    modify_account($data,$uid,'rechange','INSERT');
+			    $resp = modify_account($data,$uid,'rechange','INSERT');
+			    // var_dump($resp);die;
+			    return json($resp);
 			}
 		}else{
 		  return $this->fetch();

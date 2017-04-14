@@ -29,7 +29,7 @@ CREATE TABLE `gemini_payment` (
   `pay_id` int(11) NOT NULL COMMENT '充值订单号',
   `is_pay` int(11) NOT NULL DEFAULT '0' COMMENT '是否充值0未充值1已充值-1审核中',
   `money` int(11) NOT NULL COMMENT '充值金额',
-  `pay_type` tinyint(1) NOT NULL COMMENT '充值方式',
+  `pay_type` tinyint(1) NOT NULL COMMENT '支付方式',
   `create_time` int(11) NOT NULL COMMENT '充值创建时间',
   `bank_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
   `descr` varchar(255) NOT NULL COMMENT '充值备注',
@@ -73,13 +73,12 @@ CREATE TABLE `gemini_dealer_money` (
 alter table gemini_dealer MODIFY radiotime VARCHAR(20);
 alter table gemini_payment MODIFY pay_id VARCHAR(255)  NOT NULL COMMENT '充值订单号';
 alter table gemini_carry MODIFY carry_billon VARCHAR(255)  NOT NULL COMMENT '提现订单号';
-alter table gemini_member  paypassword varchar(255)  null  COMMENT '商家支付密码';/*真实姓名*/
-
+alter table gemini_member add paypassword varchar(255)  null  COMMENT '商家支付密码';/*真实姓名*/
 
 /*
 20170411
 */
-alter table gemini_dealer  rep_idcard_back_pic int(11)  NOT NULL  COMMENT '法人身份证反面照片';
+alter table gemini_dealer add rep_idcard_back_pic int(11)  NOT NULL  COMMENT '法人身份证反面照片';
 
 /*
 20170412
@@ -94,3 +93,13 @@ CREATE TABLE `gemini_dealer_credit` (
   `desrc` varchar(255) NOT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='信用额度记录表';
+
+
+
+-- 20170414
+-- 加入充值支付方式
+alter table gemini_payment add payment_type tinyint(3)  NOT NULL  COMMENT '充值方式1线下支付';
+-- 加入提现费用
+alter table gemini_carry add  fee int(11) default '0'  COMMENT '提现费用';
+-- 加入提现银行流水
+alter table gemini_carry add  serial_num varchar(255)   COMMENT '提现银行流水';
