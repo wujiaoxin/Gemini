@@ -1,5 +1,5 @@
 <?php
-namespace app\bairong\controller;
+namespace app\riskmgr\controller;
 //header("Content-Type: text/html; charset=UTF-8");
 
 define("STATUS", "1");    //1正式 2测试
