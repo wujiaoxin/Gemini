@@ -106,6 +106,7 @@
 	};
 
 	function ajaxLoanItem(type,dateRange,status){
+		$('#table-loanItem').dataTable().fnClearTable();//清空原数据
 		ajax_jquery({
 	        url: apiUrl +'/business/user/loanItem',
 	        data:{
@@ -115,7 +116,6 @@
 	        },
 	        success:function(resp){
 	            if (resp.code == "1" ) {
-	            	$('#table-loanItem').dataTable().fnClearTable();//清空原数据
 	            	$('#table-loanItem tbody').html(tpl(resp.data));
 	            	$('#table-loanItem').dataTable({"bDestroy":true});
 	            } else {
