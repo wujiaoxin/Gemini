@@ -93,11 +93,12 @@ class Account extends Baseness {
 	    $uid = session('uid');
 	    if (IS_POST) {
 	    	$data = input('post.');
+	    	// var_dump($data);die;
 	    	$map['user_id'] = $uid;
 	    	if ($data['status']) {
 				$map['is_pay'] = $data['status'];
 			}
-	    	if ($data['type'] == '1') {
+	    	if ($data['type'] == '2') {
 	    		if ($data['dateRange']) {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
@@ -109,7 +110,7 @@ class Account extends Baseness {
 	    		if ($carrys) {
 					$resp['code'] = '1';
 					$resp['msg'] = '数据正常';
-					$resp['type'] = '1';
+					$resp['type'] = '2';
 					$resp['data']= $carrys;
 				}else{
 					$resp['code'] = '0';
@@ -117,7 +118,7 @@ class Account extends Baseness {
 				}
 	    	}
 	    	
-	    	if ($data['type'] == '2') {
+	    	if ($data['type'] == '1') {
 	    		if ($data['dateRange']) {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
@@ -129,7 +130,7 @@ class Account extends Baseness {
 				if ($payment) {
 					$resp['code'] = '1';
 					$resp['msg'] = '数据正常';
-					$resp['type'] = '2';
+					$resp['type'] = '1';
 					$resp['data']= $payment;
 				}else{
 					$resp['code'] = '0';
