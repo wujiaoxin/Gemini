@@ -83,11 +83,18 @@
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
     <script type="text/javascript">
+	
 	function checkData(){
+		var idcard_num = $('#idcard').val().toUpperCase();
+	
 		if( $("#idcard").val() == "" ||  $("#name").val() == "" ||  $("#password").val() == ""){
 			ui_alert("请填写数据");
 			return false;
-		}else{
+		}else{		
+			if (!validateIdCard(idcard_num)) {
+				ui_alert('身份证号输入有误');
+				return false;
+            }
 			$("#loading").show();
 			return true;
 		}
