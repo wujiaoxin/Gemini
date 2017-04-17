@@ -225,8 +225,7 @@
 		}
 
 		if(typeof(info['email']) == 'string'){
-			var email = encryptMail(info['email']);
-			hasData('item-mail','已绑定 '+email);
+			hasData('item-mail',encryptMail(info['email']));
 		}else{
 			hasNoData('item-mail','未绑定');
 		}

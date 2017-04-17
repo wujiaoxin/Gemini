@@ -67,8 +67,8 @@ var Charts = function () {
                     $('<div id="tooltip">' + contents + '</div>').css({
                             position: 'absolute',
                             display: 'none',
-                            top: y + 5,
-                            left: x + 15,
+                            top: y + 15,
+                            left: x - 100,
                             border: '1px solid #333',
                             padding: '4px',
                             color: '#fff',
