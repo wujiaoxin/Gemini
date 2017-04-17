@@ -64,6 +64,8 @@ class User extends Api {
 		if ($uid > 0) {
 			//$token = rand(100000,999999);
 			$token = generateToken($uid, $sid);
+			session('uid',$uid);
+			session('mobile',$mobile);
 			$resp["code"] = 1;
 			$resp["msg"] = '登录成功';			
 			$data["token"] = $token;
@@ -87,7 +89,7 @@ class User extends Api {
 	}
 	
 	public function logout(){
-		
+		session(null);
 		$resp["code"] = 1;
 		$resp["msg"] = "登出成功！";
 		return $resp;
