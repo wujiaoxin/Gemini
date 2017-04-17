@@ -93,7 +93,7 @@ use app\business\controller\Baseness;
 				if ($uid > 0) {
 					$userinfo['realname'] = $data['name'];
 					$userinfo['mobile'] = $data['mobile'];
-					$userinfo['status'] = 0;
+					$userinfo['status'] = 1;
 					$userinfo['invite_code'] = $invit['invite_code'];
 					$userinfo['access_group_id'] = $data['job'];
 					$userinfo['desc'] = $data['remark'];
@@ -136,7 +136,15 @@ use app\business\controller\Baseness;
 		}
 
 		//一个月内每天的订单数量
-		$time =db('order')->field("FROM_UNIXTIME(create_time,'%Y-%m-%d') as time,count(id) as num,sum(loan_limit) as total_money")->group('time')->limit('30')->order('time DESC')->select();
+		$times = time()-24*3600*30;
+		$time =db('order')->field("FROM_UNIXTIME(create_time,'%Y-%m-%d') as time,create_time,count(id) as num,sum(loan_limit) as total_money")->group('time')->wheretime('create_time','>',$times)->order('time')->select();
+		$temp['time'] ='0';
+		$temp['num'] ='0';
+		$temp['total_money'] ='0';
+		for ($i=count($time); $i < 30; $i++) {
+			array_unshift($time,$temp);
+		}
+		// var_dump($time);die;
 		$info = array(
 				'money'=>$result,
 				'num'=>$num,
@@ -193,6 +201,7 @@ use app\business\controller\Baseness;
 		$mobile = session('mobile');
 		if (IS_POST) {
 			$data = input('post.');
+			// var_dump($data);die;
 			$map['o.mid'] =$uid;
 			if ($data['type']) {
 				$map['d.type'] = $data['type'];
