@@ -1,11 +1,6 @@
-function ui_alert(classname,message){
-        jQuery('.alert').removeClass('alert-error alert-success').children('span').text(message).end()
-                .addClass(classname).show();
-        setTimeout("$('.alert').slideUp('slow')",3000);
-    };
-jQuery('.alert > .close').click(function(){
-    jQuery('.alert').removeClass('alert-error alert-success').hide();
-});
+function ui_alert(msg,type,position){
+   $.messager.show(msg, {placement: position,type:type});
+};
 
 function ajax_jquery(options) {
     if (options == undefined) {
@@ -123,4 +118,11 @@ function sendSms(id) {
             }
         }
     });
+}
+
+//获取
+function getUrlParam(name) {  
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); 
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
 }

@@ -527,7 +527,7 @@
 		duplicate: undefined, //去重， 根据文件名字、文件大小和最后修改时间来生成hash Key.
 		disableWidgets: undefined, //默认所有 Uploader.register 了的 widget 都会被加载，如果禁用某一部分，请通过此 option 指定黑名单。 
 		swf: 'static/js/webuploader/Uploader.swf',
-		server: '/mobile/order/upload', // 文件接收服务端。
+		server: '/api/order/upload', // 文件接收服务端。
 		/**
 		 * ΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔ
 		 * 以上参数是百度上传组件默认参数

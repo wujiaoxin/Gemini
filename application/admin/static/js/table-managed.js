@@ -77,6 +77,25 @@ var TableManaged = function () {
             jQuery('#table-assetChannel_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
             // jQuery('#table-assetChannel_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
 
+
+            // 我的员工页面-我的员工table  id="table-myStaff"
+            $('#table-myStaff').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                configData
+            });
+
+            jQuery('#table-myStaff_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-myStaff_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-myStaff_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
         }
     };
 }();
