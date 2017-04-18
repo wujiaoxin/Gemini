@@ -102,7 +102,8 @@ class Order extends Api {
 		$orderModel = model('Order');
 		$result = input('post.');
 		// var_dump($result);die;
-		$data["url"] = "https://pan.baidu.com/share/qrcode?w=512&h=512&url=".(url('mobile/user/register'))."?sn=".$result['id'];
+		$data["url"] = "https://www.vpdai.com/dl?mobile=".$result['mobile']."&order_id=".$result['id']."&from=order$price=".$result['price'];
+		// $data["url"] = "https://pan.baidu.com/share/qrcode?w=512&h=512&url=".(url('mobile/user/register'))."?sn=".$result['id'];
 		$resp['code'] = 1;
 		$resp['msg'] = '获取成功';
 		$resp['data'] = $data;
@@ -141,7 +142,7 @@ class Order extends Api {
 		$resp['msg'] = '未知错误';
 		$orderModel = model('Order');
 		
-		$data["todo"] = "I'm comming";
+		// $data["todo"] = "I'm comming";
 		
 		$data['total'] = $orderModel->get_all_order_total($uid, $type);
 		

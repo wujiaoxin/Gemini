@@ -177,23 +177,34 @@ class Account extends Baseness {
 		$uid = session('uid');
 		if(IS_POST){
 			$data = input('post.');
+			// var_dump($data);die;
 			$paypassword = $data['paypassword'];
 			$pay = db('member')->field('paypassword')->where('mobile',$mobile)->find();
 			if(md5($paypassword.$mobile) == $pay['paypassword']){
-			  foreach ($data['withdrawOrders'] as $k => $v) {
-			   $resp=  cl_order($v,$data['bank_card']);
-			   return $resp;
-			  }
+				foreach ($data['withdrawOrders'] as $k => $v) {
+					$resp1=  cl_order($v,$data['bank_card']);
+			    }
+			    if ($resp1) {
+			    	$resp['code'] = '1';
+      				$resp['msg']='提现处理中';
+			    }else{
+			    	$resp['code'] = '1';
+      				$resp['msg']='提现失败';
+			    }
 			}else{
-			   return ['code'=>'0','msg'=>'交易密码错误'];
+				$resp['code'] = '0';
+				$resp['msg'] = '交易密码错误';
 			}
+			return json($resp);
 		}else{
 			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 			$map = array(
 			    'mid'=>$uid,
-			    'status'=>'10'
+			    'finance'=>'2'
 			  );
+			// var_dump($map);die;
 			$orders =db('order')->where($map)->select();
+			// var_dump($orders);die;
 			foreach ($orders as $k => $v) {
 			    $orders[$k]['realname'] = serch_real($v['uid']);
 			}
