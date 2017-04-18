@@ -55,7 +55,7 @@ class Api extends \think\Controller {
 
 	protected function checkLogin() {
 		//TODO check jwt & 统一验证方式
-		$uid = session('uid');
+		$uid = session('user_auth.uid');
 		if (isset($uid)) {
 			return true;
 		}else{

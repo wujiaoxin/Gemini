@@ -20,7 +20,7 @@ alter table gemini_dealer  add rep_idcard_back_pic int(11)  DEFAULT NULL  COMMEN
 alter table gemini_dealer  add lic_validity varchar(20) DEFAULT '' COMMENT '营业期限';
 alter table gemini_dealer  add lock_money numeric(20,2) DEFAULT 0  COMMENT '冻结资金';
 
-alter table gemini_order  add mid int(11) NOT NULL  COMMENT '车商id';
+alter table gemini_order  add mid int(11) DEFAULT 0  COMMENT '车商id';
 alter table gemini_order  add endtime int(11) NOT NULL  COMMENT '借款期限';
 alter table gemini_order  add fee int(11) NOT NULL  COMMENT '借款费用';
 alter table gemini_order  add credit_status int(11) DEFAULT 0  COMMENT '授信状态:1.待授信;2.授信中;3.已授信';
