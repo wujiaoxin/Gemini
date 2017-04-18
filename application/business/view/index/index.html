@@ -225,6 +225,8 @@
 	$('#order_repay tbody').html(tplRepay(info.order_repay));
 	$('#order_pay tbody').html(tplPay(info.order_pay));
 
+	localStorage.setItem('username',info.lines.name);
+
 
 
 	jQuery(document).ready(function() {    

@@ -1,4 +1,4 @@
-var apiUrl = "http://test.vpdai.com";
+var apiUrl = "http://lo.vpdai.com";
 var myApp = new Framework7({
     modalButtonCancel: "取消",
     modalButtonOk: "确认"
@@ -142,7 +142,7 @@ function ajax_jquery(options) {
         async: true,
     };
     var options_merge = new Object();
-    $.extend(options_merge, options_default, options);
+    $.extend(true,options_merge, options_default, options);
 
     $.ajax(options_merge);
 }

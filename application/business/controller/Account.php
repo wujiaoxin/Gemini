@@ -18,19 +18,25 @@ class Account extends Baseness {
 	      	// var_dump($data);die;
 	      	$mobile = session("mobile");
 			if (isset($data['smsVerify'])) {
-			$storeSmsCode = session('smsCode');
-			  if($data['smsVerify'] != $storeSmsCode){
-			    return ['code'=>1005,'msg'=>'短信验证码错误'];
-			  }
+				$storeSmsCode = session('smsCode');
+				if($data['smsVerify'] != $storeSmsCode){
+					$resp['code'] = '1005';
+					$resp['msg'] = '短信验证码错误';
+					return json($resp);
+				}
 			}
 			// 修改交易密码
 			if (isset($data['newPayPwd'])) {
 			    $user = model('User');
 			    $result = $user->setpaypw($mobile,$data['newPayPwd']);
 			    if($result){
-			      return ['code'=>1,'msg'=>'支付密码设置成功'];
+					$resp['code'] = '1';
+					$resp['msg'] = '支付密码设置成功';
+					return json($resp);
 			    }else{
-			      return ['code'=>1003,'msg'=>'两次密码不一致'];
+			    	$resp['code'] = '1';
+					$resp['msg'] = '两次密码不一致';
+					return json($resp);
 			    }
 			}
 			//修改手机号
@@ -39,23 +45,32 @@ class Account extends Baseness {
 				$result1 = db('dealer')->where('mobile',$mobile)->setField('mobile', $data['newMobile']);
 				if ($result && $result1) {
 					session('mobile',$data['newMobile']);
-					return ['code'=>1,'msg'=>'手机号修改成功'];
+					$resp['code'] = '1';
+					$resp['msg'] = '手机号修改成功';
+					return json($resp);
 				}else{
-					return ['code'=>1000,'msg'=>'手机号修改失败'];
+					$resp['code'] = '1000';
+					$resp['msg'] = '手机号修改失败';
+					return json($resp);
 				}
 			}
 			//修改邮箱
-			if (isset($data['mail'])) {
-				$result = db('member')->where('mobile',$mobile)->setField('email', $data['mail']);
+			if (isset($data['email'])) {
+				$result = db('member')->where('mobile',$mobile)->setField('email', $data['email']);
+				// var_dump($result);die;
 				if ($result) {
-					return ['code'=>1,'msg'=>'邮箱添加成功'];
+					$resp['code'] = '1';
+					$resp['msg'] = '邮箱添加成功';
+					return json($resp);
 				}else{
-					return ['code'=>1001,'msg'=>'邮箱修改失败'];
+					$resp['code'] = '1001';
+					$resp['msg'] = '邮箱添加失败';
+					return json($resp);
 				}
   			}
 		}else{
 			$mobile = session("mobile");
-      		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword')->where('m.mobile',$mobile)->find();
+      		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code')->where('m.mobile',$mobile)->find();
 	      	if ($account){
 	            $data['infoStr'] = json_encode($account);
 	            $data = array(
@@ -78,11 +93,12 @@ class Account extends Baseness {
 	    $uid = session('uid');
 	    if (IS_POST) {
 	    	$data = input('post.');
+	    	// var_dump($data);die;
 	    	$map['user_id'] = $uid;
 	    	if ($data['status']) {
 				$map['is_pay'] = $data['status'];
 			}
-	    	if ($data['type'] == '1') {
+	    	if ($data['type'] == '2') {
 	    		if ($data['dateRange']) {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
@@ -94,7 +110,7 @@ class Account extends Baseness {
 	    		if ($carrys) {
 					$resp['code'] = '1';
 					$resp['msg'] = '数据正常';
-					$resp['type'] = '1';
+					$resp['type'] = '2';
 					$resp['data']= $carrys;
 				}else{
 					$resp['code'] = '0';
@@ -102,7 +118,7 @@ class Account extends Baseness {
 				}
 	    	}
 	    	
-	    	if ($data['type'] == '2') {
+	    	if ($data['type'] == '1') {
 	    		if ($data['dateRange']) {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
@@ -114,7 +130,7 @@ class Account extends Baseness {
 				if ($payment) {
 					$resp['code'] = '1';
 					$resp['msg'] = '数据正常';
-					$resp['type'] = '2';
+					$resp['type'] = '1';
 					$resp['data']= $payment;
 				}else{
 					$resp['code'] = '0';
@@ -269,7 +285,7 @@ class Account extends Baseness {
 	}
   	public function info() {
 		$mobile = session('mobile');
-		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic,dealer_lic_pic')->where('mobile',$mobile)->find();
+		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic,dealer_lic_pic,invite_code')->where('mobile',$mobile)->find();
 		if($deals){
 			$data['code'] = '1';
 			$data['info']=$deals;

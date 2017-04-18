@@ -1,0 +1,78 @@
+{extend name="public/base"/}
+{block name="style"}
+
+<!-- <link type="text/css" href="__PUBLIC__/css/libs/bootstrap-editable.css"> -->
+<link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
+<link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
+{/block}
+{block name="body"}
+<div class="main-box clearfix">
+	<header class="main-box-header clearfix">
+		<div class="pull-left">
+			<h2>{$meta_title}</h2>
+		</div>
+	</header>
+	<div class="main-box-body clearfix">
+		<div class="clearfix">
+			<table class="table table-hover" id="table-customer">
+				<thead>
+					<tr>
+						<th>客户ID</th>
+						<th>真实姓名</th>
+						<th>身份证号</th>
+						<th>创建时间</th>
+						<th>贷款次数</th>
+						<th>客户状态</th>
+						<th>信用评分</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="__JS__/table-managed.js"></script>
+<script type="text/javascript" src="__JS__/manager.js"></script>
+
+<script type="text/javascript">
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + data[index].id + '</td>'
+		  		+'<td>'+ data[index].name +'</td>'
+		  		+'<td>'+ data[index].idcard +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
+		  		+'<td>'+ data[index].loanCount +'</td>'
+		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ data[index].lineScore +'</td>'
+		  		+'<td><a href="/admin/customer/view?id='+ data[index].id + '">查看</a></td>'
+		  		 +'</tr>'
+			}
+		}
+		return html;
+	};
+	$('#table-customer tbody').html(tpl(info.data));
+
+    $(function(){
+    	TableManaged.init();
+    });
+</script>
+
+{/block}

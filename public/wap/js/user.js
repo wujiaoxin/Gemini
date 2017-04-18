@@ -406,7 +406,7 @@ function doDealerLoginPost(){
             data:param,
             success:function(resp){
                 if (resp.code == "1" ) {
-                    localStorage.setItem('token',token);
+                    localStorage.setItem('token',resp.data.token);
                     window.location.href = "/mobile/index/indexDealer";
                 } else {
                     if (typeof(resp.msg) == 'string') {
@@ -419,7 +419,7 @@ function doDealerLoginPost(){
                             isimgverify = 0;
                             $(".rvalicode-cont").hide();
                         }
-                    }                 
+                    }
                 }
             }
         });
