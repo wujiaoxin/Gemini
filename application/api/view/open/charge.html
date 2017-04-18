@@ -1,10 +1,8 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <meta http-equiv="pragma" content="no-cache">
@@ -13,108 +11,28 @@
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
-
-    <script type="text/javascript">
-        var appPath = "/index.php";
-        var publicPath = "/public";
-        var redirect_uri = "";
-        function onBack(){
-        	window.location.href = "/index.php";
-        }
-        function onHome(){
-        	window.location.href = appPath;
-        }
-        function consumeBack(){
-        	window.location.href = "";
-        }
-        function onBackByUrl(url){
-        	window.location.href = url;
-        }
-        var qlMark = 0;
-    </script>
-    <style>
-    body{
-        background-color: #fcfcfc;
-    }
-    #inviteImg img{
-        display: block;
-        margin:auto;
-        padding-top: 80px;
-        padding-bottom: 40px;
-        width: 70%;
-    }
-    .desc{
-        text-align: center;
-    }
-    .desc p{
-        font-size: 16px;
-        font-weight: 800;
-        color: #444;
-        letter-spacing: 0px;
-    }
-    .desc span{
-       line-height: 40px;
-       font-weight: 500;
-       font-size: 14px
-    }
-    span{
-        color: #ff9900;
-    }
-    h2{
-        font-size: 16px;
-        color: #444;
-        border-left: 4px solid #ff9900;
-        padding: 0 4px;
-    }
-    .rule p{
-        text-indent:2em;
-    }
-    #submit{
-        background-color: #ff9900;
-    }
-    .content-button{
-        width: 80%;
-        margin: auto;
-        margin-top: 20%;
-    }
-    .footer p{
-        font-size: 10px;
-        font-weight: 500;
-    }
-	</style>
 </head>
 <body>
     
     <div class="views">
         <div class="view view-main">
-            <div class="navbar wb">
-                <div class="navbar-inner">
-                    <div class="left">
-                    </div>
-                    <div class="center">资费说明</div>
-                    <div class="right">
-                        <a href="#" class="link icon-only"> </a>
-                    </div>
-                </div>
-            </div>
             <div class="pages">
                 <div data-page="dqassess" class="page">
-                    <div class="page-content">
-
+                    <div class="page-content wb">
+						<h1>资费说明</h1>
+						<div class="em-footer">
+							<p class="fz6 gay-color">©2016 杭州互纳科技有限公司</p>
+							<p class="fz6 gay-color">浙ICP备16040927号</p>
+						</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
- 
-
     <div id="loading"></div>
     <script type="text/javascript" src="/Public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/Public/wap/js/my-app.js"></script>
-    <script type="text/javascript">
- 
-    </script>
     
 </body>
 </html>
