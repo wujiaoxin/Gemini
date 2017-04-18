@@ -88,6 +88,16 @@ class Finance extends Admin {
 				$resp['msg'] = '提现审核失败!';
 			}
 		}else{
+			$result = db('carry')->select();
+			foreach ($result as $k => $v) {
+				// $resul = serch_bank($v['user_id']);
+				// $result[$k]['bank_account_name'] = $resul[''];
+			}
+			// var_dump($result);die;
+			$data = array(
+				'infoStr' => json_encode($result)
+			);
+			$this->assign($data);
 
 		}
 		return $this->fetch();
