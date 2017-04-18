@@ -17,7 +17,8 @@ class Baseness extends base{
 		if($mobile == null || $uid == null){
 			return $this->redirect("/business/login/login");
 		}
-		$result = db('member')->field('status')->where('mobile',$mobile)->find();
+		$result = db('dealer')->field('status')->where('mobile',$mobile)->find();
+		
 		if ($result['status'] == '3') {
 			return $this->redirect('/business/login/waiting');
 		}
