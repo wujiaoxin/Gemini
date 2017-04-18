@@ -22,9 +22,8 @@ class Api extends \think\Controller {
 		}
 		
 		//无需登录接口
-
 		if($this->request->controller() == "User"){
-			if(in_array($this->request->action(),array('login', 'getImgVerify', 'checkSmsVerify', 'resetPassword', 'sendSmsVerify', 'reg'))){
+			if(in_array($this->request->action(),array('login', 'getimgverify', 'checksmsverify', 'resetpassword', 'sendsmsverify', 'reg'))){
 				return ;
 			}
 		}
