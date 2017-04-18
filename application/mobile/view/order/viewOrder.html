@@ -9,17 +9,16 @@
     <title>VP贷-享全款的汽车分期</title>
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
-    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css"> 
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
-    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.gemini.css"> 
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all"> 
+    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.gemini.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all">
     <script type="text/javascript">
-        var BASE_URL = ""; 
+        var BASE_URL = "";
 
         var orderData = {};
         var picList = [];
-        
-        
+
         var keyList = [
             {
                 form_key:"orderSupplement_pic_1",
@@ -54,24 +53,24 @@
                 form_label:"垫资合同"
             }];
 
-            for(var i=0 ; i<keyList.length;i++){            
+            for(var i=0 ; i<keyList.length;i++){
             if(typeof(orderData[keyList[i].form_key]) == "object" ){
                 picList.push(orderData[keyList[i].form_key]);
                 keyList[i].has = 1;
             }
         }
-    </script>  
+    </script>
     <style type="text/css">
         .pic-cont-block {
             display: flex;
             justify-content: space-around;
-            flex-wrap: wrap; 
+            flex-wrap: wrap;
         }
         .pic-cont-item {
             width: 90px;
             height: 90px;
             line-height: 90px;
-            overflow: hidden;     
+            overflow: hidden;
             border: 1px solid #dedede;
             border-radius: 5px;
             background: #f2f2f2;
@@ -81,7 +80,7 @@
             width: 100%;
             vertical-align: middle;
         }
-    
+
 
         .step-block {
             height: 70px;
@@ -137,7 +136,7 @@
             transition-duration: 5s;
             -moz-transition-duration: 5s; /* Firefox 4 */
             -webkit-transition-duration: 5s; /* Safari 和 Chrome */
-            -o-transition-duration: 5s; 
+            -o-transition-duration: 5s;
         }
         .active {
             border: 5px solid rgba(255,153,0,1);
@@ -145,12 +144,12 @@
             transition-duration: 5s;
             -moz-transition-duration: 5s; /* Firefox 4 */
             -webkit-transition-duration: 5s; /* Safari 和 Chrome */
-            -o-transition-duration: 5s; 
+            -o-transition-duration: 5s;
         }
 
     </style>
 </head>
-<body>   
+<body>
     <div class="views">
         <div class="view view-main">
             <div class="navbar">
@@ -165,7 +164,7 @@
                 </div>
             </div>
             <div class="pages navbar-through">
-                <div class="page">                     
+                <div class="page">
                     <div class="page-content">
                         <div class="list-block mt10">
                             <ul>
@@ -312,7 +311,7 @@
     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.0.16.min.js"></script>
     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script>
     <script type="text/javascript" src="/public/wap/js/order.js"></script>
-    <script type="text/javascript"> 
+    <script type="text/javascript">
         var order_id = getUrlParam('id');
         ajax_jquery({
             // url: apiUrl +'/api/order/detail?t=' + Math.random(),
@@ -329,7 +328,7 @@
                 } else {
                     if (typeof(resp.msg) == 'string' && resp.msg != '') {
                         ui_alert(resp.msg);
-                    } 
+                    }
                 }
             }
         });
@@ -339,11 +338,8 @@
             var progressWidth = rstep * 33;
             $(".stepContent:lt("+ step +")").children('.num_circle').addClass('active');
             $(".stepContent:gt("+ rstep +")").children('.num_circle').removeClass('active');
-            $(".step-progress-highlight").width(progressWidth+"%"); 
+            $(".step-progress-highlight").width(progressWidth+"%");
         }
- 
-       
-        
 
         $(function(){
             stepbarShow(2);
@@ -369,7 +365,7 @@
                 myPhotoBrowserPopup.open();
             });
         });
-    </script>  
+    </script>
 
 </body>
 </html>

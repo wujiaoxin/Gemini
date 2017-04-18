@@ -96,6 +96,31 @@ var TableManaged = function () {
             jQuery('#table-myStaff_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
             // jQuery('#table-myStaff_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
 
+
+             // 审核管理模块-订单列表table  id="table-orderExamine"
+            $('#table-orderExamine').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                configData
+            });
+
+            jQuery('#table-orderExamine_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-orderExamine_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-orderExamine_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
         }
     };
 }();

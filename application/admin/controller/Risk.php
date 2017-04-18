@@ -10,7 +10,7 @@
 namespace app\admin\controller;
 use app\common\controller\Admin;
 
-class examine extends Admin {
+class risk extends Admin {
 
 	/**
 	 * 用户管理首页
@@ -37,30 +37,18 @@ class examine extends Admin {
 		return $this->fetch();
 	}
 
-	public function application() {
-		$this->setMeta('借款申请');
+	public function rating() {
+		$this->setMeta('客户评级');
 		return $this->fetch();
 	}
 
-	public function dataReview() {
-		$this->setMeta('资料复核');
+	public function ratingInfo() {
+		$this->setMeta('评级详情');
 		return $this->fetch();
 	}
 
-	public function loanLimit() {
-		$this->setMeta('借款额度审批');
+	public function blacklist() {
+		$this->setMeta('黑名单');
 		return $this->fetch();
 	}
-
-	public function examine() {
-		$this->setMeta('订单审核');
-		return $this->fetch();
-	}
-
-	public function view() {
-		$this->setMeta('查看审核');
-		return $this->fetch();
-	}
-
-	
 }

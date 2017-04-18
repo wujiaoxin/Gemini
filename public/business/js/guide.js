@@ -66,16 +66,16 @@ var guide = function () {
                         });
                     }else if(index == 2){
                         var rep = $("#rep").val();
-                        var idcardNum = $("#idcardNum").val();
+                        var idno = $("#idno").val();
                         var field_rep_idcard_pic = $("#field_rep_idcard_pic").val();
                         var field_rep_idcard_back_pic = $("#field_rep_idcard_back_pic").val();
                         if(rep == ""){
                             ui_alert("alert-error","请填写法人姓名");
                             return false;
-                        }else if(idcardNum == ""){
+                        }else if(idno == ""){
                             ui_alert("alert-error","请填写法人身份证号");
                             return false;
-                        }else if(!validateBankNum(idcardNum)){
+                        }else if(!validateIdCard(idno)){
                             ui_alert("alert-error","身份证号填写有误");
                             return false;
                         }else if(field_rep_idcard_pic == ""){
@@ -90,7 +90,7 @@ var guide = function () {
                             url: apiUrl +'/business/user/guide?t='+Math.random(),
                             data:{
                                 'rep': rep,
-                                'idno': idcardNum,
+                                'idno': idno,
                                 'rep_idcard_pic': field_rep_idcard_pic,
                                 'rep_idcard_back_pic': field_rep_idcard_back_pic
                             },

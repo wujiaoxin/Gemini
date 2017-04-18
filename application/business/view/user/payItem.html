@@ -73,7 +73,7 @@
 					<td>2018-03-16</td>
 					<td>李博</td>
 					<td>￥3,000</td>
-					<td>￥200</td>	
+					<td>￥200</td>
 					<td>未支付</td>
 					<td><a class="orderOpera" data-toggle="modal">支付</a></td>
 				</tr> -->
@@ -119,7 +119,7 @@
 				<label class="control-label">交易密码</label>
 				<div class="controls">
 					<input id="payPassword" type="password" class="m-wrap" maxlength="6">
-				</div>	
+				</div>
 			</div>
 		</div>
 	</div>
@@ -134,7 +134,7 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
-<script type="text/javascript" src="/public/business/js/table-managed.js"></script>    
+<script type="text/javascript" src="/public/business/js/table-managed.js"></script>
 <script>
 	function tpl(data){
 		var html = '';
@@ -173,24 +173,24 @@
 	            'status': status
 	        },
 	        success:function(resp){
-	            if (resp.code == "1" ) {	
+	            if (resp.code == "1" ) {
 	            	$('#table-payItem tbody').html(tpl(resp.data));
 	            	$('#table-payItem').dataTable({"bDestroy":true});
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
 	                    return false;
-	                }                 
+	                }
 	            }
 	        }
 		});
 	}
 
-	jQuery(document).ready(function() {       
+	jQuery(document).ready(function() {
 	   	// App.init();
 	   	TableManaged.init();
 	   	ajaxPayItem(0,0,0);
-	   	
+
 	   	$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var orderType = $('.selectOrderType li.active').attr('data');
@@ -235,7 +235,7 @@
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert("alert-error",resp.msg);
 		                    return false;
-		                }                 
+		                }
 		            }
 		        }
 			});
