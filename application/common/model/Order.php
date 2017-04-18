@@ -122,15 +122,14 @@ class Order extends \app\common\model\Base {
 		return $orderid;
 	}
 	//保存订单
-	public function save_order($uid, $type = 0, $mobile, $idcard, $loan_limit){
+	public function save_order($uid, $data){
 		$data =array(
-			'loan_limit' => $loan_limit,
-			'mobile' => $mobile,
-			'idcard' => $idcard,
-			'type' => $type
+			'loan_limit' => $data['loan_limit'],
+			'endtime' => $data['loan_term'],
+			'status'=>'33'
 			);
-		$result = db('order')->save($data);
-		$orderid = db('order')->where('mobile',$mobile)->find();
-		return $orderid['id'];
+		$data['id'] = '1073';
+		$result = $this->save($data,['id'=>$data['id']]);
+		return $result;
 	}
 }

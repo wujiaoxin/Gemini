@@ -117,14 +117,20 @@ class Order extends Api {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 		$orderModel = model('Order');
-		
-		$list = $orderModel->save_order($uid,$type,$mobile,$idcard,$loan_limit);
-
-		$data["id"] = $list;
-		$resp['code'] = 1;
-		$resp['msg'] = '保存成功';
-		$resp['data'] = $data;
- 
+		if ($_POST) {
+			$data = input('post.');
+			// var_dump($data);die;
+			$list = $orderModel->save_order($uid,$data);
+			if ($list) {
+				$data["id"] = $data['id'];
+				$resp['code'] = 1;
+				$resp['msg'] = '保存成功';
+				$resp['data'] = $data;
+			}else{
+				$resp['code'] = 0;
+				$resp['msg'] = '提交失败!';
+			}
+		}
 		return json($resp);
 	}
 
@@ -156,6 +162,9 @@ class Order extends Api {
 		$resp['msg'] = '未知错误';
 		$list = db('order')->where('id',$id)->find();
 		$link = model('Order');
+		//测试id
+		// $id = 1010;
+
 		// echo $id;die;
 		if($role==1){
 			$info = db('Order')->where($map)->find();
@@ -192,7 +201,7 @@ class Order extends Api {
 	//上传订单文件
 	public function upload($type = null, $order_id = null, $form_key = null, $form_label = null, $file = null){
 		$controller = controller('common/Files');
-		$action     = ACTION_NAME;
+		$action     = $this->request->action();
 		return $controller->$action();
 	}
 	
