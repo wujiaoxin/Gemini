@@ -81,7 +81,7 @@ class assetChannel extends Admin {
 				//$data['status'] = 1;
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {
-					return $this->success("修改成功！", url('Dealer/index'));
+					return $this->success("修改成功！", url('assetChannel/index'));
 				} else {
 					return $this->error("修改失败！");
 				}
@@ -144,7 +144,7 @@ class assetChannel extends Admin {
 			return $this->fetch();
 		}
 	}
-	
+
 
 
 	//删除
@@ -161,6 +161,46 @@ class assetChannel extends Admin {
 			return $this->success("删除成功！");
 		} else {
 			return $this->error("删除失败！");
+		}
+	}
+
+	// 新增员工
+	public function addStaff(){
+		// var_dump($GLOBALS);die;
+		if (IS_POST){
+			$data = input('post.');
+			if ($data) {
+				$invit = db('Dealer')->alias('d')->field('d.invite_code')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
+				$user = model('User');
+				$uid = $user->registerByMobile($data['mobile'], $data['password']);
+				if ($uid > 0) {
+					$userinfo['realname'] = $data['name'];
+					$userinfo['mobile'] = $data['mobile'];
+					$userinfo['status'] = 1;
+					$userinfo['invite_code'] = $invit['invite_code'];
+					$userinfo['access_group_id'] = $data['job'];
+					$userinfo['desc'] = $data['remark'];
+					$userinfo['tel'] = $data['telphone'];
+					$userinfo['reg_time'] = time();
+					//保存信息
+					if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
+						$resp["code"] = 0;
+						$resp["msg"] = '注册失败！！';
+						return json($resp);
+					} else {
+						$resp["code"] = 1;
+						$resp["msg"] = '注册成功！';
+						return json($resp);
+					}
+				} else {
+					$resp["code"] = 0;
+					$resp["msg"] = $user->getError();
+					return $resp;
+				}
+			}
+		}else {
+			$this->setMeta("新增员工");
+			return $this->fetch();
 		}
 	}
 }

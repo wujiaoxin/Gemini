@@ -134,3 +134,36 @@ function get_document_field($value = null, $condition = 'id', $field = null) {
 	}
 	return $info;
 }
+
+/*
+** 操作资金
+** name 操作类型(数字)
+** money_type 操作金额
+** type 操作类型
+** momod 操作方法
+*/
+function modify_account($data,$uid,$name=0,$money_type=0,$type=0,$memod=0){
+	if ($type == 'payment' && $memod = 'UPDATE') {
+		$dealer_money = db('dealer')->field('money')->where('id',$data['dealer_id'])->find();
+		$use_money = $dealer_money['money']-$data['fee'];
+		db('dealer')->where('id',$data['dealer_id'])->setField('money',$use_money);
+		$result = array(
+			'uid'=>$uid,
+			'account_money' => $data['fee'],
+			'desc' => $data['desrc'],
+			'type' => 0,
+			'deal_other' => 0,
+			'create_time' => time()
+			);
+		db('dealer_money')->save($result);
+	}
+}
+/*
+**
+*/
+function serch_name($uid){
+	$result = db('dealer')->alias('d')->field('d.name as dealer_name')->join('__MEMBER__ m','d.mobile = m.mobile')->where('m.uid',$uid)->find();
+	// var_dump($result);die;
+	return $result['dealer_name'];
+
+}

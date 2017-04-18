@@ -1,16 +1,8 @@
 {extend name="public/base"/}
 {block name="style"}
-
-<!-- <link type="text/css" href="__PUBLIC__/css/libs/bootstrap-editable.css"> -->
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
 <script type="text/javascript">
-	var info = {};
-	try {
-		info = JSON.parse('{$infoStr}');
-	} catch (e) {
-		alert("数据异常");
-	}
 </script>
 {/block}
 {block name="body"}
@@ -25,13 +17,14 @@
 			<table class="table table-hover" id="table-customer">
 				<thead>
 					<tr>
-						<th>客户ID</th>
-						<th>真实姓名</th>
+						<th>编号</th>
+						<th>用户姓名</th>
 						<th>身份证号</th>
-						<th>创建时间</th>
-						<th>贷款次数</th>
-						<th>客户状态</th>
-						<th>信用评分</th>
+						<th>手机号</th>
+						<th>设备号</th>
+						<th>银行卡号</th>
+						<th>渠道来源</th>
+						<th>添加时间</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -53,13 +46,14 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + data[index].id + '</td>'
-		  		+'<td>'+ data[index].name +'</td>'
-		  		+'<td>'+ data[index].idcard +'</td>'
-		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
-		  		+'<td>'+ data[index].loanCount +'</td>'
-		  		+'<td>'+ data[index].status +'</td>'
-		  		+'<td>'+ data[index].lineScore +'</td>'
+		  		+'<td>' + '10001' + '</td>'
+		  		+'<td>'+ '张三丰' +'</td>'
+		  		+'<td>'+ '345629291001'+'</td>'
+		  		+'<td>'+ '18934093421' +'</td>'
+		  		+'<td>'+ 'sn121212' +'</td>'
+		  		+'<td>'+ '8342323232323' +'</td>'
+		  		+'<td>'+ '系统' +'</td>'
+		  		+'<td>'+ '2017-02-34' +'</td>'
 		  		+'<td><a href="/admin/customer/view?id='+ data[index].id + '">查看</a></td>'
 		  		 +'</tr>'
 			}
