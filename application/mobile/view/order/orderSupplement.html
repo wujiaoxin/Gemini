@@ -14,10 +14,10 @@
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.gemini.css">
     <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all">  
     <script type="text/javascript">
-        var BASE_URL = ""; 
+        var BASE_URL = "";
 
         var orderData = {};
-        var picList = [];      
+        var picList = [];
         var keyList = [
             {
                 form_key:"orderSupplement_pic_1",
@@ -52,13 +52,13 @@
                 form_label:"垫资合同"
             }];
 
-            for(var i=0 ; i<keyList.length;i++){            
+            for(var i=0 ; i<keyList.length;i++){
             if(typeof(orderData[keyList[i].form_key]) == "object" ){
                 picList.push(orderData[keyList[i].form_key]);
                 keyList[i].has = 1;
             }
         }
-    </script>  
+    </script>
     <style type="text/css">
         .order-item {
             height: 38px;
@@ -71,7 +71,7 @@
         }
     </style>
 </head>
-<body>   
+<body>
     <div class="views">
         <div class="view view-main">
             <div class="navbar wb">
@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div class="pages navbar-through">
-                <div class="page">                     
+                <div class="page">
                     <div class="page-content">
                         <div class="list-block">
                             <ul>
@@ -162,9 +162,9 @@
                                                     <div class="uploader_title">
                                                         <h4>请上传借款资料照片</h4>
                                                     </div>
-                                                    <div id="uploadpic"></div>   
+                                                    <div id="uploadpic"></div>
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
@@ -188,12 +188,13 @@
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
     <script type="text/javascript" src="/public/plugs/webuploader/webuploader.0.16.min.js"></script>
-    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script>
+    <script type="text/javascript" src="/public/wap/js/webuploader.gemini.js"></script>
     <script type="text/javascript" src="/public/wap/js/order.js"></script>
-    <script type="text/javascript"> 
+    <script type="text/javascript">
         var order_id = getUrlParam('id');
+        var sid = localStorage.getItem('sid');
         ajax_jquery({
-            url: apiUrl +'/api/order/detail?t=' + Math.random(),
+            url: apiUrl +'/api/order/detail',
             data: {
                 'id':order_id
             },
@@ -208,20 +209,20 @@
                 }else{
                     if (typeof(resp.msg) == 'string') {
                         ui_alert(resp.msg);
-                    }  
+                    }
                 }
             }
-        }); 
+        });
 
         $("#uploadpic").GeminiUploader(keyList,picList,{
-            formData: {fileType:"image",order_id:orderData.id},
-        }); 
+            formData: {fileType:"image",order_id:orderData.id,sid:sid},
+        });
 
-        
+
         $(function(){
-            $("#submit").click(function(){       
+            $("#submit").click(function(){
                 var loan_limit = $('#loan_limit').val();
-                
+                var loan_term = $('#loan_term').val();
                 if(loan_limit == ""){
                     ui_alert('请输入垫资金额');
                     return;
@@ -231,27 +232,27 @@
                 }
                 ajax_jquery({
                     type: 'post',
-                    url: '',
+                    url: apiUrl +'/api/order/save',
                     datatype:'json',
                     data: {
+                        'id':order_id,
 						'loan_limit':loan_limit,
                         'loan_term':loan_term
                     },
                     success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
                         if(data.code == 1){
                             ui_alert("订单提交成功", function () {
-                                  window.location.href = '/mobile/order/indexDealer' ;            
+                                  window.location.href = '/mobile/order/indexDealer' ;
                              })
                         }else{
                             if (typeof(data.msg) == 'string') {
                                 ui_alert(data.msg);
-                            }  
+                            }
                         }
                     }
-                }); 
+                });
             });
         });
-    </script>  
-
+    </script>
 </body>
 </html>
