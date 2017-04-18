@@ -63,8 +63,8 @@ class User extends Api {
 		$uid  = $user->login($mobile, $password);
 		if ($uid > 0) {
 			
-			session('uid',$uid);
-			session('mobile',$mobile);
+			//session('uid',$uid);
+			//session('mobile',$mobile);
 			//$token = rand(100000,999999);
 			$token = generateToken($uid, $sid);
 			session('token',$token);
@@ -116,7 +116,7 @@ class User extends Api {
 	public function editPassword($oldPassword = '', $newPassword = '') {
 		$user = model('User');
 		
-		$data['uid']  = session('uid');
+		$data['uid']  = session('user_auth.uid');
 		
 		$data['oldpassword'] = $oldPassword;
 		$data['password'] = $newPassword;
@@ -135,7 +135,7 @@ class User extends Api {
 
 	public function userInfo(){
 		
-		$uid  = session('uid');
+		$uid  = session('user_auth.uid');
 		if ($uid > 0) {
 			
 			$userInfo = db('member')->field('mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
@@ -314,7 +314,7 @@ class User extends Api {
 	}
 	
 	public function updateBaseInfo($realname = null, $idcard = null, $bankcard = null ) {		
-		$uid  = session('uid');
+		$uid  = session('user_auth.uid');
 		if ($uid > 0) {
 			$saveData["uid"] = $uid;
 			
