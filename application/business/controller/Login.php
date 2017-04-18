@@ -10,7 +10,6 @@
 namespace app\business\controller;
 use app\common\controller\Base;
 class Login extends Base {
-	
 	public function login($mobile = '', $password = '') {
 		if (IS_POST) {
 			$resp["code"] = 0;
@@ -61,7 +60,7 @@ class Login extends Base {
 	}
 	public function waiting(){
 		$mobile = session('mobile');
-		db('member')->where('mobile',$mobile)->setField('status','3');
+		db('dealer')->where('mobile',$mobile)->setField('status','3');
 		return $this->fetch();
 	}
 }

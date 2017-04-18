@@ -21,7 +21,7 @@ class Index extends Baseness {
 		if(!$is_success['priv_bank_name']){
 			$this->redirect('/business/user/guide');
 		}
-		$result = db('member')->field('status')->where('mobile',$mobile)->find();
+		$result = db('Dealer')->field('status')->where('mobile',$mobile)->find();
 		if ($result['status'] == '3') {
 			return $this->redirect('/business/login/waiting');
 		}
