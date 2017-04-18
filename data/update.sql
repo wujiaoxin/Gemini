@@ -103,3 +103,7 @@ alter table gemini_payment add payment_type tinyint(3)  NOT NULL  COMMENT '充�
 alter table gemini_carry add  fee int(11) default '0'  COMMENT '提现费用';
 -- 加入提现银行流水
 alter table gemini_carry add  serial_num varchar(255)   COMMENT '提现银行流水';
+
+
+-- 修改营业期限
+alter table gemini_dealer CHANGE radiotime lic_validity varchar(20)  COMMENT '营业期限';
