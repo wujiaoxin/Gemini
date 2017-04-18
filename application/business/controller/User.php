@@ -247,34 +247,75 @@ use app\business\controller\Baseness;
 		$mobile = session('mobile');
 		if (IS_POST) {
 			$data = input('post.');
-			$map['mid'] =$uid;
-			if ($data['type']) {
-				$map['type'] = $data['type'];
-			}
-			
-			if ($data['status']) {
-				$map['status'] = $data['status'];
-			}
-			if ($data['dateRange']) {
-				$result = to_datetime($data['dateRange']);
-				$endtime =$result['endtime'];
-				$begintime = $result['begintime'];
-				$order_pay = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('status ASC')->select();
+			// var_dump($data);die;
+			if (isset($data['payPwd']) && isset($data['payOrder'])) {
+				$user = db('member')->field('paypassword')->where('mobile',$mobile)->find();
+				if(md5($data['payPwd'].$mobile) == $user['paypassword']){
+					//车商只做费用记录
+					$fee = db('order')->field('fee')->where('sn',$data['payOrder'])->find();
+					// var_dump($fee);die;
+					$money = db('dealer')->field('money,lock_money')->where('mobile',$mobile)->find();
+					$use_money = $money['money'] - $fee['fee'];
+					// echo $use_money;die;
+					$lock_money = $money['lock_money'] + $fee['fee'];
+					$datas = array(
+						'money'=>$use_money,
+						'lock_money' => $lock_money
+						);
+					// var_dump($data);die;
+					$fee['order_id'] = $data['payOrder'];
+					db('Dealer')->where('mobile',$mobile)->update($datas);//冻结资金
+					modify_account($fee,$uid,'0','0','0','INSERT');//资金记录
+					//支付完成进行放款中
+					$fk_deal = array(
+						'finance'=>'2',
+						'update_time'=>time()
+						);
+					$result = db('order')->where('sn',$data['payOrder'])->update($fk_deal);
+					if ($result) {
+						$resp['code'] = '1';
+						$resp['msg'] = '支付订单成功';
+					}else{
+						$resp['code'] = '0';
+						$resp['msg'] = '支付订单已完成';
+					}
+				}else{
+					$resp['code'] = '0';
+					$resp['msg'] = '交易密码错误';
+				}
+				// var_dump($resp);
+				// die;
 			}else{
-				$order_pay = db('order')->where($map)->order('status ASC')->select();
-			}
-			// $order_pay = db('order')->where($map)->order('status ASC')->select();
-			// var_dump($order_pay);die;
-			foreach ($order_pay as $k => $v) {
-				$order_pay[$k]['realname'] = serch_real($v['uid']);
-			}
-			if ($order_pay) {
-				$resp['code'] = '1';
-				$resp['msg'] = '数据正常';
-				$resp['data']= $order_pay;
-			}else{
-				$resp['code'] = '0';
-				$resp['msg'] = '未查到数据';
+
+				$map['mid'] =$uid;
+				if ($data['type']) {
+					$map['type'] = $data['type'];
+				}
+				
+				if ($data['status']) {
+					$map['status'] = $data['status'];
+				}
+				if ($data['dateRange']) {
+					$result = to_datetime($data['dateRange']);
+					$endtime =$result['endtime'];
+					$begintime = $result['begintime'];
+					$order_pay = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('status ASC')->select();
+				}else{
+					$order_pay = db('order')->where($map)->order('finance ASC')->select();
+				}
+				// $order_pay = db('order')->where($map)->order('status ASC')->select();
+				// var_dump($order_pay);die;
+				foreach ($order_pay as $k => $v) {
+					$order_pay[$k]['realname'] = serch_real($v['uid']);
+				}
+				if ($order_pay) {
+					$resp['code'] = '1';
+					$resp['msg'] = '数据正常';
+					$resp['data']= $order_pay;
+				}else{
+					$resp['code'] = '0';
+					$resp['msg'] = '未查到数据';
+				}
 			}
 			return json($resp);
 		}else{

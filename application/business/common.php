@@ -62,7 +62,7 @@
                 'is_pay'=>$data['is_pay'],
                 'money'=>$data['money'],
                 'pay_type'=>'0',
-                'bank_name'=>$data['bank_name'],
+                'bank_account'=>$data['bank_name'],
                 'update_time'=>$data['update_time'],
                 'create_time'=>time()
             );
@@ -77,6 +77,20 @@
                 return json_encode($resp);
             }
         }
+    }
+    if (isset($data['fee']) && $memod == 'INSERT') {
+      $fee_money = array(
+          'uid'=>$uid,
+          'account_money'=>$data['fee'],
+          'desc'=>'冻结订单为'.$data['order_id'].'的资金',
+          'type'=>$name,
+          'deal_other'=>'0',
+          'create_time'=>time()
+      );
+      // var_dump($fee_money);die;
+
+      $result = db('dealer_money')->insert($fee_money);
+      return $result;
     }
   }
   /*
@@ -99,7 +113,8 @@
           'true_repay_money'=>'0',
           'true_repay_time'=>'0',
         );
-      db('order_repay')->insert($order_repay);
+      $result = db('order_repay')->insert($order_repay);
+      return $result;
     }
   }
   /*
@@ -107,31 +122,25 @@
   */
   function cl_order($o_id,$bank_name){
     $uid = session('uid');
+    // echo $o_id;die;
     $order = db('order')->where('sn',$o_id)->select();
     if ($order) {
-      $is_success = db('order')->where('sn',$o_id)->setField('status','15');
-      if ($is_success) {
-        $datas =array(
-            'carry_billon'=>$o_id,
-            'is_pay'=>'0',
-            'money'=>$order['0']['loan_limit'],
-            'bank_name'=>$bank_name['0'],
-            'create_time'=>time(),
-            'update_time'=>'0',
-            'descr'=>'提现申请'
-          );
-        modify_account($datas,$uid,'4','1','withdraw','INSERT');
-        modify_account($datas,$uid,'4','1','member_money','INSERT');
-        set_order_repay($o_id);
-        $resp['code'] = '1';
-        $resp['msg']='提现成功';
-
-      }else{
-        $resp['code'] = '1';
-        $resp['msg']='提现失败';
-      }
-      return json($resp);
+      $datas =array(
+          'carry_billon'=>$o_id,
+          'is_pay'=>'0',
+          'money'=>$order['0']['loan_limit'],
+          'bank_name'=>$bank_name,
+          'create_time'=>time(),
+          'update_time'=>'0',
+          'descr'=>'提现申请'
+        );
+      // var_dump($datas);die;
+      modify_account($datas,$uid,'4','1','withdraw','INSERT');
+      modify_account($datas,$uid,'4','1','member_money','INSERT');
+      $result = set_order_repay($o_id);
+      db('order')->where('sn',$o_id)->setField('finance', '3');
     }
+    return $result;
   }
   //发送验证码
   function sendSms($mobile, $content){
