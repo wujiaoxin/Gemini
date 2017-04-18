@@ -12,7 +12,7 @@ use app\business\controller\Baseness;
 
 class Index extends Baseness {
 	public function _initialize(){
-		$uid = session("uid");
+		$uid = session("user_auth.uid");
 		$mobile =session('mobile');
 		if($uid == null){
 			return $this->error("请先登录",url("/business/user/login"));
