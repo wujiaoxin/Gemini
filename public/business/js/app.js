@@ -1,7 +1,7 @@
 /**
 Core script to handle the entire layout and base functions
 **/
-var apiUrl = "/";
+var apiUrl = "";
 var App = function () {
 
     // IE mode
