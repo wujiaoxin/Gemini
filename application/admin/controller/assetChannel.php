@@ -81,7 +81,7 @@ class assetChannel extends Admin {
 				//$data['status'] = 1;
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {
-					return $this->success("修改成功！", url('Dealer/index'));
+					return $this->success("修改成功！", url('assetChannel/index'));
 				} else {
 					return $this->error("修改失败！");
 				}

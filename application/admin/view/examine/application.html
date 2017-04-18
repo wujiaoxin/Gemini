@@ -1,5 +1,83 @@
 {extend name="public/base"/}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
+<link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
+<style type="text/css">
+.table tbody>tr>td:first-child {
+	font-size: 1em;
+	font-weight: normal;
+}
+</style>
+{/block}
 {block name="body"}
-<div class="main-box no-header clearfix">
+<div class="main-box clearfix">
+	<header class="main-box-header clearfix">
+		<div class="pull-left">
+			<h2>{$meta_title}</h2>
+		</div>
+	</header>
+	<div class="main-box-body clearfix">
+		<div class="clearfix">
+			<table class="table table-hover" id="table-orderExamine">
+				<thead>
+					<tr>
+						<th>项目编号</th>
+						<th>项目类型</th>
+						<th>流程节点</th>
+						<th>客户姓名</th>
+						<th>客户证件号</th>
+						<th>业务员</th>
+						<th>渠道名称</th>
+						<th>借款金额</th>
+						<th>借款期限</th>
+						<th>借款费用</th>
+						<th>项目状态</th>
+						<th>申请时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="__JS__/table-managed.js"></script>
+<script type="text/javascript" src="__JS__/manager.js"></script>
+<script type="text/javascript">
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + 'sn12121212' + '</td>'
+		  		+'<td>'+ '车抵贷' +'</td>'
+		  		+'<td>'+ '申请审核' +'</td>'
+		  		+'<td>'+ '王羲之' +'</td>'
+		  		+'<td>'+ '23442443434' +'</td>'
+		  		+'<td>'+ '张三丰' +'</td>'
+		  		+'<td>'+ '武当4S店' +'</td>'
+		  		+'<td>￥'+ '200000' +'</td>'
+		  		+'<td>'+ '7' +'天</td>'
+		  		+'<td>'+ '1000' +'</td>'
+		  		+'<td>'+ '正常' +'</td>'
+		  		+'<td>'+ '2017-02-34' +'</td>'
+		  		+'<td><a href="/admin/examine/view?id='+ "10001" + '">查看</a></td>'
+		  		 +'</tr>'
+			}
+		}
+		return html;
+	};
+	var  info = [{},{}];
+	$('#table-orderExamine tbody').html(tpl(info));
+
+    $(function(){
+    	TableManaged.init();
+    });
+</script>
+
 {/block}
