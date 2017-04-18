@@ -119,8 +119,8 @@ use app\business\controller\Baseness;
 	}
 
 	public function myShop() {
-		$uid =session('uid');
-		$mobile = session('uid');
+		$uid =session('user_auth.uid');
+		$mobile = session('mobile');
 		//分组统计
 		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->order('result DESC')->group('uid')->select();
 		foreach ($result as $k => $v) {
@@ -160,7 +160,7 @@ use app\business\controller\Baseness;
 	}
 
 	public function loanItem() {
-		$uid = session('uid');
+		$uid = session('user_auth.uid');
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
@@ -197,7 +197,7 @@ use app\business\controller\Baseness;
 	}
 
 	public function repayItem() {
-		$uid =session('uid');
+		$uid =session('user_auth.uid');
 		$mobile = session('mobile');
 		if (IS_POST) {
 			$data = input('post.');
@@ -243,7 +243,7 @@ use app\business\controller\Baseness;
 	}
 
 	public function payItem() {
-		$uid =session('uid');
+		$uid =session('user_auth.uid');
 		$mobile = session('mobile');
 		if (IS_POST) {
 			$data = input('post.');

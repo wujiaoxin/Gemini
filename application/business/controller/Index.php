@@ -12,7 +12,7 @@ use app\business\controller\Baseness;
 
 class Index extends Baseness {
 	public function _initialize(){
-		$uid = session("uid");
+		$uid = session("user_auth.uid");
 		$mobile =session('mobile');
 		if($uid == null){
 			return $this->error("请先登录",url("/business/user/login"));
@@ -29,7 +29,7 @@ class Index extends Baseness {
 	}
 	public function index() {
 		$mobile = session('mobile');
-		$uid = session('uid');
+		$uid = session('user_auth.uid');
 		$order_loan = get_orders($uid,'0','order');//借款项目
 		$order_repay = get_orders($uid,'0','order_repay');//还款项目
 		// var_dump($order_repay);die;
