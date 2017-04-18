@@ -72,6 +72,10 @@ class User extends Api {
 			$userInfo = db('member')->field('mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
 			$userInfo['roleid'] = $userInfo['access_group_id'];
 			unset($userInfo['access_group_id']);
+			
+			if(empty($userInfo['headerimgurl'])){
+				$userInfo['headerimgurl'] = "https://www.vpdai.com/public/images/default_avatar.jpg";
+			}
 			$userInfo['token'] = generateToken($uid, $sid);
 			
 			$resp["code"] = 1;
@@ -81,15 +85,22 @@ class User extends Api {
 			return json($resp);
 		} else {
 			switch ($uid) {
-			case -1:$error = '用户不存在或被禁用！';
-				break; //系统级别禁用
-			case -2:$error = '密码错误！';
-				break;
-			default:$error = '未知错误！';
-				break; // 0-接口参数错误（调试阶段使用）
-			}
-			$resp["code"] = 0;
-			$resp["msg"] = $error;
+				case -1:{
+						$resp["code"] = 0;
+						$resp["msg"] = "用户不存在或被禁用！";
+						break; //系统级别禁用
+				}
+				case -2:{
+						$resp["code"] = 1002;
+						$resp["msg"] = "密码错误";
+						break;
+					}
+				default:{
+						$resp["code"] = 0;
+						$resp["msg"] = "登录失败";
+						break; // 0-接口参数错误（调试阶段使用）
+					}
+				}
 			return json($resp);
 		}
 
@@ -102,15 +113,26 @@ class User extends Api {
 		return $resp;
 	}
 	
-	
-	public function editPassword($oldPassword = '', $newPassword = ''){
+	public function editPassword($oldPassword = '', $newPassword = '') {
+		$user = model('User');
 		
-		$resp["code"] = 1;
-		$resp["msg"] = "修改成功！";
-		return $resp;
+		$data['uid']  = session('uid');
+		
+		$data['oldpassword'] = $oldPassword;
+		$data['password'] = $newPassword;
+		
+		$result = $user->editpw($data);
+		if ($result !== false) {
+			$resp["code"] = 1;
+			$resp["msg"] = "修改成功！";
+			return json($resp);
+		}else{
+			$resp["code"] = 0;
+			$resp["msg"] = $user->getError();
+			return json($resp);
+		}
 	}
-	
-	
+
 	public function userInfo(){
 		
 		$uid  = session('uid');
@@ -119,6 +141,10 @@ class User extends Api {
 			$userInfo = db('member')->field('mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
 			$userInfo['roleid']   = $userInfo['access_group_id'];
 			unset($userInfo['access_group_id']);
+			
+			if(empty($userInfo['headerimgurl'])){
+				$userInfo['headerimgurl'] = "https://www.vpdai.com/public/images/default_avatar.jpg";
+			}
 			
 			$resp["code"] = 1;
 			$resp["msg"] = '获取成功';	
@@ -287,15 +313,33 @@ class User extends Api {
 		}
 	}
 	
-	public function updateBaseInfo($realname = null, $idcard = null, $bankcard = null ) {
-		$resp['code'] = 0;
-		$resp['msg'] = '未知错误';
+	public function updateBaseInfo($realname = null, $idcard = null, $bankcard = null ) {		
+		$uid  = session('uid');
+		if ($uid > 0) {
+			$saveData["uid"] = $uid;
+			
+			if($realname!=null){
+				$saveData["realname"] = $realname;
+			}
+			if($idcard!=null){
+				$saveData["idcard"] = $idcard;
+			}
+			if($idcard!=null){
+				$saveData["bankcard"] = $bankcard;
+			}
+			
+			db('member')->where('uid',$uid)->update($saveData);
+			
+			$resp["code"] = 1;
+			$resp["msg"] = '更新成功';	
+			$resp["data"] = $saveData;
 
-		
-		$resp['code'] = 1;
-		$resp['msg'] = '更新成功';
- 
-		return json($resp);
+			return json($resp);
+		}else{
+			$resp["code"] = 0;
+			$resp["msg"] = "更新失败";
+			return json($resp);
+		}
 	}
 	
 }
