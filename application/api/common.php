@@ -75,3 +75,33 @@ function checkErrorTimes(){
 	$errorTimes = session('errorTimes');
 	return $errorTimes;
 }*/
+
+
+
+function httpPost($url, $param){
+
+	$headers = array(
+		'Content-Type:application/json;charset=UTF-8'
+	);
+
+	$ch = curl_init();
+	$ssl = substr($url, 0, 8) == "https://" ? TRUE : FALSE;
+	$opt = array(
+			CURLOPT_URL     => $url,
+			CURLOPT_POST    => 1,
+			CURLOPT_HEADER  => 0,
+			CURLOPT_HTTPHEADER => $headers,
+			CURLOPT_POSTFIELDS => json_encode($param),
+			CURLOPT_RETURNTRANSFER  => 1,
+			//CURLOPT_TIMEOUT         => $timeout,
+			);
+	if ($ssl)
+	{
+		$opt[CURLOPT_SSL_VERIFYHOST] = FALSE;
+		$opt[CURLOPT_SSL_VERIFYPEER] = FALSE;
+	}
+	curl_setopt_array($ch, $opt);
+	$resp = curl_exec($ch);
+	curl_close($ch);		
+	return $resp;
+}
