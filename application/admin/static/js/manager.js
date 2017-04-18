@@ -55,7 +55,7 @@ function _ajax_error(XMLHttpRequest, textStatus, errorThrown) {
     }
 }
 
-// 格式化数字20,000,00.00    
+// 格式化数字20,000,00.00
 function formatAmount(n) {
     if(!n){
         return '0.00';
@@ -69,23 +69,23 @@ function formatAmount(n) {
 function formatDatetime(timeStr){
     var timeStr = timeStr*1000;
     var now =new Date(timeStr);
-    var year=now.getFullYear();     
-    var month=now.getMonth()+1;     
-    var date=now.getDate();     
-    var hour=fillZero(now.getHours());     
-    var minute=fillZero(now.getMinutes());     
-    var second=fillZero(now.getSeconds());    
-    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+    var year=now.getFullYear();
+    var month=now.getMonth()+1;
+    var date=now.getDate();
+    var hour=fillZero(now.getHours());
+    var minute=fillZero(now.getMinutes());
+    var second=fillZero(now.getSeconds());
+    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;
 }
 
 // 格式化日期
 function formatDate(timeStr){
     var timeStr = timeStr*1000;
     var now = new Date(timeStr);
-    var year = now.getFullYear();     
-    var month = fillZero(now.getMonth()+1);     
-    var date = fillZero(now.getDate());       
-    return   year+"-"+month+"-"+date;     
+    var year = now.getFullYear();
+    var month = fillZero(now.getMonth()+1);
+    var date = fillZero(now.getDate());
+    return   year+"-"+month+"-"+date;
 }
 
 function fillZero(i){
@@ -104,7 +104,7 @@ function sendSms(id) {
         ui_alert("alert-error","请输入手机号!");
     }else if (!validatePhoneNumber(mobile)) {
         ui_alert("alert-error","请输入正确的手机号!");
-    } 
+    }
     ajax_jquery({
         url: apiUrl + '/business/user/sendSmsVerify',
         data: {

@@ -245,7 +245,7 @@
 		function getOrderList(pageid,status){
 			ajax_jquery({
 				type: 'get',
-				url: apiUrl + '/api/order/getList',   
+				url: apiUrl + '/api/order/getList',
 				data:{
 					'page': pageid,
 					'status': status,
@@ -261,9 +261,9 @@
 									+ '</div>';
 						}else if(resp.data.data.length != 0){
 							current_page++;
-							liHtml=tpl(resp.data.data);				
+							liHtml=tpl(resp.data.data);
 						};
-						$("ul.orderList").append(liHtml);	
+						$("ul.orderList").append(liHtml);
 						if(resp.data.total <= (resp.data.per_page * resp.data.current_page)){
 						    myApp.detachInfiniteScroll($$('.infinite-scroll')); // 加载完毕，则注销无限加载事件，以防不必要的加载
 							// $$('.infinite-scroll-preloader').remove(); // 删除加载提示符
@@ -271,7 +271,7 @@
 					}else{
 						if(typeof(resp.msg) == 'string') {
 							ui_alert(resp.msg);
-						}  
+						}
 					}
 				}
 			});

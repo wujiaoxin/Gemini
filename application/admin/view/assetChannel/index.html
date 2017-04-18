@@ -1,7 +1,5 @@
 {extend name="public/base"/}
 {block name="style"}
-
-<!-- <link type="text/css" href="__PUBLIC__/css/libs/bootstrap-editable.css"> -->
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
 <script type="text/javascript">
@@ -19,19 +17,25 @@
 		<div class="pull-left">
 			<h2>{$meta_title}</h2>
 		</div>
+		<div class="pull-right">
+			<a class="btn btn-primary" href="{:url('add')}">新 增</a>
+			<button class="btn btn-danger ajax-post confirm" url="{:url('delete')}" target-form="ids">删 除</button>
+		</div>
 	</header>
 	<div class="main-box-body clearfix">
-		<div class="clearfix">
-			<table class="table table-hover" id="table-customer">
+		<div class="table-responsive clearfix">
+			<table class="table table-hover" id="table-assetChannel">
 				<thead>
 					<tr>
-						<th>客户ID</th>
-						<th>真实姓名</th>
-						<th>身份证号</th>
+						<th><input class="checkbox check-all" type="checkbox"></th>
+						<th>编号</th>
+						<th>渠道名称</th>
+						<th>渠道类型</th>
+						<th>法人</th>
+						<th>联系电话</th>
 						<th>创建时间</th>
-						<th>贷款次数</th>
-						<th>客户状态</th>
-						<th>信用评分</th>
+						<th>创建人</th>
+						<th>状态</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -54,21 +58,24 @@
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
+			var count=index+1;
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + data[index].id + '</td>'
+		  		+'<td><input class="ids row-selected" type="checkbox" name="id[]" value="'+data[index].id+'"></td>'
+		  		+'<td>' + count + '</td>'
 		  		+'<td>'+ data[index].name +'</td>'
-		  		+'<td>'+ data[index].idcard +'</td>'
+		  		+'<td>'+ data[index].property +'</td>'
+		  		+'<td>'+ data[index].rep +'</td>'
+		  		+'<td>'+ data[index].mobile +'</td>'
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
-		  		+'<td>'+ data[index].loanCount +'</td>'
+		  		+'<td>'+  +'</td>'
 		  		+'<td>'+ data[index].status +'</td>'
-		  		+'<td>'+ data[index].lineScore +'</td>'
-		  		+'<td><a href="/admin/customer/view?id='+ data[index].id + '">查看</a></td>'
+		  		+'<td><a href="/admin/assetChannel/edit?id='+ data[index].id + '">审核</a></td>'
 		  		 +'</tr>'
 			}
 		}
 		return html;
 	};
-	$('#table-customer tbody').html(tpl(info.data));
+	$('#table-assetChannel tbody').html(tpl(info.data));
 
     $(function(){
     	TableManaged.init();

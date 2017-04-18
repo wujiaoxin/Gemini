@@ -23,7 +23,7 @@ var guide = function () {
                         var loc_town = $("#loc_town").val();
                         var loc_address = loc_province + ',' + loc_city  + ',' + loc_town;
                         var addr = $("#addr").val();
-                        var termOfValidity = $("#termOfValidity").val();
+                        var lic_validity = $("#lic_validity").val();
                         var field_dealer_lic_pic = $("#field_dealer_lic_pic").val();
                         if(name == ""){
                             ui_alert("alert-error","请输入企业名称");
@@ -37,7 +37,7 @@ var guide = function () {
                         }else if(addr == ""){
                             ui_alert("alert-error","请填写详细地址");
                             return false;
-                        }else if(termOfValidity == ""){
+                        }else if(lic_validity == ""){
                             ui_alert("alert-error","请填写营业期限");
                             return false;
                         }else if(field_dealer_lic_pic == ""){
@@ -51,7 +51,7 @@ var guide = function () {
                                 'credit_code': credit_code,
                                 'city': loc_address,
                                 'addr': addr,
-                                'radiotime': termOfValidity,
+                                'lic_validity': lic_validity,
                                 'dealer_lic_pic': field_dealer_lic_pic
                             },
                             success:function(resp){
