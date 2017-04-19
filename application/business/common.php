@@ -216,7 +216,11 @@
           );
         $money_jk = db('order')->where($where)->sum('loan_limit');
       //待还资金
-        $repay_money = db('order_repay')->where('mid',$uid)->sum('repay_money');
+        $where_repay = array(
+          'mid'=>$uid,
+          'status'=>'-1'
+          );
+        $repay_money = db('order_repay')->where($where_repay)->sum('repay_money');
         // 借款中的订单
         $order_loan = db('order')->where('mid',$uid)->count('id');
         //还款中的订单
