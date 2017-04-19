@@ -162,16 +162,50 @@ function modify_account($data,$uid,$name=0,$money_type=0,$type=0,$memod=0){
 **查询车商名称
 */
 function serch_name($uid){
-	$result = db('dealer')->alias('d')->field('d.name as dealer_name')->join('__MEMBER__ m','d.mobile = m.mobile')->where('m.uid',$uid)->find();
+	$result = db('dealer')->alias('d')->field('d.name as dealer_name,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->where('m.uid',$uid)->find();
 	// var_dump($result);die;
-	return $result['dealer_name'];
+	return $result;
 
 }
-/*
-**查询车商银行卡信息
-*/
- function serch_bank($uid){
- 	/*$mobile = db('member')->field('mobile')->where('uid',$uid)->find();
- 	$result = db('dealer')->where('mobile',$mobile['mobile'])->find();
- 	return $result;*/
- }
+
+ /*
+  **生成还款列表
+  */
+  function set_order_repay($order_id){
+
+    $order = db('order')->where('sn',$order_id)->find();
+
+    if ($order) {
+
+      $repay_time = time()+$order['endtime']*24*60*60;
+
+      $order_repay = array(
+
+          'order_id'=>$order_id,
+
+          'mid'=>$order['mid'],
+
+          'repay_money'=>$order['loan_limit'],
+
+          'manage_money'=>'0',
+
+          'repay_time'=>$repay_time,
+
+          'status'=>'-1',
+
+          'has_repay'=>'0',
+
+          'loadtime'=>['endtime'],
+
+          'true_repay_money'=>'0',
+
+          'true_repay_time'=>'0',
+
+        );
+
+      $result = db('order_repay')->insert($order_repay);
+
+      return $result;
+
+    }
+  }

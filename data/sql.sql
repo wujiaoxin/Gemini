@@ -1727,37 +1727,38 @@ CREATE TABLE `gemini_sync_login` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
-DROP TABLE IF EXISTS `gemini_payment`;
-CREATE TABLE `gemini_payment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL COMMENT '充值商户id',
-  `pay_id` int(11) NOT NULL COMMENT '充值订单号',
-  `is_pay` int(11) NOT NULL DEFAULT '0' COMMENT '是否充值:0未充值,1已充值,-1审核中',
+DROP TABLE IF EXISTS `gemini_recharge`;
+CREATE TABLE `gemini_recharge` (
+  `uid` int(11) NOT NULL COMMENT '充值商户id',
+  `sn` varchar(255) NOT NULL COMMENT '充值订单号',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '是否充值:0审核失败,1已充值,-1审核中',
   `money` int(11) NOT NULL COMMENT '充值金额',
-  `pay_type` tinyint(1) NOT NULL COMMENT '支付方式',
+  `type` tinyint(1) NOT NULL COMMENT '支付方式',
   `create_time` int(11) NOT NULL COMMENT '充值创建时间',
   `bank_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
   `descr` varchar(255) NOT NULL COMMENT '充值备注',
   `payment_type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '充值方式:1线下充值',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`sn`),
+  KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8  COMMENT='充值记录表';
 
 
 DROP TABLE IF EXISTS `gemini_carry`;
 CREATE TABLE `gemini_carry` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL COMMENT '提现商户id',
-  `carry_billon` int(11) NOT NULL COMMENT '提现订单号',
-  `is_pay` int(11) NOT NULL DEFAULT 0 COMMENT '是否提现:0未提现,1已提现',
+  `uid` int(11) NOT NULL DEFAULT '0' COMMENT '提现商户id',
+  `sn` varchar(255) NOT NULL DEFAULT '0' COMMENT '提现订单号',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '是否提现:-1,提现处理中 0未提现,1已提现',
   `money` int(11) NOT NULL COMMENT '提现金额',
-  `pay_type` tinyint(1) NOT NULL COMMENT '提现方式',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '提现方式',
   `create_time` int(11) NOT NULL COMMENT '提现创建时间',
   `update_time` int(11) NOT NULL COMMENT '更新提现时间',
   `bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
-  `fee` int(11) DEFAULT 0 COMMENT '提现费用',
+  `fee` int(11) DEFAULT '0' COMMENT '提现费用',
   `serial_num` varchar(255) DEFAULT '0' COMMENT '提现银行流水',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8  COMMENT='提现表';
+  `descr` varchar(255) NOT NULL DEFAULT '0' COMMENT '提现备注',
+  PRIMARY KEY (`sn`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='提现表';
 
 DROP TABLE IF EXISTS `gemini_dealer_money`;
 CREATE TABLE `gemini_dealer_money` (
