@@ -1,25 +1,26 @@
 var isimgverify = 0;
+localStorage.clear();
 var Login = function () {
-    
+
     return {
         //main function to initiate the module
         init: function () {
 			ajax_jquery({
 	            url: apiUrl + '/api/session/create?t=' + Math.random(),
 	            data: {
-	                'client':'web' 
+	                'client':'web'
 	            },
-	            success: function(resp) { 
+	            success: function(resp) {
 	                if(resp.code == 1){
 	                    localStorage.setItem('sid', resp.data.sid);
 	                }else{
 	                    if (typeof(resp.msg) == 'string') {
 	                        ui_alert(resp.msg);
 	                        return false;
-	                    }  
+	                    }
 	                }
 	            }
-	        }); 
+	        });
 
             jQuery('#loginBtn').click(function(){
 	        	var username = jQuery('#login-username').val();
@@ -48,7 +49,6 @@ var Login = function () {
         			localStorage.removeItem('rememberUsername');
         		}
 
-        		
 		        ajax_jquery({
 		            url: apiUrl +'/business/login/login?t=' + Math.random(),
 		            data:{
@@ -74,8 +74,8 @@ var Login = function () {
 		                    } else {
 		                        ui_alert("alert-error","登录失败，请重试!");
 		                    }
-		                    doRefreshVerfiy(); 
-		                    return false;          
+		                    doRefreshVerfiy();
+		                    return false;
 		                }
 		            }
 		        });
@@ -116,12 +116,11 @@ var Login = function () {
 		                    if (typeof(resp.msg) == 'string') {
 		                        ui_alert("alert-error",resp.msg);
 		                        return false;
-		                    }                 
+		                    }
 		                }
 		            }
 		        });
 	        });
- 			
 
 	        jQuery('#registerBtn').click(function(){
 	        	var username = jQuery('#register-username').val();
@@ -144,7 +143,7 @@ var Login = function () {
 	        		ui_alert("alert-error","请输入短信验证码");
 	        		return false;
         		}else if(!tncChecked){
-        			ui_alert("alert-error","请点击同意注册服务协议");
+        			ui_alert("alert-error","请点击同意合作协议");
 	        		return false;
         		}
 		        ajax_jquery({
@@ -157,14 +156,14 @@ var Login = function () {
 		            success:function(resp){
 		                if (resp.code == "1" ) {
 		                		ui_alert("alert-success","注册成功，请登录");
-		                        window.location.href = "/business/user/login";
+		                        setTimeout('window.location.href = "/business/login/login"',3000);
 		                } else {
 		                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 		                        ui_alert("alert-error",resp.msg);
 		                    } else {
 		                        ui_alert("alert-error","注册失败，请重试!");
 		                    }
-		                    return false;          
+		                    return false;
 		                }
 		            }
 		        });
@@ -258,7 +257,7 @@ var Login = function () {
 	    }
 	    //return false;
 	}
-	
+
     function doRefreshVerfiy(id) {
 	    var verify=$(id).attr('src');
 	    if(verify){
@@ -268,8 +267,8 @@ var Login = function () {
 	}
 
 
-	function getUrlParam(name) {  
-		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); 
+	function getUrlParam(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
 		var r = window.location.search.substr(1).match(reg);
 		if (r != null) return unescape(r[2]); return null;
 	}

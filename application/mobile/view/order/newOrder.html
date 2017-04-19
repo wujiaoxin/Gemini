@@ -10,7 +10,7 @@
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">   
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
     <style type="text/css">
         .QRCode {
             margin: 30px auto 50px;
@@ -22,7 +22,7 @@
         }
     </style>
 </head>
-<body>   
+<body>
     <div class="views">
         <div class="view view-main">
             <div class="navbar wb">
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="pages navbar-through">
-                <div class="page">                     
+                <div class="page">
                     <div class="page-content">
                         <form class="list-block mt10">
                             <ul class="clearfix">
@@ -65,7 +65,7 @@
                             <div class="QRCode">
                                 <img class="QRCodeImg" src="">
                             </div>
-                            <div class="content-block">                                 
+                            <div class="content-block">
                                 <button type="button" id="submit" class="button button-big button-fill dpblue" style="width:100%">录入客户信息</button>
                             </div>
                         </form>
@@ -84,12 +84,12 @@
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
     <script type="text/javascript" src="/Public/wap/js/order.js"></script>
-    <script type="text/javascript">    
+    <script type="text/javascript">
         $(function(){
-            $("#submit").click(function(){     
+            $("#submit").click(function(){
                 var carPrice = $('#carPrice').val();
                 var mobile = $('#mobile').val();
-                
+
                 if( carPrice == ""){
                     ui_alert('请输入购车价格');
                     return;
@@ -107,34 +107,35 @@
 						'price': carPrice,
                         'mobile': mobile
                     },
-                    success: function(resp) { 
+                    success: function(resp) {
                         if(resp.code == 1){
                             ui_alert("订单创建成功!<br>请扫码进行客户授信");
                             var id = resp.data.id;
                         }else{
                             if (typeof(resp.msg) == 'string') {
                                 ui_alert(resp.msg);
-                            }  
+                            }
                         }
                         if(id){
+                            console.log(carPrice,mobile);
                             ajax_jquery({
                                 url: apiUrl + '/api/order/getQRCode',
                                 data: {
-                                    'id':id 
+                                    'id':id
                                 },
-                                success: function(resp) { 
+                                success: function(resp) {
                                     if(resp.code == 1){
-                                        $(".QRCodeImg").attr('src',resp.data.url); 
+                                        $(".QRCodeImg").attr('src',resp.data.url);
                                     }else{
                                         if (typeof(resp.msg) == 'string') {
                                             ui_alert(resp.msg);
-                                        }  
+                                        }
                                     }
                                 }
-                            }); 
+                            });
                         }
                     }
-                }); 
+                });
             });
         });
     </script>  

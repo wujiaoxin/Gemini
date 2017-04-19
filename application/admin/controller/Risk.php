@@ -51,4 +51,9 @@ class risk extends Admin {
 		$this->setMeta('黑名单');
 		return $this->fetch();
 	}
+
+	public function addBlacklist() {
+		$this->setMeta('黑名单');
+		return $this->fetch();
+	}
 }

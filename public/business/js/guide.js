@@ -130,6 +130,8 @@ var guide = function () {
                                 }
                             }
                         });
+                        $('#bank_account_name').val($('#name').val());
+                        $('#priv_bank_account_name').val($('#rep').val());
                     }
 
                     $(".alert").hide();

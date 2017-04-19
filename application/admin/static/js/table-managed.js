@@ -121,6 +121,127 @@ var TableManaged = function () {
             jQuery('#table-orderExamine_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
             // jQuery('#table-orderExamine_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
 
+            // 审核管理模块-订单列表table  id="table-blacklist"
+            $('#table-blacklist').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                configData
+            });
+
+            jQuery('#table-blacklist_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-blacklist_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-blacklist_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
+            // 财务管理模块-放款审核列表table  id="table-loanExamine"
+            $('#table-loanExamine').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                configData
+            });
+
+            jQuery('#table-loanExamine_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-loanExamine_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-loanExamine_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
+            // 财务管理模块-充值审核列表table  id="table-rechargeExamine"
+            $('#table-rechargeExamine').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                configData
+            });
+
+            jQuery('#table-rechargeExamine_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-rechargeExamine_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-rechargeExamine_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
+            // 财务管理模块-提现审核列表table  id="table-withdrawExamine"
+            $('#table-withdrawExamine').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                configData
+            });
+
+            jQuery('#table-withdrawExamine_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-withdrawExamine_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-withdrawExamine_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
+            // 财务管理模块-放款审核列表table  id="table-receivableExamine"
+            $('#table-receivableExamine').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                configData
+            });
+
+            jQuery('#table-receivableExamine_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-receivableExamine_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-receivableExamine_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
+            // 财务管理模块-平台资金列表table  id="table-transaction"
+            $('#table-transaction').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                configData
+            });
+
+            jQuery('#table-transaction_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-transaction_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-transaction_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
         }
     };
 }();
