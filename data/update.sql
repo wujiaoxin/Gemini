@@ -2,7 +2,7 @@
 -- add by fwj 20170418
 -- ----------------------------
 
-alter table gemini_member add desc varchar(255) DEFAULT '' COMMENT '商户描述';
+alter table gemini_member add `desc` varchar(255) DEFAULT '' COMMENT '商户描述';
 alter table gemini_member add tel varchar(255) DEFAULT '' COMMENT '固定电话';
 alter table gemini_member add realname varchar(20)  DEFAULT '' COMMENT '真实姓名';
 alter table gemini_member add paypassword varchar(255) DEFAULT '' COMMENT '支付密码';
@@ -14,11 +14,13 @@ alter table gemini_member add headerimgurl varchar(1024)  DEFAULT '' COMMENT '�
 alter table gemini_dealer  add idno varchar(20) DEFAULT '' COMMENT '法人身份证号码';
 alter table gemini_dealer  add is_old tinyint(1) DEFAULT 0  COMMENT '证照状态';
 alter table gemini_dealer  add money numeric(20,2) DEFAULT 0  COMMENT '总金额';
-alter table gemini_dealer  add lines numeric(20,2) DEFAULT 0  COMMENT '信用额度';
+alter table gemini_dealer  add `lines` numeric(20,2) DEFAULT 0  COMMENT '信用额度';
+alter table gemini_dealer  add lines_ky numeric(20,2) DEFAULT 0  COMMENT '可用额度';
 alter table gemini_dealer  add b_money numeric(20,2) DEFAULT 0  COMMENT '保证金金额';
 alter table gemini_dealer  add rep_idcard_back_pic int(11)  DEFAULT NULL  COMMENT '法人身份证反面照片';
 alter table gemini_dealer  add lic_validity varchar(20) DEFAULT '' COMMENT '营业期限';
 alter table gemini_dealer  add lock_money numeric(20,2) DEFAULT 0  COMMENT '冻结资金';
+
 
 alter table gemini_order  add mid int(11) DEFAULT 0  COMMENT '车商id';
 alter table gemini_order  add endtime int(11) NOT NULL  COMMENT '借款期限';
