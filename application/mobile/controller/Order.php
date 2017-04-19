@@ -630,17 +630,17 @@ class Order extends Base {
 	// 车商员工订单页
 	public function indexDealer() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('indexDealer');
 	}
 	// 注册补充
 	public function newOrder() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('newOrder');
 	}
 	// 客户授权
 	public function customerAuth() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('customerAuth');
 	}
 	// 倒计时页面
 	public function countdown() {
@@ -650,12 +650,12 @@ class Order extends Base {
 	//订单信息提交
 	public function orderSupplement() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('orderSupplement');
 	}
 	//订单查看页面
 	public function viewOrder() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('viewOrder');
 	}
 
 }

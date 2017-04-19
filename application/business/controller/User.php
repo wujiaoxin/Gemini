@@ -55,7 +55,7 @@ use app\business\controller\Baseness;
 				'infoStr' => json_encode($members),
 		);
 		$this->assign($data);
-		return $this->fetch();
+		return $this->fetch('myStaff');
 	}
 	/*
 	 * 商家操作员工是否有效
@@ -77,7 +77,7 @@ use app\business\controller\Baseness;
 		}
 	}
 	public function newStaff() {
-		return $this->fetch();
+		return $this->fetch('newStaff');
 	}
 	/*
 	 * 商户新增员工接口
@@ -163,7 +163,7 @@ use app\business\controller\Baseness;
 				'infoStr'=>json_encode($info)
 			);
 		$this->assign($data);
-		return $this->fetch();
+		return $this->fetch('myShop');
 	}
 
 	public function loanItem() {
@@ -202,7 +202,7 @@ use app\business\controller\Baseness;
 			}
 			return json($resp);
 		}
-		return $this->fetch();
+		return $this->fetch('loanItem');
 	}
 
 	public function repayItem() {
@@ -248,7 +248,7 @@ use app\business\controller\Baseness;
 				);
 			$this->assign($data);
 		}
-		return $this->fetch();
+		return $this->fetch('repayItem');
 	}
 
 	public function payItem() {
@@ -335,7 +335,7 @@ use app\business\controller\Baseness;
 				);
 			$this->assign($data);
 		}
-		return $this->fetch();
+		return $this->fetch('payItem');
 	}
 	
 	//设置交易密码
