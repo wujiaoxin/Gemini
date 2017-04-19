@@ -43,7 +43,9 @@ class Collect extends Api {
 	public function contact($contact = '') {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-
+		
+		$uid = session('user_auth.uid');
+		saveCollectData("uid:".$uid. "\r\ncontact:" .$contact);
 		
 		$resp['code'] = 1;
 		$resp['msg'] = '提交成功';
@@ -56,6 +58,8 @@ class Collect extends Api {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 
+		$uid = session('user_auth.uid');
+		saveCollectData("uid:".$uid. "\r\nmessage:".$message);
 		
 		$resp['code'] = 1;
 		$resp['msg'] = '提交成功';
@@ -64,10 +68,12 @@ class Collect extends Api {
 	}
 
 	
-	public function device($platform = null, $device = null, $imei = null, $lanip = null, $SSID = null, $mac = null) {
+	public function device($platform = null, $device = null, $imei = null) {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-
+		
+		$uid = session('user_auth.uid');
+		saveCollectData("uid:".$uid. "\r\nplatform:" .$platform. "\r\ndevice:" . $device. "\r\nimei:" . $imei);
 		
 		$resp['code'] = 1;
 		$resp['msg'] = '提交成功';
@@ -78,7 +84,8 @@ class Collect extends Api {
 	public function location($longitude = '', $latitude = null, $addr = null) {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-
+		$uid = session('user_auth.uid');
+		saveCollectData("uid:".$uid. "\r\nlongitude:" .$longitude. "\r\nlatitude:" .$latitude. "\r\naddr:" . $addr );
 		
 		$resp['code'] = 1;
 		$resp['msg'] = '提交成功';
@@ -89,7 +96,9 @@ class Collect extends Api {
 	public function network($lanip = null, $SSID = null, $mac = null) {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-
+		
+		$uid = session('user_auth.uid');
+		saveCollectData("uid:".$uid. "\r\nlanip:" .$lanip. "\r\nSSID:" .$SSID. "\r\nmac:" . $mac );
 		
 		$resp['code'] = 1;
 		$resp['msg'] = '提交成功';
