@@ -14,7 +14,7 @@ class Login extends Base {
 		if (IS_POST) {
 			$resp["code"] = 0;
 			$resp["msg"] = '未知错误！';
-			
+
 			if (!$mobile || !$password) {
 				$resp["code"] = 0;
 				$resp["msg"] = '用户名或者密码不能为空！';
@@ -67,6 +67,10 @@ class Login extends Base {
 		}else{
 			db('dealer')->where('mobile',$mobile)->setField('status','3');
 		}
+		return $this->fetch();
+	}
+
+	public function protocal(){
 		return $this->fetch();
 	}
 }

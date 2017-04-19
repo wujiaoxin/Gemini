@@ -117,7 +117,7 @@
 				<label class="control-label">交易密码</label>
 				<div class="controls">
 					<input id="payPassword" type="password" class="m-wrap" maxlength="6">
-				</div>	
+				</div>
 			</div>
 		</div>
 	</div>
@@ -131,7 +131,7 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
-<script type="text/javascript" src="/public/business/js/table-managed.js"></script>    
+<script type="text/javascript" src="/public/business/js/table-managed.js"></script>
 <script>
 	function tpl(data){
 		var html = '';
@@ -178,7 +178,7 @@
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
 	                    return false;
-	                }                 
+	                }
 	            }
 	        }
 		});
@@ -187,7 +187,7 @@
 	$('#bankcard').val(info.bank_account_id);
 	$('#priv_bankcard').val(info.priv_bank_account_id);
 
-	jQuery(document).ready(function() {       
+	jQuery(document).ready(function() {
 	   // App.init();
 	   TableManaged.init();
 	   ajaxRepayItem(0,0,0);
