@@ -159,7 +159,7 @@ function modify_account($data,$uid,$name=0,$money_type=0,$type=0,$memod=0){
 	}
 }
 /*
-**
+**查询车商名称
 */
 function serch_name($uid){
 	$result = db('dealer')->alias('d')->field('d.name as dealer_name')->join('__MEMBER__ m','d.mobile = m.mobile')->where('m.uid',$uid)->find();
@@ -167,3 +167,11 @@ function serch_name($uid){
 	return $result['dealer_name'];
 
 }
+/*
+**查询车商银行卡信息
+*/
+ function serch_bank($uid){
+ 	/*$mobile = db('member')->field('mobile')->where('uid',$uid)->find();
+ 	$result = db('dealer')->where('mobile',$mobile['mobile'])->find();
+ 	return $result;*/
+ }

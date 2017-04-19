@@ -28,7 +28,7 @@ class Login extends Base {
 				$resp["code"] = 1;
 				$resp["msg"] = '登录成功！';
 				session("mobile", $mobile);
-				session("uid", $uid);
+				// session("uid", $uid);
 				return json($resp);
 			} else {
 				switch ($uid) {
@@ -60,7 +60,13 @@ class Login extends Base {
 	}
 	public function waiting(){
 		$mobile = session('mobile');
-		db('dealer')->where('mobile',$mobile)->setField('status','3');
+		$status = db('dealer')->field('status')->where('mobile',$mobile)->find();
+		// var_dump($status);die;
+		if ($status['status'] == '1') {
+			$this->redirect(url('index/index'));
+		}else{
+			db('dealer')->where('mobile',$mobile)->setField('status','3');
+		}
 		return $this->fetch();
 	}
 }

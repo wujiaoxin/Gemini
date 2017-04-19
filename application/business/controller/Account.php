@@ -71,6 +71,7 @@ class Account extends Baseness {
 		}else{
 			$mobile = session("mobile");
       		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code')->where('m.mobile',$mobile)->find();
+      		// var_dump($account);die;
 	      	if ($account){
 	            $data['infoStr'] = json_encode($account);
 	            $data = array(
@@ -90,7 +91,7 @@ class Account extends Baseness {
 	
 	public function balance() {
 	    $mobile = session('mobile');
-	    $uid = session('uid');
+	    $uid = session('user_auth.uid');
 	    if (IS_POST) {
 	    	$data = input('post.');
 	    	// var_dump($data);die;
@@ -157,7 +158,7 @@ class Account extends Baseness {
 	public function recharge() {
 		if(IS_POST){
 			$data = input('post.');
-			$uid = session('uid');
+			$uid = session('user_auth.uid');
 			// var_dump($data);die;
 			if (is_numeric($data['money'])){
 			    modify_account($data,$uid,'3','0','member_money','INSERT');
@@ -174,7 +175,7 @@ class Account extends Baseness {
      * */
   	public function withdraw() {
 		$mobile = session('mobile');
-		$uid = session('uid');
+		$uid = session('user_auth.uid');
 		if(IS_POST){
 			$data = input('post.');
 			// var_dump($data);die;
@@ -224,7 +225,7 @@ class Account extends Baseness {
 
 	public function bankcard() {
 		$mobile = session('mobile');
-		$uid = session('uid');
+		$uid = session('user_auth.uid');
 		$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 		$data = array(
 				'info'=>$bankcard,
@@ -235,7 +236,7 @@ class Account extends Baseness {
 		return $this->fetch();
 	}
 	public function transaction() {
-		$uid = session('uid');
+		$uid = session('user_auth.uid');
 		if (IS_POST) {
 			$data = input('post.');
 			// var_dump($data);die;

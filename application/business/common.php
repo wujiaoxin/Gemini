@@ -97,7 +97,7 @@
   **生成还款列表
   */
   function set_order_repay($order_id){
-    $uid = session('uid');
+    $uid = session('user_auth.uid');
     $order = db('order')->where('sn',$order_id)->select();
     if ($order) {
       $repay_time = time()+$order[0]['endtime']*24*60*60;
@@ -121,7 +121,7 @@
   **订单处理
   */
   function cl_order($o_id,$bank_name){
-    $uid = session('uid');
+    $uid = session('user_auth.uid');
     // echo $o_id;die;
     $order = db('order')->where('sn',$o_id)->select();
     if ($order) {
@@ -203,18 +203,24 @@
     if($type == 'money'){
       //可用资金(记录为可提订单金额)
         $map = array(
-          'mobile'=>$mobile,
-          'status'=>'11'
+          'mid'=>$uid,
+          'finance'=>'2'
           );
+        // var_dump($map);die;
         $money = db('order')->where($map)->sum('loan_limit');
+        // var_dump($money);die;
       //借款金额（记录为状态未审核通过）
         $where = array(
-            'mobile'=>$mobile,
-            'status'=>'12'
+            'mid'=>$uid,
+            'status'=>'1'
           );
         $money_jk = db('order')->where($where)->sum('loan_limit');
       //待还资金
-        $repay_money = db('order_repay')->where('mid',$uid)->sum('repay_money');
+        $where_repay = array(
+          'mid'=>$uid,
+          'status'=>'-1'
+          );
+        $repay_money = db('order_repay')->where($where_repay)->sum('repay_money');
         // 借款中的订单
         $order_loan = db('order')->where('mid',$uid)->count('id');
         //还款中的订单

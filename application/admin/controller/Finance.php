@@ -59,7 +59,7 @@ class Finance extends Admin {
 	public function recharge() {
 		if (IS_POST) {
 			$data = input('post.');
-			$order = model('order');
+			/*$order = model('order');
 			$result = $order->save();
 			if ($result) {
 				$resp['code'] = 1;
@@ -67,9 +67,17 @@ class Finance extends Admin {
 			}else{
 				$resp['code'] = 1;
 				$resp['msg'] = '充值审核失败!';
-			}
+			}*/
 		}else{
-
+			$result = db('payment')->order('create_time DESC,is_pay ASC')->select();
+			foreach ($result as $k => $v) {
+				$result[$k]['dealer_name'] = serch_name($v['user_id']);
+			}
+			// var_dump($result);die;
+			$data = array(
+				'infoStr' => json_encode($result)
+			);
+			$this->assign($data);
 		}
 		return $this->fetch();
 	}
@@ -88,6 +96,16 @@ class Finance extends Admin {
 				$resp['msg'] = '提现审核失败!';
 			}
 		}else{
+			$result = db('carry')->select();
+			foreach ($result as $k => $v) {
+				// $resul = serch_bank($v['user_id']);
+				// $result[$k]['bank_account_name'] = $resul[''];
+			}
+			// var_dump($result);die;
+			$data = array(
+				'infoStr' => json_encode($result)
+			);
+			$this->assign($data);
 
 		}
 		return $this->fetch();
