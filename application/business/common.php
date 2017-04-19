@@ -22,18 +22,18 @@
   */
   function modify_account($data,$uid,$name=0,$money_type=0,$type=0,$memod=0){
     if(isset($data['money']) && $memod == 'INSERT'){
-        if($type == 'rechange'){
-           $pay_id = 'vpdai'.mt_rand(0,999).time();
+        if($type == 'recharge'){
+           $sn = 'vpdai'.mt_rand(0,999).date('YmdHis', time());
            $rec_money = array(
-                'user_id'=>$uid,
-                'pay_id'=>$pay_id,
-                'is_pay'=>'-1',
+                'uid'=>$uid,
+                'sn'=>$sn,
+                'status'=>'-1',
                 'money'=>$data['money'],
-                'payment_type'=>$data['pay_type'],
+                'type'=>$data['type'],
                 'descr'=>$data['descr'],
                 'create_time'=>time()
             );
-            $result = db('payment')->insert($rec_money);
+            $result = db('recharge')->insert($rec_money);
             if ($result){
                 $resp["code"] = 1;
                 $resp["msg"] = '处理中';
@@ -58,10 +58,10 @@
         if ($type == 'withdraw') {
           $data_moneys = array(
                 'user_id'=>$uid,
-                'carry_billon'=>$data['carry_billon'],
-                'is_pay'=>$data['is_pay'],
+                'sn'=>$data['sn'],
+                'status'=>$data['status'],
                 'money'=>$data['money'],
-                'pay_type'=>'0',
+                'type'=>'0',
                 'bank_account'=>$data['bank_name'],
                 'update_time'=>$data['update_time'],
                 'create_time'=>time()
@@ -93,30 +93,7 @@
       return $result;
     }
   }
-  /*
-  **生成还款列表
-  */
-  function set_order_repay($order_id){
-    $uid = session('user_auth.uid');
-    $order = db('order')->where('sn',$order_id)->select();
-    if ($order) {
-      $repay_time = time()+$order[0]['endtime']*24*60*60;
-      $order_repay = array(
-          'order_id'=>$order_id,
-          'mid'=>$uid,
-          'repay_money'=>$order[0]['loan_limit'],
-          'manage_money'=>$order[0]['fee'],
-          'repay_time'=>$repay_time,
-          'status'=>'-1',
-          'has_repay'=>'0',
-          'loadtime'=>$order[0]['endtime'],
-          'true_repay_money'=>'0',
-          'true_repay_time'=>'0',
-        );
-      $result = db('order_repay')->insert($order_repay);
-      return $result;
-    }
-  }
+  
   /*
   **订单处理
   */
@@ -126,8 +103,8 @@
     $order = db('order')->where('sn',$o_id)->select();
     if ($order) {
       $datas =array(
-          'carry_billon'=>$o_id,
-          'is_pay'=>'0',
+          'sn'=>$o_id,
+          'status'=>'0',
           'money'=>$order['0']['loan_limit'],
           'bank_name'=>$bank_name,
           'create_time'=>time(),
@@ -137,8 +114,8 @@
       // var_dump($datas);die;
       modify_account($datas,$uid,'4','1','withdraw','INSERT');
       modify_account($datas,$uid,'4','1','member_money','INSERT');
-      $result = set_order_repay($o_id);
-      db('order')->where('sn',$o_id)->setField('finance', '3');
+      // $result = set_order_repay($o_id);
+      db('order')->where('sn',$o_id)->setField('finance', '4');
     }
     return $result;
   }
@@ -216,7 +193,11 @@
           );
         $money_jk = db('order')->where($where)->sum('loan_limit');
       //待还资金
-        $repay_money = db('order_repay')->where('mid',$uid)->sum('repay_money');
+        $where_repay = array(
+          'mid'=>$uid,
+          'status'=>'-1'
+          );
+        $repay_money = db('order_repay')->where($where_repay)->sum('repay_money');
         // 借款中的订单
         $order_loan = db('order')->where('mid',$uid)->count('id');
         //还款中的订单

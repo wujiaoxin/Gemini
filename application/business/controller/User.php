@@ -48,7 +48,7 @@ use app\business\controller\Baseness;
 
 	public function myStaff() {
 		//商家员工
-		$uid = session("uid");
+		$uid = session('user_auth.uid');
 		$members = db('member')->alias('m')->join('__DEALER__ d','m.invite_code = d.invite_code')->field("m.uid,m.realname,m.mobile,m.reg_time,m.status,m.access_group_id")->select();
 		$data = array(
 				'info'    => $members,
@@ -86,12 +86,18 @@ use app\business\controller\Baseness;
 		// var_dump($GLOBALS);die;
 		if (IS_POST){
 			$data = input('post.');
+			// var_dump($data);die;
 			if ($data) {
 				$invit = db('Dealer')->alias('d')->field('d.invite_code')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
+				// $data = $this->request->param();
 				$user = model('User');
-				$uid = $user->registerByMobile($data['mobile'], $data['password']);
+				//创建注册用户
+				// var_dump($data);die;
+				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
+				// echo $uid;die;
 				if ($uid > 0) {
 					$userinfo['realname'] = $data['name'];
+					$userinfo['nickname'] = $data['name'];
 					$userinfo['mobile'] = $data['mobile'];
 					$userinfo['status'] = 1;
 					$userinfo['invite_code'] = $invit['invite_code'];
@@ -99,6 +105,7 @@ use app\business\controller\Baseness;
 					$userinfo['desc'] = $data['remark'];
 					$userinfo['tel'] = $data['telphone'];
 					$userinfo['reg_time'] = time();
+					$userinfo['last_login_ip'] = get_client_ip(1);
 					//保存信息
 					if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 						$resp["code"] = 0;
@@ -161,6 +168,7 @@ use app\business\controller\Baseness;
 
 	public function loanItem() {
 		$uid = session('user_auth.uid');
+		// var_dump($_SESSION);die;
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
@@ -177,6 +185,7 @@ use app\business\controller\Baseness;
 				$begintime = $result['begintime'];
 				$result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
 			}else{
+				// var_dump($map);die;
 				$result = db('order')->where($map)->select();
 			}
 			

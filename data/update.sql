@@ -1,8 +1,8 @@
 -- ----------------------------
 -- add by fwj 20170418
 -- ----------------------------
-
-alter table gemini_member add `desc` varchar(255) DEFAULT '' COMMENT '商户描述';
+-- 
+alter table gemini_member add desc varchar(255) DEFAULT '' COMMENT '商户描述';
 alter table gemini_member add tel varchar(255) DEFAULT '' COMMENT '固定电话';
 alter table gemini_member add realname varchar(20)  DEFAULT '' COMMENT '真实姓名';
 alter table gemini_member add paypassword varchar(255) DEFAULT '' COMMENT '支付密码';
@@ -14,53 +14,50 @@ alter table gemini_member add headerimgurl varchar(1024)  DEFAULT '' COMMENT '�
 alter table gemini_dealer  add idno varchar(20) DEFAULT '' COMMENT '法人身份证号码';
 alter table gemini_dealer  add is_old tinyint(1) DEFAULT 0  COMMENT '证照状态';
 alter table gemini_dealer  add money numeric(20,2) DEFAULT 0  COMMENT '总金额';
-alter table gemini_dealer  add `lines` numeric(20,2) DEFAULT 0  COMMENT '信用额度';
-alter table gemini_dealer  add lines_ky numeric(20,2) DEFAULT 0  COMMENT '可用额度';
+alter table gemini_dealer  add lines numeric(20,2) DEFAULT 0  COMMENT '信用额度';
 alter table gemini_dealer  add b_money numeric(20,2) DEFAULT 0  COMMENT '保证金金额';
 alter table gemini_dealer  add rep_idcard_back_pic int(11)  DEFAULT NULL  COMMENT '法人身份证反面照片';
 alter table gemini_dealer  add lic_validity varchar(20) DEFAULT '' COMMENT '营业期限';
 alter table gemini_dealer  add lock_money numeric(20,2) DEFAULT 0  COMMENT '冻结资金';
-
 
 alter table gemini_order  add mid int(11) DEFAULT 0  COMMENT '车商id';
 alter table gemini_order  add endtime int(11) NOT NULL  COMMENT '借款期限';
 alter table gemini_order  add fee int(11) NOT NULL  COMMENT '借款费用';
 alter table gemini_order  add credit_status int(11) DEFAULT 0  COMMENT '授信状态:1.待授信;2.授信中;3.已授信';
 
+-- 修复充值字段表和提现字段表
 
-
-
-DROP TABLE IF EXISTS `gemini_payment`;
-CREATE TABLE `gemini_payment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL COMMENT '充值商户id',
-  `pay_id` int(11) NOT NULL COMMENT '充值订单号',
-  `is_pay` int(11) NOT NULL DEFAULT '0' COMMENT '是否充值:0未充值,1已充值,-1审核中',
+DROP TABLE IF EXISTS `gemini_recharge`;
+CREATE TABLE `gemini_recharge` (
+  `uid` int(11) NOT NULL COMMENT '充值商户id',
+  `sn` varchar(255) NOT NULL COMMENT '充值订单号',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '是否充值:0审核失败,1已充值,-1审核中',
   `money` int(11) NOT NULL COMMENT '充值金额',
-  `pay_type` tinyint(1) NOT NULL COMMENT '支付方式',
+  `type` tinyint(1) NOT NULL COMMENT '支付方式',
   `create_time` int(11) NOT NULL COMMENT '充值创建时间',
   `bank_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
   `descr` varchar(255) NOT NULL COMMENT '充值备注',
   `payment_type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '充值方式:1线下充值',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`sn`),
+  KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8  COMMENT='充值记录表';
-
 
 DROP TABLE IF EXISTS `gemini_carry`;
 CREATE TABLE `gemini_carry` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL COMMENT '提现商户id',
-  `carry_billon` int(11) NOT NULL COMMENT '提现订单号',
-  `is_pay` int(11) NOT NULL DEFAULT 0 COMMENT '是否提现:0未提现,1已提现',
+  `uid` int(11) NOT NULL DEFAULT '0' COMMENT '提现商户id',
+  `sn` varchar(255) NOT NULL DEFAULT '0' COMMENT '提现订单号',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '是否提现:-1,提现处理中 0未提现,1已提现',
   `money` int(11) NOT NULL COMMENT '提现金额',
-  `pay_type` tinyint(1) NOT NULL COMMENT '提现方式',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '提现方式',
   `create_time` int(11) NOT NULL COMMENT '提现创建时间',
   `update_time` int(11) NOT NULL COMMENT '更新提现时间',
   `bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
-  `fee` int(11) DEFAULT 0 COMMENT '提现费用',
+  `fee` int(11) DEFAULT '0' COMMENT '提现费用',
   `serial_num` varchar(255) DEFAULT '0' COMMENT '提现银行流水',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8  COMMENT='提现表';
+  `descr` varchar(255) NOT NULL DEFAULT '0' COMMENT '提现备注',
+  PRIMARY KEY (`sn`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='提现表';
 
 DROP TABLE IF EXISTS `gemini_dealer_money`;
 CREATE TABLE `gemini_dealer_money` (

@@ -71,6 +71,7 @@ class Account extends Baseness {
 		}else{
 			$mobile = session("mobile");
       		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code')->where('m.mobile',$mobile)->find();
+      		// var_dump($account);die;
 	      	if ($account){
 	            $data['infoStr'] = json_encode($account);
 	            $data = array(
@@ -94,9 +95,9 @@ class Account extends Baseness {
 	    if (IS_POST) {
 	    	$data = input('post.');
 	    	// var_dump($data);die;
-	    	$map['user_id'] = $uid;
+	    	$map['uid'] = $uid;
 	    	if ($data['status']) {
-				$map['is_pay'] = $data['status'];
+				$map['status'] = $data['status'];
 			}
 	    	if ($data['type'] == '2') {
 	    		if ($data['dateRange']) {
@@ -123,20 +124,21 @@ class Account extends Baseness {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$payment = db('payment')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+					$recharge = db('recharge')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
 				}else{
-					$payment = db('payment')->where($map)->select();
+					$recharge = db('recharge')->where($map)->select();
 				}
-				if ($payment) {
+				if ($recharge) {
 					$resp['code'] = '1';
 					$resp['msg'] = '数据正常';
 					$resp['type'] = '1';
-					$resp['data']= $payment;
+					$resp['data']= $recharge;
 				}else{
 					$resp['code'] = '0';
 					$resp['msg'] = '未查到数据';
 				}
 	    	}
+	    	// var_dump($resp);die;
 			return json($resp);
 	    	
 	    }else{
@@ -161,7 +163,7 @@ class Account extends Baseness {
 			// var_dump($data);die;
 			if (is_numeric($data['money'])){
 			    modify_account($data,$uid,'3','0','member_money','INSERT');
-			    $resp = modify_account($data,$uid,'rechange','INSERT');
+			    $resp = modify_account($data,$uid,'recharge','INSERT');
 			    // var_dump($resp);die;
 			    return json($resp);
 			}
@@ -284,7 +286,7 @@ class Account extends Baseness {
 			}
 
 		}
-		return $this->fetch();
+		return $this->fetch('lineOfCredit');
 	}
 	public function creditRecord(){
 		if (IS_POST) {
@@ -292,7 +294,7 @@ class Account extends Baseness {
 		}else{
 			
 		}
-
+		return $this->fetch('creditRecord');
 	}
   	public function info() {
 		$mobile = session('mobile');
