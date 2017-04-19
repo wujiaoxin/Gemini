@@ -105,3 +105,17 @@ function httpPost($url, $param){
 	curl_close($ch);		
 	return $resp;
 }
+
+
+function saveCollectData( $data = "" ){
+	$filename = RUNTIME_PATH."/collect_data.txt";
+	$handle = fopen($filename,"a+");
+	if($handle){
+		fwrite($handle, "==========================\r\n");
+		fwrite($handle, date("Y-m-d h:i:sa")."\r\n");
+		fwrite($handle, "==========================\r\n");
+		fwrite($handle, $data."\r\n");
+		fwrite($handle, "==========================\r\n\r\n");
+	}
+	fclose($handle);
+}

@@ -61,6 +61,10 @@ class Open extends Base {
 		return view();
 	}
 	
+	public function protocol() {
+		return view();
+	}
+	
 
 	
 }
