@@ -44,20 +44,10 @@
                 return $resp;
             }
         }
-        if($type == 'member_money'){
-          $data_money = array(
-              'uid'=>$uid,
-              'account_money'=>$data['money'],
-              'desc'=>$data['descr'],
-              'type'=>$name,
-              'deal_other'=>$money_type,
-              'create_time'=>time()
-          );
-          db('dealer_money')->insert($data_money);
-        }
         if ($type == 'withdraw') {
+          // var_dump($data);die;
           $data_moneys = array(
-                'user_id'=>$uid,
+                'uid'=>$uid,
                 'sn'=>$data['sn'],
                 'status'=>$data['status'],
                 'money'=>$data['money'],
@@ -67,6 +57,7 @@
                 'create_time'=>time()
             );
           $result = db('carry')->insert($data_moneys);
+          // echo $result;die;
           if ($result){
                 $resp["code"] = 1;
                 $resp["msg"] = '处理中';
@@ -101,6 +92,7 @@
     $uid = session('user_auth.uid');
     // echo $o_id;die;
     $order = db('order')->where('sn',$o_id)->select();
+    // var_dump($order);die;
     if ($order) {
       $datas =array(
           'sn'=>$o_id,
@@ -111,11 +103,16 @@
           'update_time'=>'0',
           'descr'=>'提现申请'
         );
+      // echo $uid;
       // var_dump($datas);die;
       modify_account($datas,$uid,'4','1','withdraw','INSERT');
-      modify_account($datas,$uid,'4','1','member_money','INSERT');
+
+      //提现资金记录
+
+      money_record($datas, $uid, 4, 1);
+
       // $result = set_order_repay($o_id);
-      db('order')->where('sn',$o_id)->setField('finance', '4');
+      $result = db('order')->where('sn',$o_id)->setField('finance', '4');
     }
     return $result;
   }
@@ -171,7 +168,7 @@
     }
   }
   /*
-  ** 资金记录
+  ** 首页资金记录
   ** uid 车商uid
   ** type 资金类型
   */
@@ -181,7 +178,7 @@
       //可用资金(记录为可提订单金额)
         $map = array(
           'mid'=>$uid,
-          'finance'=>'2'
+          'finance'=>'3'
           );
         // var_dump($map);die;
         $money = db('order')->where($map)->sum('loan_limit');
@@ -209,9 +206,6 @@
           'order_loan_num'=>$order_loan,
           'order_repay_num'=>$order_repay,
           );
-    }
-    if ($type =='lines') {
-      # code...
     }
     return $data;
   }
@@ -314,4 +308,53 @@
       'begintime'=>$begintime
       );
     return $result;
+  }
+
+
+
+  /*
+  ** 资金记录
+  ** data array数据
+  ** uid 交易者 
+  ** type 交易类型
+  ** name 交易对象
+  */
+  function money_record($data, $uid, $type = 0, $name){
+
+    // var_dump($data);die;
+    //冻结资金
+    
+    $dealer_money = db('dealer')->alias('d')->field('money,lock_money')->join('__MEMBER__ m','d.mobile = m.mobile')->where('uid', $uid)->find();
+    
+
+    //待收金额和可用
+    $map =array(
+
+      'finance' => '3',
+
+      'mid'=>$uid
+
+      );
+    $repay_moneys = db('order')->where($map)->sum('loan_limit');
+    // var_dump($repay_money);die;
+    //总金额
+    $total_money = $dealer_money['money'] + $dealer_money['lock_money'] + $repay_moneys ;
+
+    $info = array(
+
+      'uid'=>$uid,
+      'type'=> $type,
+      'deal_other'=>$name,
+      'create_time'=>time(),
+      'total_money'=>$total_money,
+      'account_money'=>$data['money'],
+      'use_money'=>$dealer_money['money'],
+      'lock_money'=>$dealer_money['lock_money'],
+      'repay_money'=>$repay_moneys,
+      'descr'=>$data['descr'],
+      );
+    // var_dump($info);die;
+    $result = db('dealer_money')->insert($info);
+    return $result;
+
   }

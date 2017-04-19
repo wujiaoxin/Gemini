@@ -162,7 +162,9 @@ class Account extends Baseness {
 			$uid = session('user_auth.uid');
 			// var_dump($data);die;
 			if (is_numeric($data['money'])){
-			    modify_account($data,$uid,'3','0','member_money','INSERT');
+
+				//加入资金记录
+				money_record($data, $uid, 3, 0);
 			    $resp = modify_account($data,$uid,'recharge','INSERT');
 			    // var_dump($resp);die;
 			    return json($resp);
