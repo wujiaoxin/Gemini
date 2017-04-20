@@ -19,24 +19,35 @@ class Collect extends Api {
 	}
 
 	public function collected() {
-		$resp['code'] = 0;
-		$resp['msg'] = '未知错误';
+		$resp = '{
+				"code": 1,
+				"msg": "获取成功！",
+				"data": {
+					"contact": {
+						"updateTime": 1491906569,
+						"needUpdate": 0
+					},
+					"message": {
+						"updateTime": null,
+						"needUpdate": 1
+					},
+					"device": {
+						"updateTime": 1491906569,
+						"needUpdate": 0
+					},
+					"location": {
+						"updateTime": 1491906569,
+						"needUpdate": 1
+					},
+					"network": {
+						"updateTime": 1491906569,
+						"needUpdate": 0
+					}
+				}
+			}';
 		
-		$data = array( 'contact' => 1,
-               'message' => 1,
-               'device' => 1,
-               'location' => 1,
-			   'network' => 1,
-               'updatetime' => time()
-			   );
-		
-		//$data["id"] = "1001";
-		
-		$resp['code'] = 1;
-		$resp['msg'] = '获取成功';
-		$resp['data'] = $data;
- 
-		return json($resp);
+		$resp = json_decode($resp);
+		return $resp;
 	}
 	
 

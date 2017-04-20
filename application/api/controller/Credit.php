@@ -24,6 +24,8 @@ class Credit extends Api {
 			return json($resp);
 		}
 		
+		//TODO:未实名认证判断
+		
 		$idcard = $userInfo["idcard"];
 		$mobile = $userInfo["mobile"];
 		$name = $userInfo["realname"];
@@ -44,6 +46,8 @@ class Credit extends Api {
 		
 		//var_dump($httpResp->code);
 		
+
+		
 		if($httpResp->code == 8209 || $httpResp->code == 12291){
 			$mobileCollectToken = $httpResp->data->token;
 			
@@ -56,7 +60,7 @@ class Credit extends Api {
 			session('mobileCollect', $mobileCollect);
 			
 		}else{
-			return json($resp);			
+			return json($resp);
 		}
 		
 		
@@ -67,17 +71,28 @@ class Credit extends Api {
 			);
 		
 		$httpResp = json_decode(httpPost($httpUrl,$httpParam));
-
-		//if(isSet($getTokenResp))
-		if($httpResp->code == 8209 || $httpResp->code == 12291){
+		$resp['data'] = $httpResp;
+		
+		if($httpResp->code == 12291){
 			$resp['code'] = 1;
-			$resp['msg'] = '提交成功';
-			//$resp['mobileCollectToken'] = $mobileCollectToken;
-			$resp['data'] = $httpResp;
-		}else{
-			$resp['data'] = $httpResp;
+			$resp['msg'] = '数据源授权成功';
+			return json($resp);
 		}
- 
+
+		if($httpResp->code == 12800){
+			$resp['code'] = 2;
+			$resp['msg'] = '输入短信验证码';
+			return json($resp);
+		}
+		if($httpResp->code == 12544 || $httpResp->code == 12545 ){
+			$resp['code'] = 3;
+			$resp['msg'] = $httpResp->message;
+			return json($resp);
+		}
+		
+		$resp['code'] = $httpResp->code;
+		$resp['msg'] = $httpResp->message;
+		
 		return json($resp);
 	}
 
@@ -102,22 +117,28 @@ class Credit extends Api {
 		$httpResp = json_decode(httpPost($httpUrl,$httpParam));
 		$resp['data'] = $httpResp;
 		
-		
-		
-		if($httpResp->code == 8209 || $httpResp->code == 12291){
+		if($httpResp->code == 12291){
 			$resp['code'] = 1;
-			$resp['msg'] = '提交成功';
-			$resp['data'] = $httpResp;
+			$resp['msg'] = '数据源授权成功';
+			return json($resp);
 		}
-		
+
 		if($httpResp->code == 12800){
-			$resp['code'] = 1001;
-			$resp['msg'] = '再次输入验证码';
-			$resp['data'] = $httpResp;
+			$resp['code'] = 2;
+			$resp['msg'] = '输入短信验证码';
+			return json($resp);
+		}
+		if($httpResp->code == 12544 || $httpResp->code == 12545 ){
+			$resp['code'] = 3;
+			$resp['msg'] = $httpResp->message;
+			return json($resp);
 		}
 		
-		//12291 
+		$resp['code'] = $httpResp->code;
+		$resp['msg'] = $httpResp->message;
+		
 		return json($resp);
+		
 	}
 	
 	
@@ -137,23 +158,67 @@ class Credit extends Api {
 		
 		$httpResp = json_decode(httpPost($httpUrl,$httpParam));
 		$resp['data'] = $httpResp;
-		$resp['code'] = 1;
-		$resp['msg'] = '提交成功';
- 
+		
+		if($httpResp->code == 12291){
+			$resp['code'] = 1;
+			$resp['msg'] = '数据源授权成功';
+			return json($resp);
+		}
+
+		if($httpResp->code == 12800){
+			$resp['code'] = 2;
+			$resp['msg'] = '输入短信验证码';
+			return json($resp);
+		}
+		if($httpResp->code == 12544 || $httpResp->code == 12545 ){
+			$resp['code'] = 3;
+			$resp['msg'] = $httpResp->message;
+			return json($resp);
+		}
+		
+		$resp['code'] = $httpResp->code;
+		$resp['msg'] = $httpResp->message;
+
 		return json($resp);
 	}
 	
 	
 	
 	public function results() {
-		$resp['code'] = 0;
-		$resp['msg'] = '未知错误';
+		//$resp['code'] = 0;
+		//$resp['msg'] = '未知错误';
 		
-		$data["id"] = "1001";
 		
-		$resp['code'] = 1;
-		$resp['msg'] = '获取成功';
-		$resp['data'] = $data;
+		$respStr = '{
+			"code": 1,
+			"msg": "获取成功",
+			"data": {
+				"name": "90贷",
+				"month": 36,
+				"downpay": 10000,
+				"loan": 2000,
+				"avgmonthpay": 3333,
+				"repay": [
+					{
+						"plan": "第一年",
+						"period": "1-12",
+						"monthpay": 7999
+					},
+					{
+						"plan": "第二年",
+						"period": "13-24",
+						"monthpay": 6999
+					},
+					{
+						"plan": "第三年",
+						"period": "25-36",
+						"monthpay": 6999
+					}
+				]
+			}
+		}';
+			
+		$resp = json_decode($respStr);
  
 		return json($resp);
 	}
