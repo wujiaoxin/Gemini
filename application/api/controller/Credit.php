@@ -185,14 +185,40 @@ class Credit extends Api {
 	
 	
 	public function results() {
-		$resp['code'] = 0;
-		$resp['msg'] = '未知错误';
+		//$resp['code'] = 0;
+		//$resp['msg'] = '未知错误';
 		
-		$data["id"] = "1001";
 		
-		$resp['code'] = 1;
-		$resp['msg'] = '获取成功';
-		$resp['data'] = $data;
+		$respStr = '{
+			"code": 1,
+			"msg": "获取成功",
+			"data": {
+				"name": "90贷",
+				"month": 36,
+				"downpay": 10000,
+				"loan": 2000,
+				"avgmonthpay": 3333,
+				"repay": [
+					{
+						"plan": "第一年",
+						"period": "1-12",
+						"monthpay": 7999
+					},
+					{
+						"plan": "第二年",
+						"period": "13-24",
+						"monthpay": 6999
+					},
+					{
+						"plan": "第三年",
+						"period": "25-36",
+						"monthpay": 6999
+					}
+				]
+			}
+		}';
+			
+		$resp = json_decode($respStr);
  
 		return json($resp);
 	}
