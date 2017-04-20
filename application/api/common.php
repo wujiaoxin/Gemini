@@ -1,5 +1,5 @@
 <?php
-use Firebase\JWT\JWT;
+//use Firebase\JWT\JWT;
 
 function sendSms($mobile, $content){
 	//TODO: move to config module;
@@ -48,23 +48,28 @@ function generateToken($uid = "", $sid = null){
 		"sid" => $sid
 	);
 	
+	$token = base64_encode(json_encode($token));
+	return $token;
+	
 	/**
 	 * IMPORTANT:
 	 * You must specify supported algorithms for your application. See
 	 * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
 	 * for a list of spec-compliant algorithms.
 	 */
-	$jwt = JWT::encode($token, $key);
-	//$decoded = JWT::decode($jwt, $key, array('HS256'));
-	//print_r($jwt);	
-	//print_r("\n");
-	return $jwt;
+	//$jwt = JWT::encode($token, $key);
+	////$decoded = JWT::decode($jwt, $key, array('HS256'));
+	////print_r($jwt);	
+	////print_r("\n");
+	//return $jwt;
 	
 }
 
 function decodedToken($jwt = ""){
 	$key = "gemini";
-	$decoded = JWT::decode($jwt, $key, array('HS256'));
+	
+	$decode = base64_decode($jwt);
+	//$decoded = JWT::decode($jwt, $key, array('HS256'));
 	//print_r($decoded);
 	return $decoded;
 }
