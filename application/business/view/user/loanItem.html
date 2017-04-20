@@ -19,7 +19,7 @@
 		<ul class="selectParm selectOrderType">
 			<li data='0' class="active" >全部</li>
 			<li data='1'>按揭垫资</li>
-			<li data='2'>车抵贷</a></li>
+			<li data='3'>车抵贷</a></li>
 		</ul>
 	</div>
 	<div class="select-block">
@@ -37,11 +37,10 @@
 		<span class="selectParm-title">交易状态:</span>
 		<ul class="selectParm selectOrderStatus">
 			<li data='0' class="active">全部</li>
-			<li data='1'>进件初审</li>
-			<li data='2'>资料审核</li>
-			<li data='3'>补充资料</li>
-			<li data='4'>审核失败</li>
-			<li data='5'>垫资放款</li>
+			<li data='3'>资料审核</li>
+			<li data='4'>额度审核</li>
+			<li data='2'>审核拒绝</li>
+			<li data='1'>审核通过</li>
 		</ul>
 	</div>
 </div>
@@ -92,13 +91,13 @@
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
 		  		+'<td>' + data[index].sn + '</td>'
-		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].fee) +'</td>'
 		  		+'<td>'+ data[index].endtime +'</td>'
-		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
 		  		 +'</tr>'
 			}
 		}

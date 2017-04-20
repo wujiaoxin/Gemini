@@ -302,13 +302,14 @@ use app\business\controller\Baseness;
 				}
 				
 				if ($data['status']) {
-					$map['status'] = $data['status'];
+					$map['finance'] = $data['status'];
 				}
+				// var_dump($map);die;
 				if ($data['dateRange']) {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$order_pay = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('status ASC')->select();
+					$order_pay = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('finance ASC')->select();
 				}else{
 					$order_pay = db('order')->where($map)->order('finance ASC')->select();
 				}

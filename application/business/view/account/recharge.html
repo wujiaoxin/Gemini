@@ -25,27 +25,6 @@
 							</select>
 						</div>
 					</div>
-					<!-- <div class="control-group">
-						<label class="control-label">选择账户</label>
-						<div class="controls">
-							<label class="radio line">
-								<div class="radio">
-									<span class="checked">
-										<input type="radio" name="optionsRadios1" value="1" checked>
-									</span>
-								</div>
-								银行账户1
-							</label>
-							<label class="radio line">
-								<div class="radio">
-									<span>
-										<input type="radio" name="optionsRadios1" value="2">
-									</span>
-								</div>
-								银行账户2
-							</label>
-						</div>
-					</div> -->
 					<div class="control-group">
 						<label class="control-label">充值备注</label>
 						<div class="controls">
@@ -56,14 +35,15 @@
 						<label class="control-label">温馨提示:</label>
 						<div class="controls">
 							<ol>
-								<li>----</li>
-								<li>----</li>
+								<li>充值/提现必须为开通网上银行的借记卡，不支持存折、信用卡充值。</li>
+								<li>充值成功后，可系统中查看充值状态以及可用金额。</li>
+								<li>严禁信用卡套现、虚假交易等行为。</li>
 							</ol>
 						</div>
 					</div>
 					<div class="form-actions">
 						<a id="rechargeBtn" class="btn blue"><i class="icon-ok"></i>确认提交</a>
-					</div>	
+					</div>
 				</form>
 			</div>
 		</div>
@@ -89,8 +69,8 @@ $(function(){
 	        url: apiUrl +'/business/account/recharge',
 	        data:{
 	        	'money': amount,
-	        	'pay_type': rechargeMode,
-	        	'descr': desc 
+	        	'recharge_type': rechargeMode,
+	        	'descr': desc
 	        },
 	        success:function(resp){
 	            if (resp.code == "1" ) {
@@ -100,7 +80,7 @@ $(function(){
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
 	                    return false;
-	                }                 
+	                }
 	            }
 	        }
 	    });

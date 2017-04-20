@@ -1,6 +1,10 @@
 /**
 Core script to handle the entire layout and base functions
 **/
+var g_orderType = {'1':'新车垫资','2':'二手车垫资','3':'车抵贷'};
+var g_orderStatus = {'-2':'编辑中','-1':'已撤回','1':'审核通过','2':'审核拒绝','3':'资料审核','4':'额度审核','5':'补充资料'};
+var g_financeStatus ={'1':'待支付订单费用','2':'支付完成','3':'放款中','4':'放款完成'};
+var g_repayStatus = {'-1':'未还','1':'已还','2':'逾期'};
 var apiUrl = "";
 var App = function () {
 
@@ -35,7 +39,7 @@ var App = function () {
         isIE8 = !! navigator.userAgent.match(/MSIE 8.0/);
         isIE9 = !! navigator.userAgent.match(/MSIE 9.0/);
         isIE10 = !! navigator.userAgent.match(/MSIE 10/);
-        
+
         if (isIE10) {
             jQuery('html').addClass('ie10'); // detect IE10 version
         }
@@ -107,31 +111,31 @@ var App = function () {
             $(window).resize(function() {
                 if(currheight == document.documentElement.clientHeight) {
                     return; //quite event since only body resized not window.
-                }                
+                }
                 if (resize) {
                     clearTimeout(resize);
-                }   
+                }
                 resize = setTimeout(function() {
-                    handleResponsive();    
-                }, 50); // wait 50ms until window resize finishes.                
+                    handleResponsive();
+                }, 50); // wait 50ms until window resize finishes.
                 currheight = document.documentElement.clientHeight; // store last body client height
             });
         } else {
             $(window).resize(function() {
                 if (resize) {
                     clearTimeout(resize);
-                }   
+                }
                 resize = setTimeout(function() {
                     // console.log('resize');
-                    handleResponsive();    
+                    handleResponsive();
                 }, 50); // wait 50ms until window resize finishes.
             });
-        }   
+        }
     }
 
     //* BEGIN:CORE HANDLERS *//
     // this function handles responsive layout on screen size resize or mobile device rotate.
-  
+
     var handleSidebarAndContentHeight = function () {
         var content = $('.page-content');
         var sidebar = $('.page-sidebar');
@@ -151,8 +155,8 @@ var App = function () {
             }
             if (height >= content.height()) {
                 content.attr('style', 'min-height:' + height + 'px !important');
-            } 
-        }          
+            }
+        }
     }
 
     var handleSidebarMenu = function () {
@@ -229,7 +233,7 @@ var App = function () {
             sidebarHeight = sidebarHeight - $('.footer').height();
         }
 
-        return sidebarHeight; 
+        return sidebarHeight;
     }
 
     var handleFixedSidebar = function () {
@@ -240,7 +244,7 @@ var App = function () {
                 destroy: true
             });
             menu.removeAttr('style');
-            $('.page-sidebar').removeAttr('style');            
+            $('.page-sidebar').removeAttr('style');
         }
 
         if ($('.page-sidebar-fixed').size() === 0) {
@@ -277,7 +281,7 @@ var App = function () {
             }
 
             body.removeClass('page-sidebar-closed').addClass('page-sidebar-hover-on');
-            $(this).addClass('page-sidebar-hovering');                
+            $(this).addClass('page-sidebar-hovering');
             $(this).animate({
                 width: sidebarWidth
             }, 400, '', function () {
@@ -304,7 +308,7 @@ var App = function () {
 
     var handleSidebarToggler = function () {
         // handle sidebar show/hide
-        $('.page-sidebar').on('click', '.sidebar-toggler', function (e) {            
+        $('.page-sidebar').on('click', '.sidebar-toggler', function (e) {
             var body = $('body');
             var sidebar = $('.page-sidebar');
 
@@ -346,7 +350,7 @@ var App = function () {
         // handle the search submit
         $('.sidebar-search .submit').on('click', function (e) {
             e.preventDefault();
-          
+
                 if ($('body').hasClass("page-sidebar-closed")) {
                     if ($('.sidebar-search').hasClass('open') == false) {
                         if ($('.page-sidebar-fixed').size() === 1) {
@@ -478,7 +482,7 @@ var App = function () {
 
         // fix tab content on tab shown
         $('body').on('shown', '.nav.nav-tabs.tabs-left a[data-toggle="tab"], .nav.nav-tabs.tabs-right a[data-toggle="tab"]', function(){
-            fixTabHeight($(this)); 
+            fixTabHeight($(this));
         });
 
         $('body').on('shown', '.nav.nav-tabs', function(){
@@ -566,10 +570,10 @@ var App = function () {
         if ($('body').hasClass('page-boxed') == false) {
             $('.layout-option', panel).val("fluid");
         }
-        
+
         $('.sidebar-option', panel).val("default");
         $('.header-option', panel).val("fixed");
-        $('.footer-option', panel).val("default"); 
+        $('.footer-option', panel).val("default");
 
         //handle theme layout
         var resetLayout = function () {
@@ -583,15 +587,15 @@ var App = function () {
 
             if ($('.page-container').parent(".container").size() === 1) {
                 $('.page-container').insertAfter('.header');
-            } 
+            }
 
-            if ($('.footer > .container').size() === 1) {                        
-                $('.footer').html($('.footer > .container').html());                        
-            } else if ($('.footer').parent(".container").size() === 1) {                        
+            if ($('.footer > .container').size() === 1) {
+                $('.footer').html($('.footer > .container').html());
+            } else if ($('.footer').parent(".container").size() === 1) {
                 $('.footer').insertAfter('.page-container');
             }
 
-            $('body > .container').remove(); 
+            $('body > .container').remove();
         }
 
         var lastSelectedLayout = '';
@@ -601,7 +605,7 @@ var App = function () {
             var layoutOption = $('.layout-option', panel).val();
             var sidebarOption = $('.sidebar-option', panel).val();
             var headerOption = $('.header-option', panel).val();
-            var footerOption = $('.footer-option', panel).val(); 
+            var footerOption = $('.footer-option', panel).val();
 
             if (sidebarOption == "fixed" && headerOption == "default") {
                 alert('Default Header with Fixed Sidebar option is not supported. Proceed with Default Header with Default Sidebar.');
@@ -626,7 +630,7 @@ var App = function () {
                     $('.footer').html('<div class="container">'+$('.footer').html()+'</div>');
                 } else {
                     $('.footer').appendTo('body > .container');
-                }            
+                }
             }
 
             if (lastSelectedLayout != layoutOption) {
@@ -651,14 +655,14 @@ var App = function () {
                 $("body").removeClass("page-sidebar-fixed");
             }
 
-            //footer 
+            //footer
             if (footerOption === 'fixed') {
                 $("body").addClass("page-footer-fixed");
             } else {
                 $("body").removeClass("page-footer-fixed");
             }
 
-            handleSidebarAndContentHeight(); // fix content height            
+            handleSidebarAndContentHeight(); // fix content height
             handleFixedSidebar(); // reinitialize fixed sidebar
             handleFixedSidebarHoverable(); // reinitialize fixed sidebar hover effect
         }
@@ -666,7 +670,7 @@ var App = function () {
         // handle theme colors
         var setColor = function (color) {
             $('#style_color').attr("href", "assets/css/themes/" + color + ".css");
-            $.cookie('style_color', color);                
+            $.cookie('style_color', color);
         }
 
         $('.icon-color', panel).click(function () {
@@ -707,7 +711,7 @@ var App = function () {
                     }
                 });
 
-                input.blur(function () {                         
+                input.blur(function () {
                     if (input.val() == '' || input.val() == input.attr('placeholder')) {
                         input.val(input.attr('placeholder'));
                     }
@@ -727,17 +731,17 @@ var App = function () {
 
             //core handlers
             handleInit();
-            handleResponsiveOnResize(); // set and handle responsive    
-            handleUniform();        
-            handleScrollers(); // handles slim scrolling contents 
+            handleResponsiveOnResize(); // set and handle responsive
+            handleUniform();
+            handleScrollers(); // handles slim scrolling contents
             handleResponsiveOnInit(); // handler responsive elements on page load
 
             //layout handlers
             handleFixedSidebar(); // handles fixed sidebar menu
-            handleFixedSidebarHoverable(); // handles fixed sidebar on hover effect 
+            handleFixedSidebarHoverable(); // handles fixed sidebar on hover effect
             handleSidebarMenu(); // handles main menu
             handleHorizontalMenu(); // handles horizontal menu
-            handleSidebarToggler(); // handles sidebar hide/show            
+            handleSidebarToggler(); // handles sidebar hide/show
             handleFixInputPlaceholderForIE(); // fixes/enables html5 placeholder attribute for IE9, IE8
             handleGoTop(); //handles scroll to top functionality in the footer
             handleTheme(); // handles style customer tool
@@ -749,7 +753,7 @@ var App = function () {
             handleTooltips(); // handle bootstrap tooltips
             handlePopovers(); // handles bootstrap popovers
             handleAccordions(); //handles accordions
-            handleChoosenSelect(); // handles bootstrap chosen dropdowns     
+            handleChoosenSelect(); // handles bootstrap chosen dropdowns
 
             App.addResponsiveHandler(handleChoosenSelect); // reinitiate chosen dropdown on main content resize. disable this line if you don't really use chosen dropdowns.
         },
@@ -789,7 +793,7 @@ var App = function () {
 
         // wrapper function to  block element(indicate loading)
         blockUI: function (el, centerY) {
-            var el = jQuery(el); 
+            var el = jQuery(el);
             el.block({
                     message: '<img src="./assets/img/ajax-loading.gif" align="">',
                     centerY: centerY != undefined ? centerY : true,
@@ -980,7 +984,7 @@ function logout(n) {
             } else {
                 if (typeof(resp.msg) == 'string') {
                     ui_alert("alert-error",resp.msg);
-                }                 
+                }
             }
         }
     });
@@ -1025,13 +1029,13 @@ $("#editPasswordBtn").click(function(event) {
                 if (typeof(resp.msg) == 'string') {
                     ui_alert("alert-error",resp.msg);
                     return false;
-                }                 
+                }
             }
         }
     });
 });
 
-// 格式化数字20,000,00.00    
+// 格式化数字20,000,00.00
 function formatAmount(n) {
     if(!n){
         return '0.00';
@@ -1045,23 +1049,23 @@ function formatAmount(n) {
 function formatDatetime(timeStr){
     var timeStr = timeStr*1000;
     var now =new Date(timeStr);
-    var year=now.getFullYear();     
-    var month=now.getMonth()+1;     
-    var date=now.getDate();     
-    var hour=fillZero(now.getHours());     
-    var minute=fillZero(now.getMinutes());     
-    var second=fillZero(now.getSeconds());    
-    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+    var year=now.getFullYear();
+    var month=now.getMonth()+1;
+    var date=now.getDate();
+    var hour=fillZero(now.getHours());
+    var minute=fillZero(now.getMinutes());
+    var second=fillZero(now.getSeconds());
+    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;
 }
 
 // 格式化日期
 function formatDate(timeStr){
     var timeStr = timeStr*1000;
     var now = new Date(timeStr);
-    var year = now.getFullYear();     
-    var month = fillZero(now.getMonth()+1);     
-    var date = fillZero(now.getDate());       
-    return   year+"-"+month+"-"+date;     
+    var year = now.getFullYear();
+    var month = fillZero(now.getMonth()+1);
+    var date = fillZero(now.getDate());
+    return   year+"-"+month+"-"+date;
 }
 
 function fillZero(i){
@@ -1100,7 +1104,7 @@ function sendSms(id) {
         }
     });
 }
-  
+
 
 
 

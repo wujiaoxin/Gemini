@@ -32,7 +32,7 @@
 	} catch (e) {
 		alert("数据异常");
 	}
-	
+	localStorage.setItem('username',info.lines.name);
 </script>
 {/block}
 {block name="body"}
@@ -56,7 +56,7 @@
 			<div class="row-fluid span3">
 				<div><a href="/business/account/recharge.html" class="btn green">充值</a></div>
 				<div><a href="/business/account/withdraw.html" class="btn blue">提现</a></div>
-			</div>	
+			</div>
 		</div>
 	</div>
 	<div class="span6 row-fluid">
@@ -83,7 +83,7 @@
 						￥<span id="repay_money"></span>
 					</div>
 				</div>
-				<a class="more" href="/business/user/repayItem.html">查看详情<i class="m-icon-swapright m-icon-white"></i></a>                 
+				<a class="more" href="/business/user/repayItem.html">查看详情<i class="m-icon-swapright m-icon-white"></i></a>
 			</div>
 		</div>
 	</div>
@@ -114,7 +114,7 @@
 					</table>
 					<a href="/business/user/loanItem.html">查看更多借款项目>></a>
 				</div>
-			</div>	
+			</div>
 		</div>
 		<div class="tab-pane" id="tab_1_2">
 			<div class="portlet">
@@ -135,7 +135,7 @@
 					</table>
 					<a href="/business/user/repayItem.html">查看更多还款项目>></a>
 				</div>
-			</div>	
+			</div>
 		</div>
 		<div class="tab-pane" id="tab_1_3">
 			<div class="portlet">
@@ -155,7 +155,7 @@
 					</table>
 					<a href="/business/user/payItem.html">查看更多交易记录>></a>
 				</div>
-			</div>	
+			</div>
 		</div>
 	</div>
 </div>
@@ -167,12 +167,12 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].fee) +'</td>'
 		  		+'<td>'+ data[index].endtime +'</td>'
-		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'	  		
-		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
+		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
 		  		 +'</tr>'
 			}
 		}
@@ -184,12 +184,12 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].repay_money) +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].manage_money) +'</td>'
 		  		+'<td>'+ data[index].loantime +'</td>'
-		  		+'<td>'+ formatDate(data[index].repay_time) +'</td>'	  		
-		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ formatDate(data[index].repay_time) +'</td>'
+		  		+'<td>'+ g_financeStatus[data[index].status] +'</td>'
 		  		 +'</tr>';
 			}
 		}
@@ -202,10 +202,10 @@
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
 		  		+'<td>' + formatDatetime(data[index].create_time) + '</td>'
-		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>'+ data[index].deal_other+'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].account_money) +'</td>'
-		  		+'<td>'+ data[index].desc +'</td>'	
+		  		+'<td>'+ data[index].desc +'</td>'
 		  		 +'</tr>';
 			}
 		}
@@ -225,16 +225,5 @@
 	$('#order_repay tbody').html(tplRepay(info.order_repay));
 	$('#order_pay tbody').html(tplPay(info.order_pay));
 
-	localStorage.setItem('username',info.lines.name);
-
-
-
-	jQuery(document).ready(function() {    
-	   // App.init(); // initlayout and core plugins
-
-
-	});
 </script>
-
-
 {/block}

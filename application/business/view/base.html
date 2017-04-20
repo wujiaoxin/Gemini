@@ -28,7 +28,7 @@
       height: 100%;
     } */
   </style>
-  <!-- BEGIN PAGE LEVEL STYLES --> 
+  <!-- BEGIN PAGE LEVEL STYLES -->
   {block name="style"}{/block}
   <!-- END PAGE LEVEL STYLES -->
 </head>
@@ -49,10 +49,10 @@
         <!-- BEGIN RESPONSIVE MENU TOGGLER -->
         <a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
           <img src="/public/business/lib/metronic/image/menu-toggler.png" alt="" />
-        </a> 
-        <!-- END RESPONSIVE MENU TOGGLER -->            
+        </a>
+        <!-- END RESPONSIVE MENU TOGGLER -->
 
-        <!-- BEGIN TOP NAVIGATION MENU -->              
+        <!-- BEGIN TOP NAVIGATION MENU -->
         <ul class="nav pull-right">
           <li class="dropdown" id="header_inbox_bar">
             <a href="/business/account/message.html" class="dropdown-toggle" >
@@ -66,7 +66,7 @@
           <li class="dropdown user">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img alt="" src="/public/business/lib/metronic/image/avatar_small.png" />
-            <span class="username" id="nav-username">杭州VP贷</span>
+            <span class="username" id="nav-username"></span>
             <i class="icon-angle-down"></i>
             </a>
             <ul class="dropdown-menu">
@@ -79,7 +79,7 @@
           <!-- END USER LOGIN DROPDOWN -->
 
         </ul>
-        <!-- END TOP NAVIGATION MENU --> 
+        <!-- END TOP NAVIGATION MENU -->
 
       </div>
     </div>
@@ -94,7 +94,7 @@
     <!-- BEGIN SIDEBAR -->
     <div class="page-sidebar nav-collapse collapse">
 
-      <!-- BEGIN SIDEBAR MENU -->        
+      <!-- BEGIN SIDEBAR MENU -->
       <ul class="page-sidebar-menu" id="page-sidebar-menu">
         <li>
           <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
@@ -139,7 +139,7 @@
             </li>
             <li><a href="/business/account/bankcard.html"><i class="icon-credit-card"></i>银行卡</a></li>
             <li><a href="/business/account/transaction.html"><i class="icon-edit"></i>资金记录</a></li>
-            <li><a href="/business/account/lineOfCredit.html"><i class="icon-reorder"></i>信用额度</a></li>
+            <!-- <li><a href="/business/account/lineOfCredit.html"><i class="icon-reorder"></i>信用额度</a></li> -->
             <li><a href="/business/account/info.html"><i class="icon-group"></i>企业信息</a></li>
             <li><a href="/business/account/message.html"><i class="icon-envelope"></i>站内信</a></li>
           </ul>
@@ -198,7 +198,7 @@
         </div> -->
         {block name="body"}{/block}
       </div>
-      <!-- END PAGE CONTAINER-->    
+      <!-- END PAGE CONTAINER-->
     </div>
     <!-- END PAGE -->
   </div>
@@ -212,14 +212,14 @@
   <script src="/public/business/lib/metronic/js/jquery-1.10.1.min.js" type="text/javascript"></script>
   <script src="/public/business/lib/metronic/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
   <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-  <script src="/public/business/lib/metronic/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>      
+  <script src="/public/business/lib/metronic/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
   <script src="/public/business/lib/metronic/js/bootstrap.min.js" type="text/javascript"></script>
   <!--[if lt IE 9]>
   <script src="/public/business/lib/metronic/js/excanvas.min.js"></script>
-  <script src="/public/business/lib/metronic/js/respond.min.js"></script>  
-  <![endif]-->   
+  <script src="/public/business/lib/metronic/js/respond.min.js"></script>
+  <![endif]-->
   <script src="/public/business/lib/metronic/js/jquery.slimscroll.min.js" type="text/javascript"></script>
-  <script src="/public/business/lib/metronic/js/jquery.blockui.min.js" type="text/javascript"></script>  
+  <script src="/public/business/lib/metronic/js/jquery.blockui.min.js" type="text/javascript"></script>
   <script src="/public/business/lib/metronic/js/jquery.cookie.min.js" type="text/javascript"></script>
   <script src="/public/business/lib/metronic/js/jquery.uniform.min.js" type="text/javascript" ></script>
   <!-- END CORE PLUGINS -->
@@ -230,12 +230,12 @@
   if(typeof(localStorage.getItem('username')) == 'string'){
           $('#nav-username').text(localStorage.getItem('username'));
         }
-    jQuery(document).ready(function() {    
+    jQuery(document).ready(function() {
        App.init();
     });
   </script>
   {block name="script"}{/block}
-  <!-- END PAGE LEVEL SCRIPTS -->  
+  <!-- END PAGE LEVEL SCRIPTS -->
   <!-- END JAVASCRIPTS -->
 </body>
 

@@ -142,7 +142,7 @@
 	function tpl(data){
 		var html = '';
 		if(typeof(data) =='object'){
-			for(var index = 0; index < data.length; index++){ 
+			for(var index = 0; index < data.length; index++){
 				html += '<tr>'
 				  		+'<td>' + formatDate(data[index].date) + '</td>'
 				  		+'<td>'+ data[index].operaLimit +'</td>'
@@ -156,7 +156,7 @@
 			}
 		}
 		return html;
-	} 
+	}
 
 	function ajaxDeposit(status){
 		ajax_jquery({
@@ -171,7 +171,7 @@
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
 	                    return false;
-	                }                 
+	                }
 	            }
 	        }
 		});
