@@ -79,19 +79,20 @@ CREATE TABLE `gemini_dealer_money` (
 DROP TABLE IF EXISTS `gemini_order_repay`;
 CREATE TABLE `gemini_order_repay` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '订单ID',
+  `order_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
   `mid` int(11) NOT NULL COMMENT '车商id',
-  `true_repay_money` decimal(20,2) NOT NULL DEFAULT 0 COMMENT '真实还款金额',
+  `true_repay_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '真实还款金额',
   `repay_money` decimal(20,2) NOT NULL COMMENT '还款金额',
   `manage_money` decimal(20,2) NOT NULL COMMENT '管理费',
   `repay_time` int(11) NOT NULL COMMENT '还款时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-1还款中,0提前,1准时还款,2逾期还款',
-  `has_repay` tinyint(1) NOT NULL COMMENT '0未还,1已还,2部分还款',
+  `has_repay` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-1未还,1已还,2逾期',
   `true_repay_time` int(11) NOT NULL COMMENT '真实还款时间',
   `loantime` int(11) NOT NULL COMMENT '还款期限',
   `repay_period` tinyint(2) DEFAULT '0' COMMENT '还款期数',
+  `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '回款备注',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8  COMMENT='还款记录表';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='还款记录表';
 
 DROP TABLE IF EXISTS `gemini_dealer_credit`;
 CREATE TABLE `gemini_dealer_credit` (
