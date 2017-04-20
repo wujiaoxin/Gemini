@@ -23,8 +23,9 @@
 					<span class="selectParm-title">交易类型:</span>
 					<ul class="selectParm selectOrderType">
 						<li data='0' class="active">全部</li>
-						<li data='1'>支付款项</li>
-						<li data='2'>垫资到账</li>
+						<li data='5'>支付款项</li>
+						<li data='1'>垫资到账</li>
+						<li data='2'>垫资还款</li>
 						<li data='3'>充值</li>
 						<li data='4'>提现</li>
 					</ul>
@@ -62,7 +63,7 @@
 		  		+'<td>'+ data[index].type +'</td>'
 		  		+'<td>'+ data[index].deal_other+'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].account_money) +'</td>'
-		  		+'<td>'+ data[index].desc +'</td>'	
+		  		+'<td>'+ data[index].desc +'</td>'
 		  		 +'</tr>'
 			}
 		}
@@ -82,7 +83,7 @@
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
 	                    return false;
-	                }                 
+	                }
 	            }
 	        }
 		});
@@ -92,7 +93,7 @@
 		$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
-	   		var Type = $('.selectOrderType li.active').attr('data'); 
+	   		var Type = $('.selectOrderType li.active').attr('data');
 	   		ajaxTransaction(orderDateRange,Type);
 	   })
 	});

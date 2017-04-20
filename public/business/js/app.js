@@ -1,6 +1,10 @@
 /**
 Core script to handle the entire layout and base functions
 **/
+var g_orderType = {'1':'新车垫资','2':'二手车垫资','3':'车抵贷'};
+var g_orderStatus = {'-2':'编辑中','-1':'已撤回','1':'审核通过','2':'审核拒绝','3':'资料审核','4':'额度审核','5':'补充资料'};
+var g_financeStatus ={'1':'待支付订单费用','2':'支付完成','3':'放款中','4':'放款完成'};
+var g_repayStatus = {'-1':'未还','1':'已还','2':'逾期'};
 var apiUrl = "";
 var App = function () {
 
