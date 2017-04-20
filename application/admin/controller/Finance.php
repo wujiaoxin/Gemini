@@ -415,32 +415,14 @@ class Finance extends Admin {
 	// 平台资金记录
 	public function transaction() {
 
-		if (IS_POST) {
+		$result = db('dealer_money')->order('create_time DESC')->select();
 
-			$data = input('post.');
+		$data = array(
+				'infoStr' => json_encode($result)
+			);
 
-			$order = model('order');
+		$this->assign($data);
 
-			$result = $order->save();
-
-			if ($result) {
-
-				$resp['code'] = 1;
-
-				$resp['msg'] = 'OK';
-
-			}else{
-
-				$resp['code'] = 1;
-
-				$resp['msg'] = '资金记录查询失败!';
-
-			}
-
-		}else{
-
-
-		}
 		return $this->fetch();
 	}
 
