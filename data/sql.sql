@@ -1229,7 +1229,7 @@ CREATE TABLE `gemini_member` (
   `desc` varchar(255) DEFAULT NULL COMMENT '备注',
   `tel` varchar(255) DEFAULT NULL COMMENT '固定电话',
   `realname` varchar(32) DEFAULT NULL COMMENT '真实姓名',
-  `paypassword` varchar(255) DEFAULT '' COMMENT '支付密码',
+  `paypassword` varchar(255) DEFAULT NULL COMMENT '支付密码',
   `bankcard` varchar(64) DEFAULT '' COMMENT '银行卡号码',
   `idcard` varchar(64) DEFAULT '' COMMENT '身份证号码',
   `headerimgurl` varchar(1024) DEFAULT '' COMMENT '用户头像',
@@ -1376,7 +1376,20 @@ INSERT INTO `gemini_menu` VALUES ('24', '钩子列表', 'admin', 'code', '6', '0
 INSERT INTO `gemini_menu` VALUES ('25', '自定义表单', 'admin', '', '5', '0', 'admin/form/index', '0', '', '运营管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('26', '伪静态规则', 'admin', '', '2', '0', 'admin/seo/rewrite', '0', '', '优化设置', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('28', '订单管理', 'admin', '', '1', '1', 'admin/order/index', '0', '', '', '0', '0');
-INSERT INTO `gemini_menu` VALUES (29, '车商管理', 'admin', 'cab', 1, 0, 'admin/dealer/index', 0, '', '', 0, 0);
+INSERT INTO `gemini_menu` VALUES ('29', '车商管理', 'admin', 'cab', '1', '0', 'admin/dealer/index', '0', '', '', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('30', '客户管理', 'admin', '', '1', '0', '/admin/customer/index', '0', '', '', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('31', '资产渠道', 'admin', '', '1', '0', '/admin/assetChannel/index', '0', '', '渠道管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('33', '贷款申请', 'admin', '', '1', '0', '/admin/examine/application', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('34', '资料复核', 'admin', '', '1', '0', '/admin/examine/dataReview', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('35', '借款额度审批', 'admin', '', '1', '0', '/admin/examine/loanLimit', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('36', '支付审核', 'admin', '', '1', '0', '/admin/finance/payment', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('37', '客户评级', 'admin', '', '1', '0', '/admin/risk/rating', '0', '', '风控策略', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('38', '黑名单', 'admin', '', '1', '0', '/admin/risk/blacklist', '0', '', '风控策略', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('39', '放款审核', 'admin', '', '1', '0', '/admin/finance/loan', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('40', '充值审核', 'admin', '', '1', '0', '/admin/finance/recharge', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('41', '提现审核', 'admin', '', '1', '0', '/admin/finance/withdraw', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('42', '回款审核', 'admin', '', '1', '0', '/admin/finance/receivable', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('43', '平台资金记录', 'admin', '', '1', '0', '/admin/finance/transaction', '0', '', '财务管理', '0', '0');
 
 -- ----------------------------
 -- Table structure for `gemini_model`
@@ -1445,6 +1458,7 @@ CREATE TABLE `gemini_order` (
   `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
   `endtime` int(11) NOT NULL COMMENT '借款期限',
   `fee` int(11) NOT NULL COMMENT '借款费用',
+  `credit_status` int(11) DEFAULT '0' COMMENT '授信状态:1.待授信;2.授信中;3.已授信',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
 
@@ -1627,6 +1641,7 @@ CREATE TABLE `gemini_dealer` (
   `rep_idcard_back_pic` int(11) NOT NULL DEFAULT '0' COMMENT '法人反面身份证',
   `money_level` int(11) NOT NULL DEFAULT '0' COMMENT '保证金比例',
   `lines_ky` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '可用额度',
+  `lock_money` decimal(20,2) DEFAULT '0.00' COMMENT '冻结资金',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='车商信息表';
 
@@ -1742,7 +1757,7 @@ CREATE TABLE `gemini_recharge` (
   `recharge_type` tinyint(3) NOT NULL DEFAULT '1' COMMENT '充值方式:1线下充值',
   PRIMARY KEY (`sn`),
   KEY `status` (`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8  COMMENT='充值记录表';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='充值记录表';
 
 
 DROP TABLE IF EXISTS `gemini_carry`;
@@ -1766,30 +1781,36 @@ DROP TABLE IF EXISTS `gemini_dealer_money`;
 CREATE TABLE `gemini_dealer_money` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL COMMENT '商户id',
-  `account_money` decimal(20,2) NOT NULL COMMENT '操作金额',
-  `desc` varchar(255) NOT NULL COMMENT '备注',
-  `type` tinyint(2) NOT NULL COMMENT '0支付款项,1垫资到账,2垫资还款,3充值,4提现',
-  `deal_other` tinyint(1) NOT NULL COMMENT '0系统，1商户',
+  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '5支付款项,1垫资到账,2垫资还款,3充值,4提现',
+  `deal_other` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0系统，1商户',
   `create_time` int(11) NOT NULL COMMENT '创建时间',
+  `total_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '账户总额',
+  `account_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '操作金额',
+  `use_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '可用资金',
+  `lock_money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '冻结资金',
+  `repay_money` decimal(20,2) DEFAULT NULL COMMENT '待收资金',
+  `descr` varchar(255) NOT NULL DEFAULT 'NULL' COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8  COMMENT='资金记录表';
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='资金记录表';
+
 
 DROP TABLE IF EXISTS `gemini_order_repay`;
 CREATE TABLE `gemini_order_repay` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '订单ID',
+  `order_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
   `mid` int(11) NOT NULL COMMENT '车商id',
-  `true_repay_money` decimal(20,2) NOT NULL DEFAULT 0 COMMENT '真实还款金额',
+  `true_repay_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '真实还款金额',
   `repay_money` decimal(20,2) NOT NULL COMMENT '还款金额',
   `manage_money` decimal(20,2) NOT NULL COMMENT '管理费',
   `repay_time` int(11) NOT NULL COMMENT '还款时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-1还款中,0提前,1准时还款,2逾期还款',
-  `has_repay` tinyint(1) NOT NULL COMMENT '-1未还,1已还,2逾期',
+  `has_repay` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-1未还,1已还,2逾期',
   `true_repay_time` int(11) NOT NULL COMMENT '真实还款时间',
   `loantime` int(11) NOT NULL COMMENT '还款期限',
   `repay_period` tinyint(2) DEFAULT '0' COMMENT '还款期数',
+  `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '回款备注',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8  COMMENT='还款记录表';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='还款记录表';
 
 DROP TABLE IF EXISTS `gemini_dealer_credit`;
 CREATE TABLE `gemini_dealer_credit` (
