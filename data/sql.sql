@@ -1766,13 +1766,18 @@ DROP TABLE IF EXISTS `gemini_dealer_money`;
 CREATE TABLE `gemini_dealer_money` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL COMMENT '商户id',
-  `account_money` decimal(20,2) NOT NULL COMMENT '操作金额',
-  `desc` varchar(255) NOT NULL COMMENT '备注',
-  `type` tinyint(2) NOT NULL COMMENT '0支付款项,1垫资到账,2垫资还款,3充值,4提现',
-  `deal_other` tinyint(1) NOT NULL COMMENT '0系统，1商户',
+  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '5支付款项,1垫资到账,2垫资还款,3充值,4提现',
+  `deal_other` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0系统，1商户',
   `create_time` int(11) NOT NULL COMMENT '创建时间',
+  `total_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '账户总额',
+  `account_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '操作金额',
+  `use_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '可用资金',
+  `lock_money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '冻结资金',
+  `repay_money` decimal(20,2) DEFAULT NULL COMMENT '待收资金',
+  `descr` varchar(255) NOT NULL DEFAULT 'NULL' COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8  COMMENT='资金记录表';
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='资金记录表';
+
 
 DROP TABLE IF EXISTS `gemini_order_repay`;
 CREATE TABLE `gemini_order_repay` (
