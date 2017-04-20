@@ -105,3 +105,16 @@ CREATE TABLE `gemini_dealer_credit` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='信用额度记录表';
 
+DROP TABLE IF EXISTS `gemini_collect_data`;
+CREATE TABLE `gemini_collect_data` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(10) NOT NULL DEFAULT '0' COMMENT '用户ID ',
+  `key` varchar(255) NOT NULL COMMENT '键值',
+  `value` MEDIUMTEXT NOT NULL COMMENT '内容',
+  `group` varchar(255) NOT NULL DEFAULT 'NULL' COMMENT '分组',
+  `from` varchar(32) NOT NULL DEFAULT 'NULL' COMMENT '数据来源',
+  `format` tinyint(1) NOT NULL DEFAULT '0' COMMENT '格式:0默认,1序列化JSON字符串',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='原始数据采集表';
