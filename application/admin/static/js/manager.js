@@ -1,3 +1,4 @@
+var apiUrl ='';
 function ui_alert(msg,type,position){
    $.messager.show(msg, {placement: position,type:type});
 };
