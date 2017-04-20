@@ -22,7 +22,7 @@ class Collect extends Api {
 		$uid = session('user_auth.uid');
 		$collectKeys= array('contact','message','device','location','network'); 
 		foreach ($collectKeys as $collectKey){
-			$dbData = db('collect_data')->where('group','=',$collectKey)->where('uid','=',$uid)->where('from','=','app')->field('update_time')->limit(1)->find();//'key,value,updateTime'
+			$dbData = db('collect_data')->where('group','=',$collectKey)->where('uid','=',$uid)->where('from','=','app')->field('update_time')->order('id desc')->limit(1)->find();//'key,value,updateTime'
 			if($dbData == null){
 				$data[$collectKey]['needUpdate'] = 1;
 				$data[$collectKey]['updateTime'] = null;
