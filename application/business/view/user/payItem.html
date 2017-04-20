@@ -24,7 +24,7 @@
 		<ul class="selectParm selectOrderType">
 			<li data='0' class="active" >全部</li>
 			<li data='1'>按揭垫资</li>
-			<li data='2'>车抵贷</a></li>
+			<li data='3'>车抵贷</a></li>
 		</ul>
 	</div>
 	<div class="select-block">
@@ -44,7 +44,6 @@
 			<li data='0' class="active">全部</li>
 			<li data='1'>待支付</li>
 			<li data='2'>已支付</li>
-			<li data='3'>逾期</li>
 		</ul>
 	</div>
 </div>
@@ -142,15 +141,15 @@
 		for(var index = 0; index < data.length; index++){
 			var orderStatus = '';
 			var orderOpera = '';
-			if(data[index].status == '10'){
-				orderStatus = '未支付';
+			if(data[index].status == '1'){
+				orderStatus = '待支付';
 				orderOpera = '<a class="orderOpera" data-toggle="modal">支付</a>'
 			}else{
 				orderStatus = '已支付';
 			}
 		  	html += '<tr class="odd gradex">'
 		  		+'<td class="order_sn">' + data[index].sn + '</td>'
-		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
@@ -208,7 +207,7 @@
 	   		$('#modal-payAmount').text(formatAmount(pay_amount));
 	   		$('#modal-availbaleAmount').text(formatAmount(info['money']));
 	   		$('#modal-remainingAmount').text(formatAmount(remainingAmount));
-	   		$(this).attr('href',"#payOrderModal");
+	   		$('#payOrderModal').modal();
 	   	});
 
 	   	$('#payOrderBtn').click(function(){
@@ -243,4 +242,4 @@
 
 	});
 </script>
-{/block}	
+{/block}

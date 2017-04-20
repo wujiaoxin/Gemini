@@ -69,7 +69,7 @@ $(function(){
 	        url: apiUrl +'/business/account/recharge',
 	        data:{
 	        	'money': amount,
-	        	'type': rechargeMode,
+	        	'recharge_type': rechargeMode,
 	        	'descr': desc
 	        },
 	        success:function(resp){

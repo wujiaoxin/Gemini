@@ -56,7 +56,7 @@
 			<div class="row-fluid span3">
 				<div><a href="/business/account/recharge.html" class="btn green">充值</a></div>
 				<div><a href="/business/account/withdraw.html" class="btn blue">提现</a></div>
-			</div>	
+			</div>
 		</div>
 	</div>
 	<div class="span6 row-fluid">
@@ -167,12 +167,12 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].fee) +'</td>'
 		  		+'<td>'+ data[index].endtime +'</td>'
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
-		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
 		  		 +'</tr>'
 			}
 		}
@@ -184,12 +184,12 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].repay_money) +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].manage_money) +'</td>'
 		  		+'<td>'+ data[index].loantime +'</td>'
 		  		+'<td>'+ formatDate(data[index].repay_time) +'</td>'
-		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ g_financeStatus[data[index].status] +'</td>'
 		  		 +'</tr>';
 			}
 		}
@@ -202,7 +202,7 @@
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
 		  		+'<td>' + formatDatetime(data[index].create_time) + '</td>'
-		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>'+ data[index].deal_other+'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].account_money) +'</td>'
 		  		+'<td>'+ data[index].desc +'</td>'
