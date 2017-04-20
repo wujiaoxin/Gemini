@@ -29,7 +29,7 @@
                 'sn'=>$sn,
                 'status'=>'-1',
                 'money'=>$data['money'],
-                // 'recharge_type'=>$data['recharge_type'],
+                'recharge_type'=>$data['recharge_type'],
                 'descr'=>$data['descr'],
                 'create_time'=>time()
             );
@@ -336,7 +336,7 @@
 
       );
     $repay_moneys = db('order')->where($map)->sum('loan_limit');
-    // var_dump($repay_money);die;
+    // var_dump($repay_moneys);die;
     //总金额
     $total_money = $dealer_money['money'] + $dealer_money['lock_money'] + $repay_moneys ;
 

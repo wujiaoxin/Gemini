@@ -145,6 +145,7 @@ use app\business\controller\Baseness;
 		//一个月内每天的订单数量
 		$times = time()-24*3600*30;
 		$time =db('order')->field("FROM_UNIXTIME(create_time,'%Y-%m-%d') as time,create_time,count(id) as num,sum(loan_limit) as total_money")->group('time')->wheretime('create_time','>',$times)->order('time')->select();
+		// var_dump($time);
 		$temp['time'] ='0';
 		$temp['num'] ='0';
 		$temp['total_money'] ='0';
@@ -222,9 +223,9 @@ use app\business\controller\Baseness;
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
-				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.sn = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
+				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
 			}else{
-				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.sn = o.order_id')->where($map)->order('o.status ASC')->select();
+				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
 			}
 			// var_dump($map);die;
 			foreach ($order_repay as $k => $v) {

@@ -50,9 +50,9 @@ class Finance extends Admin {
 				
 				if ($data['status']) {
 
-					$money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.sn',$data['id'])->find();
+					$money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.id',$data['id'])->find();
 
-					$result = db('order')->field('fee,loan_limit')->where('sn',$data['id'])->find();
+					$result = db('order')->field('fee,loan_limit')->where('id',$data['id'])->find();
 
 					if ($money['lock_money'] > $result['fee']) {//判断冻结金额和订单费用
 						
@@ -72,7 +72,7 @@ class Finance extends Admin {
 
 						db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变资金流水
 
-						db('order')->where('sn',$data['id'])->update($datas);//更新订单状态
+						db('order')->where('id',$data['id'])->update($datas);//更新订单状态
 
 						//生成还款计划表
 						set_order_repay($data['id']);
@@ -90,7 +90,7 @@ class Finance extends Admin {
 
 				}else{
 
-					db('order')->where('sn',$data['id'])->update($datas);
+					db('order')->where('id',$data['id'])->update($datas);
 
 					$resp['code'] = 0;
 
@@ -100,7 +100,7 @@ class Finance extends Admin {
 				
 			}else{
 
-				$result = db('order')->where('sn',$data['id'])->find();
+				$result = db('order')->where('id',$data['id'])->find();
 
 				foreach ($result as $k => $v) {
 
@@ -257,7 +257,7 @@ class Finance extends Admin {
 
 					db('carry')->where('sn',$data['id'])->update($datas);
 
-					db('order')->where('sn',$data['id'])->setField('finance','4');
+					db('order')->where('id',$data['id'])->setField('finance','4');
 
 					$resp['code'] = 1;
 
@@ -338,7 +338,7 @@ class Finance extends Admin {
 
 				if ($data['status']) {
 
-					$money = db('dealer')->alias('d')->field('d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('order_repay o','m.uid = o.mid')->where('o.sn',$data['id'])->find();
+					$money = db('dealer')->alias('d')->field('d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('order_repay o','m.uid = o.mid')->where('o.id',$data['id'])->find();
 
 					$result = db('order')->field('loan_limit')->where('order_id',$data['id'])->find();
 
@@ -352,7 +352,7 @@ class Finance extends Admin {
 
 					db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变可用额度
 
-					db('order_repay')->where('sn',$data['id'])->update($datas);//更新订单状态
+					db('order_repay')->where('order_id',$data['id'])->update($datas);//更新订单状态
 
 					$resp['code'] = 1;
 
