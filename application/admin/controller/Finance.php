@@ -326,26 +326,87 @@ class Finance extends Admin {
 
 			$data = input('post.');
 
-			$order = model('order');
+			if (isset($data['status'])) {
+				
+				$datas = array(
 
-			$result = $order->save();
+					'status' => $data['status'],
 
-			if ($result) {
+					'descr' => $data['descr']
 
-				$resp['code'] = 1;
+				);
 
-				$resp['msg'] = 'OK';
+				if ($data['status']) {
+
+					$money = db('dealer')->alias('d')->field('d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('order_repay o','m.uid = o.mid')->where('o.sn',$data['id'])->find();
+
+					$result = db('order')->field('loan_limit')->where('order_id',$data['id'])->find();
+
+					$lines_result = $moeny['lines_ky'] + $result['loan_limit'];//最终可用额度
+
+					$moeny_result = array(
+
+						'lines_ky' =>$lines_result
+
+						);
+
+					db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变可用额度
+
+					db('order_repay')->where('sn',$data['id'])->update($datas);//更新订单状态
+
+					$resp['code'] = 1;
+
+					$resp['msg'] = 'OK';
+
+				}else{
+
+					$resp['code'] = 0;
+
+					$resp['msg'] = '回款审核失败!';
+
+				}
+
 
 			}else{
 
-				$resp['code'] = 1;
+				$result = db('order_repay')->where('order_id',$data['id'])->select();
 
-				$resp['msg'] = '回款审核失败!';
+				foreach ($result as $k => $v) {
+
+					$sercher = serch_name($v['mid']);
+					// var_dump($sercher);die;
+
+					$result[$k]['dealer_name'] = $sercher['dealer_name'];
+
+				}
+				// var_dump($result);die;
+
+				$data = array(
+					'infoStr' => json_encode($result)
+				);
+
+				$this->assign($data);
 
 			}
 
 		}else{
+			$result = db('order_repay')->where('status','>',-1)->select();
 
+			foreach ($result as $k => $v) {
+
+				$sercher = serch_name($v['uid']);
+				// var_dump($sercher);die;
+
+				$result[$k]['dealer_name'] = $sercher['dealer_name'];
+
+			}
+			// var_dump($result);die;
+
+			$data = array(
+				'infoStr' => json_encode($result)
+			);
+
+			$this->assign($data);
 
 		}
 		return $this->fetch();

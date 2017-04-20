@@ -33,7 +33,9 @@ class User extends Api {
 		if (0 < $uid) {
 			$userinfo = array('nickname' => $mobile, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
 			if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
-				return $this->error('注册失败！', '');
+				$resp["code"] = 0;
+				$resp["msg"] = '注册失败';
+				return json($resp);
 			} else {
 				$token = generateToken($uid, $sid);
 				$resp["code"] = 1;
@@ -44,7 +46,9 @@ class User extends Api {
 				return json($resp);
 			}
 		} else {
-			return $this->error($model->getError());
+			$resp["code"] = 0;
+			$resp["msg"] = $model->getError();
+			return json($resp);
 		}
 	}
 	

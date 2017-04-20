@@ -231,48 +231,48 @@ TODO:check idcard if needed;
 	// 车商员工注册页
 	public function registerDealer() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('registerDealer');
 	}
 
 	// 车商员工登录页
 	public function loginDealer() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('loginDealer');
 	}
 	// 车商员工重置密码
 	public function resetDealer() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('resetDealer');
 	}
 	// 车商员工修改密码
 	public function editpwdDealer() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('editpwdDealer');
 	}
 	//车商员工个人中心
 	public function personalCenter() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('personalCenter');
 	}
 	// 二维码页面
 	public function QRCode() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('QRCode');
 	}
 	// 我的积分
 	public function myPoints() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('myPoints');
 	}
 	// 我的客户
 	public function myCustomers() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('myCustomers');
 	}
 	// 账户设置
 	public function myAccount() {
 		//$this->assign($user);		
-		return $this->fetch();
+		return $this->fetch('myAccount');
 	}	
 
 }

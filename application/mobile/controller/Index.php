@@ -36,6 +36,6 @@ class Index extends Base {
 		return $this->fetch();
 	}
 	public function indexDealer() {	
-		return $this->fetch();
+		return $this->fetch('indexDealer');
 	}
 }
