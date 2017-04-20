@@ -1,97 +1,96 @@
-var apiUrl = 'http://lo.vpdai.com'
 // 按照指定长度为数字前面补零
-    function PrefixInteger(num, length) {
-        return (Array(length).join('0') + num).slice(-length);
+function PrefixInteger(num, length) {
+    return (Array(length).join('0') + num).slice(-length);
+}
+
+function tpl(data){
+    var html = '';
+    if(typeof(data) =='object'){
+    for(var index = 0; index < data.length; index++){
+        var job = data[index].access_group_id == '8'?"财务":"业务员";
+        var status = '';
+        var opera = '';
+        if(data[index].status){
+            status = '正常';
+            opera = '停用';
+        }else{
+            status = '停用';
+            opera = '启用';
+        }
+
+        html += '<tr class="odd gradex">'
+            +'<td>' + PrefixInteger(index+1,6) + '</td>'
+            +'<td>'+ data[index].realname +'</td>'
+            +'<td>'+ data[index].mobile +'</td>'
+            +'<td>'+ job +'</td>'
+            +'<td>'+ formatDate(data[index].reg_time) +'</td>'
+            +'<td data-status="'+ data[index].status +'">'+ status +'</td>'
+            +'<td><a class="updateStatus" data-id="'+ data[index].mobile +'">'+ opera +'</a></td>'
+            +'</tr>';
+        }
     }
+    return html;
+};
+$('#table-myStaff tbody').html(tpl(info));
 
-    function tpl(data){
-        var html = '';
-        if(typeof(data) =='object'){
-        for(var index = 0; index < data.length; index++){
-            var job = data[index].access_group_id == '8'?"财务":"业务员";
-            var status = '';
-            var opera = '';
-            if(data[index].status){
-                status = '正常';
-                opera = '停用';
-            }else{
-                status = '停用';
-                opera = '启用';
-            }
+$("input[type=text]").each(function(i){
+    var name = $(this).attr('name');
+    if(info[name] !='' ){
+        $(this).val(info[name]);
+    }
+});
 
-            html += '<tr class="odd gradex">'
-                +'<td>' + PrefixInteger(index+1,6) + '</td>'
-                +'<td>'+ data[index].realname +'</td>'
-                +'<td>'+ data[index].mobile +'</td>'
-                +'<td>'+ job +'</td>'
-                +'<td>'+ formatDate(data[index].reg_time) +'</td>'
-                +'<td data-status="'+ data[index].status +'">'+ status +'</td>'
-                +'<td><a class="updateStatus" data-id="'+ data[index].mobile +'">'+ opera +'</a></td>'
-                +'</tr>';
-            }
-        }
-        return html;
-    };
-    $('#table-myStaff tbody').html(tpl(info));
-
-    $("input[type=text]").each(function(i){
-        var name = $(this).attr('name');
-        if(info[name] !='' ){
-            $(this).val(info[name]);
-        }
-    });
-
-    function btnSentUploader(picName){
-        $("#picker_" + picName).SentUploader({
-            fileNumLimit:1,
-            uploadEvents: {
-                uploadComplete:function(file){}
-            },
-            listName : 'fileList_' + picName,
-            hiddenName: 'field_' + picName,
-            hiddenValType:1,
-            fileSingleSizeLimit:20*1024*1024,
-            closeX:true,
-            compress:{
-                width: 1024,
-                quality: 90,
-                allowMagnify: false,
-                crop: false,
-                preserveHeaders: true,
-                noCompressIfLarger: false,
-                compressSize: 0
-            }
+function btnSentUploader(picName){
+    $("#picker_" + picName).SentUploader({
+        fileNumLimit:1,
+        uploadEvents: {
+            uploadComplete:function(file){}
         },
-        {
-            fileType: 'service',
-            filename : 'images',
-        });
-    };
-
-    //格式化checkBox
-    function encodeCheckbox(name){
-        var data='';
-        $("input[name="+name+"]:checkbox:checked").each(function() {
-            data += $(this).val() + ',';
-        })
-        data = data.substring(0, data.length - 1);
-        return data;
-    }
-
-    //初始化checkBox
-    function initCheckBox(name){
-        var initData = {};
-        if( typeof(info[name]) == "string" && info[name] != ''){
-            initData = info[name].split(',');
-            $("input[name="+name+"]:checkbox").each(function() {
-                var thisValue = $(this).val();
-                var isInArray = initData.indexOf(thisValue);
-                if(isInArray != '-1'){
-                    $(this).click();
-                }
-            })
+        listName : 'fileList_' + picName,
+        hiddenName: 'field_' + picName,
+        hiddenValType:1,
+        fileSingleSizeLimit:20*1024*1024,
+        closeX:true,
+        compress:{
+            width: 1024,
+            quality: 90,
+            allowMagnify: false,
+            crop: false,
+            preserveHeaders: true,
+            noCompressIfLarger: false,
+            compressSize: 0
         }
+    },
+    {
+        fileType: 'service',
+        filename : 'images',
+    });
+};
+
+//格式化checkBox
+function encodeCheckbox(name){
+    var data='';
+    $("input[name="+name+"]:checkbox:checked").each(function() {
+        data += $(this).val() + ',';
+    })
+    data = data.substring(0, data.length - 1);
+    return data;
+}
+
+//初始化checkBox
+function initCheckBox(name){
+    var initData = {};
+    if( typeof(info[name]) == "string" && info[name] != ''){
+        initData = info[name].split(',');
+        $("input[name="+name+"]:checkbox").each(function() {
+            var thisValue = $(this).val();
+            var isInArray = initData.indexOf(thisValue);
+            if(isInArray != '-1'){
+                $(this).click();
+            }
+        })
     }
+}
 
 $(function(){
     var id = getUrlParam('id');
@@ -137,6 +136,8 @@ $(function(){
         var priv_bank_name = $("#priv_bank_name").val();
         var priv_bank_account_id = $("#priv_bank_account_id").val();
         var priv_bank_branch = $("#priv_bank_branch").val();
+        var status = $('#status').val();
+        var descr = $('#descr').val();
 
         if(name == ""){
             ui_alert("请输入企业名称");
@@ -209,8 +210,14 @@ $(function(){
             return false;
         }
 
+        var ajaxurl =  '';
+        if(typeof(info['id']) == 'string' && info['id'] != ''){
+            ajaxurl = apiUrl + '/admin/assetChannel/edit'
+        }else{
+            ajaxurl = apiUrl + '/admin/assetChannel/add'
+        }
         ajax_jquery({
-            url: apiUrl + '/admin/assetChannel/edit',
+            url: ajaxurl,
             data:{
                 'name': name,
                 'credit_code': credit_code,
@@ -231,15 +238,17 @@ $(function(){
                 'priv_bank_account_name': priv_bank_account_name,
                 'priv_bank_name': priv_bank_name,
                 'priv_bank_account_id': priv_bank_account_id,
-                'priv_bank_branch': priv_bank_branch
+                'priv_bank_branch': priv_bank_branch,
+                'status': status,
+                'descr': descr
             },
             success:function(resp){
                 if (resp.code == "1" ) {
-                    ui_alert("alert-success",'提交成功')
-                    window.location.href = "/admin/assetChannle/index.html";
+                    ui_alert('提交成功')
+                    window.location.href = "/admin/assetChannel/index.html";
                 } else {
                     if (typeof(resp.msg) == 'string') {
-                        ui_alert("alert-error",resp.msg);
+                        ui_alert(resp.msg);
                         return false;
                     }
                 }
