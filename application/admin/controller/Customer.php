@@ -47,69 +47,7 @@ class Customer extends Admin {
 		$this->setMeta("客户管理");
 		return $this->fetch();
 	}
-	
-/*
-	//添加
-	public function add() {
-		$link = model('Order');
-		if (IS_POST) {
-			$data = input('post.');
-			$uid = session('user_auth.uid');
-			if($uid > 0){
-				$data['uid'] = $uid;
-			}
-			if ($data) {
-				unset($data['id']);
-				$data['sn'] = $link->build_order_sn();
-				$result = $link->save($data);
-				if ($result) {
-					return $this->success("新建成功！", url('Order/index'));
-				} else {
-					return $this->error($link->getError());
-				}
-			} else {
-				return $this->error($link->getError());
-			}
-		} else {
-			$data = array(
-				'keyList' => $link->keyList,
-			);
-			$this->assign($data);
-			$this->setMeta("新建订单");
-			return $this->fetch('public/edit');
-		}
-	}
 
-	//修改
-	public function edit() {
-		$link = model('Order');
-		$id   = input('id', '', 'trim,intval');
-		if (IS_POST) {
-			$data = input('post.');
-			if ($data) {
-				$result = $link->save($data, array('id' => $data['id']));
-				if ($result) {
-					return $this->success("修改成功！", url('Order/index'));
-				} else {
-					return $this->error("修改失败！");
-				}
-			} else {
-				return $this->error($link->getError());
-			}
-		} else {
-			$map  = array('id' => $id);
-			$info = db('Order')->where($map)->find();
-
-			$data = array(
-				'keyList' => $link->keyList,
-				'info'    => $info,
-			);
-			$this->assign($data);
-			$this->setMeta("编辑订单");
-			return $this->fetch('public/edit');
-		}
-	}
-*/
 	//查看
 	public function view() {
 		

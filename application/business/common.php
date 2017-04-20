@@ -29,7 +29,7 @@
                 'sn'=>$sn,
                 'status'=>'-1',
                 'money'=>$data['money'],
-                'type'=>$data['type'],
+                // 'recharge_type'=>$data['recharge_type'],
                 'descr'=>$data['descr'],
                 'create_time'=>time()
             );

@@ -280,6 +280,8 @@ INSERT INTO `gemini_auth_group` VALUES ('3', 'admin', '', '风控审核专员', 
 INSERT INTO `gemini_auth_group` VALUES ('4', 'admin', '', 'VP贷财务经理', '财务审核', '1', '39,38,35,34,1');
 INSERT INTO `gemini_auth_group` VALUES ('5', 'admin', '', 'VP贷财务出纳', '财务出纳', '1', '39,38,35,34,1');
 INSERT INTO `gemini_auth_group` VALUES ('6', 'admin', '', '资方联系专员', '合作资金方', '1', '39,38,35,34,1');
+INSERT INTO `gemini_auth_group` VALUES ('7', 'admin', '', '车商', '车商企业', '1', '');
+INSERT INTO `gemini_auth_group` VALUES ('8', 'admin', '', '车商财务', '车商财务员工', '1', '');
 
 -- ----------------------------
 -- Table structure for `gemini_auth_group_access`
@@ -1733,11 +1735,11 @@ CREATE TABLE `gemini_recharge` (
   `sn` varchar(255) NOT NULL COMMENT '充值订单号',
   `status` int(1) NOT NULL DEFAULT '0' COMMENT '是否充值:0审核失败,1已充值,-1审核中',
   `money` int(11) NOT NULL COMMENT '充值金额',
-  `type` tinyint(1) NOT NULL COMMENT '支付方式',
+  `pay_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付方式',
   `create_time` int(11) NOT NULL COMMENT '充值创建时间',
   `bank_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
   `descr` varchar(255) NOT NULL COMMENT '充值备注',
-  `payment_type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '充值方式:1线下充值',
+  `recharge_type` tinyint(3) NOT NULL DEFAULT '1' COMMENT '充值方式:1线下充值',
   PRIMARY KEY (`sn`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8  COMMENT='充值记录表';
@@ -1782,7 +1784,7 @@ CREATE TABLE `gemini_order_repay` (
   `manage_money` decimal(20,2) NOT NULL COMMENT '管理费',
   `repay_time` int(11) NOT NULL COMMENT '还款时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-1还款中,0提前,1准时还款,2逾期还款',
-  `has_repay` tinyint(1) NOT NULL COMMENT '0未还,1已还,2部分还款',
+  `has_repay` tinyint(1) NOT NULL COMMENT '-1未还,1已还,2逾期',
   `true_repay_time` int(11) NOT NULL COMMENT '真实还款时间',
   `loantime` int(11) NOT NULL COMMENT '还款期限',
   `repay_period` tinyint(2) DEFAULT '0' COMMENT '还款期数',
