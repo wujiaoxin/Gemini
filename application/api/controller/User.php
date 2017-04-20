@@ -73,7 +73,7 @@ class User extends Api {
 			$token = generateToken($uid, $sid);
 			session('token',$token);
 			
-			$userInfo = db('member')->field('mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
+			$userInfo = db('member')->field('uid,mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
 			$userInfo['roleid'] = $userInfo['access_group_id'];
 			unset($userInfo['access_group_id']);
 			
@@ -142,7 +142,7 @@ class User extends Api {
 		$uid  = session('user_auth.uid');
 		if ($uid > 0) {
 			
-			$userInfo = db('member')->field('mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
+			$userInfo = db('member')->field('uid,mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
 			$userInfo['roleid']   = $userInfo['access_group_id'];
 			unset($userInfo['access_group_id']);
 			
@@ -345,6 +345,20 @@ class User extends Api {
 			return json($resp);
 		}
 	}
+	
+	public function decodedToken($token = ''){
+		$decode = decodedToken($token);
+		$data = json_decode($decode);		
+		if(empty($data)){
+			$resp["code"] = 0;
+			$resp["msg"] = "解析失败";
+		}else{
+			$resp["code"] = 1;
+			$resp["msg"] = "解析成功";
+			$resp["data"] = $data;
+		}
+		return json($resp);
+	}	
 	
 }
 
