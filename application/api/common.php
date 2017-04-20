@@ -38,7 +38,7 @@ function sendSms($mobile, $content){
 }
 
 function generateToken($uid = "", $sid = null){
-	$key = "gemini";
+	$pkey = "gemini";
 	$token = array(
 		//"iss" => "https://api.vpdai.com",
 		//"aud" => "https://api.vpdai.com",
@@ -48,7 +48,12 @@ function generateToken($uid = "", $sid = null){
 		"sid" => $sid
 	);
 	
-	$token = base64_encode(json_encode($token));
+	$token = json_encode($token);
+	
+	$key = md5($token.''.$pkey);
+	
+	$token = base64_encode($token) .'.'. $key;
+	
 	return $token;
 	
 	/**
@@ -65,13 +70,23 @@ function generateToken($uid = "", $sid = null){
 	
 }
 
-function decodedToken($jwt = ""){
-	$key = "gemini";
+function decodedToken($token = ""){
+	$pkey = "gemini";
+	$tempArr = explode('.', $token, 2);
+	if(sizeof($tempArr)!=2){
+		return '';
+	}	
+	$decoded = base64_decode($tempArr[0]);
+	$key = $tempArr[1];	
+	if($key == md5($decoded.''.$pkey)){
+		return $decoded;
+	}else{
+		return '';
+	}
 	
-	$decode = base64_decode($jwt);
-	//$decoded = JWT::decode($jwt, $key, array('HS256'));
+	//$decoded = JWT::decode($token, $key, array('HS256'));
 	//print_r($decoded);
-	return $decoded;
+	//return $decoded;
 }
 
 

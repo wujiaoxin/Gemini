@@ -346,5 +346,19 @@ class User extends Api {
 		}
 	}
 	
+	public function decodedToken($token = ''){
+		$decode = decodedToken($token);
+		$data = json_decode($decode);		
+		if(empty($data)){
+			$resp["code"] = 0;
+			$resp["msg"] = "解析失败";
+		}else{
+			$resp["code"] = 1;
+			$resp["msg"] = "解析成功";
+			$resp["data"] = $data;
+		}
+		return json($resp);
+	}	
+	
 }
 
