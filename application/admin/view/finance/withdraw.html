@@ -2,6 +2,14 @@
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
+<script>
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
 {/block}
 {block name="body"}
 <div class="main-box clearfix">
@@ -38,7 +46,7 @@
     	<div class="modal-content">
       		<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-        		<h4 class="modal-title">放款凭证</h4>
+        		<h4 class="modal-title">提现审核</h4>
       		</div>
       	<div class="modal-body form-horizontal">
       		<div class="form-group">
@@ -52,41 +60,45 @@
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">充值金额</label>
+		    	<label class="col-sm-2 control-label">提现金额</label>
 			    <div class="col-sm-4">
 			      	<p class="form-control-static item-info">20000</p>
 			    </div>
 			    <label class="col-sm-2 control-label">手续费</label>
 			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">2</p>
+			      	<p class="form-control-static item-info">1</p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">充值方式</label>
+			    <label class="col-sm-2 control-label">提现时间</label>
 			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">线下转账</p>
+			      	<p class="form-control-static item-info"></p>
+			    </div>
+			    <label class="col-sm-2 control-label">提现账户</label>
+			    <div class="col-sm-4 pt5">
+			      	<p class="form-control-static item-info"></p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">对方账户</label>
+		    	<label class="col-sm-2 control-label">开户银行</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="number" id="dealer_bank_account" value="">
+			      	<p class="form-control-static item-info"></p>
 			    </div>
-			    <label class="col-sm-2 control-label">开户银行</label>
+			    <label class="col-sm-2 control-label">卡户网点</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="dealer_bank" value="">
+			      	<p class="form-control-static item-info"></p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">开户网点</label>
+            	<label class="col-sm-2 control-label">平台账户</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="dealer_bank_branch" value="">
+			      	<input type="number" id="own_account" value="">
 			    </div>
-			    <label class="col-sm-2 control-label">平台账户</label>
+			    <label class="col-sm-2 control-label">到账金额</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="" value="">
+			      	<input type="number" id="actual_amount" value="">
 			    </div>
-		  	</div>
+          	</div>
           	<div class="form-group">
             	<label class="col-sm-2 control-label">审核*</label>
             	<div class="col-sm-4 pt5">
@@ -95,10 +107,6 @@
 	            		<option value="0">未通过</option>
 	            	</select>
 	            </div>
-	            <label class="col-sm-2 control-label">到账金额*</label>
-			    <div class="col-sm-4 pt5">
-			      	<input type="number" id="actual_amount" value="">
-			    </div>
           	</div>
           	<div class="form-group">
             	<label class="col-sm-2 control-label">审核备注</label>
@@ -127,12 +135,11 @@
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
 		  		+'<td>' + '1' + '</td>'
-		  		+'<td>' + 'E23620150914135141' + '</td>'
 		  		+'<td>'+ '武当4S店' +'</td>'
 		  		+'<td>￥'+ '200000' +'</td>'
-		  		+'<td>￥'+ '233' +'</td>'
-		  		+'<td>'+ '7' +'天</td>'
-		  		+'<td>'+ '无' +'</td>'
+		  		+'<td>￥'+ '199999' +'</td>'
+		  		+'<td>'+ '1' +'</td>'
+		  		+'<td>'+ 'wo' +'</td>'
 		  		+'<td>'+ '线下转账' +'</td>'
 		  		+'<td>'+ '处理中' +'</td>'
 		  		+'<td>'+ '' +'</td>'
@@ -177,18 +184,18 @@
 
 	   	$('#examineBtn').click(function(){
 	   	 	var examineStatus = $('#examineStatus').val();
+	   	 	var own_account = $('#own_account').val();
 	   	 	var actual_amount = $('#actual_amount').val();
 	   	 	var descr = $('#descr').val();
 	   	 	if(examineStatus == ''){
 	   	 		ui_alert("请选择审核结果");
 	            return false;
-	   	 	}else if(actual_amount == ''){
-	   	 		ui_alert("请输入实际到账金额");
-	            return false;
 	   	 	}
 	   	 	ajax_jquery({
 		        // url: apiUrl +'/admin/finance/loan',
 		        data:{
+		        	'own_account': own_account,
+		        	'actual_amount': actual_amount,
 		            'status': examineStatus,
 		            'descr': descr
 		        },

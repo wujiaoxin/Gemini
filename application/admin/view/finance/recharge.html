@@ -39,7 +39,7 @@
     	<div class="modal-content">
       		<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-        		<h4 class="modal-title">放款凭证</h4>
+        		<h4 class="modal-title">充值审核</h4>
       		</div>
       	<div class="modal-body form-horizontal">
       		<div class="form-group">
@@ -89,7 +89,7 @@
 			    </div>
 			    <label class="col-sm-2 control-label">平台账户</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="" value="">
+			      	<input type="text" id="own_account" value="">
 			    </div>
 		  	</div>
           	<div class="form-group">
@@ -181,6 +181,10 @@
 	   	});
 
 	   	$('#examineBtn').click(function(){
+	   		var dealer_bank_account = $('#dealer_bank_account').val();
+	   		var dealer_bank = $('#dealer_bank').val();
+	   		var dealer_bank_branch = $('#dealer_bank_branch').val();
+	   		var own_account = $('#own_account').val();
 	   	 	var examineStatus = $('#examineStatus').val();
 	   	 	var actual_amount = $('#actual_amount').val();
 	   	 	var descr = $('#descr').val();
@@ -194,7 +198,12 @@
 	   	 	ajax_jquery({
 		        // url: apiUrl +'/admin/finance/loan',
 		        data:{
+		        	'dealer_bank_account': dealer_bank_account,
+		        	'dealer_bank': dealer_bank,
+		        	'dealer_bank_branch': dealer_bank_branch,
+		        	'own_account': own_account,
 		            'status': examineStatus,
+		            'actual_amount': actual_amount,
 		            'descr': descr
 		        },
 		        success:function(resp){

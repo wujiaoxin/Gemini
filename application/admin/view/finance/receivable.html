@@ -2,6 +2,14 @@
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
+<script>
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
 {/block}
 {block name="body"}
 <div class="main-box clearfix">
@@ -12,16 +20,20 @@
 	</header>
 	<div class="main-box-body clearfix">
 		<div class="clearfix">
-			<table class="table table-hover" id="table-loanExamine">
+			<table class="table table-hover" id="table-receivableExamine">
 				<thead>
 					<tr>
-						<th>项目编号</th>
+						<th>编号</th>
+						<th>流水号</th>
 						<th>渠道名称</th>
-						<th>借款金额</th>
-						<th>借款期限</th>
-						<th>借款费用状态</th>
-						<th>项目状态</th>
-						<th>提交时间</th>
+						<th>项目编号</th>
+						<th>回款金额</th>
+						<th>到账金额</th>
+						<th>手续费</th>
+						<th>手续费承担方</th>
+						<th>类型</th>
+						<th>状态</th>
+						<th>备注</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -32,55 +44,103 @@
 	</div>
 </div>
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
-  	<div class="modal-dialog modal-sm" role="document">
+  	<div class="modal-dialog" role="document">
     	<div class="modal-content">
       		<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-        		<h4 class="modal-title">放款凭证</h4>
+        		<h4 class="modal-title">回款审核</h4>
       		</div>
       	<div class="modal-body form-horizontal">
       		<div class="form-group">
-		    	<label class="col-sm-4 control-label">支付方式</label>
-			    <div class="col-sm-6">
-			      	<p class="form-control-static item-info">账户余额</p>
+		    	<label class="col-sm-2 control-label">流水号</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info">effe2323</p>
 			    </div>
-		  	</div>
-		  	<div class="form-group">
-		    	<label class="col-sm-4 control-label">客户名称</label>
-			    <div class="col-sm-6">
+			    <label class="col-sm-2 control-label">渠道名称</label>
+			    <div class="col-sm-4">
 			      	<p class="form-control-static item-info">滨江宝马</p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		    	<label class="col-sm-4 control-label">提交时间</label>
-			    <div class="col-sm-6">
-			      <p class="form-control-static item-info">2017-02-34</p>
+		    	<label class="col-sm-2 control-label">回款金额</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info">20000</p>
+			    </div>
+			    <label class="col-sm-2 control-label">到账金额</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info">19999</p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		    	<label class="col-sm-4 control-label">费用类型</label>
-			    <div class="col-sm-6">
-			      <p class="form-control-static item-info">利息</p>
+		  		<label class="col-sm-2 control-label">手续费</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info">1</p>
+			    </div>
+			    <label class="col-sm-2 control-label">回款方式</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info"></p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		    	<label class="col-sm-4 control-label">费用金额</label>
-			    <div class="col-sm-6">
-			      <p class="form-control-static item-info">2323</p>
+		    	<label class="col-sm-2 control-label">开户银行</label>
+			    <div class="col-sm-4 pt5">
+			      	<p class="form-control-static item-info"></p>
+			    </div>
+			    <label class="col-sm-2 control-label">银行账户</label>
+			    <div class="col-sm-4 pt5">
+			      	<p class="form-control-static item-info"></p>
 			    </div>
 		  	</div>
+		  	<div class="form-group">
+		    	<label class="col-sm-2 control-label">卡户网点</label>
+			    <div class="col-sm-4 pt5">
+			      	<p class="form-control-static item-info"></p>
+			    </div>
+			    <label class="col-sm-2 control-label">回款时间</label>
+			    <div class="col-sm-4 pt5">
+			      	<p class="form-control-static item-info"></p>
+			    </div>
+		  	</div>
+		  	<div class="form-group">
+            	<label class="control-label col-sm-2">项目信息</label>
+            	<div class="col-sm-8">
+            	<table class="table">
+					<thead>
+						<tr>
+							<th>订单编号</th>
+							<th>订单名称</th>
+							<th>还款金额</th>
+							<th>还款期数</th>
+							<th>应还时间</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<th>订单编号</th>
+							<th>订单名称</th>
+							<th>还款金额</th>
+							<th>还款期数</th>
+							<th>应还时间</th>
+						</tr>
+					</tbody>
+				</table>
+          	</div>
+          	</div>
           	<div class="form-group">
-            	<label class="col-sm-4 control-label">审核</label>
-            	<div class="col-sm-6 pt5">
-	            	<select id="examineType">
+            	<label class="col-sm-2 control-label">审核*</label>
+            	<div class="col-sm-4 pt5">
+	            	<select id="examineStatus">
 	            		<option value="1">通过</option>
 	            		<option value="0">未通过</option>
 	            	</select>
 	            </div>
+	            <label class="col-sm-2 control-label">平台账户</label>
+			    <div class="col-sm-4 pt5">
+			      	<input type="number" id="own_account" value="">
+			    </div>
           	</div>
           	<div class="form-group">
-            	<label class="col-sm-4 control-label">审核备注</label>
-            	<div class="col-sm-6 pt5">
+            	<label class="col-sm-2 control-label">审核备注</label>
+            	<div class="col-sm-4 pt5">
             		<textarea class="form-control" id="descr"></textarea>
             	</div>
           	</div>
@@ -104,13 +164,17 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + 'sn12121212' + '</td>'
+		  		+'<td>' + '1' + '</td>'
+		  		+'<td>' + 'ef121212' + '</td>'
 		  		+'<td>'+ '武当4S店' +'</td>'
-		  		+'<td>￥'+ '200000' +'</td>'
-		  		+'<td>'+ '7' +'天</td>'
-		  		+'<td>'+ '已支付' +'</td>'
-		  		+'<td>'+ '放款审核' +'</td>'
-		  		+'<td>'+ '2017-02-34' +'</td>'
+		  		+'<td>￥'+ 'sn10023' +'</td>'
+		  		+'<td>￥'+ '200001' +'</td>'
+		  		+'<td>￥'+ '199999' +'</td>'
+		  		+'<td>'+ '2' +'</td>'
+		  		+'<td>'+ 'wo' +'</td>'
+		  		+'<td>'+ '线下转账' +'</td>'
+		  		+'<td>'+ '处理中' +'</td>'
+		  		+'<td>'+ '' +'</td>'
 		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].sn+'">审核</a></td>'
 		  		 +'</tr>'
 			}
@@ -118,12 +182,12 @@
 		return html;
 	};
 	var  info = [{},{}];
-	$('#table-loanExamine tbody').html(tpl(info));
+	$('#table-receivableExamine tbody').html(tpl(info));
 
     $(function(){
     	TableManaged.init();
 
-    	$('#table-loanExamine').on('click','.opera',function(){
+    	$('#table-receivableExamine').on('click','.opera',function(){
 	   		var orderSn = $(this).attr('data');
 	   		ajax_jquery({
 		        // url:'',
@@ -141,7 +205,7 @@
 				   		// $('#myModal').modal();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
-		                    ui_alert("alert-error",resp.msg);
+		                    ui_alert(resp.msg);
 		                    return false;
 		                }
 		            }
@@ -151,16 +215,18 @@
 	   	});
 
 	   	$('#examineBtn').click(function(){
-	   	 	var examineType = $('#examineType').val();
+	   	 	var examineStatus = $('#examineStatus').val();
+	   	 	var own_account = $('#own_account').val();
 	   	 	var descr = $('#descr').val();
-	   	 	if(examineType == ''){
+	   	 	if(examineStatus == ''){
 	   	 		ui_alert("请选择审核结果");
 	            return false;
 	   	 	}
 	   	 	ajax_jquery({
 		        // url: apiUrl +'/admin/finance/loan',
 		        data:{
-		            'examineType': examineType,
+		        	'own_amount': own_amount,
+		            'status': examineStatus,
 		            'descr': descr
 		        },
 		        success:function(resp){
@@ -169,7 +235,7 @@
 		            	window.location.reload();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
-		                    ui_alert("alert-error",resp.msg);
+		                    ui_alert(resp.msg);
 		                    return false;
 		                }
 		            }
