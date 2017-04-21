@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
+    <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.gemini.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all">
+    <script type="text/javascript">
+        var BASE_URL = "";
+
+        var orderData = {};
+        var picList = [];
+
+        var keyList = [
+            {
+                form_key:"orderSupplement_pic_1",
+                form_label:"身份证正面照"
+            },
+            {
+                form_key:"orderSupplement_pic_2",
+                form_label:"身份证反面照"
+            },
+            {
+                form_key:"orderSupplement_pic_3",
+                form_label:"人车合照"
+            },
+            {
+                form_key:"orderSupplement_pic_4",
+                form_label:"合格证"
+            },
+            {
+                form_key:"orderSupplement_pic_5",
+                form_label:"保单证书"
+            },
+            {
+                form_key:"orderSupplement_pic_6",
+                form_label:"购车发票"
+            },
+            {
+                form_key:"orderSupplement_pic_7",
+                form_label:"首付凭证"
+            },
+            {
+                form_key:"orderSupplement_pic_8",
+                form_label:"垫资合同"
+            }];
+
+            for(var i=0 ; i<keyList.length;i++){
+            if(typeof(orderData[keyList[i].form_key]) == "object" ){
+                picList.push(orderData[keyList[i].form_key]);
+                keyList[i].has = 1;
+            }
+        }
+    </script>
+    <style type="text/css">
+        .pic-cont-block {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .pic-cont-item {
+            width: 90px;
+            height: 90px;
+            line-height: 90px;
+            overflow: hidden;
+            border: 1px solid #dedede;
+            border-radius: 5px;
+            background: #f2f2f2;
+            margin: 5px 0;
+        }
+        .pic-cont-item img {
+            width: 100%;
+            vertical-align: middle;
+        }
+
+
+        .step-block {
+            height: 70px;
+            overflow: hidden;
+        }
+        .stepShow {
+            text-align: center;
+            position: relative;
+            height: 80px;
+            overflow: auto;
+            overflow-y: hidden;
+            }
+        .step-wrap {
+            width: 150%;
+            height: 80px;
+        }
+
+        .stepContent {
+           width: 25%;
+           display: inline-block;
+           z-index: 2;
+        }
+        .num_circle {
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-size: 14px;
+            border: 5px solid rgba(255,153,0,0.4);
+            border-radius: 50%;
+            color: rgba(255,153,0,0.4);
+            background: #ffffff;
+            z-index: 2;
+        }
+        .step-progress {
+            width: 150%;
+            height: 4px;
+            position: absolute;
+            z-index: 1;
+            top: 32px;
+        }
+        .step-progress-bar {
+            width: 75%;
+            height: 100%;
+            margin:0 10%;
+            background: rgba(255,153,0,0.4);
+        }
+        .step-progress-highlight {
+            background: #ff9900;
+            display: block;
+            width: 0%;
+            height: 100%;
+            transition-duration: 5s;
+            -moz-transition-duration: 5s; /* Firefox 4 */
+            -webkit-transition-duration: 5s; /* Safari 和 Chrome */
+            -o-transition-duration: 5s;
+        }
+        .active {
+            border: 5px solid rgba(255,153,0,1);
+            color: rgba(255,153,0,1);
+            transition-duration: 5s;
+            -moz-transition-duration: 5s; /* Firefox 4 */
+            -webkit-transition-duration: 5s; /* Safari 和 Chrome */
+            -o-transition-duration: 5s;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center">订单资料提交</div>
+                    <div class="right"></div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div class="page">
+                    <div class="page-content">
+                        <div class="list-block mt10">
+                            <ul>
+                                <li class="accordion-item accordion-item-expanded">
+                                    <a href="#" class="item-content item-link">
+                                        <div class="item-inner">
+                                          <div class="item-title">订单编号(<span class="order-sn">A12331232</span>)</div>
+                                        </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="content-block">
+                                            <ul class="clearfix">
+                                                <li class="order-item">
+                                                    <div class="order-info-type">
+                                                        <span>订单业务</span>
+                                                        <span class="pull-right order-type">新车垫资</span>
+                                                    </div>
+                                                </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-amount">
+                                                        <span>借贷金额</span>
+                                                        <span class="pull-right order-amount">20,000元</span>
+                                                    </div>
+                                                </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-date">
+                                                        <span>申请时间</span>
+                                                        <span class="pull-right order-date">2017:03:08</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="accordion-item">
+                                    <a href="#" class="item-content item-link">
+                                        <div class="item-inner">
+                                            <div class="item-title">客户信息</div>
+                                        </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="content-block">
+                                            <ul class="clearfix">
+                                                <li class="order-item">
+                                                    <div class="order-info-loaner">
+                                                        <span>客户姓名</span>
+                                                        <span class="pull-right order-loaner">李博</span>
+                                                    </div>
+                                                </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-mobile">
+                                                        <span>手机号</span>
+                                                        <span class="pull-right order-mobile">13432456789</span>
+                                                    </div>
+                                                </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-idcardNum">
+                                                        <span>身份证号</span>
+                                                        <span class="pull-right order-idcardNum">332112197608230183</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="accordion-item accordion-item-expanded">
+                                    <a href="#" class="item-content item-link">
+                                        <div class="item-inner">
+                                            <div class="item-title">流程状态</div>
+                                        </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="content-block step-block">
+                                           <div class="stepShow">
+                                                <div class="row step-wrap">
+                                                    <div class="stepContent">
+                                                        <div class="num_circle">待授权</div>
+                                                    </div>
+                                                    <div class="stepContent">
+                                                        <div class="num_circle">资料审核</div>
+                                                    </div>
+                                                    <div class="stepContent">
+                                                        <div class="num_circle">放款审核</div>
+                                                    </div>
+                                                    <div class="stepContent">
+                                                        <div class="num_circle">已放款</div>
+                                                    </div>
+                                                </div>
+                                                <div class="step-progress">
+                                                    <p class="step-progress-bar">
+                                                        <span class="step-progress-highlight"></span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="accordion-item">
+                                    <a href="#" class="item-content item-link">
+                                        <div class="item-inner">
+                                            <div class="item-title">附件信息</div>
+                                        </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="content-block pic-info">
+                                            <div class="pic-cont">
+                                                <div class="pic-cont-title">个人信息</div>
+                                                <div class="pic-cont-block">
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/2.png"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/down_payment.jpg"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/drivingLic.png"></div>
+                                                </div>
+                                            </div>
+                                             <div class="pic-cont pb10">
+                                                <div class="pic-cont-title">证件信息</div>
+                                                <div class="pic-cont-block">
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/2.png"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/down_payment.jpg"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/drivingLic.png"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/2.png"></div>
+                                                    <div class="pic-cont-item"><img src="/public/wap/images/down_payment.jpg"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
+        </div>
+    </div>
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
+    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.0.16.min.js"></script>
+    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.gemini.js"></script>
+    <script type="text/javascript" src="/public/wap/js/order.js"></script>
+    <script type="text/javascript">
+        var order_id = getUrlParam('id');
+        ajax_jquery({
+            // url: apiUrl +'/api/order/detail?t=' + Math.random(),
+            data: order_id,
+            success: function (resp) {
+                if (resp.code == "1") {
+                    $(".order-sn").text(resp.data.sn);
+                    $(".order-type").text(resp.data.type);
+                    $(".order-amount").text(resp.data.finance);
+                    $(".order-date").text(formatDate(resp.data.create_time));
+                    $(".order-loaner").text(resp.data.name);
+                    $(".order-mobile").text(resp.data.mobile);
+                    $(".order-idcard_num").text(resp.data.idcard_num);
+                } else {
+                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+                        ui_alert(resp.msg);
+                    }
+                }
+            }
+        });
+
+        function stepbarShow (step) {
+            var rstep = step - 1;
+            var progressWidth = rstep * 33;
+            $(".stepContent:lt("+ step +")").children('.num_circle').addClass('active');
+            $(".stepContent:gt("+ rstep +")").children('.num_circle').removeClass('active');
+            $(".step-progress-highlight").width(progressWidth+"%");
+        }
+
+        $(function(){
+            stepbarShow(2);
+            var myPhotoBrowserPopup = myApp.photoBrowser({
+                photos : [
+                    {
+                        url: 'http://lorempixel.com/1024/1024/sports/1/',
+                        caption: 'Caption 1 Text'
+                    },
+                    {
+                        url: 'http://lorempixel.com/1024/1024/sports/2/',
+                        caption: 'Second Caption Text'
+                    },
+                    {
+                        url: 'http://lorempixel.com/1024/1024/sports/3/',
+                        caption: 'Second Caption Text'
+                    },
+                ],
+                theme: 'dark',
+                type: 'standalone'
+            });
+            $$('.pic-info').on('click','.pic-cont-item', function () {
+                myPhotoBrowserPopup.open();
+            });
+        });
+    </script>
+
+</body>
+</html>

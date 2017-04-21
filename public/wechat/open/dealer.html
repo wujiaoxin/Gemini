@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">    
+</head>
+<body>
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:goToUrl('{:url('mobile/index/index')}');" class="link icon-only back">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center blue-color">车商入驻申请</div>
+                    <div class="right">
+                        <a href="#" class="link icon-only"> 
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="Password" class="page">
+                    <div class="page-content jobPage">
+					  <form id="my-form" class="list-block" name="cardealerApp" enctype="multipart/form-data" method="post" onsubmit="return doPost();">
+						<ul>
+						  <li>
+							<div class="item-content">
+							  <div class="item-inner">
+							  <div class="item-title label">企业名称</div>
+								<div class="item-input">
+									<input type="text" id="name" name="name" placeholder="请输入企业名称">
+								</div>
+							  </div>
+							</div>
+						  </li>
+						  <li>
+							<div class="item-content">
+							  <div class="item-inner">
+							  <div class="item-title label">联系人</div>
+								<div class="item-input">
+									<input type="text" id="contacts" name="contacts" placeholder="请输入联系人姓名">
+								</div>
+							  </div>
+							</div>
+						  </li>
+						  <li>
+							<div class="item-content">
+							  <div class="item-inner">
+							  <div class="item-title label">联系电话</div>
+								<div class="item-input">
+									<input type="number" id="mobile" name="mobile" placeholder="请输入手机号">
+								</div>
+							  </div>
+							</div>
+						  </li>
+						</ul>
+						<div class="content-block">
+                            <button type="submit" id="postBtn" class="button button-big button-fill dpblue" style="width:100%">提交</button>
+                        </div>
+						<input id="inviter" type="hidden" name="inviter">
+					  </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+	<script> 
+	var inviter = getUrlParam("inviter");//TODO:后台转换为UID
+	
+	function doPost(){
+		var mobile = $("#mobile").val();
+		var name = $("#name").val();
+		var contacts = $("#contacts").val();
+		//var inviter = $("#inviter").val();
+		if (mobile == "" || name == "" || contacts == "") {
+			ui_alert("请输入正确信息");
+		}else if (validatePhoneNumber(mobile) == false) {
+			ui_alert("请输入正确的手机号!");
+		} else{
+			var param = {
+				"mobile": mobile,
+				"contacts": contacts,
+				"name": name,
+				"inviter": inviter
+			};
+			$("#postBtn").attr("disabled", "disabled");
+			ajax_jquery({
+				url: '/mobile/open/dealer?t='+Math.random(),
+				data:param,
+				success:function(resp){
+					if (resp.code == "1" ) {
+						ui_alert("提交成功，客服将尽快与您联系!", function () {
+							window.location.href = '/mobile' ;            
+						});
+					} else {
+						if (typeof(resp.msg) == 'string') {
+							ui_alert(resp.msg);
+						}                 
+					}
+				}
+			});
+			$("#postBtn").removeAttr("disabled");
+		}
+		return false;
+	}
+	</script>
+	
+</body>
+</html>
