@@ -311,7 +311,7 @@ class Account extends Baseness {
 		return $this->fetch();
   	}
 	public function message() {
-		$password = '011316';
+		/*$password = '011316';
 		$mobile = session('mobile');
 		$user = db('member')->where('mobile',$mobile)->find();
 		// echo $user['paypassword'].'<br>';
@@ -319,7 +319,7 @@ class Account extends Baseness {
 		// die;
 		if(md5($password.$user['mobile']) === $user['paypassword']){
 		    // echo 111;die;
-		}
+		}*/
 		return $this->fetch();
 	}
 }

@@ -31,6 +31,7 @@
                 'money'=>$data['money'],
                 'recharge_type'=>$data['recharge_type'],
                 'descr'=>$data['descr'],
+                'platform_account'=>$data['platform_account'],
                 'create_time'=>time()
             );
             $result = db('recharge')->insert($rec_money);
@@ -49,7 +50,7 @@
           $data_moneys = array(
                 'uid'=>$uid,
                 'sn'=>$data['sn'],
-                'status'=>$data['status'],
+                'status'=>'-1',
                 'money'=>$data['money'],
                 'type'=>'0',
                 'bank_account'=>$data['bank_name'],
