@@ -2,6 +2,14 @@
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
 {/block}
 {block name="body"}
 <div class="main-box clearfix">
@@ -104,31 +112,30 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + 'sn12121212' + '</td>'
-		  		+'<td>'+ '武当4S店' +'</td>'
-		  		+'<td>￥'+ '200000' +'</td>'
-		  		+'<td>'+ '7' +'天</td>'
-		  		+'<td>'+ '已支付' +'</td>'
-		  		+'<td>'+ '放款审核' +'</td>'
-		  		+'<td>'+ '2017-02-34' +'</td>'
-		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].sn+'">审核</a></td>'
+		  		+'<td>'+ data[index].sn + '</td>'
+		  		+'<td>'+ data[index].dealer_name +'</td>'
+		  		+'<td>￥'+ data[index].loan_limit +'</td>'
+		  		+'<td>'+ data[index].endtime +'天</td>'
+		  		+'<td>'+ g_financeStatus[data[index].finance] +'</td>'
+		  		+'<td>'+ '正常' +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
+		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].id+'">审核</a></td>'
 		  		 +'</tr>'
 			}
 		}
 		return html;
 	};
-	var  info = [{},{}];
 	$('#table-loanExamine tbody').html(tpl(info));
 
     $(function(){
     	TableManaged.init();
 
     	$('#table-loanExamine').on('click','.opera',function(){
-	   		var orderSn = $(this).attr('data');
+	   		var orderId = $(this).attr('data');
 	   		ajax_jquery({
-		        // url:'',
+		        url: apiUrl + '/admin/finance/loan',
 		        data:{
-		            'orderSn': orderSn
+		            'id': orderId
 		        },
 		        success:function(resp){
 		            if (resp.code == "1" ) {
@@ -138,7 +145,7 @@
 						        $(this).text(resp.data[name]);
 						    }
 						});
-				   		// $('#myModal').modal();
+				   		$('#myModal').modal();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert(resp.msg);
@@ -147,7 +154,6 @@
 		            }
 		        }
 			});
-			$('#myModal').modal();
 	   	});
 
 	   	$('#examineBtn').click(function(){
@@ -158,7 +164,7 @@
 	            return false;
 	   	 	}
 	   	 	ajax_jquery({
-		        // url: apiUrl +'/admin/finance/loan',
+		        url: apiUrl +'/admin/finance/loan',
 		        data:{
 		            'status': examineStatus,
 		            'descr': descr
