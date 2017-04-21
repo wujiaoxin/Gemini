@@ -102,14 +102,12 @@ class Finance extends Admin {
 
 				$result = db('order')->where('id',$data['id'])->find();
 
-				foreach ($result as $k => $v) {
 
-					$sercher = serch_name($v['mid']);
-					// var_dump($sercher);die;
+				$sercher =  serch_name($result['mid']);
+				// var_dump($sercher);die;
 
-					$result[$k]['dealer_name'] = $sercher['dealer_name'];//渠道名称
+				$result['dealer_name'] = $sercher['dealer_name'];//渠道名称
 
-				}
 
 				// var_dump($result);die;
 
@@ -198,13 +196,10 @@ class Finance extends Admin {
 
 				$result = db('recharge')->where('sn',$data['id'])->find();
 				// var_dump($result);die;
-				foreach ($result as $k => $v) {
+				$sercher =  serch_name($result['mid']);
+				// var_dump($sercher);die;
 
-					$sercher = serch_name($v['uid']);
-					// var_dump($sercher);die;
-
-					$result[$k]['dealer_name'] = $sercher['dealer_name'];
-				}
+				$result['dealer_name'] = $sercher['dealer_name'];//渠道名称
 				// var_dump($result);die;
 
 				$data = array(
@@ -277,14 +272,12 @@ class Finance extends Admin {
 
 				$result = db('carry')->where('sn',$data['id'])->find();
 
-				foreach ($result as $k => $v) {
+				$sercher = serch_name($result['uid']);
+				// var_dump($sercher);die;
 
-					$sercher = serch_name($v['uid']);
-					// var_dump($sercher);die;
+				$result['dealer_name'] = $sercher['dealer_name'];
 
-					$result[$k]['dealer_name'] = $sercher['dealer_name'];
-
-				}
+				
 				// var_dump($result);die;
 
 				$data = array(

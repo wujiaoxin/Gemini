@@ -218,3 +218,66 @@ function serch_realname($uid){
 
     }
   }
+  	/*
+	** 计算支付费用
+	** time 借款时间
+	** money 借款金额
+	** 利率为日利率
+  	*/
+  	function fee_money($time, $money){
+
+  		if ($time <= 5) {
+
+  			$interest_rate = 0.08/10;
+  			
+  		}elseif ($time >5 && $time <=9) {
+
+  			$interest_rate = 1/10;
+
+  		}elseif ($time >9 && $time <=12) {
+
+  			$interest_rate = 1.2/10;
+
+  		}elseif ($time >12 && $time <=15) {
+
+  			$interest_rate = 1.5/10;
+
+  		}else {
+
+  			$interest_rate = '';
+
+  		}
+
+  		$result = $moeny * $interest_rate * $time;
+
+  		return $result;
+  	}
+
+  	/**
+	 * 记录行为日志，并执行该行为的规则
+	 * @param string $action 行为标识
+	 * @param string $model 触发行为的模型名
+	 * @param int $param 参数
+	 * @param int $record_id 触发行为的记录id
+	 * @param int $user_id 执行行为的用户id
+	 */
+	function examine_log($action = null,$controller = null,$param = null , $record_id = null,$status = null , $type) {
+
+		if (empty($user_id)) {
+			$user_id = is_login();
+		}
+
+		//插入行为日志
+		$data['uid']     = $user_id;
+		$data['ip']   = ip2long(get_client_ip());
+		$data['controller'] = $controller;
+		$data['action'] = $action;
+		$data['param'] = $param;
+		$data['record_id'] = $record_id;
+		$data['status'] = $status;
+		$data['type'] = $type;
+		$data['create_time'] = time();
+
+		db('examine_log')->insert($data);
+
+	}
