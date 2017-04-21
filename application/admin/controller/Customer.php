@@ -51,6 +51,13 @@ class Customer extends Admin {
 		$Order = model('order');
 
 		$result = $Order->search_order($id);
+		// var_dump($result);die;
+		$data = array(
+
+			'infoStr' =>json_encode($result)
+		);
+
+		$this->assign($data);
 
 		// var_dump($result);die;
 		$this->assign($result);
