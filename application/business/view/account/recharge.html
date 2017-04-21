@@ -65,7 +65,7 @@
 <script type="text/javascript">
 $(function(){
 	$('#rechargeBtn').on('click',function(){
-		var platform_account = $("input[name='platform_account'][checked]").val();
+		var platform_account = $("input[name='platform_account']:checked").val();
 		var amount = $('#amount').val();
 		var rechargeMode = $('#rechargeMode').val();
 		var desc = $('#desc').val();
@@ -74,6 +74,9 @@ $(function(){
 	        return false;
 		}else if(rechargeMode == ""){
 			ui_alert("alert-error","请选择充值方式");
+	        return false;
+		}else if(platform_account == ""){
+			ui_alert("alert-error","请选择充值银行");
 	        return false;
 		}
 
