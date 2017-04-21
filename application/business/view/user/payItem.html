@@ -139,13 +139,13 @@
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
-			var orderStatus = '';
+			var orderFinance = '';
 			var orderOpera = '';
-			if(data[index].status == '1'){
-				orderStatus = '待支付';
+			if(data[index].finance == '1'){
+				orderFinance = '待支付';
 				orderOpera = '<a class="orderOpera" data-toggle="modal">支付</a>'
 			}else{
-				orderStatus = '已支付';
+				orderFinance = '已支付';
 			}
 		  	html += '<tr class="odd gradex">'
 		  		+'<td class="order_sn">' + data[index].sn + '</td>'
@@ -154,7 +154,7 @@
 		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
 		  		+'<td class="order_fee" data="'+ data[index].fee +'">￥'+ formatAmount(data[index].fee) +'</td>'
-		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ orderFinance +'</td>'
 		  		+'<td>'+ orderOpera +'</td>'
 		  		 +'</tr>';
 			}
@@ -194,7 +194,7 @@
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var orderType = $('.selectOrderType li.active').attr('data');
 	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
-	   		var orderStatus = $('.selectOrderStatus li.active').attr('data'); 
+	   		var orderStatus = $('.selectOrderStatus li.active').attr('data');
 	   		ajaxPayItem(orderType,orderDateRange,orderStatus);
 	   	})
 
