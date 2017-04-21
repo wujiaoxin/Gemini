@@ -33,7 +33,7 @@ class Finance extends Admin {
 		return $this->fetch();
 	}
 
-	// 放款审核 
+	// 放款审核
 	public function loan() {
 
 		if (IS_POST) {
@@ -102,12 +102,10 @@ class Finance extends Admin {
 
 				$result = db('order')->where('id',$data['id'])->find();
 
-
 				$sercher =  serch_name($result['mid']);
 				// var_dump($sercher);die;
 
 				$result['dealer_name'] = $sercher['dealer_name'];//渠道名称
-
 
 				// var_dump($result);die;
 
@@ -118,6 +116,7 @@ class Finance extends Admin {
 				$resp['data'] = $result;
 
 				}
+				
 			return json($resp);
 
 		}else{
