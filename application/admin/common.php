@@ -168,12 +168,21 @@ function serch_name($uid){
 
 }
 
+/*
+**查询车商名称
+*/
+function serch_realname($uid){
+	$result = db('member')->field('realname')->where('uid',$uid)->find();
+	// var_dump($result);die;
+	return $result['realname'];
+}
+
  /*
   **生成还款列表
   */
   function set_order_repay($order_id){
 
-    $order = db('order')->where('sn',$order_id)->find();
+    $order = db('order')->where('id',$order_id)->find();
 
     if ($order) {
 
