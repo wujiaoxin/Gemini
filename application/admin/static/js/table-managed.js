@@ -193,6 +193,7 @@ var TableManaged = function () {
                     null,
                     null,
                     null,
+                    null,
                     { "bSortable": false }
                 ],
                 configData
@@ -206,6 +207,9 @@ var TableManaged = function () {
             $('#table-receivableExamine').dataTable({
                 "aoColumns": [
                     { "bSortable": true },
+                    null,
+                    null,
+                    null,
                     null,
                     null,
                     null,

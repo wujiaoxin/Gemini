@@ -64,7 +64,6 @@ try {
 } catch (e) {
 	alert("数据异常");
 }
-
 </script>
 {/block}
 {block name="body"}
@@ -273,7 +272,7 @@ try {
 							<div class="col-lg-10 col-sm-10">
 								<select class="form-control" name="status" id="status" style="width:auto;">
 									<option value="1">待激活</option>
-									<option value="2" selected>正常</option>
+									<option value="2">正常</option>
 									<option value="3">终止合作</option>
 								</select>
 								<div class="help-block">请确认所有资料真实性后选择通过。</div>
@@ -314,7 +313,7 @@ try {
 					</div>
 					<div class="form-group">
 						<div class="col-lg-offset-2 col-lg-10">
-							<a class="btn btn-primary" href="{:url('addStaff')}">新增员工</a>
+							<a class="btn btn-primary" id="addStaffBtn">新增员工</a>
 							<button class="btn btn-danger btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
 						</div>
 					</div>
@@ -337,5 +336,9 @@ try {
 <script type="text/javascript" src="__JS__/manager.js"></script>
 <script type="text/javascript" src="__JS__/assetChannel.js"></script>
 <script>
+	var dealer_id = getUrlParam('id');
+	$('#addStaffBtn').click(function(){
+		window.location.href = '/admin/assetChannel/addStaff?id='+dealer_id;
+	});
 </script>
 {/block}

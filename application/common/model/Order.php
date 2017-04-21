@@ -132,4 +132,43 @@ class Order extends \app\common\model\Base {
 		$result = $this->save($data,['id'=>$data['id']]);
 		return $result;
 	}
+
+	// 客户订单查询
+
+	public function search_order($id){
+
+		$info = db('member')->alias('m')->field('m.bankcard,m.mobile,o.name,o.idcard_face_pic,o.idcard_back_pic')->join('__ORDER__ o','m.mobile = o.mobile')->where('m.uid',$id)->find();
+		// var_dump($info);die;
+
+
+		$mobile = db('member')->field('mobile')->where('uid',$id)->find();
+		// var_dump($mobile);die;
+		$orders = db('Order')->alias('o')->field('o.*')->join('__MEMBER__ m','m.mobile = o.mobile')->where('o.mobile',$mobile['mobile'])->select();
+
+		foreach ($orders as $k => $v) {
+			// echo $v['sn'];die;
+			$status  = db('order_repay')->field('status,has_repay')->where('order_id', $v['sn'])->find();
+			$orders[$k]['repay_status'] = $status['has_repay'];
+		}
+		$nums = db('order')->where('mobile',$mobile['mobile'])->count();
+
+		$map = array(
+			'status' => '1',
+			'mobile'=>$mobile['mobile']
+			);
+		$num_repay = db('order')->where($map)->count();
+
+		$num_repay = array(
+				'nums'=> $nums,
+				'num_success'=>$num_repay
+			);
+		$result = array(
+				'info' => $info,
+				'orders' => $orders,
+				'nums' =>$num_repay
+			);
+		// var_dump($result);die;
+		return $result;
+	}
+
 }

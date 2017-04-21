@@ -1837,3 +1837,18 @@ CREATE TABLE `gemini_collect_data` (
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='原始数据采集表';
+
+DROP TABLE IF EXISTS `gemini_examine_log`;
+CREATE TABLE `gemini_examine_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL COMMENT '操作人uid',
+  `ip` bigint(20) NOT NULL COMMENT '操作人ip',
+  `controller` varchar(32) NOT NULL COMMENT '控制器',
+  `action` varchar(32) NOT NULL COMMENT '操作动作',
+  `param` varchar(255) NOT NULL COMMENT '参数',
+  `record_id` varchar(255) NOT NULL COMMENT '订单编号',
+  `status` int(3) NOT NULL COMMENT '操作状态',
+  `type` int(3) NOT NULL COMMENT '操作流程节点',
+  `create_time` int(11) NOT NULL COMMENT '操作时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='审核记录表';

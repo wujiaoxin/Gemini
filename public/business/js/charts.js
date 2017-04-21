@@ -4,8 +4,8 @@ var Charts = function () {
         //main function to initiate the module
         // init: function () {
         //     App.addResponsiveHandler(function () {
-        //          Charts.initPieCharts(); 
-        //     });           
+        //          Charts.initPieCharts();
+        //     });
         // },
 
         initCharts: function () {
@@ -13,7 +13,7 @@ var Charts = function () {
                 return;
             }
 
-            var data = [];
+            var data = orderTotal;
             var totalPoints = 250;
 
 
@@ -22,7 +22,7 @@ var Charts = function () {
             function chart2() {
                 // var orderTotal =[];
                 var plot = $.plot($("#chart_orderTotal"), [{
-                            data: orderTotal,
+                            data: data,
                             label: "订单金额"
                         }
                     ], {
@@ -58,7 +58,8 @@ var Charts = function () {
                         },
                         yaxis: {
                             ticks: 11,
-                            tickDecimals: 0
+                            tickDecimals: 0,
+                            min: 0
                         }
                     });
 
@@ -86,12 +87,14 @@ var Charts = function () {
                     if (item) {
                         if (previousPoint != item.dataIndex) {
                             previousPoint = item.dataIndex;
-
                             $("#tooltip").remove();
-                            var x = item.datapoint[0].toFixed(2),
-                                y = item.datapoint[1].toFixed(2);
-
-                            showTooltip(item.pageX, item.pageY, item.series.label + " of " + x + " = " + y);
+                            // var x = item.datapoint[0],
+                            //     y = item.datapoint[1],
+                            //     z = item.datapoint[2];
+                            var y = data[item.dataIndex][1],
+                                z = data[item.dataIndex][2],
+                                w = data[item.dataIndex][3];
+                            showTooltip(item.pageX, item.pageY, '日期:'+w+'<br>笔数:'+z+'<br>金额:'+y);
                         }
                     } else {
                         $("#tooltip").remove();
@@ -99,11 +102,10 @@ var Charts = function () {
                     }
                 });
             }
-            
+
             chart2();
         }
 
-        
     };
 
 }();

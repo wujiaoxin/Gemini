@@ -72,7 +72,7 @@
           	<div class="form-group">
             	<label class="col-sm-4 control-label">审核</label>
             	<div class="col-sm-6 pt5">
-	            	<select id="examineType">
+	            	<select id="examineStatus">
 	            		<option value="1">通过</option>
 	            		<option value="0">未通过</option>
 	            	</select>
@@ -141,7 +141,7 @@
 				   		// $('#myModal').modal();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
-		                    ui_alert("alert-error",resp.msg);
+		                    ui_alert(resp.msg);
 		                    return false;
 		                }
 		            }
@@ -151,16 +151,16 @@
 	   	});
 
 	   	$('#examineBtn').click(function(){
-	   	 	var examineType = $('#examineType').val();
+	   	 	var examineStatus = $('#examineStatus').val();
 	   	 	var descr = $('#descr').val();
-	   	 	if(examineType == ''){
+	   	 	if(examineStatus == ''){
 	   	 		ui_alert("请选择审核结果");
 	            return false;
 	   	 	}
 	   	 	ajax_jquery({
 		        // url: apiUrl +'/admin/finance/loan',
 		        data:{
-		            'examineType': examineType,
+		            'status': examineStatus,
 		            'descr': descr
 		        },
 		        success:function(resp){
@@ -169,7 +169,7 @@
 		            	window.location.reload();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
-		                    ui_alert("alert-error",resp.msg);
+		                    ui_alert(resp.msg);
 		                    return false;
 		                }
 		            }

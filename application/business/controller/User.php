@@ -145,6 +145,7 @@ use app\business\controller\Baseness;
 		//一个月内每天的订单数量
 		$times = time()-24*3600*30;
 		$time =db('order')->field("FROM_UNIXTIME(create_time,'%Y-%m-%d') as time,create_time,count(id) as num,sum(loan_limit) as total_money")->group('time')->wheretime('create_time','>',$times)->order('time')->select();
+		// var_dump($time);
 		$temp['time'] ='0';
 		$temp['num'] ='0';
 		$temp['total_money'] ='0';
@@ -222,9 +223,9 @@ use app\business\controller\Baseness;
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
-				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.sn = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
+				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
 			}else{
-				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.sn = o.order_id')->where($map)->order('o.status ASC')->select();
+				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
 			}
 			// var_dump($map);die;
 			foreach ($order_repay as $k => $v) {
@@ -257,6 +258,8 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			$data = input('post.');
 			// var_dump($data);die;
+
+
 			if (isset($data['payPwd']) && isset($data['payOrder'])) {
 				$user = db('member')->field('paypassword')->where('mobile',$mobile)->find();
 				if(md5($data['payPwd'].$mobile) == $user['paypassword']){
@@ -264,29 +267,40 @@ use app\business\controller\Baseness;
 					$fee = db('order')->field('fee')->where('sn',$data['payOrder'])->find();
 					// var_dump($fee);die;
 					$money = db('dealer')->field('money,lock_money')->where('mobile',$mobile)->find();
+
 					$use_money = $money['money'] - $fee['fee'];
+
 					// echo $use_money;die;
-					$lock_money = $money['lock_money'] + $fee['fee'];
-					$datas = array(
-						'money'=>$use_money,
-						'lock_money' => $lock_money
-						);
-					// var_dump($data);die;
-					$fee['order_id'] = $data['payOrder'];
-					db('Dealer')->where('mobile',$mobile)->update($datas);//冻结资金
-					modify_account($fee,$uid,'0','0','0','INSERT');//资金记录
-					//支付完成进行放款中
-					$fk_deal = array(
-						'finance'=>'2',
-						'update_time'=>time()
-						);
-					$result = db('order')->where('sn',$data['payOrder'])->update($fk_deal);
-					if ($result) {
-						$resp['code'] = '1';
-						$resp['msg'] = '支付订单成功';
-					}else{
+
+					if ($use_money < 0) {
 						$resp['code'] = '0';
-						$resp['msg'] = '支付订单已完成';
+						$resp['msg'] = '余额不足，请充值！！！';
+					}else{
+						// echo $use_money;die;
+						$lock_money = $money['lock_money'] + $fee['fee'];
+						$datas = array(
+							'money'=>$use_money,
+							'lock_money' => $lock_money
+							);
+						// var_dump($data);die;
+						$fee['order_id'] = $data['payOrder'];
+						db('Dealer')->where('mobile',$mobile)->update($datas);//冻结资金
+						$data['money'] = $fee;
+						$data['descr'] = '订单编号:'.$data['payOrder'].'支付成功';
+						money_record($data, $uid, 5, 0);//资金记录
+						//支付完成进行放款中
+						$fk_deal = array(
+							'finance'=>'2',
+							'update_time'=>time()
+							);
+						$result = db('order')->where('sn',$data['payOrder'])->update($fk_deal);
+						if ($result) {
+							$resp['code'] = '1';
+							$resp['msg'] = '支付订单成功';
+						}else{
+							$resp['code'] = '0';
+							$resp['msg'] = '支付订单已完成';
+						}
 					}
 				}else{
 					$resp['code'] = '0';

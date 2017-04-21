@@ -1,3 +1,4 @@
+var apiUrl ='';
 function ui_alert(msg,type,position){
    $.messager.show(msg, {placement: position,type:type});
 };
@@ -39,12 +40,12 @@ function _ajax_error(XMLHttpRequest, textStatus, errorThrown) {
 //    this; // 调用本次AJAX请求时传递的options参数
     var session_status = XMLHttpRequest.getResponseHeader("Session-Status"); //通过XMLHttpRequest取得响应头，Session-Status，
     if (session_status == 'TimeOut') {
-        ui_alert('alert-error','登录超时，请重新登录');
+        ui_alert('登录超时，请重新登录');
         // window.location.href = "/mobile/user/login"; //如果超时就处理 ，指定要跳转的页面
     } else if (session_status == 'Empty') {
-        ui_alert('alert-error','权限限制，请联系管理员');
+        ui_alert('权限限制，请联系管理员');
     } else if (textStatus == 'timeout') {
-        ui_alert('alert-error','加载超时，请重试');
+        ui_alert('加载超时，请重试');
     } else {
         console.log("XHR="+XMLHttpRequest+"\ntextStatus="+textStatus+"\nerrorThrown=" + errorThrown);
     }
@@ -96,9 +97,9 @@ function sendSms(id) {
     var mobile = $('#'+formName+'-username').val();
     var imgverify = $('#'+formName+'-rvalicode').val();
     if (mobile == "") {
-        ui_alert("alert-error","请输入手机号!");
+        ui_alert("请输入手机号!");
     }else if (!validatePhoneNumber(mobile)) {
-        ui_alert("alert-error","请输入正确的手机号!");
+        ui_alert("请输入正确的手机号!");
     }
     ajax_jquery({
         url: apiUrl + '/business/user/sendSmsVerify',
@@ -107,12 +108,12 @@ function sendSms(id) {
          },
         success: function (resp) {
             if (resp.code == "1") {
-                ui_alert("alert-success","验证码发送成功,请注意查收");
+                ui_alert("验证码发送成功,请注意查收","success");
             } else {
                 if (typeof(resp.msg) == 'string' && resp.msg != '') {
-                    ui_alert("alert-error",resp.msg);
+                    ui_alert(resp.msg);
                 } else {
-                    ui_alert("alert-error","验证码发送失败");
+                    ui_alert("验证码发送失败");
                 }
                 return false;
             }
@@ -121,8 +122,8 @@ function sendSms(id) {
 }
 
 //获取
-function getUrlParam(name) {  
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); 
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]); return null;
 }

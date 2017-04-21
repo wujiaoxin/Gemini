@@ -169,12 +169,18 @@ class assetChannel extends Admin {
 		// var_dump($GLOBALS);die;
 		if (IS_POST){
 			$data = input('post.');
+			// var_dump($data);die;
 			if ($data) {
-				$invit = db('Dealer')->alias('d')->field('d.invite_code')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
+				$invit = db('Dealer')->field('d.invite_code')->join('__MEMBER__ m','m.mobile = d.mobile')->where('uid',$data['id'])->find();
+				// $data = $this->request->param();
 				$user = model('User');
-				$uid = $user->registerByMobile($data['mobile'], $data['password']);
+				//创建注册用户
+				// var_dump($data);die;
+				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
+				// echo $uid;die;
 				if ($uid > 0) {
 					$userinfo['realname'] = $data['name'];
+					$userinfo['nickname'] = $data['name'];
 					$userinfo['mobile'] = $data['mobile'];
 					$userinfo['status'] = 1;
 					$userinfo['invite_code'] = $invit['invite_code'];
@@ -182,6 +188,7 @@ class assetChannel extends Admin {
 					$userinfo['desc'] = $data['remark'];
 					$userinfo['tel'] = $data['telphone'];
 					$userinfo['reg_time'] = time();
+					$userinfo['last_login_ip'] = get_client_ip(1);
 					//保存信息
 					if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 						$resp["code"] = 0;

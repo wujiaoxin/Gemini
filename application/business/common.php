@@ -29,8 +29,9 @@
                 'sn'=>$sn,
                 'status'=>'-1',
                 'money'=>$data['money'],
-                // 'recharge_type'=>$data['recharge_type'],
+                'recharge_type'=>$data['recharge_type'],
                 'descr'=>$data['descr'],
+                'platform_account'=>$data['platform_account'],
                 'create_time'=>time()
             );
             $result = db('recharge')->insert($rec_money);
@@ -49,7 +50,7 @@
           $data_moneys = array(
                 'uid'=>$uid,
                 'sn'=>$data['sn'],
-                'status'=>$data['status'],
+                'status'=>'-1',
                 'money'=>$data['money'],
                 'type'=>'0',
                 'bank_account'=>$data['bank_name'],
@@ -336,7 +337,7 @@
 
       );
     $repay_moneys = db('order')->where($map)->sum('loan_limit');
-    // var_dump($repay_money);die;
+    // var_dump($repay_moneys);die;
     //总金额
     $total_money = $dealer_money['money'] + $dealer_money['lock_money'] + $repay_moneys ;
 

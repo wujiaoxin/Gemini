@@ -18,32 +18,32 @@
 			<div class="form-group">
 				<label class="control-label col-sm-2">姓名*</label>
 				<div class="col-sm-10">
-					<input type="text" id="name" class="m-wrap span12" placeholder="请输入真实姓名">
+					<input type="text" id="name" placeholder="请输入真实姓名">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-2">手机号*</label>
 				<div class="col-sm-10">
-					<input type="number" id="mobile" class="m-wrap span12" placeholder="请输入注册手机号">
+					<input type="number" id="mobile" placeholder="请输入注册手机号">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-2">密码*</label>
 				<div class="col-sm-10">
-					<input type="password" id="password" class="m-wrap span12" placeholder="请输入密码">
+					<input type="password" id="password" placeholder="请输入密码">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-2">确认密码*</label>
 				<div class="col-sm-10">
-					<input type="password" id="rePassword" class="m-wrap span12" placeholder="请确认密码">
+					<input type="password" id="rePassword" placeholder="请确认密码">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-2">职位*</label>
 				<div class="col-sm-2">
 					<select  id="job" class="form-control" >
-						<option value="7">业务员</option>
+						<option value="1">业务员</option>
 						<option value="8">财务</option>
 					</select>
 				</div>
@@ -74,11 +74,11 @@
 {/block}
 {block name="script"}
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
+<script type="text/javascript" src="/public/business/js/validate.js"></script>
 <script type="text/javascript" src="__JS__/manager.js"></script>
 <script>
 	$(document).ready(function() {
 		var dealer_id = getUrlParam('id');
-		console.log(dealer_id)
 	   $("#newStaffBtn").click(function(){
 		   	var name = $("#name").val();
 		   	var mobile = $("#mobile").val();
@@ -113,8 +113,9 @@
 		   		return;
 		   	}
 		   	ajax_jquery({
-	            url: apiUrl +'/business/user/addStaff',
+	            url: apiUrl +'/admin/assetChannel/addStaff',
 	            data:{
+	            	"id": dealer_id,
 	            	"name": name,
 	            	"mobile": mobile,
 	            	"password": password,
