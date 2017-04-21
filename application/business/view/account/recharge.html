@@ -26,6 +26,17 @@
 						</div>
 					</div>
 					<div class="control-group">
+						<label class="control-label">充值银行</label>
+						<div class="controls">
+							<label class="radio line">
+								<input type="radio" name="platform_account">户名:杭州互纳科技有限公司  开户行:招商银行股份有限公司杭州高新支行   账户：571909942510701
+							</label>
+							<label class="radio line">
+								<input type="radio" name="platform_account">户名:沈军海 开户行:平安银行西安丈八北路支行 账户:6230580000094045239
+							</label>
+						</div>
+					</div>
+					<div class="control-group">
 						<label class="control-label">充值备注</label>
 						<div class="controls">
 							<textarea id="desc" class="medium m-wrap" rows="3"></textarea>
@@ -54,6 +65,7 @@
 <script type="text/javascript">
 $(function(){
 	$('#rechargeBtn').on('click',function(){
+		var platform_account = $("input[name='platform_account'][checked]").val();
 		var amount = $('#amount').val();
 		var rechargeMode = $('#rechargeMode').val();
 		var desc = $('#desc').val();
@@ -70,6 +82,7 @@ $(function(){
 	        data:{
 	        	'money': amount,
 	        	'recharge_type': rechargeMode,
+	        	'platform_account': platform_account,
 	        	'descr': desc
 	        },
 	        success:function(resp){
