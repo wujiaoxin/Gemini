@@ -39,7 +39,7 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-
+			// var_dump($data);die;
 			if (isset($data['status'])) {
 
 				$datas = array(
@@ -111,13 +111,14 @@ class Finance extends Admin {
 
 				// var_dump($result);die;
 
-				$data = array(
-					'infoStr' => json_encode($result)
-				);
+				$resp['code'] = 1;
 
-				$this->assign($data);
+				$resp['msg'] = '查询成功';
+
+				$resp['data'] = $result;
 
 				}
+			return json($resp);
 
 		}else{
 
@@ -202,12 +203,13 @@ class Finance extends Admin {
 				$result['dealer_name'] = $sercher['dealer_name'];//渠道名称
 				// var_dump($result);die;
 
-				$data = array(
-					'infoStr' => json_encode($result)
-				);
+				$resp['code'] = 1;
 
-				$this->assign($data);
+				$resp['msg'] = '查询成功';
+
+				$resp['data'] = $result;
 			}
+			return json($resp);
 		}else{
 			$result = db('recharge')->order('create_time DESC,status ASC')->select();
 			// var_dump($result);die;
@@ -278,15 +280,14 @@ class Finance extends Admin {
 				$result['dealer_name'] = $sercher['dealer_name'];
 
 				
-				// var_dump($result);die;
+				$resp['code'] = 1;
 
-				$data = array(
-					'infoStr' => json_encode($result)
-				);
+				$resp['msg'] = '查询成功';
 
-				$this->assign($data);
+				$resp['data'] = $result;
 
 			}
+			return json($resp);
 
 		}else{
 
@@ -362,25 +363,23 @@ class Finance extends Admin {
 
 			}else{
 
-				$result = db('order_repay')->where('order_id',$data['id'])->select();
+				$result = db('order_repay')->where('order_id',$data['id'])->find();
 
-				foreach ($result as $k => $v) {
+				$sercher = serch_name($v['mid']);
+				// var_dump($sercher);die;
 
-					$sercher = serch_name($v['mid']);
-					// var_dump($sercher);die;
+				$result['dealer_name'] = $sercher['dealer_name'];
 
-					$result[$k]['dealer_name'] = $sercher['dealer_name'];
-
-				}
 				// var_dump($result);die;
 
-				$data = array(
-					'infoStr' => json_encode($result)
-				);
+				$resp['code'] = 1;
 
-				$this->assign($data);
+				$resp['msg'] = '查询成功';
+
+				$resp['data'] = $result;
 
 			}
+			return json($resp);
 
 		}else{
 			$result = db('order_repay')->where('status','>',-1)->select();
