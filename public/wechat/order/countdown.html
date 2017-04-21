@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" href="/public/wap/css/new-app.css">  
+    <style type="text/css">
+        .game_time{width:160px;height:160px;text-align:center;margin: auto}
+        .pie{width:160px;height:160px;background-color:blue;border-radius:160px;position:absolute;}
+        .pie1{clip:rect(0px,160px,160px,80px);-o-transform:rotate(0deg);-moz-transform:rotate(0deg);-webkit-transform:rotate(0deg);background-color:#fff;}
+        .pie2{clip:rect(0px,80px,160px,0px);-o-transform:rotate(0deg);-moz-transform:rotate(0deg);-webkit-transform:rotate(0deg);background-color:#fff;}
+        .hold{width:160px;height:160px;position:absolute;z-index:1;}
+        .bg{width:160px;height:160px;border-radius:160px;position:absolute;background-color:#ff9900;}
+        .time{width:130px;height:130px;margin:15px 0 0 15px;background-color:#fce169;border-radius:130px;position:absolute;z-index:1;text-align:center;line-height:130px;font-size:26px;
+         background: -webkit-linear-gradient(top left, #00FFB8, #B9FF23); /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(top left, #00FFB8, #B9FF23); /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(top left, #00FFB8, #B9FF23); /* Firefox 3.6 - 15 */
+            background: linear-gradient(top left, #00FFB8 , #B9FF23); /* 标准的语法 */}
+        
+        .time-content {
+            padding: 10px;
+            text-align: center;
+            background: -webkit-linear-gradient(top left, rgba(0, 255, 156, 0.66) , rgb(157, 255, 0)); /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(top left, rgba(0, 255, 156, 0.66) , rgb(157, 255, 0)); /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(top left, rgba(0, 255, 156, 0.66) , rgb(157, 255, 0)); /* Firefox 3.6 - 15 */
+            background: linear-gradient(top left, rgba(0, 255, 156, 0.66) , rgb(157, 255, 0)); /* 标准的语法 */
+        }
+        .facebook-card .card-header {
+            display: block;
+            padding: 10px 10px 0;
+        }
+        .facebook-card .facebook-avatar {
+            float: left;
+        }
+        .facebook-card .facebook-name {
+            margin-left: 44px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .facebook-card .facebook-date {
+            margin-left: 44px;
+            font-size: 13px;
+            color: #8e8e93;
+        }
+    </style>
+</head>
+<body>   
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:history.go(-1)" class="link icon-only back">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center"">信息结果</div>
+                    <div class="right"></div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div class="page">                     
+                    <div class="page-content">
+                        <div class="time-content">
+                            <div class="game_time">
+                                <div class="hold">
+                                    <div class="pie pie1"></div>
+                                </div>
+                                <div class="hold">
+                                    <div class="pie pie2"></div>
+                                </div>
+                                <div class="bg"></div>
+                                <div class="time"></div>                           
+                            </div>
+                        </div>
+                        <div class="card facebook-card">
+                          <div class="card-header no-border">
+                            <div class="facebook-avatar"><img src="/public/wap/images/logo-ico.png" width="34" height="34"></div>
+                            <div class="facebook-name">VP贷</div>
+                            <div class="facebook-date">关注微信公众号</div>
+                          </div>
+                          <div class="card-content"><img src="/public/wap/images/VPDaiQRcode.jpg" width="100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
+        </div>
+    </div>
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript">
+        var showTime = function(){
+            var times = 6000; //60*100
+            var count = 0;
+            countTime = setInterval(function(){
+                times = times-- < 0 ? 6000 : times;
+                var sec =  Math.floor(times / 100);
+                var centisec = Math.floor(times % 100);       
+                count++;
+                var d = count * 0.06;
+                sec = (sec<10)?"0"+sec:sec;
+                centisec = (centisec<10)?"0"+centisec:centisec;
+                if(times > 3000){ 
+                    $(".pie2").css("backgroundColor", "#ffffff");
+                    $(".pie1").css("-o-transform","rotate(" + d + "deg)");
+                    $(".pie1").css("-moz-transform","rotate(" + d + "deg)");
+                    $(".pie1").css("-webkit-transform","rotate(" + d + "deg)");
+                }else{
+                    $(".pie2").css("backgroundColor", "#ff9900");
+                    $(".pie2").css("-o-transform","rotate(" + d + "deg)");
+                    $(".pie2").css("-moz-transform","rotate(" + d + "deg)");
+                    $(".pie2").css("-webkit-transform","rotate(" + d + "deg)");
+    }
+            $(".time").html(sec +":" + centisec);    
+            },10);
+        };
+        showTime();
+    </script>
+</body>
+</html>

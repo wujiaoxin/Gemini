@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
+    <style type="text/css">
+        .user-info {
+            height: 105px;
+            line-height: 105px;
+            background-color: white;        
+        }
+        .user-info div {
+            vertical-align: middle;
+            display: inline-block;
+            height: 72px;
+            line-height: 72px;
+        }
+        .user-info-face {
+            margin-left: 20px;
+            border-radius: 50%;
+            width: 72px;
+        }
+        .user-info-name {
+            color: #333333;
+            font-size: 20px;
+            max-width: 160px;
+            overflow: hidden;
+        }
+        .QRCode {
+            margin: 25px;
+            
+        }
+        .QRCode img {
+            width: 100%;
+        }
+    </style>  
+</head>
+<body>
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:goToUrl('{:url('mobile/index/index')}');" class="link icon-only back">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center">用户登录</div>
+                    <div class="right">
+                        <a href="#" class="link icon-only"> 
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="Password" class="page">
+                    <div class="page-content bg-white">
+                        <div class="user-info-container">
+                            <div class="user-info">
+                                <div class="user-info-face">
+                                    {if isset($user['headimgurl'])}
+                                        <img src="{$user['headimgurl']}" width="100%"/>
+                                    {else /}
+                                        <img src="/public/wap/images/user.png" width="100%"/>
+                                    {/if}        
+                                </div>
+                                <div class="user-info-name">我的名字七个字</div>
+                            </div>
+                        </div>
+                        <div class="QRCode"><img src="/public/wap/images/QRCodeMini.png"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/public/wap/js/md5.js"></script>
+    <script type="text/javascript" src="/public/wap/js/user.js?v=1"></script>
+</body>
+</html>

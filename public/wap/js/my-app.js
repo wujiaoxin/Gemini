@@ -1,4 +1,5 @@
-var apiUrl = "http://lo.vpdai.com";
+var apiUrl = "";
+var wechatStaticPath = "/public/wechat";
 var myApp = new Framework7({
     modalButtonCancel: "取消",
     modalButtonOk: "确认"
@@ -546,7 +547,12 @@ function toUserDebitcard() {
 }
 
 function goToUrl(url){
+	
 	if(url){
+		if(url.indexOf("{:url(")>-1){
+			alert("路径异常");//TODO:完成迁移后去除
+		}
+		
 		window.location.href = url;
 	}else{
 		return false;

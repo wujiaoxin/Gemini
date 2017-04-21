@@ -58,13 +58,13 @@ class Order extends Api {
 		$role = session('user_auth.role');
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-		/*if($uid > 0){
+		if($uid > 0){
 			$map = '(uid = '.$uid.' or bank_uid = '.$uid.')';
 		}else{
 			$resp['code'] = 0;
 			$resp['msg'] = '请重新登录';
 			return json($resp);
-		}*/
+		}
 		if($role == 1){
 			if($status == null){
 				$map = $map.' and status > -1';
