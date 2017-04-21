@@ -407,7 +407,7 @@ function doDealerLoginPost(){
             success:function(resp){
                 if (resp.code == "1" ) {
                     localStorage.setItem('token',resp.data.token);
-                    window.location.href = "/mobile/index/indexDealer";
+                    window.location.href = wechatStaticPath + "/index/index.html";
                 } else {
                     if (typeof(resp.msg) == 'string') {
                         ui_alert(resp.msg);
@@ -458,7 +458,7 @@ function doResetDealerPassword() {
             success: function (resp) {
                 if (resp.code == "1") {
                     ui_alert("修改成功", function () {
-                        window.location.href = '/mobile/user/loginDealer';
+                        window.location.href = wechatStaticPath + '/user/login';
                     });
                 } else {
                     if (typeof(resp.msg) == 'string') {
