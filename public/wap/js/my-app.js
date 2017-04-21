@@ -726,11 +726,11 @@ function toUserMore() {
 function toHotApp() {
     var u = navigator.userAgent;
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
-        window.location.href = appPath + "/Public/hot.html?type=android";
+        window.location.href = appPath + "/public/hot.html?type=android";
     } else if (u.indexOf('iPhone') > -1) {//苹果手机
-        window.location.href = appPath + "/Public/hot.html?type=ios";
+        window.location.href = appPath + "/public/hot.html?type=ios";
     } else {
-        window.location.href = appPath + "/Public/hot.html";
+        window.location.href = appPath + "/public/hot.html";
     }
 }
 
@@ -886,7 +886,7 @@ function sendSmsCode(type) {
         "send_type": type
     };
     ajax_jquery({
-        url: appPath + '/Public/ajax_send_sms?t=' + Math.random(),
+        url: appPath + '/public/ajax_send_sms?t=' + Math.random(),
         data: param,
         success: function (resp) {
             console.log(resp);
