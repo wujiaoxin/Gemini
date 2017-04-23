@@ -339,7 +339,7 @@ function doDealerRegisterPost() {
         ui_alert("请输入密码");
     } else if (!validatePassword(password)) {
         ui_alert("请输入6-10位英文数字组合的密码");
-    } else if (smsCode == "") {
+    } else if (smsverify == "") {
         ui_alert("请输入手机验证码");
     } else {
         var param = {

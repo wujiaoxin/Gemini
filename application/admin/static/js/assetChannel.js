@@ -211,7 +211,7 @@ $(function(){
         }
 
         var ajaxurl =  '';
-        if(typeof(info['id']) == 'string' && info['id'] != ''){
+        if(typeof(id) == 'string' && id != ''){
             ajaxurl = apiUrl + '/admin/assetChannel/edit'
         }else{
             ajaxurl = apiUrl + '/admin/assetChannel/add'
@@ -256,10 +256,9 @@ $(function(){
         });
     });
 
-
-
-
-
+    $('#addStaffBtn').click(function(){
+        window.location.href = '/admin/assetChannel/addStaff?id='+id;
+    });
 
    $('#table-myStaff').on('click','.updateStatus',function(){
         var self = this;

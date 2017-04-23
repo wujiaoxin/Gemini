@@ -19,7 +19,7 @@
 		</div>
 		<div class="pull-right">
 			<a class="btn btn-primary" href="{:url('add')}">新 增</a>
-			<button class="btn btn-danger ajax-post confirm" url="{:url('delete')}" target-form="ids">删 除</button>
+			<!-- <button class="btn btn-danger ajax-post confirm" url="{:url('delete')}" target-form="ids">删 除</button> -->
 		</div>
 	</header>
 	<div class="main-box-body clearfix">
@@ -58,16 +58,15 @@
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
-			var count=index+1;
 		  	html += '<tr class="odd gradex">'
 		  		+'<td><input class="ids row-selected" type="checkbox" name="id[]" value="'+data[index].id+'"></td>'
-		  		+'<td>' + count + '</td>'
+		  		+'<td>' + data[index].id + '</td>'
 		  		+'<td>'+ data[index].name +'</td>'
 		  		+'<td>'+ data[index].property +'</td>'
 		  		+'<td>'+ data[index].rep +'</td>'
 		  		+'<td>'+ data[index].mobile +'</td>'
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
-		  		+'<td>'+  +'</td>'
+		  		+'<td>'+ ''+'</td>'
 		  		+'<td>'+ data[index].status +'</td>'
 		  		+'<td><a href="/admin/assetChannel/edit?id='+ data[index].id + '">审核</a></td>'
 		  		 +'</tr>'

@@ -40,7 +40,7 @@ function validatePassword(pass) {
 
 //验证银行卡号
 function validateBankNum(banknum) {
-    if (banknum.length < 16 || banknum.length > 19) {
+    if (banknum.length < 15 || banknum.length > 19) {
         return false;
     } else {
         var num = /^\d*$/;  //全数字
