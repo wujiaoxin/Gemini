@@ -1,0 +1,302 @@
+
+{extend name="public/base"/}
+{block name="style"}
+<link rel="stylesheet" href="__PUBLIC__/plugs/tagsinput/bootstrap-tagsinput.css">
+<script src="__PUBLIC__/plugs/tagsinput/bootstrap-tagsinput.js"></script>
+
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/plugs/webuploader/webuploader.css">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/plugs/editor/css/simditor.css" />
+<link rel="stylesheet" href="__PUBLIC__/plugs/editor/css/simditor-html.css" media="screen" charset="utf-8" />
+
+
+<style type="text/css">
+table {
+    width: 80%;
+    border: 1px solid black;
+    margin-bottom: 20px;
+    margin-left: 20px
+}
+
+caption {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #000
+}
+
+td {
+    width: 25%;
+    border: 1px solid gray;
+    padding: 1px 6px;
+    line-height: 28px;
+}
+
+td[colspan="4"] {
+    text-align: center;
+    background-color: gray;
+    height: 30px;
+    font-weight: bolder;
+}
+
+input[type="text"] {
+    width: 100%;
+    border: none;
+}
+
+input[name="property"],input[name="banks"],input[name="forms"] {
+    margin-left: 10px;
+    border: none;
+    border-bottom: 1px solid black
+}
+
+input.attv {
+    margin-left: 10px;
+    border: none;
+    border-bottom: 1px solid black;
+    width: 100px;
+}
+
+input[type="text"][name="banks"] {
+    width: 15%;
+}
+
+input:focus {
+    outline: none;
+}
+
+.picker_button {
+    margin-top: 8px;
+}
+
+
+	
+</style>
+<script>
+var info = {};
+try {
+	info = JSON.parse('{$infoStr}');
+} catch (e) {
+	alert("数据异常");
+}
+
+</script>
+{/block}
+{block name="body"}
+<div class="main-box clearfix">
+	<header class="main-box-header clearfix">
+		<div class="pull-left">
+			<h2>{$meta_title}</h2>
+		</div>
+	</header>
+	<div class="main-box-body clearfix">
+		<form method="post" class="form form-horizontal">
+			<div class="form-group">
+				<table>
+					<caption><h3>合作车商信息表</h3></caption>
+					<tr>
+						<td colspan="4">企业信息</td>
+					</tr>
+					<tr>
+						<td><b>企业名称</b></td>
+						<td colspan="3"><input type="text" id="name" name="name" value=""></td>
+					</tr>
+					<tr>
+						<td>企业信用代码</td>
+						<td colspan="3"><input type="text" id="credit_code" name="credit_code" value=""></td>
+					</tr>
+					<tr>
+						<td>属性</td>
+						<td colspan="3">
+							<input type="hidden" name="property">
+							<span id="property"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>城市</td>
+						<td><input type="text" id="city" name="city"></td>
+						<td>法人代表</td>
+						<td><input type="text" id="rep" name="rep" value=""></td>
+					</tr>
+					<tr>
+						<td>业务联系人</td>
+						<td><input type="text" id="contacts" name="contacts" value=""></td>
+						<td>职务</td>
+						<td><input type="text" id="duties" name="duties" value=""></td>
+					</tr>
+					<tr>
+						<td>手机号</td>
+						<td><input type="text" id="mobile" name="mobile" value=""></td>
+						<td>邮箱</td>
+						<td><input type="text" id="mail" name="mail" value=""></td>
+					</tr>
+					<tr>
+						<td>地址</td>
+						<td colspan="3"><input type="text" id="addr" name="addr" value=""></td>
+					</tr>
+					<tr>
+						<td colspan="4">账户信息</td>
+					</tr>
+					<tr>
+						<td>开户银行</td>
+						<td><input type="text" id="bank_name" name="bank_name" value=""></td>
+						<td>开户网点</td>
+						<td><input type="text" id="bank_branch" name="bank_branch" value=""></td>
+					</tr>
+					<tr>
+						<td>开户名</td>
+						<td><input type="text" id="bank_account_name" name="bank_account_name" value=""></td>
+						<td>开户账号</td>
+						<td><input type="text" id="bank_account_id" name="bank_account_id" value=""></td>
+					</tr>
+					<tr>
+						<td>开户银行(私户)</td>
+						<td><input type="text" id="priv_bank_name" name="priv_bank_name" value=""></td>
+						<td>开户网点(私户)</td>
+						<td><input type="text" id="priv_bank_branch" name="priv_bank_branch" value=""></td>
+					</tr>
+					<tr>
+						<td>开户名(私户)</td>
+						<td><input type="text" id="priv_bank_account_name" name="priv_bank_account_name" value=""></td>
+						<td>开户账号(私户)</td>
+						<td><input type="text" id="priv_bank_account_id" name="priv_bank_account_id" value=""></td>
+					</tr>
+					<tr>
+						<td colspan="4">业务信息</td>
+					</tr>
+					<tr>
+						<td>目前合作金融机构</td>
+						<td colspan="3">
+							<input type="hidden" name="banks">
+							<span id="banks"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>合作形式</td>
+						<td colspan="3">
+							<input type="hidden" name="forms">
+							<span id="forms"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>月均销量</td>
+						<td><input type="text" name="sales" id="sales" value=""></td>
+						<td>分期比例</td>
+						<td><input type="text" name="ratio" id="ratio" value=""></td>
+					</tr>
+					<tr>
+						<td>备注信息</td>
+						<td colspan="3"><input type="text" name="descr" id="descr" value=""></td>
+					</tr>
+					<tr>
+						<td colspan="4">照片信息</td>
+					</tr>
+					<tr>
+						<td>法人身份证</td>
+						<td>
+							{if $info['rep_idcard_pic'] != 0}
+								{php}
+									$images = get_cover($info['rep_idcard_pic']);
+								{/php}	
+                            <div class="filebox image">
+                                <img src="{$images['path']|default=''}" class="img-responsive">
+                            </div>
+                            {/if} 
+						</td>						
+						<td>联系人名片</td>
+						<td>	
+							{if $info['contacts_pic'] != 0}
+								{php}
+									$images = get_cover($info['contacts_pic']);
+								{/php}	
+                            <div class="filebox image">
+                                <img src="{$images['path']|default=''}" class="img-responsive">
+                            </div>   
+							{/if}
+						</td>
+					</tr>
+					<tr>
+						<td>营业执照照片</td>
+						<td>
+							{if $info['dealer_lic_pic'] != 0}
+								{php}
+									$images = get_cover($info['dealer_lic_pic']);
+								{/php}	
+                            <div class="filebox image">
+                                <img src="{$images['path']|default=''}" class="img-responsive">
+                            </div>                
+							{/if}
+						</td>
+						<td>信息表照片</td>
+						<td>
+							{if $info['info_pic'] != 0}
+								{php}
+									$images = get_cover($info['info_pic']);
+								{/php}
+                            <div class="filebox image">
+                                <img src="{$images['path']|default=''}" class="img-responsive">
+                            </div>
+							{/if}	
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="form-group">
+				<div class="col-lg-offset-2 col-lg-10">
+					<input type="hidden" name="id" value="{$info['id']|default=''}">            
+					<button class="btn btn-danger btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+				</div>
+			</div>		
+		</form>	
+	</div>
+</div>
+<script type="text/javascript">
+
+	//初始化表单内容
+
+	$("input[type=text]").each(function(i){
+		var name = $(this).attr('name');
+		if(info[name] !='' ){
+			$(this).val(info[name]);
+		}
+	});
+
+
+function valueReplace(v){
+	v=v.toString().replace(new RegExp('(["\"])', 'g'),"\\\""); 
+	return v; 
+}
+
+function initCheckBox(name){
+	var initData = {};
+	var htmlText = "";
+	//console.log(name);
+	if( typeof(info[name]) == "string" && info[name] != ''){
+		$("input[name="+name+"]").val(valueReplace(info[name]));
+		initData = JSON.parse(info[name]);
+		for(var i in initData){
+			if(initData[i].t && initData[i].v != "其他"){
+				htmlText += initData[i].t + initData[i].v + "; ";
+			}else if (initData[i].t && initData[i].v == "其他") {
+				htmlText += initData[i].t + "; ";
+			}
+			else{
+				htmlText += initData[i].v + "; ";
+			}
+		}	
+		htmlText = htmlText.substring(0,htmlText.length-2);
+		$("#"+name).text(htmlText);
+	}
+}
+
+
+$(function(){
+	//奇葩组合输入框
+	initCheckBox("property");
+	initCheckBox("banks");
+	initCheckBox("forms");
+	$("input").attr("disabled","disabled");
+	// $("input[type='checkbox']").not("input:checked").hide();
+
+});
+</script>
+
+{/block}

@@ -22,18 +22,19 @@
   */
   function modify_account($data,$uid,$name=0,$money_type=0,$type=0,$memod=0){
     if(isset($data['money']) && $memod == 'INSERT'){
-        if($type == 'rechange'){
-           $pay_id = 'vpdai'.mt_rand(0,999).time();
+        if($type == 'recharge'){
+           $sn = date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
            $rec_money = array(
-                'user_id'=>$uid,
-                'pay_id'=>$pay_id,
-                'is_pay'=>'-1',
+                'uid'=>$uid,
+                'sn'=>$sn,
+                'status'=>'-1',
                 'money'=>$data['money'],
-                'payment_type'=>$data['pay_type'],
+                'recharge_type'=>$data['recharge_type'],
                 'descr'=>$data['descr'],
+                'platform_account'=>$data['platform_account'],
                 'create_time'=>time()
             );
-            $result = db('payment')->insert($rec_money);
+            $result = db('recharge')->insert($rec_money);
             if ($result){
                 $resp["code"] = 1;
                 $resp["msg"] = '处理中';
@@ -44,29 +45,20 @@
                 return $resp;
             }
         }
-        if($type == 'member_money'){
-          $data_money = array(
-              'uid'=>$uid,
-              'account_money'=>$data['money'],
-              'desc'=>$data['descr'],
-              'type'=>$name,
-              'deal_other'=>$money_type,
-              'create_time'=>time()
-          );
-          db('dealer_money')->insert($data_money);
-        }
         if ($type == 'withdraw') {
+          // var_dump($data);die;
           $data_moneys = array(
-                'user_id'=>$uid,
-                'carry_billon'=>$data['carry_billon'],
-                'is_pay'=>$data['is_pay'],
+                'uid'=>$uid,
+                'sn'=>$data['sn'],
+                'status'=>'-1',
                 'money'=>$data['money'],
-                'pay_type'=>'0',
-                'bank_name'=>$data['bank_name'],
+                'type'=>'0',
+                'bank_account'=>$data['bank_name'],
                 'update_time'=>$data['update_time'],
                 'create_time'=>time()
             );
           $result = db('carry')->insert($data_moneys);
+          // echo $result;die;
           if ($result){
                 $resp["code"] = 1;
                 $resp["msg"] = '处理中';
@@ -78,60 +70,52 @@
             }
         }
     }
-  }
-  /*
-  **生成还款列表
-  */
-  function set_order_repay($order_id){
-    $uid = session('uid');
-    $order = db('order')->where('sn',$order_id)->select();
-    if ($order) {
-      $repay_time = time()+$order[0]['endtime']*24*60*60;
-      $order_repay = array(
-          'order_id'=>$order_id,
-          'mid'=>$uid,
-          'repay_money'=>$order[0]['loan_limit'],
-          'manage_money'=>$order[0]['fee'],
-          'repay_time'=>$repay_time,
-          'status'=>'-1',
-          'has_repay'=>'0',
-          'loadtime'=>$order[0]['endtime'],
-          'true_repay_money'=>'0',
-          'true_repay_time'=>'0',
-        );
-      db('order_repay')->insert($order_repay);
+    if (isset($data['fee']) && $memod == 'INSERT') {
+      $fee_money = array(
+          'uid'=>$uid,
+          'account_money'=>$data['fee'],
+          'desc'=>'冻结订单为'.$data['order_id'].'的资金',
+          'type'=>$name,
+          'deal_other'=>'0',
+          'create_time'=>time()
+      );
+      // var_dump($fee_money);die;
+
+      $result = db('dealer_money')->insert($fee_money);
+      return $result;
     }
   }
+  
   /*
   **订单处理
   */
   function cl_order($o_id,$bank_name){
-    $uid = session('uid');
+    $uid = session('user_auth.uid');
+    // echo $o_id;die;
     $order = db('order')->where('sn',$o_id)->select();
+    // var_dump($order);die;
     if ($order) {
-      $is_success = db('order')->where('sn',$o_id)->setField('status','15');
-      if ($is_success) {
-        $datas =array(
-            'carry_billon'=>$o_id,
-            'is_pay'=>'0',
-            'money'=>$order['0']['loan_limit'],
-            'bank_name'=>$bank_name['0'],
-            'create_time'=>time(),
-            'update_time'=>'0',
-            'descr'=>'提现申请'
-          );
-        modify_account($datas,$uid,'4','1','withdraw','INSERT');
-        modify_account($datas,$uid,'4','1','member_money','INSERT');
-        set_order_repay($o_id);
-        $resp['code'] = '1';
-        $resp['msg']='提现成功';
+      $datas =array(
+          'sn'=>$o_id,
+          'status'=>'0',
+          'money'=>$order['0']['loan_limit'],
+          'bank_name'=>$bank_name,
+          'create_time'=>time(),
+          'update_time'=>'0',
+          'descr'=>'提现申请'
+        );
+      // echo $uid;
+      // var_dump($datas);die;
+      modify_account($datas,$uid,'4','1','withdraw','INSERT');
 
-      }else{
-        $resp['code'] = '1';
-        $resp['msg']='提现失败';
-      }
-      return json($resp);
+      //提现资金记录
+
+      money_record($datas, $uid, 4, 1);
+
+      // $result = set_order_repay($o_id);
+      $result = db('order')->where('sn',$o_id)->setField('finance', '4');
     }
+    return $result;
   }
   //发送验证码
   function sendSms($mobile, $content){
@@ -185,7 +169,7 @@
     }
   }
   /*
-  ** 资金记录
+  ** 首页资金记录
   ** uid 车商uid
   ** type 资金类型
   */
@@ -194,18 +178,24 @@
     if($type == 'money'){
       //可用资金(记录为可提订单金额)
         $map = array(
-          'mobile'=>$mobile,
-          'status'=>'11'
+          'mid'=>$uid,
+          'finance'=>'3'
           );
+        // var_dump($map);die;
         $money = db('order')->where($map)->sum('loan_limit');
+        // var_dump($money);die;
       //借款金额（记录为状态未审核通过）
         $where = array(
-            'mobile'=>$mobile,
-            'status'=>'12'
+            'mid'=>$uid,
+            'status'=>'1'
           );
         $money_jk = db('order')->where($where)->sum('loan_limit');
       //待还资金
-        $repay_money = db('order_repay')->where('mid',$uid)->sum('repay_money');
+        $where_repay = array(
+          'mid'=>$uid,
+          'status'=>'-1'
+          );
+        $repay_money = db('order_repay')->where($where_repay)->sum('repay_money');
         // 借款中的订单
         $order_loan = db('order')->where('mid',$uid)->count('id');
         //还款中的订单
@@ -217,9 +207,6 @@
           'order_loan_num'=>$order_loan,
           'order_repay_num'=>$order_repay,
           );
-    }
-    if ($type =='lines') {
-      # code...
     }
     return $data;
   }
@@ -322,4 +309,53 @@
       'begintime'=>$begintime
       );
     return $result;
+  }
+
+
+
+  /*
+  ** 资金记录
+  ** data array数据
+  ** uid 交易者 
+  ** type 交易类型
+  ** name 交易对象
+  */
+  function money_record($data, $uid, $type = 0, $name){
+
+    // var_dump($data);die;
+    //冻结资金
+    
+    $dealer_money = db('dealer')->alias('d')->field('money,lock_money')->join('__MEMBER__ m','d.mobile = m.mobile')->where('uid', $uid)->find();
+    
+
+    //待收金额和可用
+    $map =array(
+
+      'finance' => '3',
+
+      'mid'=>$uid
+
+      );
+    $repay_moneys = db('order')->where($map)->sum('loan_limit');
+    // var_dump($repay_moneys);die;
+    //总金额
+    $total_money = $dealer_money['money'] + $dealer_money['lock_money'] + $repay_moneys ;
+
+    $info = array(
+
+      'uid'=>$uid,
+      'type'=> $type,
+      'deal_other'=>$name,
+      'create_time'=>time(),
+      'total_money'=>$total_money,
+      'account_money'=>$data['money'],
+      'use_money'=>$dealer_money['money'],
+      'lock_money'=>$dealer_money['lock_money'],
+      'repay_money'=>$repay_moneys,
+      'descr'=>$data['descr'],
+      );
+    // var_dump($info);die;
+    $result = db('dealer_money')->insert($info);
+    return $result;
+
   }

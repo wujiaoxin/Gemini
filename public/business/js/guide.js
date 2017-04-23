@@ -17,19 +17,19 @@ var guide = function () {
                 onNext: function (tab, navigation, index) {
                     if(index == 1){
                         var name = $("#name").val();
-                        var businessLicense = $("input[name='businessLicense']:checked").val();
+                        var credit_code = $("#credit_code").val();
                         var loc_province = $("#loc_province").val();
                         var loc_city = $("#loc_city").val();
                         var loc_town = $("#loc_town").val();
                         var loc_address = loc_province + ',' + loc_city  + ',' + loc_town;
                         var addr = $("#addr").val();
-                        var termOfValidity = $("#termOfValidity").val();
+                        var lic_validity = $("#lic_validity").val();
                         var field_dealer_lic_pic = $("#field_dealer_lic_pic").val();
                         if(name == ""){
                             ui_alert("alert-error","请输入企业名称");
                             return false;
-                        }else if(!businessLicense){
-                            ui_alert("alert-error","请选择营业执照类型");
+                        }else if(credit_code == ""){
+                            ui_alert("alert-error","请输入企业信用代码");
                             return false;
                         }else if(!loc_province && !loc_city && !loc_town){
                             ui_alert("alert-error","请选择单位所在地");
@@ -37,7 +37,7 @@ var guide = function () {
                         }else if(addr == ""){
                             ui_alert("alert-error","请填写详细地址");
                             return false;
-                        }else if(termOfValidity == ""){
+                        }else if(lic_validity == ""){
                             ui_alert("alert-error","请填写营业期限");
                             return false;
                         }else if(field_dealer_lic_pic == ""){
@@ -48,10 +48,10 @@ var guide = function () {
                             url: apiUrl +'/business/user/guide?t='+Math.random(),
                             data:{
                                 'name': name,
-                                'businessLicense': businessLicense,
+                                'credit_code': credit_code,
                                 'city': loc_address,
                                 'addr': addr,
-                                'radiotime': termOfValidity,
+                                'lic_validity': lic_validity,
                                 'dealer_lic_pic': field_dealer_lic_pic
                             },
                             success:function(resp){
@@ -60,22 +60,22 @@ var guide = function () {
                                     if (typeof(resp.msg) == 'string') {
                                         ui_alert("alert-error",resp.msg);
                                         return false;
-                                    }                 
+                                    }
                                 }
                             }
                         });
                     }else if(index == 2){
                         var rep = $("#rep").val();
-                        var idcardNum = $("#idcardNum").val();
+                        var idno = $("#idno").val();
                         var field_rep_idcard_pic = $("#field_rep_idcard_pic").val();
                         var field_rep_idcard_back_pic = $("#field_rep_idcard_back_pic").val();
                         if(rep == ""){
                             ui_alert("alert-error","请填写法人姓名");
                             return false;
-                        }else if(idcardNum == ""){
+                        }else if(idno == ""){
                             ui_alert("alert-error","请填写法人身份证号");
                             return false;
-                        }else if(!validateBankNum(idcardNum)){
+                        }else if(!validateIdCard(idno)){
                             ui_alert("alert-error","身份证号填写有误");
                             return false;
                         }else if(field_rep_idcard_pic == ""){
@@ -90,7 +90,7 @@ var guide = function () {
                             url: apiUrl +'/business/user/guide?t='+Math.random(),
                             data:{
                                 'rep': rep,
-                                'idno': idcardNum,
+                                'idno': idno,
                                 'rep_idcard_pic': field_rep_idcard_pic,
                                 'rep_idcard_back_pic': field_rep_idcard_back_pic
                             },
@@ -100,7 +100,7 @@ var guide = function () {
                                     if (typeof(resp.msg) == 'string') {
                                         ui_alert("alert-error",resp.msg);
                                         return false;
-                                    }                 
+                                    }
                                 }
                             }
                         });
@@ -126,14 +126,16 @@ var guide = function () {
                                     if (typeof(resp.msg) == 'string') {
                                         ui_alert("alert-error",resp.msg);
                                         return false;
-                                    }                 
+                                    }
                                 }
                             }
                         });
+                        $('#bank_account_name').val($('#name').val());
+                        $('#priv_bank_account_name').val($('#rep').val());
                     }
 
                     $(".alert").hide();
-                   
+
                     if (form.valid() == false) {
                         return false;
                     }
@@ -263,12 +265,12 @@ var guide = function () {
                     success:function(resp){
                         if (resp.code == "1" ) {
                             ui_alert("alert-success",'提交成功')
-                            window.location.href = "/business/user/waiting.html";
+                            window.location.href = "/business/login/waiting.html";
                         } else {
                             if (typeof(resp.msg) == 'string') {
                                 ui_alert("alert-error",resp.msg);
                                 return false;
-                            }                 
+                            }
                         }
                     }
                 });
@@ -285,7 +287,7 @@ function encodeCheckbox(name){
     })
     data = data.substring(0, data.length - 1);
     return data;
-} 
+}
 
 //初始化checkBox
 function initCheckBox(name){
@@ -299,7 +301,7 @@ function initCheckBox(name){
                 $(this).click();
             }
         })
-    }    
+    }
 }
 
 

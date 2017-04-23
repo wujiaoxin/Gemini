@@ -24,7 +24,7 @@
 		<ul class="selectParm selectOrderType">
 			<li data='0' class="active" >全部</li>
 			<li data='1'>按揭垫资</li>
-			<li data='2'>车抵贷</a></li>
+			<li data='3'>车抵贷</a></li>
 		</ul>
 	</div>
 	<div class="select-block">
@@ -44,7 +44,6 @@
 			<li data='0' class="active">全部</li>
 			<li data='1'>待支付</li>
 			<li data='2'>已支付</li>
-			<li data='3'>逾期</li>
 		</ul>
 	</div>
 </div>
@@ -73,7 +72,7 @@
 					<td>2018-03-16</td>
 					<td>李博</td>
 					<td>￥3,000</td>
-					<td>￥200</td>	
+					<td>￥200</td>
 					<td>未支付</td>
 					<td><a class="orderOpera" data-toggle="modal">支付</a></td>
 				</tr> -->
@@ -119,7 +118,7 @@
 				<label class="control-label">交易密码</label>
 				<div class="controls">
 					<input id="payPassword" type="password" class="m-wrap" maxlength="6">
-				</div>	
+				</div>
 			</div>
 		</div>
 	</div>
@@ -134,28 +133,28 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
-<script type="text/javascript" src="/public/business/js/table-managed.js"></script>    
+<script type="text/javascript" src="/public/business/js/table-managed.js"></script>
 <script>
 	function tpl(data){
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
-			var orderStatus = '';
+			var orderFinance = '';
 			var orderOpera = '';
-			if(data[index].status == '10'){
-				orderStatus = '未支付';
+			if(data[index].finance == '1'){
+				orderFinance = '待支付';
 				orderOpera = '<a class="orderOpera" data-toggle="modal">支付</a>'
 			}else{
-				orderStatus = '已支付';
+				orderFinance = '已支付';
 			}
 		  	html += '<tr class="odd gradex">'
 		  		+'<td class="order_sn">' + data[index].sn + '</td>'
-		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
 		  		+'<td class="order_fee" data="'+ data[index].fee +'">￥'+ formatAmount(data[index].fee) +'</td>'
-		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ orderFinance +'</td>'
 		  		+'<td>'+ orderOpera +'</td>'
 		  		 +'</tr>';
 			}
@@ -173,29 +172,29 @@
 	            'status': status
 	        },
 	        success:function(resp){
-	            if (resp.code == "1" ) {	
+	            if (resp.code == "1" ) {
 	            	$('#table-payItem tbody').html(tpl(resp.data));
 	            	$('#table-payItem').dataTable({"bDestroy":true});
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
 	                    return false;
-	                }                 
+	                }
 	            }
 	        }
 		});
 	}
 
-	jQuery(document).ready(function() {       
+	jQuery(document).ready(function() {
 	   	// App.init();
 	   	TableManaged.init();
 	   	ajaxPayItem(0,0,0);
-	   	
+
 	   	$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var orderType = $('.selectOrderType li.active').attr('data');
 	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
-	   		var orderStatus = $('.selectOrderStatus li.active').attr('data'); 
+	   		var orderStatus = $('.selectOrderStatus li.active').attr('data');
 	   		ajaxPayItem(orderType,orderDateRange,orderStatus);
 	   	})
 
@@ -208,7 +207,7 @@
 	   		$('#modal-payAmount').text(formatAmount(pay_amount));
 	   		$('#modal-availbaleAmount').text(formatAmount(info['money']));
 	   		$('#modal-remainingAmount').text(formatAmount(remainingAmount));
-	   		$(this).attr('href',"#payOrderModal");
+	   		$('#payOrderModal').modal();
 	   	});
 
 	   	$('#payOrderBtn').click(function(){
@@ -235,7 +234,7 @@
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert("alert-error",resp.msg);
 		                    return false;
-		                }                 
+		                }
 		            }
 		        }
 			});
@@ -243,4 +242,4 @@
 
 	});
 </script>
-{/block}	
+{/block}

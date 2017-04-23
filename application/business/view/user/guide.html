@@ -25,14 +25,14 @@
 </style>
 <script>
 	var BASE_URL = "";
-	
+
 	var info = {};
 	try {
 		info = JSON.parse('{$infoStr}');
 	} catch (e) {
 		alert("数据异常");
 	}
-	
+
 </script>
 {/block}
 {block name="body"}
@@ -53,26 +53,26 @@
 									<li class="span3">
 										<a href="#tab1" data-toggle="tab" class="step active">
 										<span class="number">1</span>
-										<span class="desc"><i class="icon-ok"></i>车商信息</span>   
+										<span class="desc"><i class="icon-ok"></i>车商信息</span>
 										</a>
 									</li>
 									<li class="span3">
 										<a href="#tab2" data-toggle="tab" class="step">
 										<span class="number">2</span>
-										<span class="desc"><i class="icon-ok"></i>法人信息</span>   
+										<span class="desc"><i class="icon-ok"></i>法人信息</span>
 										</a>
 									</li>
 									<li class="span3">
 										<a href="#tab3" data-toggle="tab" class="step">
 										<span class="number">3</span>
-										<span class="desc"><i class="icon-ok"></i>业务签约</span>   
+										<span class="desc"><i class="icon-ok"></i>业务签约</span>
 										</a>
 									</li>
 									<li class="span3">
 										<a href="#tab4" data-toggle="tab" class="step">
 										<span class="number">4</span>
-										<span class="desc"><i class="icon-ok"></i>银行账户</span>   
-										</a> 
+										<span class="desc"><i class="icon-ok"></i>银行账户</span>
+										</a>
 									</li>
 								</ul>
 							</div>
@@ -94,13 +94,9 @@
 									</div>
 								</div>
 								<div class="control-group">
+									<label class="control-label">企业信用代码</label>
 									<div class="controls">
-										<label class="radio">
-											<input type="radio" name="businessLicense" value="1" checked>三合一证照
-										</label>
-										<label class="radio">
-											<input type="radio" name="businessLicense" value="2">传统证照
-										</label>  
+										<input type="text" id="credit_code" name="credit_code" placeholder="请输入企业信用代码" class="m-wrap large" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -120,7 +116,7 @@
 								<div class="control-group">
 									<label class="control-label">营业期限</label>
 									<div class="controls">
-										<input type="text" id="termOfValidity" name="termOfValidity" value="长期" class="m-wrap medium" />
+										<input type="text" id="lic_validity" name="lic_validity" value="长期" class="m-wrap medium" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -162,7 +158,7 @@
 								<div class="control-group">
 									<label class="control-label">身份证号</label>
 									<div class="controls">
-										<input type="text" id="idcardNum" name="idno" placeholder="请输入身份证号" class="m-wrap medium" />
+										<input type="text" id="idno" name="idno" placeholder="请输入身份证号" class="m-wrap medium" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -176,9 +172,9 @@
 													{php}
 														$images = get_cover($info['rep_idcard_pic']);
 													{/php}
-													<li class="affix-list-item" id="WU_FILE_100">
+													<li class="affix-list-item" id="WU_FILE_101">
 		                                                <div class="upload-file-info">
-		                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_100" data-id="{$info['rep_idcard_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
+		                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_101" data-id="{$info['rep_idcard_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
 		                                                    <span class="fname"></span>
 		                                                    <span class="fsize">上传时间:{$images['create_time']|date='Y-m-d H:i',###}</span>
 		                                                    <div class="clearfix"></div>
@@ -187,7 +183,7 @@
 		                                                    <img src="{$images['path']|default=''}" class="img-responsive">
 		                                                </div>
 		                                            </li>
-												{/if}									
+												{/if}
 											</div>
 										</div>
 										<div class="span3"></div>
@@ -199,9 +195,9 @@
 													{php}
 														$images = get_cover($info['rep_idcard_back_pic']);
 													{/php}
-													<li class="affix-list-item" id="WU_FILE_100">
+													<li class="affix-list-item" id="WU_FILE_102">
 		                                                <div class="upload-file-info">
-		                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_100" data-id="{$info['rep_idcard_back_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
+		                                                    <span class="webuploader-pick-file-close" data-queued-id="WU_FILE_102" data-id="{$info['rep_idcard_back_pic']|default='0'}" data-fileurl="{$images['path']|default=''}"><i class="close"></i></span>
 		                                                    <span class="fname"></span>
 		                                                    <span class="fsize">上传时间:{$images['create_time']|date='Y-m-d H:i',###}</span>
 		                                                    <div class="clearfix"></div>
@@ -232,7 +228,7 @@
 										<label class="checkbox"><input type="checkbox" name="forms" value="2"/>二手车垫资</label>
 										<label class="checkbox"><input type="checkbox" name="forms" value="3"/>车抵贷</label>
 									</div>
-								</div>	
+								</div>
 							</div>
 							<div class="tab-pane" id="tab4">
 								<h3 class="block">银行账号</h3>
@@ -304,10 +300,10 @@
 										</div>
 									</div>
 								</div>
-							</div>		
+							</div>
 							<div class="form-actions clearfix">
 								<a href="javascript:;" class="btn button-previous">
-									<i class="m-icon-swapleft"></i>上一步 
+									<i class="m-icon-swapleft"></i>上一步
 								</a>
 								<a href="javascript:;" class="btn blue button-next">
 									下一步<i class="m-icon-swapright m-icon-white"></i>
@@ -364,9 +360,9 @@
 			};
 		btnSentUploader("dealer_lic_pic");
 		btnSentUploader("rep_idcard_pic");
-        btnSentUploader("rep_idcard_back_pic");			
+        btnSentUploader("rep_idcard_back_pic");
 
-		jQuery(document).ready(function() {       
+		jQuery(document).ready(function() {
 		   // App.init();
 		   guide.init();
 
@@ -389,11 +385,11 @@
 			}
 
 
-			$(".navbar, .page-sidebar ").on('click',function(){
+			$(".navbar, .page-sidebar ").on('click',function(e){
 				ui_alert('alert-error','权限不足,请先完善信息');
 				return false;
 			});
 		});
-	</script>     
+	</script>
 {/block}
 

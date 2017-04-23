@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all"> 
+</head>
+    <style type="text/css">
+        .user-info {
+            height: 105px;
+            line-height: 105px;
+            background-color: white;        
+        }
+        .user-info div {
+            vertical-align: middle;
+            display: inline-block;
+            height: 72px;
+            line-height: 72px;
+        }
+        .user-info-face {
+            margin-left: 20px;
+            border-radius: 50%;
+            width: 72px;
+        }
+        .user-info-name {
+            color: #333333;
+            font-size: 20px;
+            max-width: 160px;
+            overflow: hidden;
+        }
+        .user-info-xcodeMini {
+            margin-right: 20px;
+            margin-top: 25px;
+        }
+
+        .order-block {
+            padding: 15px;
+        }
+        .order-item {
+            height: 50px;
+            line-height: 50px;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        .order-item a {
+            color: #ffffff;
+        }
+        .order-item div {
+            display: inline-block;
+        }
+        .order-item-media {
+            vertical-align: middle;
+            height: 35px;
+        }
+        .order-item-title {
+            margin-left: 10px;  
+            line-height: 50px;    
+        }
+        #orderPending {
+            background-color: #FFAD33;
+        }
+        #orderSubmitted {
+            background-color: #9A8FFF;
+        }
+        #orderSupplying {
+            background-color: #E56590;
+        }
+        #orderLoaned {
+            background-color: #63B1FB;
+        }
+
+        .popup-overlay.modal-overlay-visible {
+            display: none;
+        }
+        .popup-info-supply {
+            margin-top: 40px;
+        }
+        
+    </style>
+<body>
+    
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar wb">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="javascript:goToUrl(wechatStaticPath + '/index/index.html');" class="link icon-only">
+                            <i class="icon icon-back color-orange"></i>
+                        </a>
+                    </div>
+                    <div class="center">首页</div>
+                    <!--<div class="right">
+                        <a href="javascript:toUserMessage();" class="link icon-only ">
+                            <img src="/public/wap/images/message.png" height="40%"/>
+                        </a>
+                    </div>-->
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="dqassess" class="page">
+                    <div class="page-content">
+                        <div class="user-info-container">
+                            <div class="user-info">
+                                <div class="user-info-face">
+                                        <img src="/public/wap/images/user.png" width="100%"/>                                  
+                                </div>
+                                <div class="user-info-name">VP贷用户</div>
+                                <!-- <div class="user-info-xcodeMini right"><img src="/public/wap/images/QRCodeMini.png"></div> -->
+                            </div>
+                        </div>
+                        <div class="order-block">
+                            <div class="order-item" id="orderPending">
+                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html');">
+                                    <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
+                                    <div class="order-item-title">待受理订单</div>
+                                    <div class="order-item-number right">2</div>
+                                </a>
+                            </div>
+                            <div class="order-item" id="orderSubmitted">
+                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html');">
+                                    <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
+                                    <div class="order-item-title">资料提交订单</div>
+                                    <div class="order-item-number right">22</div>
+                                </a>
+                            </div>
+                            <div class="order-item" id="orderSupplying">
+                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html');">
+                                    <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
+                                    <div class="order-item-title">资料补充订单</div>
+                                    <div class="order-item-number right">0</div>
+                                </a>
+                            </div>
+                            <div class="order-item" id="orderLoaned">
+                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html');">
+                                    <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
+                                    <div class="order-item-title">已放款订单</div>
+                                    <div class="order-item-number right">112</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <a href="#" class="toolbar-inner-block toolbar-inner-active">
+                        <span><img src="/public/wap/images/home_active.png"></span>
+                    </a>
+                    <a href="javascript:goToUrl(wechatStaticPath + '/order/newOrder.html');" class="toolbar-inner-block">
+                        <span><img src="/public/wap/images/newOrder.png"></span>
+                    </a>  
+                    <a href="javascript:goToUrl(wechatStaticPath + '/user/personalCenter.html');" class="toolbar-inner-block">
+                        <span><img src="/public/wap/images/personalCenter.png"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+  	<div id="dialog" class="dialog">
+        <div id="dialogContent">
+            <div id="dialogMain"></div>
+        </div>
+    </div>
+
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript">
+        ajax_jquery({
+            url: apiUrl+ '/api/user/userInfo?t=' + Math.random(),
+            success: function (resp) {
+                if(resp.code == 1){
+                    $(".user-info-face img").attr('src',resp.data.headerimgurl);
+                    $(".user-info-name").text(resp.data.realname);
+                }else{
+                    if (typeof(resp.msg) == 'string') {
+                        ui_alert(resp.msg);
+						window.location.href = wechatStaticPath + "/user/login.html";
+                    }  
+                }
+            }
+        });
+    </script>
+</body>
+</html>

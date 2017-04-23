@@ -13,11 +13,12 @@ class Baseness extends base{
 	public function _initialize(){
 		parent::_initialize();
 		$mobile = session("mobile");
-		$uid = session("uid");
+		$uid = session("user_auth.uid");
 		if($mobile == null || $uid == null){
 			return $this->redirect("/business/login/login");
 		}
-		$result = db('member')->field('status')->where('mobile',$mobile)->find();
+		$result = db('dealer')->field('status')->where('mobile',$mobile)->find();
+		
 		if ($result['status'] == '3') {
 			return $this->redirect('/business/login/waiting');
 		}

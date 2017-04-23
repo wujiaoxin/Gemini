@@ -25,27 +25,17 @@
 							</select>
 						</div>
 					</div>
-					<!-- <div class="control-group">
-						<label class="control-label">选择账户</label>
+					<div class="control-group">
+						<label class="control-label">充值银行</label>
 						<div class="controls">
 							<label class="radio line">
-								<div class="radio">
-									<span class="checked">
-										<input type="radio" name="optionsRadios1" value="1" checked>
-									</span>
-								</div>
-								银行账户1
+								<input type="radio" name="platform_account" value="571909942510701">户名:杭州互纳科技有限公司 开户行:招商银行杭州高新支行 账户:571909942510701
 							</label>
 							<label class="radio line">
-								<div class="radio">
-									<span>
-										<input type="radio" name="optionsRadios1" value="2">
-									</span>
-								</div>
-								银行账户2
+								<input type="radio" name="platform_account" value="6230580000094045239">户名:沈军海 开户行:平安银行西安丈八北路支行 账户:6230580000094045239
 							</label>
 						</div>
-					</div> -->
+					</div>
 					<div class="control-group">
 						<label class="control-label">充值备注</label>
 						<div class="controls">
@@ -56,14 +46,15 @@
 						<label class="control-label">温馨提示:</label>
 						<div class="controls">
 							<ol>
-								<li>----</li>
-								<li>----</li>
+								<li>充值/提现必须为开通网上银行的借记卡，不支持存折、信用卡充值。</li>
+								<li>充值成功后，可系统中查看充值状态以及可用金额。</li>
+								<li>严禁信用卡套现、虚假交易等行为。</li>
 							</ol>
 						</div>
 					</div>
 					<div class="form-actions">
 						<a id="rechargeBtn" class="btn blue"><i class="icon-ok"></i>确认提交</a>
-					</div>	
+					</div>
 				</form>
 			</div>
 		</div>
@@ -74,6 +65,7 @@
 <script type="text/javascript">
 $(function(){
 	$('#rechargeBtn').on('click',function(){
+		var platform_account = $("input[name='platform_account']:checked").val();
 		var amount = $('#amount').val();
 		var rechargeMode = $('#rechargeMode').val();
 		var desc = $('#desc').val();
@@ -83,24 +75,28 @@ $(function(){
 		}else if(rechargeMode == ""){
 			ui_alert("alert-error","请选择充值方式");
 	        return false;
+		}else if(platform_account == ""){
+			ui_alert("alert-error","请选择充值银行");
+	        return false;
 		}
 
 		ajax_jquery({
 	        url: apiUrl +'/business/account/recharge',
 	        data:{
 	        	'money': amount,
-	        	'pay_type': rechargeMode,
-	        	'descr': desc 
+	        	'recharge_type': rechargeMode,
+	        	'platform_account': platform_account,
+	        	'descr': desc
 	        },
 	        success:function(resp){
 	            if (resp.code == "1" ) {
-                    ui_alert("alert-success","充值成功");
+                    ui_alert("alert-success","充值成功,等待审核");
                     setTimeout('window.location.reload()',1000);
 	            }else{
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
 	                    return false;
-	                }                 
+	                }
 	            }
 	        }
 	    });

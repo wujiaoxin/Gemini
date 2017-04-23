@@ -9,7 +9,6 @@
 	} catch (e) {
 		alert("数据异常");
 	}
-	
 </script>
 {/block}
 
@@ -125,13 +124,13 @@
 
 	var orderTotal = [];
 	$.each(info['time'], function(i, n) {
-    	orderTotal[i] = [i+1,n.total_money]
+    	orderTotal[i] = [i+1,n.total_money,n.num,n.time];
 	});
 
-	jQuery(document).ready(function() {       
+	jQuery(document).ready(function() {
 	   // App.init();
 
 	   Charts.initCharts();
 	});
 </script>
-{/block}	
+{/block}

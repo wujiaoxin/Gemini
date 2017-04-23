@@ -1,5 +1,5 @@
 <?php
-use Firebase\JWT\JWT;
+//use Firebase\JWT\JWT;
 
 function sendSms($mobile, $content){
 	//TODO: move to config module;
@@ -38,7 +38,7 @@ function sendSms($mobile, $content){
 }
 
 function generateToken($uid = "", $sid = null){
-	$key = "gemini";
+	$pkey = "gemini";
 	$token = array(
 		//"iss" => "https://api.vpdai.com",
 		//"aud" => "https://api.vpdai.com",
@@ -48,25 +48,45 @@ function generateToken($uid = "", $sid = null){
 		"sid" => $sid
 	);
 	
+	$token = json_encode($token);
+	
+	$key = md5($token.''.$pkey);
+	
+	$token = base64_encode($token) .'.'. $key;
+	
+	return $token;
+	
 	/**
 	 * IMPORTANT:
 	 * You must specify supported algorithms for your application. See
 	 * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
 	 * for a list of spec-compliant algorithms.
 	 */
-	$jwt = JWT::encode($token, $key);
-	//$decoded = JWT::decode($jwt, $key, array('HS256'));
-	//print_r($jwt);	
-	//print_r("\n");
-	return $jwt;
+	//$jwt = JWT::encode($token, $key);
+	////$decoded = JWT::decode($jwt, $key, array('HS256'));
+	////print_r($jwt);	
+	////print_r("\n");
+	//return $jwt;
 	
 }
 
-function decodedToken($jwt = ""){
-	$key = "gemini";
-	$decoded = JWT::decode($jwt, $key, array('HS256'));
+function decodedToken($token = ""){
+	$pkey = "gemini";
+	$tempArr = explode('.', $token, 2);
+	if(sizeof($tempArr)!=2){
+		return '';
+	}	
+	$decoded = base64_decode($tempArr[0]);
+	$key = $tempArr[1];	
+	if($key == md5($decoded.''.$pkey)){
+		return $decoded;
+	}else{
+		return '';
+	}
+	
+	//$decoded = JWT::decode($token, $key, array('HS256'));
 	//print_r($decoded);
-	return $decoded;
+	//return $decoded;
 }
 
 
@@ -75,3 +95,47 @@ function checkErrorTimes(){
 	$errorTimes = session('errorTimes');
 	return $errorTimes;
 }*/
+
+
+
+function httpPost($url, $param){
+
+	$headers = array(
+		'Content-Type:application/json;charset=UTF-8'
+	);
+
+	$ch = curl_init();
+	$ssl = substr($url, 0, 8) == "https://" ? TRUE : FALSE;
+	$opt = array(
+			CURLOPT_URL     => $url,
+			CURLOPT_POST    => 1,
+			CURLOPT_HEADER  => 0,
+			CURLOPT_HTTPHEADER => $headers,
+			CURLOPT_POSTFIELDS => json_encode($param),
+			CURLOPT_RETURNTRANSFER  => 1,
+			//CURLOPT_TIMEOUT         => $timeout,
+			);
+	if ($ssl)
+	{
+		$opt[CURLOPT_SSL_VERIFYHOST] = FALSE;
+		$opt[CURLOPT_SSL_VERIFYPEER] = FALSE;
+	}
+	curl_setopt_array($ch, $opt);
+	$resp = curl_exec($ch);
+	curl_close($ch);		
+	return $resp;
+}
+
+
+function saveCollectData( $data = "" ){
+	$filename = RUNTIME_PATH."/collect_data.txt";
+	$handle = fopen($filename,"a+");
+	if($handle){
+		fwrite($handle, "==========================\r\n");
+		fwrite($handle, date("Y-m-d h:i:sa")."\r\n");
+		fwrite($handle, "==========================\r\n");
+		fwrite($handle, $data."\r\n");
+		fwrite($handle, "==========================\r\n\r\n");
+	}
+	fclose($handle);
+}

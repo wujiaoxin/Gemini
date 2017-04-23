@@ -1,0 +1,141 @@
+{extend name="public/base"/}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css" />
+{/block}
+{block name="body"}
+<div class="main-box clearfix">
+	<header class="main-box-header clearfix">
+		<div class="pull-left">
+			<h2>{$meta_title}</h2>
+		</div>
+	</header>
+	<div class="main-box-body clearfix">
+		<div class="form-horizontal">
+			<div class="alert hide">
+		      	<a class="close"></a>
+		      	<span></span>
+		    </div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">姓名*</label>
+				<div class="col-sm-10">
+					<input type="text" id="name" placeholder="请输入真实姓名">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">手机号*</label>
+				<div class="col-sm-10">
+					<input type="number" id="mobile" placeholder="请输入注册手机号">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">密码*</label>
+				<div class="col-sm-10">
+					<input type="password" id="password" placeholder="请输入密码">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">确认密码*</label>
+				<div class="col-sm-10">
+					<input type="password" id="rePassword" placeholder="请确认密码">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">职位*</label>
+				<div class="col-sm-2">
+					<select  id="job" class="form-control" >
+						<option value="1">业务员</option>
+						<option value="8">财务</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">固定电话</label>
+				<div class="col-sm-10">
+					<input type="number" id="telphone" class="m-wrap span12" placeholder="请输入固定电话">
+					<span class="help-block">eg:0571-87813085</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">备注</label>
+				<div class="col-sm-10">
+					<textarea id="remark" class="large m-wrap" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-lg-offset-2 col-lg-10">
+					<input type="hidden" name="id" value="{$info['id']|default=''}">
+					<a class="btn btn-success" id="newStaffBtn">确 定</a>
+					<button class="btn btn-danger btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
+<script type="text/javascript" src="/public/business/js/validate.js"></script>
+<script type="text/javascript" src="__JS__/manager.js"></script>
+<script>
+	$(document).ready(function() {
+		var dealer_id = getUrlParam('id');
+	   $("#newStaffBtn").click(function(){
+		   	var name = $("#name").val();
+		   	var mobile = $("#mobile").val();
+		   	var password = $("#password").val();
+		   	var rePassword = $("#rePassword").val();
+		   	var job = $("#job").val();
+		   	var telphone = $("#telphone").val();
+		   	var remark = $("#remark").val();
+		   	if(name == ""){
+		   		ui_alert("请输入员工姓名");
+		   		return;
+		   	}else if(mobile == ""){
+		   		ui_alert("请输入手机号");
+		   		return;
+		   	}else if(!validatePhoneNumber(mobile)){
+		   		ui_alert("请输入正确手机号");
+		   		return;
+		   	}else if(password == ""){
+		   		ui_alert("请输入密码");
+		   		return;
+		   	}else if(!validatePassword(password)){
+		   		ui_alert("请输入8-16位英文数字组合密码");
+		   		return;
+		   	}else if(rePassword == ""){
+		   		ui_alert("请再次输入密码");
+		   		return;
+		   	}else if(rePassword != password){
+		   		ui_alert("两次输入密码不一致");
+		   		return;
+		   	}else if(job == ""){
+		   		ui_alert("请选择员工职位");
+		   		return;
+		   	}
+		   	ajax_jquery({
+	            url: apiUrl +'/admin/assetChannel/addStaff',
+	            data:{
+	            	"id": dealer_id,
+	            	"name": name,
+	            	"mobile": mobile,
+	            	"password": password,
+	            	"job": job,
+	            	"telphone": telphone,
+	            	"remark": remark
+	            },
+	            success:function(resp){
+	                if (resp.code == "1" ) {
+	                		ui_alert("新增成功","success");
+	                        window.location.href = "/admin/assetChannel/";
+	                } else {
+	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+	                        ui_alert(resp.msg);
+	                    }
+	                    return false;
+	                }
+	            }
+	        });
+	   })
+	});
+</script>
+{/block}

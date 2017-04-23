@@ -10,12 +10,11 @@
 namespace app\business\controller;
 use app\common\controller\Base;
 class Login extends Base {
-	
 	public function login($mobile = '', $password = '') {
 		if (IS_POST) {
 			$resp["code"] = 0;
 			$resp["msg"] = '未知错误！';
-			
+
 			if (!$mobile || !$password) {
 				$resp["code"] = 0;
 				$resp["msg"] = '用户名或者密码不能为空！';
@@ -29,7 +28,7 @@ class Login extends Base {
 				$resp["code"] = 1;
 				$resp["msg"] = '登录成功！';
 				session("mobile", $mobile);
-				session("uid", $uid);
+				// session("uid", $uid);
 				return json($resp);
 			} else {
 				switch ($uid) {
@@ -61,7 +60,17 @@ class Login extends Base {
 	}
 	public function waiting(){
 		$mobile = session('mobile');
-		db('member')->where('mobile',$mobile)->setField('status','3');
+		$status = db('dealer')->field('status')->where('mobile',$mobile)->find();
+		// var_dump($status);die;
+		if ($status['status'] == '1') {
+			$this->redirect(url('index/index'));
+		}else{
+			db('dealer')->where('mobile',$mobile)->setField('status','3');
+		}
+		return $this->fetch();
+	}
+
+	public function protocal(){
 		return $this->fetch();
 	}
 }

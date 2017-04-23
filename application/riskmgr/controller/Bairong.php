@@ -15,7 +15,7 @@ class Bairong extends Base {
 		return $this->fetch();
 	}
 	
-	public function results($idcard = '', $name = '', $password = "") {
+	public function results($idcard = '', $name = '', $mobile = '', $password = "") {
 		if($password != "bairong"){
 			return $this->error("查询密码错误", 'index');
 		}		
@@ -34,7 +34,7 @@ class Bairong extends Base {
 					//"line_num" => "000001",
 					"name" => $name,
 					"id" => $idcard,
-					"cell" => "15800000000",
+					"cell" => $mobile,
 			)
 		);
 

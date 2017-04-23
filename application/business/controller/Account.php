@@ -18,19 +18,25 @@ class Account extends Baseness {
 	      	// var_dump($data);die;
 	      	$mobile = session("mobile");
 			if (isset($data['smsVerify'])) {
-			$storeSmsCode = session('smsCode');
-			  if($data['smsVerify'] != $storeSmsCode){
-			    return ['code'=>1005,'msg'=>'短信验证码错误'];
-			  }
+				$storeSmsCode = session('smsCode');
+				if($data['smsVerify'] != $storeSmsCode){
+					$resp['code'] = '1005';
+					$resp['msg'] = '短信验证码错误';
+					return json($resp);
+				}
 			}
 			// 修改交易密码
 			if (isset($data['newPayPwd'])) {
 			    $user = model('User');
 			    $result = $user->setpaypw($mobile,$data['newPayPwd']);
 			    if($result){
-			      return ['code'=>1,'msg'=>'支付密码设置成功'];
+					$resp['code'] = '1';
+					$resp['msg'] = '支付密码设置成功';
+					return json($resp);
 			    }else{
-			      return ['code'=>1003,'msg'=>'两次密码不一致'];
+			    	$resp['code'] = '1';
+					$resp['msg'] = '两次密码不一致';
+					return json($resp);
 			    }
 			}
 			//修改手机号
@@ -39,23 +45,33 @@ class Account extends Baseness {
 				$result1 = db('dealer')->where('mobile',$mobile)->setField('mobile', $data['newMobile']);
 				if ($result && $result1) {
 					session('mobile',$data['newMobile']);
-					return ['code'=>1,'msg'=>'手机号修改成功'];
+					$resp['code'] = '1';
+					$resp['msg'] = '手机号修改成功';
+					return json($resp);
 				}else{
-					return ['code'=>1000,'msg'=>'手机号修改失败'];
+					$resp['code'] = '1000';
+					$resp['msg'] = '手机号修改失败';
+					return json($resp);
 				}
 			}
 			//修改邮箱
-			if (isset($data['mail'])) {
-				$result = db('member')->where('mobile',$mobile)->setField('email', $data['mail']);
+			if (isset($data['email'])) {
+				$result = db('member')->where('mobile',$mobile)->setField('email', $data['email']);
+				// var_dump($result);die;
 				if ($result) {
-					return ['code'=>1,'msg'=>'邮箱添加成功'];
+					$resp['code'] = '1';
+					$resp['msg'] = '邮箱添加成功';
+					return json($resp);
 				}else{
-					return ['code'=>1001,'msg'=>'邮箱修改失败'];
+					$resp['code'] = '1001';
+					$resp['msg'] = '邮箱添加失败';
+					return json($resp);
 				}
   			}
 		}else{
 			$mobile = session("mobile");
-      		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword')->where('m.mobile',$mobile)->find();
+      		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code')->where('m.mobile',$mobile)->find();
+      		// var_dump($account);die;
 	      	if ($account){
 	            $data['infoStr'] = json_encode($account);
 	            $data = array(
@@ -75,14 +91,15 @@ class Account extends Baseness {
 	
 	public function balance() {
 	    $mobile = session('mobile');
-	    $uid = session('uid');
+	    $uid = session('user_auth.uid');
 	    if (IS_POST) {
 	    	$data = input('post.');
-	    	$map['user_id'] = $uid;
+	    	// var_dump($data);die;
+	    	$map['uid'] = $uid;
 	    	if ($data['status']) {
-				$map['is_pay'] = $data['status'];
+				$map['status'] = $data['status'];
 			}
-	    	if ($data['type'] == '1') {
+	    	if ($data['type'] == '2') {
 	    		if ($data['dateRange']) {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
@@ -94,7 +111,7 @@ class Account extends Baseness {
 	    		if ($carrys) {
 					$resp['code'] = '1';
 					$resp['msg'] = '数据正常';
-					$resp['type'] = '1';
+					$resp['type'] = '2';
 					$resp['data']= $carrys;
 				}else{
 					$resp['code'] = '0';
@@ -102,25 +119,26 @@ class Account extends Baseness {
 				}
 	    	}
 	    	
-	    	if ($data['type'] == '2') {
+	    	if ($data['type'] == '1') {
 	    		if ($data['dateRange']) {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$payment = db('payment')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+					$recharge = db('recharge')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
 				}else{
-					$payment = db('payment')->where($map)->select();
+					$recharge = db('recharge')->where($map)->select();
 				}
-				if ($payment) {
+				if ($recharge) {
 					$resp['code'] = '1';
 					$resp['msg'] = '数据正常';
-					$resp['type'] = '2';
-					$resp['data']= $payment;
+					$resp['type'] = '1';
+					$resp['data']= $recharge;
 				}else{
 					$resp['code'] = '0';
 					$resp['msg'] = '未查到数据';
 				}
 	    	}
+	    	// var_dump($resp);die;
 			return json($resp);
 	    	
 	    }else{
@@ -141,11 +159,13 @@ class Account extends Baseness {
 	public function recharge() {
 		if(IS_POST){
 			$data = input('post.');
-			$uid = session('uid');
+			$uid = session('user_auth.uid');
 			// var_dump($data);die;
 			if (is_numeric($data['money'])){
-			    modify_account($data,$uid,'3','0','member_money','INSERT');
-			    $resp = modify_account($data,$uid,'rechange','INSERT');
+
+				//加入资金记录
+				money_record($data, $uid, 3, 0);
+			    $resp = modify_account($data,$uid,'recharge','INSERT');
 			    // var_dump($resp);die;
 			    return json($resp);
 			}
@@ -158,26 +178,37 @@ class Account extends Baseness {
      * */
   	public function withdraw() {
 		$mobile = session('mobile');
-		$uid = session('uid');
+		$uid = session('user_auth.uid');
 		if(IS_POST){
 			$data = input('post.');
+			// var_dump($data);die;
 			$paypassword = $data['paypassword'];
 			$pay = db('member')->field('paypassword')->where('mobile',$mobile)->find();
 			if(md5($paypassword.$mobile) == $pay['paypassword']){
-			  foreach ($data['withdrawOrders'] as $k => $v) {
-			   $resp=  cl_order($v,$data['bank_card']);
-			   return $resp;
-			  }
+				foreach ($data['withdrawOrders'] as $k => $v) {
+					$resp1=  cl_order($v,$data['bank_card']);
+			    }
+			    if ($resp1) {
+			    	$resp['code'] = '1';
+      				$resp['msg']='提现处理中';
+			    }else{
+			    	$resp['code'] = '1';
+      				$resp['msg']='提现失败';
+			    }
 			}else{
-			   return ['code'=>'0','msg'=>'交易密码错误'];
+				$resp['code'] = '0';
+				$resp['msg'] = '交易密码错误';
 			}
+			return json($resp);
 		}else{
 			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 			$map = array(
 			    'mid'=>$uid,
-			    'status'=>'10'
+			    'finance'=>'2'
 			  );
+			// var_dump($map);die;
 			$orders =db('order')->where($map)->select();
+			// var_dump($orders);die;
 			foreach ($orders as $k => $v) {
 			    $orders[$k]['realname'] = serch_real($v['uid']);
 			}
@@ -197,7 +228,7 @@ class Account extends Baseness {
 
 	public function bankcard() {
 		$mobile = session('mobile');
-		$uid = session('uid');
+		$uid = session('user_auth.uid');
 		$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 		$data = array(
 				'info'=>$bankcard,
@@ -208,7 +239,7 @@ class Account extends Baseness {
 		return $this->fetch();
 	}
 	public function transaction() {
-		$uid = session('uid');
+		$uid = session('user_auth.uid');
 		if (IS_POST) {
 			$data = input('post.');
 			// var_dump($data);die;
@@ -257,7 +288,7 @@ class Account extends Baseness {
 			}
 
 		}
-		return $this->fetch();
+		return $this->fetch('lineOfCredit');
 	}
 	public function creditRecord(){
 		if (IS_POST) {
@@ -265,11 +296,11 @@ class Account extends Baseness {
 		}else{
 			
 		}
-
+		return $this->fetch('creditRecord');
 	}
   	public function info() {
 		$mobile = session('mobile');
-		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic,dealer_lic_pic')->where('mobile',$mobile)->find();
+		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic,dealer_lic_pic,invite_code')->where('mobile',$mobile)->find();
 		if($deals){
 			$data['code'] = '1';
 			$data['info']=$deals;
@@ -280,7 +311,7 @@ class Account extends Baseness {
 		return $this->fetch();
   	}
 	public function message() {
-		$password = '011316';
+		/*$password = '011316';
 		$mobile = session('mobile');
 		$user = db('member')->where('mobile',$mobile)->find();
 		// echo $user['paypassword'].'<br>';
@@ -288,7 +319,7 @@ class Account extends Baseness {
 		// die;
 		if(md5($password.$user['mobile']) === $user['paypassword']){
 		    // echo 111;die;
-		}
+		}*/
 		return $this->fetch();
 	}
 }

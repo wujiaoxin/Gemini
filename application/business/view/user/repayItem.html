@@ -24,27 +24,27 @@
 		<ul class="selectParm selectOrderType">
 			<li data='0' class="active" >全部</li>
 			<li data='1'>按揭垫资</li>
-			<li data='2'>车抵贷</a></li>
+			<li data='3'>车抵贷</a></li>
 		</ul>
 	</div>
 	<div class="select-block">
 		<span class="selectParm-title">日期范围:</span>
 		<ul class="selectParm selectOrderDate">
 			<li data='0' class="active">全部</li>
-			<li data='2'>今天</li>
-			<li data='3'>最近7天</li>
-			<li data='4'>1个月</li>
-			<li data='5'>2个月</li>
-			<li data='6'>3个月</li>
+			<li data='1'>今天</li>
+			<li data='2'>最近7天</li>
+			<li data='3'>1个月</li>
+			<li data='4'>2个月</li>
+			<li data='5'>3个月</li>
 		</ul>
 	</div>
 	<div class="select-block">
 		<span class="selectParm-title">交易状态:</span>
 		<ul class="selectParm selectOrderStatus">
 			<li data='0' class="active">全部</li>
-			<li data='1'>待还</li>
-			<li data='2'>已还</li>
-			<li data='3'>逾期</li>
+			<li data='-1'>待还</li>
+			<li data='1'>已还</li>
+			<li data='2'>逾期</li>
 		</ul>
 	</div>
 </div>
@@ -117,7 +117,7 @@
 				<label class="control-label">交易密码</label>
 				<div class="controls">
 					<input id="payPassword" type="password" class="m-wrap" maxlength="6">
-				</div>	
+				</div>
 			</div>
 		</div>
 	</div>
@@ -131,7 +131,7 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
-<script type="text/javascript" src="/public/business/js/table-managed.js"></script>    
+<script type="text/javascript" src="/public/business/js/table-managed.js"></script>
 <script>
 	function tpl(data){
 		var html = '';
@@ -139,15 +139,17 @@
 		for(var index = 0; index < data.length; index++){
 			var orderStatus = '';
 			var orderOpera = '';
-			if(data[index].status == -1){
+			if(data[index].status == '-1'){
 				orderStatus = '待还';
 				orderOpera = '<a class="orderOpera" data-toggle="modal">还款</a>'
-			}else{
+			}else if((data[index].status == '1')){
 				orderStatus = '已还';
+			}else if((data[index].status == '2')){
+				orderStatus = '逾期';
 			}
 		  	html += '<tr class="odd gradex">'
 		  		+'<td class="order_id">' + data[index].order_id + '</td>'
-		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>'+ formatDate(data[index].repay_time) +'</td>'
 		  		+'<td>'+ data[index].yewu_realname +'</td>'
 		  		+'<td class="order_loanLimit" data="'+data[index].repay_money+'">￥'+ formatAmount(data[index].repay_money) +'</td>'
@@ -178,7 +180,7 @@
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
 	                    return false;
-	                }                 
+	                }
 	            }
 	        }
 		});
@@ -187,7 +189,7 @@
 	$('#bankcard').val(info.bank_account_id);
 	$('#priv_bankcard').val(info.priv_bank_account_id);
 
-	jQuery(document).ready(function() {       
+	jQuery(document).ready(function() {
 	   // App.init();
 	   TableManaged.init();
 	   ajaxRepayItem(0,0,0);
@@ -195,7 +197,7 @@
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var orderType = $('.selectOrderType li.active').attr('data');
 	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
-	   		var orderStatus = $('.selectOrderStatus li.active').attr('data'); 
+	   		var orderStatus = $('.selectOrderStatus li.active').attr('data');
 	   		ajaxRepayItem(orderType,orderDateRange,orderStatus);
 	   });
 
@@ -205,7 +207,7 @@
 	   		$('#repay_orderId').val(repay_orderId);
 	   		$('#repay_amount').val(repay_amount);
 	   		$('#modal-repayAmount').text(formatAmount(repay_amount));
-	   		$(this).attr('href',"#repayOrderModal");
+	   		$('#repayOrderModal').modal();
 	   	});
 	   	$('#repayOrderBtn').click(function(){
 	   	 	var orderId = $('#repay_orderId').val();
@@ -239,11 +241,11 @@
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert("alert-error",resp.msg);
 		                    return false;
-		                }                 
+		                }
 		            }
 		        }
 			});
 	   	})
 	});
 </script>
-{/block}	
+{/block}

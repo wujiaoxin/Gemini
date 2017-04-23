@@ -9,7 +9,6 @@
 	}
 	#dealer_lic_pic{
 		width: 120px;
-		
 	}
 </style>
 <script type="text/javascript">
@@ -56,6 +55,12 @@
 					</div>
 				</div>
 				<div class="control-group">
+					<label class="control-label">渠道代码</label>
+					<div class="controls">
+						<span id="invite_code" class="info-item"></span>
+					</div>
+				</div>
+				<div class="control-group">
 					<label class="control-label">签约业务</label>
 					<div class="controls">
 						<span id="forms" class="info-item"></span>
@@ -98,7 +103,6 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js" ></script>
 <script type="text/javascript" src="/public/business/js/selectArea.js"></script>
 <script type="text/javascript">
-	 
 $(function(){
 	//初始化表单
 	$("span.info-item").each(function(i){

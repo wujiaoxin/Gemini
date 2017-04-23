@@ -67,6 +67,7 @@ class Order extends \app\common\model\Base {
 		//$filter['status'] = ['>',-1];
 		$sort = "id desc";
 		$list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
+		// var_dump($list);die;
 		return $list;
 	}
 	public function get_all_order_list($uid = 0, $role = 0, $status = null){
@@ -90,4 +91,81 @@ class Order extends \app\common\model\Base {
 	}
 	*/
 	
+	//订单统计
+	public function get_all_order_total($uid = 0, $type = 0){
+
+		$filter['status'] = ['>',-1];
+		$total = '';
+		$total['order_num'] = db('Order')->where($filter)->count();
+		$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+		$total['loan_limit'] = $ord['loan_limit'];
+		return $total;
+	}
+
+	//添加订单
+	public function add_order($uid, $data){
+		$dealer_mobile = db('member')->alias('m')->field('d.mobile')->join('dealer d','d.invite_code = m.invite_code')->where('m.uid',$uid)->find();
+		$mid = db('member')->field('uid')->where('mobile',$dealer_mobile['mobile'])->find();
+		$orderid = $this->build_order_sn();
+		$data =array(
+			'uid'=>$uid,
+			'mid'=>$mid['uid'],
+			'mobile'=>$data['mobile'],
+			'loan_limit'=>$data['price'],
+			'sn' =>$orderid
+			);
+		// var_dump($data);die;
+		$result = $this->allowField(true)->save($data);
+		return $orderid;
+	}
+	//保存订单
+	public function save_order($uid, $data){
+		$data =array(
+			'loan_limit' => $data['loan_limit'],
+			'endtime' => $data['loan_term'],
+			'status'=>'33'
+			);
+		$data['id'] = '1073';
+		$result = $this->save($data,['id'=>$data['id']]);
+		return $result;
+	}
+
+	// 客户订单查询
+
+	public function search_order($id){
+
+		$info = db('member')->alias('m')->field('m.bankcard,m.mobile,o.name,o.idcard_face_pic,o.idcard_back_pic')->join('__ORDER__ o','m.mobile = o.mobile')->where('m.uid',$id)->find();
+		// var_dump($info);die;
+
+
+		$mobile = db('member')->field('mobile')->where('uid',$id)->find();
+		// var_dump($mobile);die;
+		$orders = db('Order')->alias('o')->field('o.*')->join('__MEMBER__ m','m.mobile = o.mobile')->where('o.mobile',$mobile['mobile'])->select();
+
+		foreach ($orders as $k => $v) {
+			// echo $v['sn'];die;
+			$status  = db('order_repay')->field('status,has_repay')->where('order_id', $v['sn'])->find();
+			$orders[$k]['repay_status'] = $status['has_repay'];
+		}
+		$nums = db('order')->where('mobile',$mobile['mobile'])->count();
+
+		$map = array(
+			'status' => '1',
+			'mobile'=>$mobile['mobile']
+			);
+		$num_repay = db('order')->where($map)->count();
+
+		$num_repay = array(
+				'nums'=> $nums,
+				'num_success'=>$num_repay
+			);
+		$result = array(
+				'info' => $info,
+				'orders' => $orders,
+				'nums' =>$num_repay
+			);
+		// var_dump($result);die;
+		return $result;
+	}
+
 }

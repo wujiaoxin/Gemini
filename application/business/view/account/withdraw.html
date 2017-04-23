@@ -75,8 +75,8 @@
 					<label class="control-label">温馨提示:</label>
 					<div class="controls">
 						<ol>
-							<li>----</li>
-							<li>----</li>
+							<li>订单放款完成后可进行提现，支持多选；</li>
+							<li>预计到账时间：<br>T日10:00AM之前申请提现，预计当日到账；<br>T日10:00AM以后申请提现，预计最晚T+1个工作日到账；<br>遇双休日或法定节假日顺延，实际到账时间可能会受各银行工作时间影响。</li>
 						</ol>
 					</div>
 				</div>
@@ -132,10 +132,10 @@
 		});
 
 		//checkbox选择统计交易金额
-		jQuery('#table-withdraw tbody').on('change','.checkboxes',function () {	
+		jQuery('#table-withdraw tbody').on('change','.checkboxes',function () {
 			var amount = '';
 			$('#amount').val(amount);
-            jQuery('#table-withdraw tbody .checkboxes').each(function () {      	
+            jQuery('#table-withdraw tbody .checkboxes').each(function () {
             	if($(this).is(":checked")){
 	               var order_amount = $(this).parents('tr').find('.order_amount').attr('data-amount');
 	               amount = Number(amount)+parseFloat(order_amount);
@@ -148,7 +148,7 @@
         	var bank_card = $('.card.card_selected > .card_num').attr('data');
         	var payPwd =$('#payPwd').val();
 			var withdrawOrders = [];
-			jQuery('#table-withdraw tbody .checkboxes:checked').each(function (i,n) {     	
+			jQuery('#table-withdraw tbody .checkboxes:checked').each(function (i,n) {
 	            withdrawOrders[i] = $(this).parents('tr').find('.order_id').text();
             });
             if(typeof bank_card == 'undefined' || bank_card == ''){
@@ -170,13 +170,13 @@
                 },
                 success:function(resp){
                     if (resp.code == "1" ) {
-                       	ui_alert("alert-success","提现成功");
+                       	ui_alert("alert-success","提交成功,请等待审核");
                     	setTimeout('window.location.reload()',5000);
                     } else {
                         if (typeof(resp.msg) == 'string') {
                             ui_alert("alert-error",resp.msg);
                             return false;
-                        }                 
+                        }
                     }
                 }
             });

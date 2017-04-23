@@ -1,0 +1,194 @@
+{extend name="public/base"/}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
+<link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
+{/block}
+{block name="body"}
+<div class="main-box clearfix">
+	<header class="main-box-header clearfix">
+		<div class="pull-left">
+			<h2>{$meta_title}</h2>
+		</div>
+	</header>
+	<div class="main-box-body clearfix">
+		<div class="clearfix">
+			<table class="table table-hover" id="table-loanExamine">
+				<thead>
+					<tr>
+						<th>项目编号</th>
+						<th>渠道名称</th>
+						<th>借款金额</th>
+						<th>借款期限</th>
+						<th>借款费用状态</th>
+						<th>项目状态</th>
+						<th>提交时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+  	<div class="modal-dialog modal-sm" role="document">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+        		<h4 class="modal-title">放款凭证</h4>
+        		<input type="hidden" id="orderId">
+      		</div>
+      	<div class="modal-body form-horizontal">
+      		<div class="form-group">
+		    	<label class="col-sm-4 control-label">支付方式</label>
+			    <div class="col-sm-6">
+			      	<p class="form-control-static item-info">账户余额</p>
+			    </div>
+		  	</div>
+		  	<div class="form-group">
+		    	<label class="col-sm-4 control-label">客户名称</label>
+			    <div class="col-sm-6">
+			      	<p class="form-control-static item-info">滨江宝马</p>
+			    </div>
+		  	</div>
+		  	<div class="form-group">
+		    	<label class="col-sm-4 control-label">提交时间</label>
+			    <div class="col-sm-6">
+			      <p class="form-control-static item-info">2017-02-34</p>
+			    </div>
+		  	</div>
+		  	<div class="form-group">
+		    	<label class="col-sm-4 control-label">费用类型</label>
+			    <div class="col-sm-6">
+			      <p class="form-control-static item-info">利息</p>
+			    </div>
+		  	</div>
+		  	<div class="form-group">
+		    	<label class="col-sm-4 control-label">费用金额</label>
+			    <div class="col-sm-6">
+			      <p class="form-control-static item-info">2323</p>
+			    </div>
+		  	</div>
+          	<div class="form-group">
+            	<label class="col-sm-4 control-label">审核</label>
+            	<div class="col-sm-6 pt5">
+	            	<select id="examineStatus">
+	            		<option value="1">通过</option>
+	            		<option value="0">未通过</option>
+	            	</select>
+	            </div>
+          	</div>
+          	<div class="form-group">
+            	<label class="col-sm-4 control-label">审核备注</label>
+            	<div class="col-sm-6 pt5">
+            		<textarea class="form-control" id="descr"></textarea>
+            	</div>
+          	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <a type="button" class="btn btn-primary" id="examineBtn">提交</a>
+      </div>
+    </div>
+  </div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="__JS__/table-managed.js"></script>
+<script type="text/javascript" src="__JS__/manager.js"></script>
+<script type="text/javascript">
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>'+ data[index].sn + '</td>'
+		  		+'<td>'+ data[index].dealer_name +'</td>'
+		  		+'<td>￥'+ data[index].loan_limit +'</td>'
+		  		+'<td>'+ data[index].endtime +'天</td>'
+		  		+'<td>'+ g_financeStatus[data[index].finance] +'</td>'
+		  		+'<td>'+ '正常' +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
+		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].id+'">审核</a></td>'
+		  		 +'</tr>'
+			}
+		}
+		return html;
+	};
+	$('#table-loanExamine tbody').html(tpl(info));
+
+    $(function(){
+    	TableManaged.init();
+
+    	$('#table-loanExamine').on('click','.opera',function(){
+	   		var orderId = $(this).attr('data');
+	   		$("#orderId").val(orderId);
+	   		ajax_jquery({
+		        url: apiUrl + '/admin/finance/loan',
+		        data:{
+		            'id': orderId
+		        },
+		        success:function(resp){
+		        	console.log(resp)
+		            if (resp.code == "1" ) {
+		            	$('#myModal .item-info').each(function(){
+							var name = $(this).attr('id');
+						    if(typeof(resp.data[name]) == "string" &&resp.data[name] !=''){
+						        $(this).text(resp.data[name]);
+						    }
+						});
+				   		$('#myModal').modal();
+		            } else {
+		                if (typeof(resp.msg) == 'string') {
+		                    ui_alert(resp.msg);
+		                    return false;
+		                }
+		            }
+		        }
+			});
+	   	});
+
+	   	$('#examineBtn').click(function(){
+	   		var orderId = $('#orderId').val();
+	   	 	var examineStatus = $('#examineStatus').val();
+	   	 	var descr = $('#descr').val();
+	   	 	if(examineStatus == ''){
+	   	 		ui_alert("请选择审核结果");
+	            return false;
+	   	 	}
+	   	 	ajax_jquery({
+		        url: apiUrl +'/admin/finance/loan',
+		        data:{
+		        	'id': orderId,
+		            'status': examineStatus,
+		            'descr': descr
+		        },
+		        success:function(resp){
+		            if (resp.code == "1" ) {
+		            	ui_alert("支付成功","success");
+		            	window.location.reload();
+		            } else {
+		                if (typeof(resp.msg) == 'string') {
+		                    ui_alert(resp.msg);
+		                    return false;
+		                }
+		            }
+		        }
+			});
+	   	})
+
+    });
+</script>
+
+{/block}

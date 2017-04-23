@@ -12,7 +12,7 @@ use app\business\controller\Baseness;
 
 class Index extends Baseness {
 	public function _initialize(){
-		$uid = session("uid");
+		$uid = session("user_auth.uid");
 		$mobile =session('mobile');
 		if($uid == null){
 			return $this->error("请先登录",url("/business/user/login"));
@@ -21,7 +21,7 @@ class Index extends Baseness {
 		if(!$is_success['priv_bank_name']){
 			$this->redirect('/business/user/guide');
 		}
-		$result = db('member')->field('status')->where('mobile',$mobile)->find();
+		$result = db('Dealer')->field('status')->where('mobile',$mobile)->find();
 		if ($result['status'] == '3') {
 			return $this->redirect('/business/login/waiting');
 		}
@@ -29,14 +29,14 @@ class Index extends Baseness {
 	}
 	public function index() {
 		$mobile = session('mobile');
-		$uid = session('uid');
+		$uid = session('user_auth.uid');
 		$order_loan = get_orders($uid,'0','order');//借款项目
 		$order_repay = get_orders($uid,'0','order_repay');//还款项目
 		// var_dump($order_repay);die;
 		$order_pay = db('dealer_money')->where('uid',$uid)->order('id DESC')->limit(5)->select();;//交易记录
 		// var_dump($order_pay);die;
 		$money = get_money($uid,'money');//资金
-		$lines = db('dealer')->field('lines,lines_ky')->where('mobile',$mobile)->find();
+		$lines = db('dealer')->field('lines,lines_ky,name')->where('mobile',$mobile)->find();
 		$info = array(
 			'order_loan'=>$order_loan,
 			'money'=>$money,

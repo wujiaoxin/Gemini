@@ -19,7 +19,7 @@
 		<ul class="selectParm selectOrderType">
 			<li data='0' class="active" >全部</li>
 			<li data='1'>按揭垫资</li>
-			<li data='2'>车抵贷</a></li>
+			<li data='3'>车抵贷</a></li>
 		</ul>
 	</div>
 	<div class="select-block">
@@ -37,11 +37,10 @@
 		<span class="selectParm-title">交易状态:</span>
 		<ul class="selectParm selectOrderStatus">
 			<li data='0' class="active">全部</li>
-			<li data='1'>进件初审</li>
-			<li data='2'>资料审核</li>
-			<li data='3'>补充资料</li>
-			<li data='4'>审核失败</li>
-			<li data='5'>垫资放款</li>
+			<li data='3'>资料审核</li>
+			<li data='4'>额度审核</li>
+			<li data='2'>审核拒绝</li>
+			<li data='1'>审核通过</li>
 		</ul>
 	</div>
 </div>
@@ -70,7 +69,7 @@
 					<td>2018-03-16</td>
 					<td>李博</td>
 					<td>￥3,000</td>
-					<td>￥200</td>	
+					<td>￥200</td>
 					<td>7天</span></td>
 					<td>进件初审</td>
 					<td>处理中</td>
@@ -84,7 +83,7 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
-<script type="text/javascript" src="/public/business/js/table-managed.js"></script>    
+<script type="text/javascript" src="/public/business/js/table-managed.js"></script>
 <script>
 	function tpl(data){
 		var html = '';
@@ -92,13 +91,13 @@
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
 		  		+'<td>' + data[index].sn + '</td>'
-		  		+'<td>'+ data[index].type +'</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].fee) +'</td>'
 		  		+'<td>'+ data[index].endtime +'</td>'
-		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
 		  		 +'</tr>'
 			}
 		}
@@ -122,24 +121,24 @@
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert("alert-error",resp.msg);
 	                    return false;
-	                }                 
+	                }
 	            }
 	        }
 		});
 	}
 
-	jQuery(document).ready(function() {       
+	jQuery(document).ready(function() {
 	   // App.init();
 	   TableManaged.init();
 	   ajaxLoanItem(0,0,0);
-	     
+
 	   $('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var orderType = $('.selectOrderType li.active').attr('data');
 	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
-	   		var orderStatus = $('.selectOrderStatus li.active').attr('data'); 
+	   		var orderStatus = $('.selectOrderStatus li.active').attr('data');
 	   		ajaxLoanItem(orderType,orderDateRange,orderStatus);
 	   })
 	});
 </script>
-{/block}	
+{/block}

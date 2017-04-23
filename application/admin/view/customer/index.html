@@ -4,11 +4,6 @@
 <!-- <link type="text/css" href="__PUBLIC__/css/libs/bootstrap-editable.css"> -->
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
-
-<style type="text/css">
-
-  </style>
-</style>
 <script type="text/javascript">
 	var info = {};
 	try {
@@ -41,34 +36,31 @@
 					</tr>
 				</thead>
 				<tbody>
-					
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
 {/block}
-
 {block name="script"}
 <script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
 <script type="text/javascript" src="__JS__/table-managed.js"></script>
 <script type="text/javascript" src="__JS__/manager.js"></script>
-
 <script type="text/javascript">
 	function tpl(data){
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + data[index].id + '</td>'
-		  		+'<td>'+ data[index].name +'</td>'
+		  		+'<td>' + data[index].uid + '</td>'
+		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>'+ data[index].idcard +'</td>'
-		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
-		  		+'<td>'+ data[index].loanCount +'</td>'
+		  		+'<td>'+ formatDate(data[index].reg_time) +'</td>'
+		  		+'<td>'+ data[index].loan_num +'</td>'
 		  		+'<td>'+ data[index].status +'</td>'
-		  		+'<td>'+ data[index].lineScore +'</td>'
-		  		+'<td><a href="/admin/customer/view?id='+ data[index].id + '">查看</a></td>'
+		  		+'<td>'+ data[index].score +'</td>'
+		  		+'<td><a href="/admin/customer/view?id='+ data[index].uid + '">查看</a></td>'
 		  		 +'</tr>'
 			}
 		}

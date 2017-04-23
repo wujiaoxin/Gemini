@@ -1,11 +1,14 @@
-function ui_alert(classname,message){
-        jQuery('.alert').removeClass('alert-error alert-success').children('span').text(message).end()
-                .addClass(classname).show();
-        setTimeout("$('.alert').slideUp('slow')",3000);
-    };
-jQuery('.alert > .close').click(function(){
-    jQuery('.alert').removeClass('alert-error alert-success').hide();
-});
+var g_orderType = {'1':'新车垫资','2':'二手车垫资','3':'车抵贷'};
+var g_orderStatus = {'-2':'编辑中','-1':'已撤回','1':'审核通过','2':'审核拒绝','3':'资料审核','4':'额度审核','5':'补充资料'};
+var g_financeStatus ={'1':'待支付订单费用','2':'支付完成','3':'放款中','4':'放款完成'};
+var g_repayStatus = {'-1':'未还','1':'已还','2':'逾期'};
+var g_transactionType = {'5':'支付款项','1':'垫资到账','2':'垫资还款','3':'充值','4':'提现'};
+var g_dealObj = {'0':'系统','1':'商户'};
+var g_examineStatus = {'-1':'处理中','0':'审核拒绝','1':'审核通过'};
+var apiUrl ='';
+function ui_alert(msg,type,position){
+   $.messager.show(msg, {placement: position,type:type});
+};
 
 function ajax_jquery(options) {
     if (options == undefined) {
@@ -44,18 +47,18 @@ function _ajax_error(XMLHttpRequest, textStatus, errorThrown) {
 //    this; // 调用本次AJAX请求时传递的options参数
     var session_status = XMLHttpRequest.getResponseHeader("Session-Status"); //通过XMLHttpRequest取得响应头，Session-Status，
     if (session_status == 'TimeOut') {
-        ui_alert('alert-error','登录超时，请重新登录');
+        ui_alert('登录超时，请重新登录');
         // window.location.href = "/mobile/user/login"; //如果超时就处理 ，指定要跳转的页面
     } else if (session_status == 'Empty') {
-        ui_alert('alert-error','权限限制，请联系管理员');
+        ui_alert('权限限制，请联系管理员');
     } else if (textStatus == 'timeout') {
-        ui_alert('alert-error','加载超时，请重试');
+        ui_alert('加载超时，请重试');
     } else {
         console.log("XHR="+XMLHttpRequest+"\ntextStatus="+textStatus+"\nerrorThrown=" + errorThrown);
     }
 }
 
-// 格式化数字20,000,00.00    
+// 格式化数字20,000,00.00
 function formatAmount(n) {
     if(!n){
         return '0.00';
@@ -69,23 +72,23 @@ function formatAmount(n) {
 function formatDatetime(timeStr){
     var timeStr = timeStr*1000;
     var now =new Date(timeStr);
-    var year=now.getFullYear();     
-    var month=now.getMonth()+1;     
-    var date=now.getDate();     
-    var hour=fillZero(now.getHours());     
-    var minute=fillZero(now.getMinutes());     
-    var second=fillZero(now.getSeconds());    
-    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+    var year=now.getFullYear();
+    var month=now.getMonth()+1;
+    var date=now.getDate();
+    var hour=fillZero(now.getHours());
+    var minute=fillZero(now.getMinutes());
+    var second=fillZero(now.getSeconds());
+    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;
 }
 
 // 格式化日期
 function formatDate(timeStr){
     var timeStr = timeStr*1000;
     var now = new Date(timeStr);
-    var year = now.getFullYear();     
-    var month = fillZero(now.getMonth()+1);     
-    var date = fillZero(now.getDate());       
-    return   year+"-"+month+"-"+date;     
+    var year = now.getFullYear();
+    var month = fillZero(now.getMonth()+1);
+    var date = fillZero(now.getDate());
+    return   year+"-"+month+"-"+date;
 }
 
 function fillZero(i){
@@ -101,10 +104,10 @@ function sendSms(id) {
     var mobile = $('#'+formName+'-username').val();
     var imgverify = $('#'+formName+'-rvalicode').val();
     if (mobile == "") {
-        ui_alert("alert-error","请输入手机号!");
+        ui_alert("请输入手机号!");
     }else if (!validatePhoneNumber(mobile)) {
-        ui_alert("alert-error","请输入正确的手机号!");
-    } 
+        ui_alert("请输入正确的手机号!");
+    }
     ajax_jquery({
         url: apiUrl + '/business/user/sendSmsVerify',
         data: {
@@ -112,15 +115,49 @@ function sendSms(id) {
          },
         success: function (resp) {
             if (resp.code == "1") {
-                ui_alert("alert-success","验证码发送成功,请注意查收");
+                ui_alert("验证码发送成功,请注意查收","success");
             } else {
                 if (typeof(resp.msg) == 'string' && resp.msg != '') {
-                    ui_alert("alert-error",resp.msg);
+                    ui_alert(resp.msg);
                 } else {
-                    ui_alert("alert-error","验证码发送失败");
+                    ui_alert("验证码发送失败");
                 }
                 return false;
             }
         }
     });
+}
+
+//获取
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+
+//验证email
+function checkEmail(str){
+    var re = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/; 
+    if (!re.test(str)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+//*加密身份证、手机号、银行卡、邮箱
+function encryptID(idcard){
+    return idcard = idcard.replace(/^(\d{6})\d+(\d{4})$/,"$1********$2");
+}
+
+function encryptMobile(mobile){
+    return mobile = mobile.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2');
+}
+
+function encryptBankcard(bankcard){
+    return bankcard = bankcard.replace(/\d+(\d{4})$/,"**** **** **** $1");
+}
+
+function encryptMail(mail){
+    return mail = mail.replace(/^(\w?)(\w+)(\w)(@\w+\.[a-z]+(\.[a-z]+)?)$/, "$1****$3$4");
 }
