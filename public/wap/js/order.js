@@ -1,3 +1,5 @@
+var g_orderType = {'1':'新车垫资','2':'二手车垫资','3':'车抵贷'};
+var g_orderStatus = {'-2':'编辑中','-1':'已撤回','1':'审核通过','2':'审核拒绝','3':'资料审核','4':'额度审核','5':'补充资料'};
 //撤销订单
 function hideOrder(id,type){
 	ui_ask('确认撤销订单？', '确定', '取消',function () {
@@ -92,6 +94,26 @@ function examine(id){
         }
     })
 };
+
+function getOrderTotal(type,status){
+    var data = '';
+    ajax_jquery({
+        url: apiUrl+ '/api/order/total',
+        data: {
+            'type': type,
+            'status': status
+        },
+        async:false,
+        success: function (resp) {
+            if(resp.code == 1){
+                data = resp.data.total;
+            }else{
+                data = '-1';
+            }
+        }
+    });
+    return data;
+}
 
 
 

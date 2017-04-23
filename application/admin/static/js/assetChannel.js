@@ -219,6 +219,7 @@ $(function(){
         ajax_jquery({
             url: ajaxurl,
             data:{
+                'id': id,
                 'name': name,
                 'credit_code': credit_code,
                 'city': loc_address,

@@ -35,7 +35,7 @@
         overflow-y: hidden;
     }
     .subnavbar-cont {
-        width: 480px;
+        width: 420px;
         height: 40px;
     }
     .subnavbar-item {
@@ -119,7 +119,6 @@
 	        <div class="navbar">
 	            <div class="navbar-inner">
 	                <div class="left">
-					
 	                    <a href="javascript:goToUrl(wechatStaticPath + '/user/personalCenter.html');" class="link icon-only back">
 	                        <i class="icon icon-back color-orange"></i>
 	                    </a>
@@ -137,10 +136,10 @@
                                 <div class="subnavbar-cont">
                                     <!-- <a class="subnavbar-item" id="tab_0" data_status='0'>待授权</a> -->
                                     <a class="subnavbar-item" id="tab_" data_status=''>全部</a>
-                                    <a class="subnavbar-item" id="tab_1" data_status='1'>待处理</a>
-                                    <a class="subnavbar-item" id="tab_2" data_status='2'>审核中</a>
-                                    <a class="subnavbar-item" id="tab_3" data_status='3'>已放款</a>
-                                    <a class="subnavbar-item" id="tab_9" data_status='4'>已退回</a>
+                                    <a class="subnavbar-item" id="tab_0" data_status='0'>待提交</a>
+                                    <a class="subnavbar-item" id="tab_3" data_status='3'>审核中</a>
+                                    <a class="subnavbar-item" id="tab_1" data_status='1'>已放款</a>
+                                    <a class="subnavbar-item" id="tab_2" data_status='2'>已退回</a>
                                 </div>
                             </div>
                         </div>
@@ -175,10 +174,10 @@
         <div class="popover-inner">
             <div class="list-block">
                 <ul>
-                    <li><a href="#" class="list-button">全部</a></li>
-                    <li><a href="#" class="list-button">今天</a></li>
-                    <li><a href="#" class="list-button">7天</a></li>
-                    <li><a href="#" class="list-button">一个月</a></li>
+                    <li data="0"><a href="#" class="list-button">全部</a></li>
+                    <li data="1"><a href="#" class="list-button">今天</a></li>
+                    <li data="2"><a href="#" class="list-button">7天</a></li>
+                    <li data="3"><a href="#" class="list-button">一个月</a></li>
                 </ul>
             </div>
         </div>
@@ -189,6 +188,7 @@
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
     <script type="text/javascript" src="/public/wap/js/order.js"></script>
     <script type="text/javascript">
+    	var dataRange = '0';
         // 点击弹出日期范围弹窗
         $('.open-dateRange').on('click', function () {
             var clickedLink = this;
@@ -197,22 +197,25 @@
         // 点击选择日期范围
         $('.popover-dateRange').on('click','li',function () {
             var clickedLink = $(this).text();
+            dataRange = $(this).attr('data');
             $('.open-dateRange span').text(clickedLink);
             myApp.closeModal('.popover-dateRange', clickedLink);
 
         }); 
+                  
+
     </script>
 	<script>
 		var orderStatus = [];
-		orderStatus[0] = '<span class="gray-color">待授权</span>';
-		orderStatus[1] = '<span class="red-color">待提交</span>';
-		orderStatus[2] = '<span class="blue-color">审核中</span>';
-		orderStatus[3] = '<span class="green-color">已放款</span>';
-		orderStatus[4] = '<span class="red-color">已退回</span>';
+		orderStatus[0] = '<span class="red-color">待提交</span>';
+		orderStatus[3] = '<span class="blue-color">审核中</span>';
+		orderStatus[1] = '<span class="green-color">已放款</span>';
+		orderStatus[2] = '<span class="red-color">已退回</span>';
 	  	var loading = false;  // 加载flag
 		var current_page = 1; 
 		var status = getUrlParam('status');
 		var orderType = getUrlParam("type");
+		var dateRange = $('')
 		if(status == 'null')
 			{	
 				status = '';
@@ -225,14 +228,14 @@
 			  	html += '<li class="order-list" data="' + data[index].id + '">'
 							+'<div class="order-list-info">'
 								+'<div class="order-id">' + data[index].sn + '</div>'
-									+'<div class="order-type right">' + data[index].type + '</div>'
+									+'<div class="order-type right">' + g_orderType[data[index].type] + '</div>'
 							+'</div>'
 							+'<div class="order-list-item">'
 								+'<div class="order-customer">'
 									+'<div class="order-customer-name">' + data[index].name + '</div>'
 									+'<div class="order-customer-mobile">' + data[index].mobile + '</div>'
 								+'</div>'
-								+'<div class="order-status right">'
+								+'<div class="order-status right" data="' + data[index].status + '">'
 									// +'<img src="/public/wap/images/orderPending.png">'
 									+ orderStatus[data[index].status]
 								+'</div>'
@@ -312,8 +315,13 @@
 			$('#tab_' + status).click();
 			//getOrderList(current_page,status);
 			$(".orderList").on("click", "li", function(){
-				var id = $(this).attr("data");
-				goToUrl(wechatStaticPath + '/order/viewOrder.html?id=' + id);
+				var id = $(this).attr('data');
+				var status = $(this).find('.order-status').attr('data')
+				if(status == '0'){
+					goToUrl(wechatStaticPath + '/order/orderSupplement.html?id=' + id);
+				}else{
+					goToUrl(wechatStaticPath + '/order/viewOrder.html?id=' + id);
+				}
 			});
 			// $(".navbar").on("touchmove",function(ev){
 			// 	ev.preventDefault();
