@@ -81,7 +81,7 @@ try {
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="tab_1_1">
-					<form method="post" class="form form-horizontal">
+					<form class="form form-horizontal">
 						<div class="form-group">
 							<table>
 								<caption><h3>合作车商信息表</h3></caption>
@@ -271,9 +271,9 @@ try {
 							<label class="col-lg-2 control-label">渠道状态</label>
 							<div class="col-lg-10 col-sm-10">
 								<select class="form-control" name="status" id="status" style="width:auto;">
-									<option value="1">待激活</option>
-									<option value="2">正常</option>
-									<option value="3">终止合作</option>
+									<option value="3">待激活</option>
+									<option value="1">正常</option>
+									<option value="0">终止合作</option>
 								</select>
 								<div class="help-block">请确认所有资料真实性后选择通过。</div>
 							</div>
@@ -335,10 +335,4 @@ try {
 <script type="text/javascript" src="__JS__/table-managed.js"></script>
 <script type="text/javascript" src="__JS__/manager.js"></script>
 <script type="text/javascript" src="__JS__/assetChannel.js"></script>
-<script>
-	var dealer_id = getUrlParam('id');
-	$('#addStaffBtn').click(function(){
-		window.location.href = '/admin/assetChannel/addStaff?id='+dealer_id;
-	});
-</script>
 {/block}

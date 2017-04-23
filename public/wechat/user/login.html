@@ -56,15 +56,15 @@
                                         <div class="item-input">
                                             <input type="text" id="rvalicode" name="rvalicode" maxlength="4" placeholder="图形验证码" value="">
                                             <a href="javascript:;" class="auth-Code">
-                                               <!-- <img src="{:url('mobile/open/verify')}" name="verify" id="verify" onclick="doRefreshVerfiy()"/>-->
+                                                <!-- <img src="{:url('mobile/open/verify')}" name="verify" id="verify" onclick="doRefreshVerfiy()"/> -->
                                             </a>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
                             <div class="content-block fs14 mt10">
-                                 <a class="color-orange" href="javascript:goToUrl('{:url('mobile/user/registerDealer')}');">注册新用户</a>
-                                 <a class="right color-orange pull-right" href="javascript:goToUrl('{:url('mobile/user/reset')}');">忘记密码?</a>
+                                 <a class="color-orange" href="javascript:goToUrl(wechatStaticPath + '/user/register.html');">注册新用户</a>
+                                 <a class="right color-orange pull-right" href="javascript:goToUrl(wechatStaticPath + '/user/reset.html');">忘记密码?</a>
                             </div>
                             <div class="content-block m-bottom-button">
                                 <a href="#" id="login" class="button button-fill button-big color-orange" onclick="return doDealerLoginPost();">登录</a>
