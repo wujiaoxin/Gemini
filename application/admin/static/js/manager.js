@@ -1,3 +1,10 @@
+var g_orderType = {'1':'新车垫资','2':'二手车垫资','3':'车抵贷'};
+var g_orderStatus = {'-2':'编辑中','-1':'已撤回','1':'审核通过','2':'审核拒绝','3':'资料审核','4':'额度审核','5':'补充资料'};
+var g_financeStatus ={'1':'待支付订单费用','2':'支付完成','3':'放款中','4':'放款完成'};
+var g_repayStatus = {'-1':'未还','1':'已还','2':'逾期'};
+var g_transactionType = {'5':'支付款项','1':'垫资到账','2':'垫资还款','3':'充值','4':'提现'};
+var g_dealObj = {'0':'系统','1':'商户'};
+var g_examineStatus = {'-1':'处理中','0':'审核拒绝','1':'审核通过'};
 var apiUrl ='';
 function ui_alert(msg,type,position){
    $.messager.show(msg, {placement: position,type:type});
@@ -126,4 +133,31 @@ function getUrlParam(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]); return null;
+}
+
+//验证email
+function checkEmail(str){
+    var re = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/; 
+    if (!re.test(str)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+//*加密身份证、手机号、银行卡、邮箱
+function encryptID(idcard){
+    return idcard = idcard.replace(/^(\d{6})\d+(\d{4})$/,"$1********$2");
+}
+
+function encryptMobile(mobile){
+    return mobile = mobile.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2');
+}
+
+function encryptBankcard(bankcard){
+    return bankcard = bankcard.replace(/\d+(\d{4})$/,"**** **** **** $1");
+}
+
+function encryptMail(mail){
+    return mail = mail.replace(/^(\w?)(\w+)(\w)(@\w+\.[a-z]+(\.[a-z]+)?)$/, "$1****$3$4");
 }

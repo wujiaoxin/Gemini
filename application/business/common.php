@@ -23,7 +23,7 @@
   function modify_account($data,$uid,$name=0,$money_type=0,$type=0,$memod=0){
     if(isset($data['money']) && $memod == 'INSERT'){
         if($type == 'recharge'){
-           $sn = 'vpdai'.mt_rand(0,999).date('YmdHis', time());
+           $sn = date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
            $rec_money = array(
                 'uid'=>$uid,
                 'sn'=>$sn,

@@ -1,18 +1,19 @@
 {extend name="public/base"/}
 {block name="style"}
-<!-- <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/libs/bootstrap-editable.css"> -->
-<!-- <link rel="stylesheet" href="__CSS__/simple.slide.css" type="text/css"> -->
+<link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <style>
-.pt5{
-	padding-top: 5px;
-}
 .order_content{
 	margin-top: 15px;
 	border-top:1px solid #dedede;
 }
 </style>
 <script type="text/javascript">
-
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
 </script>
 {/block}
 {block name="body"}

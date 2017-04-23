@@ -1,14 +1,15 @@
 {extend name="public/base"/}
 {block name="style"}
+<link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <link rel="stylesheet" type="text/css" href="/public/business/css/selectArea.css">
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
-<style>
-.pt5{
-	padding-top: 5px;
-}
-</style>
 <script type="text/javascript">
-
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
 </script>
 {/block}
 {block name="body"}
@@ -30,96 +31,96 @@
 				<li><a href="#tab_1_7" data-toggle="tab">审批历史</a></li>
 			</ul>
 			<div class="tab-content">
-				<div class="tab-pane active" id="tab_1_1">
+				<div class="tab-pane active" id="tab_1_1" name="order_info">
 					<div class="form-horizontal">
 					  	<div class="form-group">
 						    <label class="col-sm-2 control-label">项目编号</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">18458098771</span>
+						     	<span name="sn" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">申请时间</label>
 						    <div class="col-sm-10 pt5">
-						      	<span id="" class="customer-info">2016-12-23</span>
+						      	<span name="create_time" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">项目类型</label>
 						    <div class="col-sm-10 pt5">
-						      	<span id="" class="customer-info">车抵贷</span>
+						      	<span name="type" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">借款金额</label>
 						    <div class="col-sm-10 pt5">
-						      	<span id="" class="customer-info">20,000.00</span>
+						      	<span name="loan_limit" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">借款时间</label>
+						    <label class="col-sm-2 control-label">借款期限(天)</label>
 						    <div class="col-sm-10 pt5">
-						      	<span id="" class="customer-info">2017-12-23</span>
+						      	<span name="endtime" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">流程节点</label>
 						    <div class="col-sm-10 pt5">
-						      	<span id="" class="customer-info">审核中</span>
+						      	<span name="status" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">项目状态</label>
 						    <div class="col-sm-10 pt5">
-						      	<span id="" class="customer-info">正常</span>
+						      	<span name="" class="customer-info">正常</span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">资金方案</label>
 						    <div class="col-sm-10 pt5">
-						      	<span id="" class="customer-info">平安银行 12期</span>
+						      	<span name="" class="customer-info">平安银行 36期</span>
 						    </div>
 						</div>
 					</div>
 				</div>
-				<div class="tab-pane" id="tab_1_2">
+				<div class="tab-pane" id="tab_1_2" name="channel_info">
 					<div class="form-horizontal">
 					  	<div class="form-group">
 						    <label class="col-sm-2 control-label">渠道编码</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">e23v3e</span>
+						     	<span name="invite_code" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">渠道名称</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">滨江宝马4S店</span>
+						     	<span name="name" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">信用代码</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">18458098771</span>
+						     	<span name="credit_code" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">营业时间</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">长期</span>
+						     	<span name="lic_validaty" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">联系电话</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">18458098771</span>
+						     	<span name="mobile" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">单位所在地</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">浙江杭州西湖区</span>
+						     	<span name="city_addr" class="customer-info"></span>
 						    </div>
-						    <div class="controls" id="loc" style="display: none;">
+						    <div class="controls" id="loc" style="display: none">
 								<select id="loc_province" class="selectArea"></select>
 								<select id="loc_city" class="selectArea"></select>
 								<select id="loc_town" class="selectArea"></select>
@@ -128,70 +129,71 @@
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">详细地址</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">教工路eac</span>
+						     	<span name="addr" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">业务员</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">张三丰</span>
+						     	<span name="salesman" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">联系方式</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">18458098771</span>
+						     	<span name="salesmobile" class="customer-info"></span>
 						    </div>
 						</div>
 					</div>
 				</div>
-				<div class="tab-pane" id="tab_1_3">
+				<div class="tab-pane" id="tab_1_3" name="member_info">
 					<div class="form-horizontal">
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">手机号</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">18458098771</span>
+						     	<span name="mobile" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">真实姓名</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">王羲之</span>
+						     	<span name="realname" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">身份证号</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">2323223233424424</span>
+						     	<span name="idcard" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">银行卡信息</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">534232318458098771</span>
+						     	<span name="bankcard" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">评分</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">23</span>
+						     	<span name="score" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">评分等级</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">不及格</span>
+						     	<span name="" class="customer-info">todo</span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">用户状态</label>
 						    <div class="col-sm-10 pt5">
-						     	<span id="" class="customer-info">审核拒绝</span>
+						     	<span name="status" class="customer-info"></span>
 						    </div>
 						</div>
 					</div>
 				</div>
 				<div class="tab-pane" id="tab_1_4">
+				<!-- todo -->
 					<table class="table table-hover" id="repay">
 						<caption>还款计划</caption>
 						<thead>
@@ -204,15 +206,16 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>1</td>
-								<td>2017-12-23</td>
-								<td>10000</td>
-								<td>已还</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				<div class="tab-pane" id="tab_1_5">
+				<!-- todo -->
 					<table class="table table-hover" id="overdue">
 						<caption>逾期记录</caption>
 						<thead>
@@ -230,14 +233,14 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>1</td>
-								<td>7天</td>
-								<td>6%</td>
-								<td>2017-12-23</td>
-								<td>10000</td>
-								<td>34</td>
-								<td>500</td>
-								<td>未还</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 								<td></td>
 							</tr>
 						</tbody>
@@ -274,6 +277,7 @@
 					</div>
 				</div>
 				<div class="tab-pane" id="tab_1_7">
+				<!-- todo -->
 					<table class="table table-hover" id="examine-history">
 						<caption>审批历史</caption>
 						<thead>
@@ -293,21 +297,14 @@
 								<td>通过</td>
 								<td>2014-10-23 10:23:11</td>
 							</tr>
-							<tr>
-								<td>2</td>
-								<td>额度审批</td>
-								<td>张三</td>
-								<td>不通过</td>
-								<td>2015-10-23 10:23:11</td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-lg-offset-2 col-lg-6">
-				<a class="btn btn-danger" href="3">撤销</a>
+			<div class="text-center">
+				<a class="btn btn-danger" href="{:url('Examine/delete,array('id'=>)}">撤销</a> <!-- todo -->
 				<button class="btn btn-primary btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
 			</div>
 		</div>
@@ -316,19 +313,24 @@
 {/block}
 {block name="script"}
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js" ></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/chosen.jquery.min.js"></script>
 <script type="text/javascript" src="/public/business/js/selectArea.js"></script>
+<script type="text/javascript" src="__JS__/manager.js"></script>
 <script>
-	//初始化三级联动city
-	// if(typeof(info['city']) == "string" && info['city'] != ''){
-	//     var city = info['city'].split(',');
-	//    $("#loc_province").select2('val',city[0]).trigger("change");
-	//     $("#loc_city").select2('val',city[1]).trigger("change");
-	//     $("#loc_town").select2('val',city[2]).trigger("change");
-	//     var loc_province = $('#loc_province').select2('data').text;
-	//     var loc_city = $('#loc_city').select2('data').text;
-	//     var loc_town = $('#loc_town').select2('data').text;
-	//     var city_addr = loc_province + loc_city + loc_town;
-	// }
+	$(".customer-info").each(function(){
+		var name = $(this).attr('name');
+		var category = $(this).parents('.tab-pane').attr('name');
+	    if(typeof(info[category][name]) != 'object'){
+	        $(this).text(info[category][name]);
+	        if(name == "create_time"){
+	        	$(this).text(formatDate(info[category][name]));
+	        }else if(name == "type"){
+	        	$(this).text(g_orderType[info[category][name]]);
+	        }else if(name == "status"){
+	        	$(this).text(g_orderStatus[info[category][name]]);
+	        }
+	    }
+	});
 
 	var orderData = {};
     var picList = [];
@@ -372,5 +374,21 @@
             keyList[i].has = 1;
         }
     }
+</script>
+<script>
+$(function(){
+	// 初始化三级联动city
+	if(typeof(info['channel_info']['city']) == "string" && info['city'] != ''){
+	    var city = info['channel_info']['city'].split(',');
+	   	$("#loc_province").select2('val',city[0]).trigger("change");
+	    $("#loc_city").select2('val',city[1]).trigger("change");
+	    $("#loc_town").select2('val',city[2]).trigger("change");
+	    var loc_province = $('#loc_province').select2('data').text;
+	    var loc_city = $('#loc_city').select2('data').text;
+	    var loc_town = $('#loc_town').select2('data').text;
+	    var city_addr = loc_province + loc_city + loc_town;
+	    $('span[name="city_addr"]').text(city_addr);
+	}
+})
 </script>
 {/block}
