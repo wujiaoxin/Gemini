@@ -112,9 +112,11 @@ class Order extends Api {
 	}
 	
 	
-	public function save($type = null, $mobile = null, $idcard = null,$loan_limit = null) {
+	public function save($id = null, $type = null, $mobile = null, $idcard = null, $loan_limit = null, $loan_term = null) {
 		// var_dump($_POST);die;
-		$uid = session('user_auth.uid');
+		// $uid = session('user_auth.uid');
+		$uid = $id;
+		// var_dump($uid);die;
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 		$orderModel = model('Order');
@@ -136,7 +138,7 @@ class Order extends Api {
 	}
 
 	
-	public function total($type = null) {
+	public function total($type = null,$status= null) {
 		$uid = session('user_auth.uid');
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
@@ -144,7 +146,7 @@ class Order extends Api {
 		
 		// $data["todo"] = "I'm comming";
 		
-		$data['total'] = $orderModel->get_all_order_total($uid, $type);
+		$data['total'] = $orderModel->get_all_order_total($uid, $type, $status);
 		
 		$resp['code'] = 1;
 		$resp['msg'] = '获取成功!';
@@ -168,7 +170,7 @@ class Order extends Api {
 
 		// echo $id;die;
 		if($role==1){
-			$info = db('Order')->where($map)->find();
+			$info = db('Order')->where('id',$id)->find();
 		}else{
 			$authfilter['order_id'] = $id;
 			$authfilter['auth_uid'] = $uid;

@@ -51,7 +51,7 @@
       		</div>
       	<div class="modal-body form-horizontal">
       		<div class="form-group">
-		    	<label class="col-sm-2 control-label">流水号</label>
+		    	<label class="col-sm-2 control-label">平台账户</label>
 			    <div class="col-sm-4">
 			      	<p class="form-control-static item-info">effe2323</p>
 			    </div>
@@ -95,9 +95,9 @@
 			    <div class="col-sm-4 pt5">
 			      	<input type="text" id="dealer_bank_branch" value="">
 			    </div>
-			    <label class="col-sm-2 control-label">平台账户</label>
+			    <label class="col-sm-2 control-label">流水号</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="own_account" value="">
+			      	<input type="text" id="serial_num" value="">
 			    </div>
 		  	</div>
           	<div class="form-group">
@@ -138,17 +138,18 @@
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
+			var i = index + 1;
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + '1' + '</td>'
-		  		+'<td>' + 'E23620150914135141' + '</td>'
-		  		+'<td>'+ '武当4S店' +'</td>'
-		  		+'<td>￥'+ '200000' +'</td>'
-		  		+'<td>￥'+ '233' +'</td>'
-		  		+'<td>'+ '7' +'天</td>'
+		  		+'<td>' + i + '</td>'
+		  		+'<td>' + data[index].serial_num + '</td>'
+		  		+'<td>'+ data[index].dealer_name +'</td>'
+		  		+'<td>￥'+ data[index].money +'</td>'
+		  		+'<td>￥'+ data[index].actual_amount +'</td>'
+		  		+'<td>'+ data[index].fee +'</td>'
 		  		+'<td>'+ '无' +'</td>'
 		  		+'<td>'+ '线下转账' +'</td>'
-		  		+'<td>'+ '处理中' +'</td>'
-		  		+'<td>'+ '' +'</td>'
+		  		+'<td>'+ g_examineStatus[data[index].status] +'</td>'
+		  		+'<td>'+ data[index].descr +'</td>'
 		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].sn+'">审核</a></td>'
 		  		 +'</tr>'
 			}
@@ -164,7 +165,7 @@
     	$('#table-rechargeExamine').on('click','.opera',function(){
 	   		var orderSn = $(this).attr('data');
 	   		ajax_jquery({
-		        // url:'',
+		        apiUrl + '/admin/finance/recharge',
 		        data:{
 		            'orderSn': orderSn
 		        },
@@ -192,7 +193,7 @@
 	   		var dealer_bank_account = $('#dealer_bank_account').val();
 	   		var dealer_bank = $('#dealer_bank').val();
 	   		var dealer_bank_branch = $('#dealer_bank_branch').val();
-	   		var own_account = $('#own_account').val();
+	   		var serial_num = $('#serial_num').val();
 	   	 	var examineStatus = $('#examineStatus').val();
 	   	 	var actual_amount = $('#actual_amount').val();
 	   	 	var descr = $('#descr').val();
@@ -204,12 +205,12 @@
 	            return false;
 	   	 	}
 	   	 	ajax_jquery({
-		        // url: apiUrl +'/admin/finance/loan',
+		        url: apiUrl +'/admin/finance/recharge',
 		        data:{
 		        	'dealer_bank_account': dealer_bank_account,
 		        	'dealer_bank': dealer_bank,
 		        	'dealer_bank_branch': dealer_bank_branch,
-		        	'own_account': own_account,
+		        	'serial_num': serial_num,
 		            'status': examineStatus,
 		            'actual_amount': actual_amount,
 		            'descr': descr

@@ -30,11 +30,6 @@ a{text-decoration: none; color:#ff9900;}
     line-height: 38px;
     font-size: 14px;
 }
-#order-amount {
-    padding-left: 0;
-    border-top: 1px solid #dedede;
-    border-bottom: 1px solid #dedede;
-}
 
 .m-bottom-button {
     width: 80%;

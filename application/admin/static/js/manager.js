@@ -4,6 +4,8 @@ var g_financeStatus ={'1':'待支付订单费用','2':'支付完成','3':'放款
 var g_repayStatus = {'-1':'未还','1':'已还','2':'逾期'};
 var g_transactionType = {'5':'支付款项','1':'垫资到账','2':'垫资还款','3':'充值','4':'提现'};
 var g_dealObj = {'0':'系统','1':'商户'};
+var g_examineStatus = {'-1':'处理中','0':'审核拒绝','1':'审核通过'};
+var g_dealerStatus = {'3':'待审核','1':'审核通过','9':'终止合作'}
 var apiUrl ='';
 function ui_alert(msg,type,position){
    $.messager.show(msg, {placement: position,type:type});

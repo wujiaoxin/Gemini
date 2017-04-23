@@ -45,6 +45,7 @@
       		<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
         		<h4 class="modal-title">放款凭证</h4>
+        		<input type="hidden" id="orderId">
       		</div>
       	<div class="modal-body form-horizontal">
       		<div class="form-group">
@@ -132,12 +133,14 @@
 
     	$('#table-loanExamine').on('click','.opera',function(){
 	   		var orderId = $(this).attr('data');
+	   		$("#orderId").val(orderId);
 	   		ajax_jquery({
 		        url: apiUrl + '/admin/finance/loan',
 		        data:{
 		            'id': orderId
 		        },
 		        success:function(resp){
+		        	console.log(resp)
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
 							var name = $(this).attr('id');
@@ -157,6 +160,7 @@
 	   	});
 
 	   	$('#examineBtn').click(function(){
+	   		var orderId = $('#orderId').val();
 	   	 	var examineStatus = $('#examineStatus').val();
 	   	 	var descr = $('#descr').val();
 	   	 	if(examineStatus == ''){
@@ -166,6 +170,7 @@
 	   	 	ajax_jquery({
 		        url: apiUrl +'/admin/finance/loan',
 		        data:{
+		        	'id': orderId,
 		            'status': examineStatus,
 		            'descr': descr
 		        },

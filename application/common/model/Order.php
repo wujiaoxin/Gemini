@@ -92,9 +92,17 @@ class Order extends \app\common\model\Base {
 	*/
 	
 	//订单统计
-	public function get_all_order_total($uid = 0, $type = 0){
-
-		$filter['status'] = ['>',-1];
+	public function get_all_order_total($uid = 0, $type = null, $status = null){
+		if($type == null){
+			$filter['type'] =['<',3];
+		}else{
+			$filter['type'] = $type;
+		}
+		if($status == null){
+			$filter['status'] = ['>',-1];
+		}else{
+			$filter['status'] = $status;
+		}
 		$total = '';
 		$total['order_num'] = db('Order')->where($filter)->count();
 		$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
@@ -123,9 +131,9 @@ class Order extends \app\common\model\Base {
 		$data =array(
 			'loan_limit' => $data['loan_limit'],
 			'endtime' => $data['loan_term'],
-			'status'=>'33'
+			'status'=>'3'
 			);
-		$data['id'] = '1073';
+		$data['id'] = $uid;
 		$result = $this->save($data,['id'=>$data['id']]);
 		return $result;
 	}

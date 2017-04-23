@@ -26,6 +26,7 @@
         height: 72px;
         border-radius: 50%;
         margin-top: 15px;
+        overflow: hidden;
     }
     .portrait_img img {
         width: 100%;
@@ -54,7 +55,7 @@
                                     <a href="#">
                                         <div class="account-info">
                                             <span>头像</span>
-                                            <span class="pull-right portrait_img"><img id="portraitImg" src="/public/wap/images/user.png" /></span>
+                                            <span class="pull-right portrait_img"><img id="portraitImg" src="" /></span>
                                         </div>
                                         <!-- <span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span> -->
                                     </a>
@@ -63,7 +64,7 @@
                                     <a href="#">
                                         <div class="account-info">
                                             <span>用户姓名</span>
-                                            <span class="pull-right" id="realname">迈克尔</span>
+                                            <span class="pull-right" id="realname"></span>
                                         </div>
                                         <!-- <span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span> -->
                                     </a>
@@ -72,13 +73,13 @@
                                     <a href="#">
                                         <div class="account-info">
                                             <span>绑定手机</span>
-                                            <span class="pull-right" id="mobile">133****1234</span>
+                                            <span class="pull-right" id="mobile"></span>
                                         </div>
                                         <!-- <span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span> -->
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/user/editpwdDealer')}')">
+                                    <a href="javascript:goToUrl(wechatStaticPath + '/user/editpwd.html')">
                                         <div class="account-info">
                                             <span>修改密码</span>
                                         </div>
@@ -104,11 +105,11 @@
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
     <script type="text/javascript">
         ajax_jquery({
-            url: apiUrl + '/api/user/userInfo?t=' + Math.random(),
+            url: apiUrl + '/api/user/userInfo',
             success: function (resp) {
                 if (resp.code == "1") {
                     var mobile = resp.data.mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
-                    $("#portrait_img").css('src',resp.data.headerimgurl);
+                    $("#portraitImg").attr('src',resp.data.headerimgurl);
                     $("#realname").text(resp.data.realname);
                     $("#mobile").text(mobile);
                 } else {
