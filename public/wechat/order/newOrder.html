@@ -120,7 +120,9 @@
                             ajax_jquery({
                                 url: apiUrl + '/api/order/getQRCode',
                                 data: {
-                                    'id':id
+                                    'id':id,
+                                    'price': carPrice,
+                                    'mobile': mobile
                                 },
                                 success: function(resp) {
                                     if(resp.code == 1){
