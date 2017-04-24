@@ -39,6 +39,7 @@ class assetChannel extends Admin {
 		$link = model('Dealer');
 		if (IS_POST) {
 			$data = input('post.');
+			var_dump($data);die;
 			$uid = session('user_auth.uid');
 			if($uid > 0){
 				$data['uid'] = $uid;
