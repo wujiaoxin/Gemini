@@ -50,107 +50,83 @@
         		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
         		<h4 class="modal-title">回款审核</h4>
       		</div>
-      	<div class="modal-body form-horizontal">
-      		<div class="form-group">
-		    	<label class="col-sm-2 control-label">流水号</label>
-			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">effe2323</p>
-			    </div>
-			    <label class="col-sm-2 control-label">渠道名称</label>
-			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">滨江宝马</p>
-			    </div>
-		  	</div>
-		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">回款金额</label>
-			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">20000</p>
-			    </div>
-			    <label class="col-sm-2 control-label">到账金额</label>
-			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">19999</p>
-			    </div>
-		  	</div>
-		  	<div class="form-group">
-		  		<label class="col-sm-2 control-label">手续费</label>
-			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">1</p>
-			    </div>
-			    <label class="col-sm-2 control-label">回款方式</label>
-			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info"></p>
-			    </div>
-		  	</div>
-		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">开户银行</label>
-			    <div class="col-sm-4 pt5">
-			      	<p class="form-control-static item-info"></p>
-			    </div>
-			    <label class="col-sm-2 control-label">银行账户</label>
-			    <div class="col-sm-4 pt5">
-			      	<p class="form-control-static item-info"></p>
-			    </div>
-		  	</div>
-		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">卡户网点</label>
-			    <div class="col-sm-4 pt5">
-			      	<p class="form-control-static item-info"></p>
-			    </div>
-			    <label class="col-sm-2 control-label">回款时间</label>
-			    <div class="col-sm-4 pt5">
-			      	<p class="form-control-static item-info"></p>
-			    </div>
-		  	</div>
-		  	<div class="form-group">
-            	<label class="control-label col-sm-2">项目信息</label>
-            	<div class="col-sm-8">
-            	<table class="table">
-					<thead>
-						<tr>
-							<th>订单编号</th>
-							<th>订单名称</th>
-							<th>还款金额</th>
-							<th>还款期数</th>
-							<th>应还时间</th>
-						</tr>
-					</thead>
-					<tbody><tr>
-							<th>订单编号</th>
-							<th>订单名称</th>
-							<th>还款金额</th>
-							<th>还款期数</th>
-							<th>应还时间</th>
-						</tr>
-					</tbody>
-				</table>
-          	</div>
-          	</div>
-          	<div class="form-group">
-            	<label class="col-sm-2 control-label">审核*</label>
-            	<div class="col-sm-4 pt5">
-	            	<select id="examineStatus">
-	            		<option value="1">通过</option>
-	            		<option value="0">未通过</option>
-	            	</select>
-	            </div>
-	            <label class="col-sm-2 control-label">平台账户</label>
-			    <div class="col-sm-4 pt5">
-			      	<input type="number" id="own_account" value="">
-			    </div>
-          	</div>
-          	<div class="form-group">
-            	<label class="col-sm-2 control-label">审核备注</label>
-            	<div class="col-sm-4 pt5">
-            		<textarea class="form-control" id="descr"></textarea>
-            	</div>
-          	</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <a type="button" class="btn btn-primary" id="examineBtn">提交</a>
-      </div>
-    </div>
-  </div>
+	      	<div class="modal-body form-horizontal">
+	      		<div class="form-group">
+			    	<label class="col-sm-2 control-label">平台账户</label>
+				    <div class="col-sm-4">
+				      	<p class="form-control-static item-info" id="platform_account"></p>
+				    </div>
+				    <label class="col-sm-2 control-label">渠道名称</label>
+				    <div class="col-sm-4">
+				      	<p class="form-control-static item-info" id="dealer_name"></p>
+				    </div>
+			  	</div>
+			  	<div class="form-group">
+			    	<label class="col-sm-2 control-label">回款金额</label>
+				    <div class="col-sm-4">
+				      	<p class="form-control-static item-info" id="repay_money"></p>
+				    </div>
+				    <label class="col-sm-2 control-label">手续费</label>
+				    <div class="col-sm-4">
+				      	<p class="form-control-static item-info" id="fee"></p>
+				    </div>
+			  	</div>
+			  	<div class="form-group">
+			    	<label class="col-sm-2 control-label">回款方式</label>
+				    <div class="col-sm-4">
+				      	<p class="form-control-static item-info">线下转账</p>
+				    </div>
+				    <label class="col-sm-2 control-label">回款时间</label>
+				    <div class="col-sm-4">
+				      	<p class="form-control-static item-info" id="repay_time"></p>
+				    </div>
+			  	</div>
+			  	<div class="form-group">
+			    	<label class="col-sm-2 control-label">对方账户</label>
+				    <div class="col-sm-4 pt5">
+				      	<input type="number" id="dealer_bank_account" class="item-info">
+				    </div>
+				    <label class="col-sm-2 control-label">开户银行</label>
+				    <div class="col-sm-4 pt5">
+				      	<input type="text" id="dealer_bank" class="item-info">
+				    </div>
+			  	</div>
+			  	<div class="form-group">
+			    	<label class="col-sm-2 control-label">开户网点</label>
+				    <div class="col-sm-4 pt5">
+				      	<input type="text" id="dealer_bank_branch" class="item-info">
+				    </div>
+				    <label class="col-sm-2 control-label">流水号*</label>
+				    <div class="col-sm-4 pt5">
+				      	<input type="text" id="serial_num" class="item-info">
+				    </div>
+			  	</div>
+	          	<div class="form-group">
+	            	<label class="col-sm-2 control-label">审核*</label>
+	            	<div class="col-sm-4 pt5">
+		            	<select id="examineStatus">
+		            		<option value="1">通过</option>
+		            		<option value="0">未通过</option>
+		            	</select>
+		            </div>
+		            <label class="col-sm-2 control-label">到账金额*</label>
+				    <div class="col-sm-4 pt5">
+				      	<input type="number" id="true_repay_money" class="item-info">
+				    </div>
+	          	</div>
+	          	<div class="form-group">
+	            	<label class="col-sm-2 control-label">审核备注</label>
+	            	<div class="col-sm-4 pt5">
+	            		<textarea class="form-control" id="descr"></textarea>
+	            	</div>
+	          	</div>
+	      	</div>
+     		 <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+		        <a type="button" class="btn btn-primary" id="examineBtn">提交</a>
+		     </div>
+    	</div>
+  	</div>
 </div>
 {/block}
 {block name="script"}
@@ -164,42 +140,44 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + '1' + '</td>'
-		  		+'<td>' + 'ef121212' + '</td>'
-		  		+'<td>'+ '武当4S店' +'</td>'
-		  		+'<td>￥'+ 'sn10023' +'</td>'
-		  		+'<td>￥'+ '200001' +'</td>'
-		  		+'<td>￥'+ '199999' +'</td>'
-		  		+'<td>'+ '2' +'</td>'
-		  		+'<td>'+ 'wo' +'</td>'
+		  		+'<td>' + data[index].id + '</td>'
+		  		+'<td>' + data[index].serial_num + '</td>'
+		  		+'<td>'+ data[index].dealer_name +'</td>'
+		  		+'<td>'+ data[index].id +'</td>'
+		  		+'<td>￥'+ data[index].repay_money +'</td>'
+		  		+'<td>￥'+ data[index].actual_money +'</td>'
+		  		+'<td>￥'+ data[index].fee +'</td>'
+		  		+'<td>'+ '无' +'</td>'
 		  		+'<td>'+ '线下转账' +'</td>'
-		  		+'<td>'+ '处理中' +'</td>'
-		  		+'<td>'+ '' +'</td>'
-		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].sn+'">审核</a></td>'
+		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ data[index].descr +'</td>'
+		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].id+'">审核</a></td>'
 		  		 +'</tr>'
 			}
 		}
 		return html;
 	};
-	var  info = [{},{}];
 	$('#table-receivableExamine tbody').html(tpl(info));
 
     $(function(){
+    	var id = '';
     	TableManaged.init();
 
     	$('#table-receivableExamine').on('click','.opera',function(){
-	   		var orderSn = $(this).attr('data');
+	   		id = $(this).attr('data');
 	   		ajax_jquery({
-		        // url:'',
+		        url: apiUrl + '/admin/finance/receivable',
 		        data:{
-		            'orderSn': orderSn
+		            'id': id
 		        },
 		        success:function(resp){
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
 							var name = $(this).attr('id');
-						    if(typeof(resp.data[name]) == "string" &&resp.data[name] !=''){
+						    if(resp.data[name] !=''&&this.tagName == 'p'){
 						        $(this).text(resp.data[name]);
+						    }else if(resp.data[name] !=''&&this.tagName == 'input'){
+						    	$(this).value(resp.data[name]);
 						    }
 						});
 				   		// $('#myModal').modal();
@@ -215,23 +193,38 @@
 	   	});
 
 	   	$('#examineBtn').click(function(){
+	   	 	var dealer_bank_account = $('#dealer_bank_account').val();
+	   		var dealer_bank = $('#dealer_bank').val();
+	   		var dealer_bank_branch = $('#dealer_bank_branch').val();
+	   		var serial_num = $('#serial_num').val();
 	   	 	var examineStatus = $('#examineStatus').val();
-	   	 	var own_account = $('#own_account').val();
+	   	 	var true_repay_money = $('#true_repay_money').val();
 	   	 	var descr = $('#descr').val();
 	   	 	if(examineStatus == ''){
 	   	 		ui_alert("请选择审核结果");
 	            return false;
+	   	 	}else if(serial_num == ''){
+	   	 		ui_alert("请输入流水号");
+	            return false;
+	   	 	}else if(true_repay_money == ''){
+	   	 		ui_alert("请输入实际到账金额");
+	            return false;
 	   	 	}
 	   	 	ajax_jquery({
-		        // url: apiUrl +'/admin/finance/loan',
+		        url: apiUrl +'/admin/finance/receivable',
 		        data:{
-		        	'own_amount': own_amount,
+		        	'id': id,
+		        	'dealer_bank_account': dealer_bank_account,
+		        	'dealer_bank': dealer_bank,
+		        	'dealer_bank_branch': dealer_bank_branch,
+		        	'serial_num': serial_num,
 		            'status': examineStatus,
+		            'true_repay_money': true_repay_money,
 		            'descr': descr
 		        },
 		        success:function(resp){
 		            if (resp.code == "1" ) {
-		            	ui_alert("支付成功","success");
+		            	ui_alert("审核成功","success");
 		            	window.location.reload();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
