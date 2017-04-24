@@ -36,7 +36,7 @@
 	<div class="select-block">
 		<span class="selectParm-title">交易状态:</span>
 		<ul class="selectParm selectOrderStatus">
-			<li data='0' class="active">全部</li>
+			<li data='' class="active">全部</li>
 			<li data='3'>资料审核</li>
 			<li data='4'>额度审核</li>
 			<li data='2'>审核拒绝</li>
@@ -63,17 +63,6 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- <tr class="odd gradeX">
-					<td>201703160392</td>
-					<td>车抵贷</td>
-					<td>2018-03-16</td>
-					<td>李博</td>
-					<td>￥3,000</td>
-					<td>￥200</td>
-					<td>7天</span></td>
-					<td>进件初审</td>
-					<td>处理中</td>
-				</tr> -->
 			</tbody>
 		</table>
 	</div>
@@ -130,7 +119,7 @@
 	jQuery(document).ready(function() {
 	   // App.init();
 	   TableManaged.init();
-	   ajaxLoanItem(0,0,0);
+	   ajaxLoanItem(0,0,'');
 
 	   $('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');

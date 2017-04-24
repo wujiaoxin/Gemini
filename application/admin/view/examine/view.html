@@ -277,7 +277,6 @@
 					</div>
 				</div>
 				<div class="tab-pane" id="tab_1_7">
-				<!-- todo -->
 					<table class="table table-hover" id="examine-history">
 						<caption>审批历史</caption>
 						<thead>
@@ -291,21 +290,36 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>1</td>
-								<td>资料复核</td>
-								<td>王一</td>
-								<td>通过</td>
-								<td>2014-10-23 10:23:11</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
 						</tbody>
 					</table>
+					<div class="form-group" id="orderExamine">
+						<p>审核结果</p>
+						<label class="col-md-2 control-label">审核*</label>
+		            	<div class="col-md-4 pt5">
+			            	<select id="examineStatus">
+			            		<option id="examinePass">通过</option>
+			            		<option value="-1">拒绝</option>
+			            	</select>
+			            </div>
+			            <label class="col-md-2 control-label">审核备注</label>
+					    <div class="col-md-4 pt5">
+					      	<textarea id="descr"></textarea>
+					    </div>
+					</div>
+					<div class="form-group" id="applicationExamine">
+						<div class="text-center">
+							<a class="btn btn-danger" id="orderRevokeBtn">撤销</a>
+							<a class="btn btn-danger" id="orderExamineBtn">提交</a>
+							<button class="btn btn-primary btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="text-center">
-				<a class="btn btn-danger" id="orderRevokeBtn">撤销</a>
-				<button class="btn btn-primary btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
 			</div>
 		</div>
 	</div>
@@ -396,6 +410,36 @@ $(function(){
 	            if (resp.code == "1" ) {
 	            	ui_alert("撤销成功","success");
 	            	window.location.href = apiUrl + "/admin/examine/application.html";
+	            } else {
+	                if (typeof(resp.msg) == 'string') {
+	                    ui_alert(resp.msg);
+	                    return false;
+	                }
+	            }
+	        }
+		});
+	})
+
+	$('#orderExamineBtn').click(function(){
+		if(info['order_info']['status'] == '3'){
+			$('#examinePass').val('4');
+		}else if(info['order_info']['status'] == '4'){
+			$('#examinePass').val('1');
+		}
+		var id = info['order_info']['id'];
+		var status = $('#examineStatus').val();
+		var descr = $('#descr').val();
+		ajax_jquery({
+	        url: apiUrl + '/admin/examine/view',
+	        data:{
+	        	'id': id,
+	        	'status': status,
+	        	'descr': descr
+	        },
+	        success:function(resp){
+	            if (resp.code == "1" ) {
+	            	ui_alert("审核通过","success");
+	            	window.location.href = apiUrl + "/admin/examine/loanLimit";
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);
