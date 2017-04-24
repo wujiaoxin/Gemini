@@ -185,38 +185,44 @@ class Credit extends Api {
 	
 	
 	public function results() {
-		//$resp['code'] = 0;
-		//$resp['msg'] = '未知错误';
+		//TODO 根据订单审核结果返回
 		
-		
-		$respStr = '{
-			"code": 1,
-			"msg": "获取成功",
-			"data": {
-				"name": "90贷",
-				"month": 36,
-				"downpay": 10000,
-				"loan": 2000,
-				"avgmonthpay": 3333,
-				"repay": [
-					{
-						"plan": "第一年",
-						"period": "1-12",
-						"monthpay": 7999
-					},
-					{
-						"plan": "第二年",
-						"period": "13-24",
-						"monthpay": 6999
-					},
-					{
-						"plan": "第三年",
-						"period": "25-36",
-						"monthpay": 6999
-					}
-				]
-			}
-		}';
+		$mobileCollectToken = session('mobileCollect.token');
+		if(empty($mobileCollectToken)){
+			$respStr = '{
+				"code": 5,
+				"msg": "资料待提交"
+			}';
+		}else{
+			$respStr = '{
+				"code": 1,
+				"msg": "获取成功",
+				"data": {
+					"name": "90贷",
+					"month": 36,
+					"downpay": 10000,
+					"loan": 2000,
+					"avgmonthpay": 3333,
+					"repay": [
+						{
+							"plan": "第一年",
+							"period": "1-12",
+							"monthpay": 7999
+						},
+						{
+							"plan": "第二年",
+							"period": "13-24",
+							"monthpay": 6999
+						},
+						{
+							"plan": "第三年",
+							"period": "25-36",
+							"monthpay": 6999
+						}
+					]
+				}
+			}';
+		}
 			
 		$resp = json_decode($respStr);
  

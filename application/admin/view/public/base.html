@@ -251,6 +251,12 @@
 		"MODEL"  : ["{:config('URL_MODEL')}", "{:config('URL_CASE_INSENSITIVE')}", "{:config('URL_HTML_SUFFIX')}"],
 		"VAR"    : ["{:config('VAR_MODULE')}", "{:config('VAR_CONTROLLER')}", "{:config('VAR_ACTION')}"]
 	}
+	var baseContentHeight = $(window).height() - $("#header-navbar").height();
+	if(baseContentHeight){
+		$("#content-wrapper").height(baseContentHeight);
+		$("#nav-col").height(baseContentHeight);
+	}
+	
 })();
 </script>
 <script src="__PUBLIC__/js/core.js"></script>

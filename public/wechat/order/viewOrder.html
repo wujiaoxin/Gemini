@@ -313,6 +313,7 @@
     <script type="text/javascript" src="/public/wap/js/order.js"></script>
     <script type="text/javascript">
         var order_id = getUrlParam('id');
+        var myPhotoBrowserPopup ;
         ajax_jquery({
             url: apiUrl +'/api/order/detail',
             data: {
@@ -337,17 +338,23 @@
                         stepbarShow(3);
                     }else{
                          stepbarShow(2);
-                    } 
+                    }
                     var pic = resp.data.files;
                     for(var index = 0; index < keyList.length; index++){
                         $.each(pic,function(i,n){
                             if(keyList[index].form_key == n.form_key){
                                 $('.pic-info .pic-cont-item').eq(index).find('img').attr('src',pic[i].path);
                                 picList.push(pic[i].path);
+                                // picList[index].url = pic[i].path;
                                 return false;
                             }
-                        })  
+                        })
                     }
+                    myPhotoBrowserPopup = myApp.photoBrowser({
+                        photos : picList,
+                        theme: 'dark',
+                        type: 'standalone'
+                    });
                 } else {
                     if (typeof(resp.msg) == 'string' && resp.msg != '') {
                         ui_alert(resp.msg);
@@ -366,11 +373,6 @@
 
         $(function(){
             stepbarShow(2);
-            var myPhotoBrowserPopup = myApp.photoBrowser({
-                photos : picList,
-                theme: 'dark',
-                type: 'standalone'
-            });
             $$('.pic-info').on('click','.pic-cont-item', function () {
                 myPhotoBrowserPopup.open();
             });

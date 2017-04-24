@@ -31,7 +31,7 @@ function tpl(data){
     }
     return html;
 };
-$('#table-myStaff tbody').html(tpl(info));
+$('#table-myStaff tbody').html(tpl(info.sales));
 
 $("input[type=text]").each(function(i){
     var name = $(this).attr('name');
