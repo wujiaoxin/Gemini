@@ -304,7 +304,7 @@
 		</div>
 		<div class="form-group">
 			<div class="text-center">
-				<a class="btn btn-danger" href="{:url('Examine/delete,array('id'=>)}">撤销</a> <!-- todo -->
+				<a class="btn btn-danger" id="orderRevokeBtn">撤销</a>
 				<button class="btn btn-primary btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
 			</div>
 		</div>
@@ -332,7 +332,6 @@
 	    }
 	});
 
-	var orderData = {};
     var picList = [];
     var keyList = [
         {
@@ -368,15 +367,11 @@
             form_label:"垫资合同"
         }];
 
-        for(var i=0 ; i<keyList.length;i++){
-        if(typeof(orderData[keyList[i].form_key]) == "object" ){
-            picList.push(orderData[keyList[i].form_key]);
-            keyList[i].has = 1;
-        }
-    }
+
 </script>
 <script>
 $(function(){
+	var id = getUrlParam('id');
 	// 初始化三级联动city
 	if(typeof(info['channel_info']['city']) == "string" && info['city'] != ''){
 	    var city = info['channel_info']['city'].split(',');
@@ -389,6 +384,27 @@ $(function(){
 	    var city_addr = loc_province + loc_city + loc_town;
 	    $('span[name="city_addr"]').text(city_addr);
 	}
+
+	$('#orderRevokeBtn').click(function(){
+		confirm('确认撤回订单');
+		ajax_jquery({
+	        url: apiUrl +'/admin/examine/delete',
+	        data:{
+	        	'id': id,
+	        },
+	        success:function(resp){
+	            if (resp.code == "1" ) {
+	            	ui_alert("撤销成功","success");
+	            	window.location.href = apiUrl + "/admin/examine/application.html";
+	            } else {
+	                if (typeof(resp.msg) == 'string') {
+	                    ui_alert(resp.msg);
+	                    return false;
+	                }
+	            }
+	        }
+		});
+	})
 })
 </script>
 {/block}
