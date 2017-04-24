@@ -168,7 +168,6 @@ class Order extends Api {
 		$link = model('Order');
 		//测试id
 		// $id = 1010;
-
 		// echo $id;die;
 		if($role==1){
 			$info = db('Order')->where('id',$id)->find();
@@ -187,14 +186,16 @@ class Order extends Api {
 		$filter['status'] = 1;//有效文件
 		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->limit(100)->select();
 
-		$result = db('member')->field('realname,mobile')->where('uid',$info['uid'])->find();
+		$result = db('member')->field('realname,mobile as sales_mobile')->where('uid',$info['uid'])->find();
 		$result_one = db('dealer')->alias('d')->join('__MEMBER__ m','m.mobile = d.mobile')->field('name')->where('m.uid',$info['mid'])->find();
-		$result['dealer_name'] = $result_one['name'];
+		//TODO :空判断
+		$info['sales_mobile'] = $result['sales_mobile'];//业务员手机号
+		$info['sales_realname'] = $result['realname'];//业务员真实姓名
+		$info['dealer_name'] = $result_one['name'];//车商名称
 		// var_dump($result);die;
 		$data = array(
 				'info'    => $info,
 				'files'   => $files,
-				'result' => $result
 		);
 
 		if ($data) {
