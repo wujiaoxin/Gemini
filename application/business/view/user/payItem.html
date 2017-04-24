@@ -66,16 +66,6 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- <tr class="odd gradeX">
-					<td class="order_sn">201703160392</td>
-					<td>车抵贷</td>
-					<td>2018-03-16</td>
-					<td>李博</td>
-					<td>￥3,000</td>
-					<td>￥200</td>
-					<td>未支付</td>
-					<td><a class="orderOpera" data-toggle="modal">支付</a></td>
-				</tr> -->
 			</tbody>
 		</table>
 	</div>
@@ -139,13 +129,9 @@
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
-			var orderFinance = '';
 			var orderOpera = '';
 			if(data[index].finance == '1'){
-				orderFinance = '待支付';
 				orderOpera = '<a class="orderOpera" data-toggle="modal">支付</a>'
-			}else{
-				orderFinance = '已支付';
 			}
 		  	html += '<tr class="odd gradex">'
 		  		+'<td class="order_sn">' + data[index].sn + '</td>'
@@ -154,7 +140,7 @@
 		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
 		  		+'<td class="order_fee" data="'+ data[index].fee +'">￥'+ formatAmount(data[index].fee) +'</td>'
-		  		+'<td>'+ orderFinance +'</td>'
+		  		+'<td>'+ g_financeStatus[data[index].finance] +'</td>'
 		  		+'<td>'+ orderOpera +'</td>'
 		  		 +'</tr>';
 			}

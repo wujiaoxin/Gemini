@@ -124,6 +124,8 @@ $(function(){
         var field_dealer_lic_pic = $("#field_dealer_lic_pic").val();
         var rep = $("#rep").val();
         var idno = $("#idno").val();
+        var mobile = $("#mobile").val();
+        var mail = $("#mail").val();
         var field_rep_idcard_pic = $("#field_rep_idcard_pic").val();
         var field_rep_idcard_back_pic = $("#field_rep_idcard_back_pic").val();
         var property = encodeCheckbox('property');
@@ -165,6 +167,9 @@ $(function(){
             return false;
         }else if(!validateIdCard(idno)){
             ui_alert("身份证号填写有误");
+            return false;
+        }else if(mobile == ""){
+            ui_alert("请输入手机号");
             return false;
         }else if(field_rep_idcard_pic == ""){
             ui_alert("请上传身份证正面照");
@@ -228,6 +233,8 @@ $(function(){
                 'dealer_lic_pic': field_dealer_lic_pic,
                 'rep': rep,
                 'idno': idno,
+                'mobile': mobile,
+                'mail': mail,
                 'rep_idcard_pic': field_rep_idcard_pic,
                 'rep_idcard_back_pic': field_rep_idcard_back_pic,
                 'property': property,
