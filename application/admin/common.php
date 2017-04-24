@@ -266,7 +266,6 @@ function serch_realname($uid){
 		if (empty($user_id)) {
 			$user_id = is_login();
 		}
-
 		//插入行为日志
 		$data['uid']     = $user_id;
 		$data['ip']   = ip2long(get_client_ip());
@@ -277,7 +276,6 @@ function serch_realname($uid){
 		$data['status'] = $status;
 		$data['type'] = $type;
 		$data['create_time'] = time();
-
+		
 		db('examine_log')->insert($data);
-
 	}

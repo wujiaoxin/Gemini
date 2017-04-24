@@ -1755,6 +1755,11 @@ CREATE TABLE `gemini_recharge` (
   `bank_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
   `descr` varchar(255) NOT NULL COMMENT '充值备注',
   `recharge_type` tinyint(3) NOT NULL DEFAULT '1' COMMENT '充值方式:1线下充值',
+  `platform_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '平台账户',
+  `serial_num` varchar(255) NOT NULL DEFAULT '0' COMMENT '充值流水号',
+  `actual_amount` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '到账金额',
+  `fee` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '手续费',
+  `fee_bear` varchar(255) NOT NULL DEFAULT '0' COMMENT '手续费承担方',
   PRIMARY KEY (`sn`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='充值记录表';
