@@ -177,7 +177,7 @@ use app\business\controller\Baseness;
 			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
-			if ($data['status']) {
+			if (isset($data['status'])) {
 				$map['status'] = $data['status'];
 			}
 			if ($data['dateRange']) {
