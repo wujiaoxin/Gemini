@@ -22,17 +22,28 @@ class Open extends Base {
 	}
 	
 	public function banner() {
-		$resp['code'] = 1;
-		$resp['msg'] = '获取成功！';
 		
-		$imglist = array();
-		
-		$data["imglist"] = $imglist;
-		$data["updatetime"] = time();
-
-		$resp['data'] = $data;
-				
-		
+		$resp = '{
+			"code": 1,
+			"msg": "获取成功！",
+			"data": {
+				"imglist": [
+					{
+						"imgurl": "https://www.vpdai.com/public/wap/images/1.png",
+						"detailurl": "https://t.vpdai.com/api/open/aboutus",
+						"title": "买车活动1",
+						"sort": 1
+					},
+					{
+						"imgurl": "https://www.vpdai.com/public/wap/images/2.png",
+						"detailurl": "https://t.vpdai.com/api/open/aboutus",
+						"title": "买车活动2",
+						"sort": 2
+					}
+				]
+			}
+		}';
+		$resp = json_decode($resp);
 		return json($resp);
 	}
 	
