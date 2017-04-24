@@ -53,7 +53,7 @@
 							<div class="select-block">
 								<span class="selectParm-title">日期范围:</span>
 								<ul class="selectParm selectOrderDate">
-									<li data='0' class="active">全部</li>
+									<li data='' class="active">全部</li>
 									<li data='1'>今天</li>
 									<li data='2'>最近7天</li>
 									<li data='3'>1个月</li>
@@ -64,7 +64,7 @@
 							<div class="select-block">
 								<span class="selectParm-title">交易状态:</span>
 								<ul class="selectParm selectOrderStatus">
-									<li data='0' class="active">全部</li>
+									<li data='' class="active">全部</li>
 									<li data='-1'>处理中</li>
 									<li data='1'>充值成功</li>
 									<li data='0'>充值失败</li>
@@ -97,7 +97,7 @@
 							<div class="select-block">
 								<span class="selectParm-title">日期范围:</span>
 								<ul class="selectParm selectOrderDate">
-									<li data='0' class="active">全部</li>
+									<li data='' class="active">全部</li>
 									<li data='1'>今天</li>
 									<li data='2'>最近7天</li>
 									<li data='3'>1个月</li>
@@ -108,7 +108,7 @@
 							<div class="select-block">
 								<span class="selectParm-title">交易状态:</span>
 								<ul class="selectParm selectOrderStatus">
-									<li data='0' class="active">全部</li>
+									<li data='' class="active">全部</li>
 									<li data='-1'>处理中</li>
 									<li data='1'>提现成功</li>
 									<li data='0'>提现失败</li>
@@ -180,6 +180,7 @@
 		return html;
 	};
 	function ajaxBalance(type,dateRange,status){
+		$('#table-recharge tbody').html('');
 		ajax_jquery({
 	        url: apiUrl +'/business/account/balance',
 	        data:{
@@ -188,7 +189,6 @@
 	            'status': status
 	        },
 	        success:function(resp){
-	        	console.log(resp)
 	            if (resp.code == "1" ) {
 	            	if(resp['type'] == '1' ){
 	            		$('#table-recharge tbody').html(tplRecharge(resp.data));
@@ -208,8 +208,8 @@
 		$('#totalAccount').text(formatAmount(info['money']));
 		$('#availableAssets').text(formatAmount(info['money_jk']));
 		$('#pendingAssets').text(formatAmount(info['repay_money']));
-		ajaxBalance('1','0','0');
-		ajaxBalance('2','0','0');
+		ajaxBalance('1','0','');
+		ajaxBalance('2','0','');
 		$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var type = $('.tab-pane.active').attr('data');

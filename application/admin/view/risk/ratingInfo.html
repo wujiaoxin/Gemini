@@ -1,12 +1,8 @@
 {extend name="public/base"/}
 {block name="style"}
+<link rel="stylesheet" type="text/css" href="__CSS__/metronic.css">
 <link rel="stylesheet" type="text/css" href="/public/business/css/selectArea.css">
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
-<style>
-.pt5{
-	padding-top: 5px;
-}
-</style>
 <script type="text/javascript">
 
 </script>
@@ -480,7 +476,6 @@
 						</div>
 						<div class="form-group">
 							<div class="col-lg-offset-2 col-lg-10">
-								<!-- <input type="hidden" name="id" value="{$info['id']|default=''}"> -->
 								<button class="btn btn-success submit-btn ajax-post" type="submit" target-form="manualVerification">提 交</button>
 							</div>
 						</div>
@@ -514,8 +509,8 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="tab-pane" id="tab_1_7">
-					<table>
+				<div class="tab-pane form-horizontal" id="tab_1_7">
+					<table class="table table-hover">
 						<tr>
 							<td>序号</td>
 							<td>拒绝原因</td>
@@ -525,8 +520,90 @@
 							<td>太丑</td>
 						</tr>
 					</table>
-					<label>合作金融方案</label>
-					<div>银行机构 平安银行 贷款<span>70000</span> 月供<span>1000*12</span></div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">合作金融方案</label>
+						<div class="col-sm-10 pt5">
+							<span class="col-sm-2">银行机构 平安银行</span>
+							<span class="col-sm-2">贷款 70000</span>
+							<span class="col-sm-2">月供 1000*12</span>
+						</div>
+					</div>
+					<div class="form-group">
+					    <label class="col-sm-2 control-label">授信等级</label>
+					    <div class="col-sm-2 pt5">
+					     	<input type="text" id="credit_level">
+					    </div>
+					    <label class="col-sm-2 control-label">授信评分</label>
+					    <div class="col-sm-2 pt5">
+					      	<input type="text" id="credit_score">
+					    </div>
+					</div>
+					<div class="form-group">
+					    <label class="col-sm-2 control-label">额度</label>
+					    <div class="col-sm-2 pt5">
+					     	<input type="text" id="lineOfCredit">
+					    </div>
+					    <label class="col-sm-2 control-label">期限</label>
+					    <div class="col-sm-2 pt5">
+					      	<select id="loan_term">
+					      		<option value="7">7天</option>
+					      		<option value="10">10天</option>
+					      		<option value="15">15天</option>
+					      		<option value="30">30天</option>
+					      		<option value="60">60天</option>
+					      		<option value="365">12个月</option>
+					      		<option value="730">24个月</option>
+					      		<option value="1095">36个月</option>
+					      	</select>
+					    </div>
+					</div>
+					<div class="form-group">
+					    <label class="col-sm-2 control-label">日利率(‰)</label>
+					    <div class="col-sm-2 pt5">
+					     	<input type="text" id="dayRate">
+					    </div>
+					    <label class="col-sm-2 control-label">首付比例</label>
+					    <div class="col-sm-2 pt5">
+					      	<input type="text" id="downPaymentRatio">
+					    </div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">审核</label>
+		            	<div class="col-sm-2 pt5">
+			            	<select id="examineStatus">
+			            		<option value="0">通过</option>
+			            		<option value="-1">拒绝</option>
+			            	</select>
+			            </div>
+					</div>
+					<div class="form-group" id="refuseReasonBlock" style="display: none">
+						<label class="col-sm-2 control-label">拒绝原因</label>
+		            	<div class="col-sm-2 pt5">
+			            	<select id="refuseReason">
+			            		<option value="2">欺诈</option>
+			            		<option value="3">黑名单</option>
+			            		<option value="1">更换资料</option>
+			            	</select>
+			            </div>
+					</div>
+					<div class="form-group" id="treatmentBlock" style="display: none">
+						<label class="col-sm-2 control-label">处理方式</label>
+			            <div class="col-sm-2 pt5">
+			            	<select id="treatment">
+			            		<option value="1">更换常用手机号</option>
+			            		<option value="2">更换常用银行卡</option>
+			            	</select>
+			            </div>
+		            </div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">审核备注</label>
+					    <div class="col-sm-2 pt5">
+					     	<textarea id="descr"></textarea>
+					    </div>
+					</div>
+					<div class="form-group text-center">
+						<a type="button" class="btn btn-primary" id="examineBtn">提交</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -537,17 +614,9 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js" ></script>
 <script type="text/javascript" src="/public/business/js/selectArea.js"></script>
 <script>
-	//初始化三级联动city
-	// if(typeof(info['city']) == "string" && info['city'] != ''){
-	//     var city = info['city'].split(',');
-	//    $("#loc_province").select2('val',city[0]).trigger("change");
-	//     $("#loc_city").select2('val',city[1]).trigger("change");
-	//     $("#loc_town").select2('val',city[2]).trigger("change");
-	//     var loc_province = $('#loc_province').select2('data').text;
-	//     var loc_city = $('#loc_city').select2('data').text;
-	//     var loc_town = $('#loc_town').select2('data').text;
-	//     var city_addr = loc_province + loc_city + loc_town;
-	// }
+	var id = getUrlParam('id');
+	// var city_addr = initCity();
+	//  $('span[name="city_addr"]').text(city_addr);
 
 	var orderData = {};
     var picList = [];
@@ -591,5 +660,25 @@
             keyList[i].has = 1;
         }
     }
+</script>
+<script>
+	$('#examineStatus').change(function(){
+		if($(this).val() == '-1'){
+			$('#refuseReasonBlock').slideDown('fast');
+		}else{
+			$('#refuseReasonBlock').slideUp('fast');
+		}
+	});
+	$('#refuseReason').change(function(){
+		if($(this).val() == '1'){
+			$('#treatmentBlock').slideDown('fast');
+		}else{
+			$('#treatmentBlock').slideUp('fast');
+		}
+	});
+
+	$('#examineBtn').click(function(){
+
+	})
 </script>
 {/block}

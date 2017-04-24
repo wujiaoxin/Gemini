@@ -178,7 +178,9 @@ use app\business\controller\Baseness;
 				$map['type'] = $data['type'];
 			}
 			if (isset($data['status'])) {
-				$map['status'] = $data['status'];
+				if ($data['status'] != '') {
+	    			$map['status'] = $data['status'];
+	    		}
 			}
 			if ($data['dateRange']) {
 				$result = to_datetime($data['dateRange']);
@@ -212,35 +214,70 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			$data = input('post.');
 			// var_dump($data);die;
-			$map['o.mid'] =$uid;
-			if ($data['type']) {
-				$map['d.type'] = $data['type'];
-			}
-			if ($data['status']) {
-				$map['o.status'] = $data['status'];
-			}
-			if ($data['dateRange']) {
-				$result = to_datetime($data['dateRange']);
-				$endtime =$result['endtime'];
-				$begintime = $result['begintime'];
-				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
+			
+			if (isset($data['payPwd']) && isset($data['orderId'])){
+				
+				$user = db('member')->field('paypassword')->where('mobile',$mobile)->find();
+
+				$ids = db('order_repay')->field('repay_money')->where('order_id',$data['orderId'])->find();
+				
+				if(md5($data['payPwd'].$mobile) == $user['paypassword']){
+
+					$data['money'] = $ids['repay_money'];
+
+					$data['descr'] = $data['bankcard'];
+
+					money_record($data,$uid,2,1);
+
+					$info = array(
+						'true_repay_money' =>$ids['repay_money'],
+						'true_repay_time' =>time(),
+						'status' =>'1',
+						'has_repay' =>'1',
+						'descr' => '还款时间为：'.date('Y-m-d H:i:s',time()).'还id为'.$data['orderId'].'的订单',
+						'platform_account'=>$data['bankcard']
+						);
+					db('order_repay')->where('order_id',$data['orderId'])->update($info);
+					$resp['code'] = '1';
+					$resp['msg'] = '还款申请成功';
+				}else{
+					$resp['code'] = '0';
+					$resp['msg'] = '交易密码错误';
+				}
+				return json($resp);
 			}else{
-				$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
+				$map['o.mid'] =$uid;
+				if ($data['type']) {
+					$map['d.type'] = $data['type'];
+				}
+				if (isset($data['status'])) {
+					if ($data['status'] != '') {
+		    			$map['status'] = $data['status'];
+		    		}
+				}
+				if ($data['dateRange']) {
+					$result = to_datetime($data['dateRange']);
+					$endtime =$result['endtime'];
+					$begintime = $result['begintime'];
+					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
+				}else{
+					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
+				}
+				// var_dump($map);die;
+				foreach ($order_repay as $k => $v) {
+					$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
+				}
+				// var_dump($order_repay);die;
+				if ($order_repay) {
+					$resp['code'] = '1';
+					$resp['msg'] = '数据正常';
+					$resp['data']= $order_repay;
+				}else{
+					$resp['code'] = '0';
+					// $resp['msg'] = '未查到数据';
+				}
+				return json($resp);
 			}
-			// var_dump($map);die;
-			foreach ($order_repay as $k => $v) {
-				$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
-			}
-			// var_dump($order_repay);die;
-			if ($order_repay) {
-				$resp['code'] = '1';
-				$resp['msg'] = '数据正常';
-				$resp['data']= $order_repay;
-			}else{
-				$resp['code'] = '0';
-				// $resp['msg'] = '未查到数据';
-			}
-			return json($resp);
 		}else{
 			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 			$data = array(
@@ -258,8 +295,6 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			$data = input('post.');
 			// var_dump($data);die;
-
-
 			if (isset($data['payPwd']) && isset($data['payOrder'])) {
 				$user = db('member')->field('paypassword')->where('mobile',$mobile)->find();
 				if(md5($data['payPwd'].$mobile) == $user['paypassword']){
@@ -316,7 +351,12 @@ use app\business\controller\Baseness;
 				}
 				
 				if ($data['status']) {
-					$map['finance'] = $data['status'];
+					if ($data['status'] == '2') {
+						$map['finance'] = ['>','2'];
+					}else{
+						$map['finance'] = $data['status'];
+					}
+					
 				}
 				// var_dump($map);die;
 				if ($data['dateRange']) {

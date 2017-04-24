@@ -22,7 +22,7 @@
 	<div class="select-block">
 		<span class="selectParm-title">业务类型:</span>
 		<ul class="selectParm selectOrderType">
-			<li data='0' class="active" >全部</li>
+			<li data='' class="active" >全部</li>
 			<li data='1'>按揭垫资</li>
 			<li data='3'>车抵贷</a></li>
 		</ul>
@@ -30,7 +30,7 @@
 	<div class="select-block">
 		<span class="selectParm-title">日期范围:</span>
 		<ul class="selectParm selectOrderDate">
-			<li data='0' class="active">全部</li>
+			<li data='' class="active">全部</li>
 			<li data='1'>今天</li>
 			<li data='2'>最近7天</li>
 			<li data='3'>1个月</li>
@@ -41,7 +41,7 @@
 	<div class="select-block">
 		<span class="selectParm-title">交易状态:</span>
 		<ul class="selectParm selectOrderStatus">
-			<li data='0' class="active">全部</li>
+			<li data='' class="active">全部</li>
 			<li data='1'>待支付</li>
 			<li data='2'>已支付</li>
 		</ul>
@@ -66,16 +66,6 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- <tr class="odd gradeX">
-					<td class="order_sn">201703160392</td>
-					<td>车抵贷</td>
-					<td>2018-03-16</td>
-					<td>李博</td>
-					<td>￥3,000</td>
-					<td>￥200</td>
-					<td>未支付</td>
-					<td><a class="orderOpera" data-toggle="modal">支付</a></td>
-				</tr> -->
 			</tbody>
 		</table>
 	</div>
@@ -139,13 +129,9 @@
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
-			var orderFinance = '';
 			var orderOpera = '';
 			if(data[index].finance == '1'){
-				orderFinance = '待支付';
 				orderOpera = '<a class="orderOpera" data-toggle="modal">支付</a>'
-			}else{
-				orderFinance = '已支付';
 			}
 		  	html += '<tr class="odd gradex">'
 		  		+'<td class="order_sn">' + data[index].sn + '</td>'
@@ -154,7 +140,7 @@
 		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
 		  		+'<td class="order_fee" data="'+ data[index].fee +'">￥'+ formatAmount(data[index].fee) +'</td>'
-		  		+'<td>'+ orderFinance +'</td>'
+		  		+'<td>'+ g_financeStatus[data[index].finance] +'</td>'
 		  		+'<td>'+ orderOpera +'</td>'
 		  		 +'</tr>';
 			}
@@ -188,7 +174,7 @@
 	jQuery(document).ready(function() {
 	   	// App.init();
 	   	TableManaged.init();
-	   	ajaxPayItem(0,0,0);
+	   	ajaxPayItem('','','');
 
 	   	$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
@@ -229,7 +215,7 @@
 		        success:function(resp){
 		            if (resp.code == "1" ) {
 		            	ui_alert("alert-success","支付成功");
-		            	ajaxPayItem('0','0','0');
+		            	ajaxPayItem('','','');
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert("alert-error",resp.msg);

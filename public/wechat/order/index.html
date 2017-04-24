@@ -10,7 +10,7 @@
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all"> 
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
 	<style>
     .navbar .right {
         width: 60px;
@@ -35,7 +35,7 @@
         overflow-y: hidden;
     }
     .subnavbar-cont {
-        width: 420px;
+        width: 480px;
         height: 40px;
     }
     .subnavbar-item {
@@ -111,9 +111,9 @@
         font-size: 16px;
         margin: 6px;
     }
-	</style>	
+	</style>
 </head>
-<body>    
+<body>
     <div class="views">
         <div class="view view-main">
 	        <div class="navbar">
@@ -124,29 +124,28 @@
 	                    </a>
 	                </div>
 	             	<div class="center">订单管理</div>
-	             	<div class="right">
+	             	<!-- <div class="right">
                         <a href="#" data-popover=".popover-dateRange" class="link open-dateRange">
                             <span>筛选</span>
                             <img src="/public/wap/images/selectDown.png">
                         </a>
-                    </div>
+                    </div> -->
                     <div class="subnavbar">
                         <div class="subnavbar-box">
                             <div class="subnavbar-wrap">
                                 <div class="subnavbar-cont">
-                                    <!-- <a class="subnavbar-item" id="tab_0" data_status='0'>待授权</a> -->
                                     <a class="subnavbar-item" id="tab_" data_status=''>全部</a>
                                     <a class="subnavbar-item" id="tab_0" data_status='0'>待提交</a>
                                     <a class="subnavbar-item" id="tab_3" data_status='3'>审核中</a>
                                     <a class="subnavbar-item" id="tab_1" data_status='1'>已放款</a>
                                     <a class="subnavbar-item" id="tab_2" data_status='2'>已退回</a>
+                                    <a class="subnavbar-item" id="tab_5" data_status='5'>资料补充</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 	            </div>
 	        </div>
-	        
             <div class="pages navbar-fixed toolbar-fixed">
                 <div class="page">
                     <div class="page-content infinite-scroll pull-to-refresh-content">
@@ -159,7 +158,7 @@
 								<ul class="orderList">
 								</ul>
 							</div>
-						</div>				
+						</div>
                     </div>
                     <div class="infinite-scroll-preloader">
 						<div class="preloader"></div>
@@ -193,7 +192,7 @@
         $('.open-dateRange').on('click', function () {
             var clickedLink = this;
             myApp.popover('.popover-dateRange', clickedLink);
-        }); 
+        });
         // 点击选择日期范围
         $('.popover-dateRange').on('click','li',function () {
             var clickedLink = $(this).text();
@@ -201,26 +200,27 @@
             $('.open-dateRange span').text(clickedLink);
             myApp.closeModal('.popover-dateRange', clickedLink);
 
-        }); 
-                  
+        });
+
 
     </script>
 	<script>
-		var orderStatus = [];
-		orderStatus[0] = '<span class="red-color">待提交</span>';
-		orderStatus[3] = '<span class="blue-color">审核中</span>';
-		orderStatus[1] = '<span class="green-color">已放款</span>';
-		orderStatus[2] = '<span class="red-color">已退回</span>';
+		var orderStatusImg = {
+			'0':'orderPending.png',
+			'1':'orderLoaned.png',
+			'2':'orderRefused.png',
+			'3':'orderExaming.png',
+			'5':'orderSupplying.png'};
 	  	var loading = false;  // 加载flag
-		var current_page = 1; 
+		var current_page = 1;
 		var status = getUrlParam('status');
 		var orderType = getUrlParam("type");
 		var dateRange = $('')
 		if(status == 'null')
-			{	
+			{
 				status = '';
 			}
-	 
+
 		function tpl(data){
 			var html = '';
 			if(typeof(data) =='object'){
@@ -236,8 +236,7 @@
 									+'<div class="order-customer-mobile">' + data[index].mobile + '</div>'
 								+'</div>'
 								+'<div class="order-status right" data="' + data[index].status + '">'
-									// +'<img src="/public/wap/images/orderPending.png">'
-									+ orderStatus[data[index].status]
+									+'<img src="/public/wap/images/'+orderStatusImg[data[index].status]+'">'
 								+'</div>'
 							+'</div>'
 						+'</li>';
@@ -281,8 +280,8 @@
 			});
 		}
 		// 注册'infinite'事件处理函数
-		$$('.infinite-scroll').on('infinite', function () { 
-			if (loading) return;	// 如果正在加载，则退出 
+		$$('.infinite-scroll').on('infinite', function () {
+			if (loading) return;	// 如果正在加载，则退出
 			loading = true;			// 设置flag
 			getOrderList(current_page,status);
 		});
