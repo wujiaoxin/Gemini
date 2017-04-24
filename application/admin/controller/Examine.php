@@ -152,22 +152,28 @@ class examine extends Admin {
 
 			$data = input('post.');
 
+			// var_dump($data);die;
+
 			if (isset($data['status'])) {
 
 				$result = db('order')->where('id',$data['id'])->setField('status',$data['status']);
-
+				// echo $result;die;
 				if ($result) {
 
 					$info = db('order')->field('loan_limit,endtime')->where('id',$data['id'])->find();
 					
+					// var_dump($info);die;
+					
 					$fee = fee_money($info['endtime'],$info['loan_limit']);
-
-					db('order')->where('id',$data['id'])->setField('fee',$fee);
+					// echo $fee;die;
+					if ($fee) {
+						db('order')->where('id',$data['id'])->setField('fee',$fee);
+					}
 
 					$resp['code'] = 1;
 
 					$resp['msg'] = '审核通过';
-
+					// var_dump($resp);die;
 				}else{
 
 					$resp['code'] = 0;
@@ -181,7 +187,7 @@ class examine extends Admin {
 
 				$resp['msg'] = '审核异常';
 			}
-
+			// var_dump($resp);die;
 			examine_log(ACTION_NAME,CONTROLLER_NAME,serialize($data),$data['id'], $data['status'],$resp['msg']);
 
 		}else{

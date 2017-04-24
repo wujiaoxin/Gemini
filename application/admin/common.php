@@ -226,7 +226,7 @@ function serch_realname($uid){
   	*/
   	function fee_money($time, $money){
 
-  		if ($time <= 5) {
+  		if ($time <= 5 && $time >=1 ) {
 
   			$interest_rate = 0.08/10;
   			
@@ -248,7 +248,7 @@ function serch_realname($uid){
 
   		}
 
-  		$result = $moeny * $interest_rate * $time;
+  		$result = $money * $interest_rate * $time;
 
   		return $result;
   	}
