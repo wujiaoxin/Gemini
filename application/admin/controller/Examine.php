@@ -281,7 +281,7 @@ class examine extends Admin {
 		$link = db('Order');
 
 		$map    = array('id' => array('IN', $id));
-		$result = $link->where($map)->delete();
+		$result = $link->where($map)->update('status','-1');
 		if ($result) {
 			return $this->success("删除成功！");
 		} else {

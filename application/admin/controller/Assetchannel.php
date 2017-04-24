@@ -81,7 +81,7 @@ class assetChannel extends Admin {
 				//$data['status'] = 1;
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {
-					return $this->success("修改成功！", url('assetChannel/index'));
+					return $this->success("修改成功！", url('assetchannel/index'));
 				} else {
 					return $this->error("修改失败！");
 				}
@@ -171,7 +171,9 @@ class assetChannel extends Admin {
 			$data = input('post.');
 			// var_dump($data);die;
 			if ($data) {
-				$invit = db('Dealer')->field('d.invite_code')->join('__MEMBER__ m','m.mobile = d.mobile')->where('uid',$data['id'])->find();
+				// $invit = db('Dealer')->alias('d')->field('d.invite_code')->join('__MEMBER__ m','m.mobile = d.mobile')->where('uid',$data['id'])->find();
+				$invit =db('Dealer')->field('invite_code')->where('id',$data['id'])->find();
+				// var_dump($invit);die;
 				// $data = $this->request->param();
 				$user = model('User');
 				//创建注册用户

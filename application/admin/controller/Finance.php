@@ -44,7 +44,9 @@ class Finance extends Admin {
 
 				$datas = array(
 
-					'descr' => $data['descr']
+					'descr' => $data['descr'],
+
+					'status'=> $data['status']
 
 				);
 				
@@ -58,7 +60,7 @@ class Finance extends Admin {
 						
 						$datas['finance'] = '3';
 
-						$lines_result = $moeny['lines_ky'] - $result['loan_limit'];//最终可用额度
+						$lines_result = $money['lines_ky'] - $result['loan_limit'];//最终可用额度
 
 						$lock_money_result = $money['lock_money'] - $result['fee'];//剩余冻结金额
 
@@ -92,7 +94,7 @@ class Finance extends Admin {
 
 					db('order')->where('id',$data['id'])->update($datas);
 
-					$resp['code'] = 0;
+					$resp['code'] = 1;
 
 					$resp['msg'] = '放款审核失败!';
 

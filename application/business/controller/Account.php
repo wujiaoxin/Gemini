@@ -96,7 +96,7 @@ class Account extends Baseness {
 	    	$data = input('post.');
 	    	// var_dump($data);die;
 	    	$map['uid'] = $uid;
-	    	if ($data['status']) {
+	    	if (isset($data['status'])) {
 				$map['status'] = $data['status'];
 			}
 	    	if ($data['type'] == '2') {
