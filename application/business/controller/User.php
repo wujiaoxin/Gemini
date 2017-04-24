@@ -182,10 +182,13 @@ use app\business\controller\Baseness;
 	    			$map['status'] = $data['status'];
 	    		}
 			}
+
 			if ($data['dateRange']) {
+				// echo $data['dateRange'];die;
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
+
 				$result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
 			}else{
 				// var_dump($map);die;
@@ -346,6 +349,7 @@ use app\business\controller\Baseness;
 			}else{
 
 				$map['mid'] =$uid;
+				$map['status'] = '1';
 				if ($data['type']) {
 					$map['type'] = $data['type'];
 				}

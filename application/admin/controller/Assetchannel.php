@@ -27,11 +27,11 @@ class assetChannel extends Admin {
 		$list  = db('Dealer')->where($map)->order($order)->paginate(10);
 
 		$data = array(
-			'infoStr' =>json_encode($list) ,
+			'infoStr' =>json_encode($list),
 		);
 		$this->assign($data);
 		$this->setMeta("资产渠道");
-		return $this->fetch();
+		return $this->fetch('');
 	}
 
 	//添加
@@ -92,7 +92,10 @@ class assetChannel extends Admin {
 		} else {
 			$map  = array('id' => $id);
 			$info = db('Dealer')->where($map)->find();
-
+			$sales = db('member')->alias('m')->field('m.*')->join('__DEALER__ d','m.invite_code = d.invite_code')->where('d.id',$id)->select();
+			// var_dump($sales);die;
+			$info['sales'] = $sales;
+			// var_dump($info);die;
 			$data = array(
 				'keyList' => $link->keyList,
 				'info'    => $info,
@@ -134,7 +137,6 @@ class assetChannel extends Admin {
 		} else {
 			//$map  = array('id' => $id);
 			$info = db('Dealer')->where($map)->find();
-
 			$data = array(
 				'keyList' => $link->keyList,
 				'info'    => $info,
@@ -210,7 +212,7 @@ class assetChannel extends Admin {
 			}
 		}else {
 			$this->setMeta("新增员工");
-			return $this->fetch();
+			return $this->fetch('addStaff');
 		}
 	}
 }
