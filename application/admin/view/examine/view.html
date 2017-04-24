@@ -386,18 +386,8 @@
 <script>
 $(function(){
 	var id = getUrlParam('id');
-	// 初始化三级联动city
-	if(typeof(info['channel_info']['city']) == "string" && info['city'] != ''){
-	    var city = info['channel_info']['city'].split(',');
-	   	$("#loc_province").select2('val',city[0]).trigger("change");
-	    $("#loc_city").select2('val',city[1]).trigger("change");
-	    $("#loc_town").select2('val',city[2]).trigger("change");
-	    var loc_province = $('#loc_province').select2('data').text;
-	    var loc_city = $('#loc_city').select2('data').text;
-	    var loc_town = $('#loc_town').select2('data').text;
-	    var city_addr = loc_province + loc_city + loc_town;
-	    $('span[name="city_addr"]').text(city_addr);
-	}
+	var city_addr = initCity(info['channel_info']['city']);
+	$('span[name="city_addr"]').text(city_addr);
 
 	$('#orderRevokeBtn').click(function(){
 		confirm('确认撤回订单');

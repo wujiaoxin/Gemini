@@ -2,6 +2,14 @@
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
+<script>
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
 {/block}
 {block name="body"}
 <div class="main-box clearfix">
@@ -44,21 +52,20 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + 'sn12121212' + '</td>'
-		  		+'<td>'+ '武当4S店' +'</td>'
-		  		+'<td>'+ '充值' +'</td>'
-		  		+'<td>￥'+ '8888888' +'</td>'
-		  		+'<td>￥'+ '2323' +'</td>'
-		  		+'<td>￥'+ '2000001' +'</td>'
-		  		+'<td>￥'+ '23' +'</td>'
-		  		+'<td>￥'+ '2300' +'</td>'
-		  		+'<td>'+ '2017-02-34' +'</td>'
+		  		+'<td>' + data[index].id + '</td>'
+		  		+'<td>'+ data[index].dealer_name +'</td>'
+		  		+'<td>'+ g_transactionType[data[index].type]+'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].total_money) +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].account_money) +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].use_money) +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].lock_money) +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].repay_money) +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		 +'</tr>'
 			}
 		}
 		return html;
 	};
-	var  info = [{},{}];
 	$('#table-transaction tbody').html(tpl(info));
 
     $(function(){
@@ -99,7 +106,7 @@
 	            return false;
 	   	 	}
 	   	 	ajax_jquery({
-		        // url: apiUrl +'/admin/finance/loan',
+		        url: apiUrl +'/admin/finance/transaction',
 		        data:{
 		            'status': examineStatus,
 		            'descr': descr

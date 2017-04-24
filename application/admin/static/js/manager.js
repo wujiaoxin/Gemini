@@ -162,3 +162,18 @@ function encryptBankcard(bankcard){
 function encryptMail(mail){
     return mail = mail.replace(/^(\w?)(\w+)(\w)(@\w+\.[a-z]+(\.[a-z]+)?)$/, "$1****$3$4");
 }
+
+// 初始化三级联动city
+function initCity(data){
+    if(typeof(data) == "string" && data != ''){
+        var city = data.split(',');
+        $("#loc_province").select2('val',city[0]).trigger("change");
+        $("#loc_city").select2('val',city[1]).trigger("change");
+        $("#loc_town").select2('val',city[2]).trigger("change");
+        var loc_province = $('#loc_province').select2('data').text;
+        var loc_city = $('#loc_city').select2('data').text;
+        var loc_town = $('#loc_town').select2('data').text;
+        var city_addr = loc_province + loc_city + loc_town;
+        return city_addr;
+    }
+}
