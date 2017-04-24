@@ -685,6 +685,7 @@ h1 small,h2 small,h3 small,h1 .small,h2 .small,h3 .small {
 	position:absolute;
 	background:#2c3e50;
 	width:220px;
+	overflow:auto;
 }
 /*@media (max-width:991px) {
 	#nav-col {
