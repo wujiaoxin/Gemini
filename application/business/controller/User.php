@@ -178,7 +178,9 @@ use app\business\controller\Baseness;
 				$map['type'] = $data['type'];
 			}
 			if (isset($data['status'])) {
-				$map['status'] = $data['status'];
+				if ($data['status'] != '') {
+	    			$map['status'] = $data['status'];
+	    		}
 			}
 			if ($data['dateRange']) {
 				$result = to_datetime($data['dateRange']);
@@ -216,8 +218,10 @@ use app\business\controller\Baseness;
 			if ($data['type']) {
 				$map['d.type'] = $data['type'];
 			}
-			if ($data['status']) {
-				$map['o.status'] = $data['status'];
+			if (isset($data['status'])) {
+				if ($data['status'] != '') {
+	    			$map['status'] = $data['status'];
+	    		}
 			}
 			if ($data['dateRange']) {
 				$result = to_datetime($data['dateRange']);
