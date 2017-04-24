@@ -22,7 +22,7 @@
 	<div class="select-block">
 		<span class="selectParm-title">业务类型:</span>
 		<ul class="selectParm selectOrderType">
-			<li data='0' class="active" >全部</li>
+			<li data='' class="active" >全部</li>
 			<li data='1'>按揭垫资</li>
 			<li data='3'>车抵贷</a></li>
 		</ul>
@@ -30,7 +30,7 @@
 	<div class="select-block">
 		<span class="selectParm-title">日期范围:</span>
 		<ul class="selectParm selectOrderDate">
-			<li data='0' class="active">全部</li>
+			<li data='' class="active">全部</li>
 			<li data='1'>今天</li>
 			<li data='2'>最近7天</li>
 			<li data='3'>1个月</li>
@@ -41,7 +41,7 @@
 	<div class="select-block">
 		<span class="selectParm-title">交易状态:</span>
 		<ul class="selectParm selectOrderStatus">
-			<li data='0' class="active">全部</li>
+			<li data='' class="active">全部</li>
 			<li data='1'>待支付</li>
 			<li data='2'>已支付</li>
 		</ul>
@@ -174,7 +174,7 @@
 	jQuery(document).ready(function() {
 	   	// App.init();
 	   	TableManaged.init();
-	   	ajaxPayItem(0,0,0);
+	   	ajaxPayItem('','','');
 
 	   	$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
@@ -215,7 +215,7 @@
 		        success:function(resp){
 		            if (resp.code == "1" ) {
 		            	ui_alert("alert-success","支付成功");
-		            	ajaxPayItem('0','0','0');
+		            	ajaxPayItem('','','');
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert("alert-error",resp.msg);
