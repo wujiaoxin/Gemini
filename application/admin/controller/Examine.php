@@ -117,7 +117,7 @@ class examine extends Admin {
 				$resp['msg'] = '审核异常';
 			}
 
-			examine_log(ACTION_NAME,CONTROLLER_NAME,serialize($data),$data['id'], $data['status'],$resp['msg']);
+			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
 
 		}else{
 			
@@ -188,7 +188,7 @@ class examine extends Admin {
 				$resp['msg'] = '审核异常';
 			}
 			// var_dump($resp);die;
-			examine_log(ACTION_NAME,CONTROLLER_NAME,serialize($data),$data['id'], $data['status'],$resp['msg']);
+			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
 			return json($resp);
 			// var_dump($resp);die;
 
@@ -212,8 +212,10 @@ class examine extends Admin {
 			$examine_log  =db('examine_log')->where('record_id',$id)->select();
 
 			foreach ($examine_log as $k => $v) {
-				$examine_log[$k]['params'] = unserialize($v['param']);
+				$examine_log[$k]['params'] = json_decode($v['param']);
+				unset($examine_log[$k]['param']);
 			}
+
 			// var_dump($examine_log);die;
 
 			$fileFilter['order_id'] = $id;

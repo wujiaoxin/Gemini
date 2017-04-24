@@ -1378,7 +1378,7 @@ INSERT INTO `gemini_menu` VALUES ('26', '伪静态规则', 'admin', '', '2', '0'
 INSERT INTO `gemini_menu` VALUES ('28', '订单管理', 'admin', '', '1', '1', 'admin/order/index', '0', '', '', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('29', '车商管理', 'admin', 'cab', '1', '0', 'admin/dealer/index', '0', '', '', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('30', '客户管理', 'admin', '', '1', '0', '/admin/customer/index', '0', '', '', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('31', '资产渠道', 'admin', '', '1', '0', '/admin/assetChannel/index', '0', '', '渠道管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('31', '资产渠道', 'admin', '', '1', '0', '/admin/assetchannel/index', '0', '', '渠道管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('33', '贷款申请', 'admin', '', '1', '0', '/admin/examine/application', '0', '', '审核管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('34', '资料复核', 'admin', '', '1', '0', '/admin/examine/dataReview', '0', '', '审核管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('35', '借款额度审批', 'admin', '', '1', '0', '/admin/examine/loanLimit', '0', '', '审核管理', '0', '0');
