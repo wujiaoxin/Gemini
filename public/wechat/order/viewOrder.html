@@ -14,9 +14,9 @@
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.gemini.css">
     <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all">
     <script type="text/javascript">
-        var BASE_URL = "";
+        // var BASE_URL = "";
 
-        var orderData = {};
+        // var orderData = {};
         var picList = [];
 
         var keyList = [
@@ -53,12 +53,6 @@
                 form_label:"垫资合同"
             }];
 
-            for(var i=0 ; i<keyList.length;i++){
-            if(typeof(orderData[keyList[i].form_key]) == "object" ){
-                picList.push(orderData[keyList[i].form_key]);
-                keyList[i].has = 1;
-            }
-        }
     </script>
     <style type="text/css">
         .pic-cont-block {
@@ -171,7 +165,7 @@
                                 <li class="accordion-item accordion-item-expanded">
                                     <a href="#" class="item-content item-link">
                                         <div class="item-inner">
-                                          <div class="item-title">订单编号(<span class="order-sn">A12331232</span>)</div>
+                                          <div class="item-title">订单编号(<span class="order-sn"></span>)</div>
                                         </div>
                                     </a>
                                     <div class="accordion-item-content">
@@ -180,19 +174,25 @@
                                                 <li class="order-item">
                                                     <div class="order-info-type">
                                                         <span>订单业务</span>
-                                                        <span class="pull-right order-type">新车垫资</span>
+                                                        <span class="pull-right order-type"></span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-amount">
                                                         <span>借贷金额</span>
-                                                        <span class="pull-right order-amount">20,000元</span>
+                                                        <span class="pull-right order-amount"></span>
+                                                    </div>
+                                                </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-term">
+                                                        <span>借贷天数</span>
+                                                        <span class="pull-right order-term"></span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-date">
                                                         <span>申请时间</span>
-                                                        <span class="pull-right order-date">2017:03:08</span>
+                                                        <span class="pull-right order-date"></span>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -211,19 +211,19 @@
                                                 <li class="order-item">
                                                     <div class="order-info-loaner">
                                                         <span>客户姓名</span>
-                                                        <span class="pull-right order-loaner">李博</span>
+                                                        <span class="pull-right order-loaner"></span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-mobile">
                                                         <span>手机号</span>
-                                                        <span class="pull-right order-mobile">13432456789</span>
+                                                        <span class="pull-right order-mobile"></span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-idcardNum">
                                                         <span>身份证号</span>
-                                                        <span class="pull-right order-idcardNum">332112197608230183</span>
+                                                        <span class="pull-right order-idcardNum"></span>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -274,19 +274,19 @@
                                             <div class="pic-cont">
                                                 <div class="pic-cont-title">个人信息</div>
                                                 <div class="pic-cont-block">
-                                                    <div class="pic-cont-item"><img src="/public/wap/images/2.png"></div>
-                                                    <div class="pic-cont-item"><img src="/public/wap/images/down_payment.jpg"></div>
-                                                    <div class="pic-cont-item"><img src="/public/wap/images/drivingLic.png"></div>
+                                                    <div class="pic-cont-item"><img src=""></div>
+                                                    <div class="pic-cont-item"><img src=""></div>
+                                                    <div class="pic-cont-item"><img src=""></div>
                                                 </div>
                                             </div>
                                              <div class="pic-cont pb10">
                                                 <div class="pic-cont-title">证件信息</div>
                                                 <div class="pic-cont-block">
-                                                    <div class="pic-cont-item"><img src="/public/wap/images/2.png"></div>
-                                                    <div class="pic-cont-item"><img src="/public/wap/images/down_payment.jpg"></div>
-                                                    <div class="pic-cont-item"><img src="/public/wap/images/drivingLic.png"></div>
-                                                    <div class="pic-cont-item"><img src="/public/wap/images/2.png"></div>
-                                                    <div class="pic-cont-item"><img src="/public/wap/images/down_payment.jpg"></div>
+                                                    <div class="pic-cont-item"><img src=""></div>
+                                                    <div class="pic-cont-item"><img src=""></div>
+                                                    <div class="pic-cont-item"><img src=""></div>
+                                                    <div class="pic-cont-item"><img src=""></div>
+                                                    <div class="pic-cont-item"><img src=""></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -314,17 +314,40 @@
     <script type="text/javascript">
         var order_id = getUrlParam('id');
         ajax_jquery({
-            // url: apiUrl +'/api/order/detail?t=' + Math.random(),
-            data: order_id,
+            url: apiUrl +'/api/order/detail',
+            data: {
+                'id': order_id
+            },
             success: function (resp) {
                 if (resp.code == "1") {
-                    $(".order-sn").text(resp.data.sn);
-                    $(".order-type").text(resp.data.type);
-                    $(".order-amount").text(resp.data.finance);
-                    $(".order-date").text(formatDate(resp.data.create_time));
-                    $(".order-loaner").text(resp.data.name);
-                    $(".order-mobile").text(resp.data.mobile);
-                    $(".order-idcard_num").text(resp.data.idcard_num);
+                    $(".order-sn").text(resp.data.info.sn);
+                    $(".order-type").text(g_orderType[resp.data.info.type]);
+                    $(".order-amount").text(resp.data.info.loan_limit);
+                    $(".order-term").text(resp.data.info.endtime);
+                    $(".order-date").text(formatDate(resp.data.info.create_time));
+
+                    $(".order-loaner").text(resp.data.info.name);
+                    $(".order-mobile").text(resp.data.info.mobile);
+                    $(".order-idcardNum").text(resp.data.info.idcard_num);
+
+                    var status = resp.data.info.status;
+                    if(status == 1){
+                        stepbarShow(4);
+                    }else if(status == 4){
+                        stepbarShow(3);
+                    }else{
+                         stepbarShow(2);
+                    } 
+                    var pic = resp.data.files;
+                    for(var index = 0; index < keyList.length; index++){
+                        $.each(pic,function(i,n){
+                            if(keyList[index].form_key == n.form_key){
+                                $('.pic-info .pic-cont-item').eq(index).find('img').attr('src',pic[i].path);
+                                picList.push(pic[i].path);
+                                return false;
+                            }
+                        })  
+                    }
                 } else {
                     if (typeof(resp.msg) == 'string' && resp.msg != '') {
                         ui_alert(resp.msg);
@@ -344,20 +367,7 @@
         $(function(){
             stepbarShow(2);
             var myPhotoBrowserPopup = myApp.photoBrowser({
-                photos : [
-                    {
-                        url: 'http://lorempixel.com/1024/1024/sports/1/',
-                        caption: 'Caption 1 Text'
-                    },
-                    {
-                        url: 'http://lorempixel.com/1024/1024/sports/2/',
-                        caption: 'Second Caption Text'
-                    },
-                    {
-                        url: 'http://lorempixel.com/1024/1024/sports/3/',
-                        caption: 'Second Caption Text'
-                    },
-                ],
+                photos : picList,
                 theme: 'dark',
                 type: 'standalone'
             });

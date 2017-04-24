@@ -67,6 +67,7 @@
         }
         #order-amount,
         #order-term {
+            padding-left: 0;
             border-bottom: 1px solid #dedede;
         }
     </style>
@@ -93,7 +94,7 @@
                                 <li class="accordion-item">
                                     <a href="#" class="item-content item-link">
                                         <div class="item-inner">
-                                          <div class="item-title">订单编号(<span class="order-sn">A12331232</span>)</div>
+                                          <div class="item-title">订单编号(<span class="order-sn"></span>)</div>
                                         </div>
                                     </a>
                                     <div class="accordion-item-content">
@@ -102,31 +103,31 @@
                                                 <li class="order-item">
                                                     <div class="order-info-type">
                                                         <span>订单业务</span>
-                                                        <span class="pull-right order-type">新车垫资</span>
+                                                        <span class="pull-right order-type"></span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-loaner">
                                                         <span>客户姓名</span>
-                                                        <span class="pull-right order-loaner">李博</span>
+                                                        <span class="pull-right order-loaner"></span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-mobile">
                                                         <span>手机号</span>
-                                                        <span class="pull-right order-mobile">13432456789</span>
+                                                        <span class="pull-right order-mobile"></span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-idcardNum">
                                                         <span>身份证号</span>
-                                                        <span class="pull-right order-idcardNum">332112197608230183</span>
+                                                        <span class="pull-right order-idcardNum"></span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-date">
                                                         <span>申请时间</span>
-                                                        <span class="pull-right order-date">2017:03:08</span>
+                                                        <span class="pull-right order-date"></span>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -200,12 +201,12 @@
             },
             success: function(resp) { // data 保存提交后返回的数据，一般为 json 数据
                 if(resp.code == 1){
-                    $(".order-sn").text(resp.data.sn);
-                    // $(".order-type").text(resp.data.type);
-                    $(".order-loaner").text(resp.data.name);
-                    $(".order-mobile").text(resp.data.mobile);
-                    $(".order-idcardNum").text(resp.data.idcard_num);
-                    $(".order-date").text(resp.data.date);
+                    $(".order-sn").text(resp.data.info.sn);
+                    $(".order-type").text(g_orderType[resp.data.info.type]);
+                    $(".order-loaner").text(resp.data.info.name);
+                    $(".order-mobile").text(resp.data.info.mobile);
+                    $(".order-idcardNum").text(resp.data.info.idcard_num);
+                    $(".order-date").text(formatDate(resp.data.info.create_time));
                 }else{
                     if (typeof(resp.msg) == 'string') {
                         ui_alert(resp.msg);
@@ -215,7 +216,7 @@
         });
 
         $("#uploadpic").GeminiUploader(keyList,picList,{
-            formData: {fileType:"image",order_id:orderData.id,sid:sid},
+            formData: {fileType:"image",order_id:order_id,sid:sid},
         });
 
 
@@ -226,6 +227,9 @@
                 if(loan_limit == ""){
                     ui_alert('请输入垫资金额');
                     return;
+                }else if(loan_term == ""){
+                    ui_alert('请输入垫资期限');
+                    return;
                 }else if( $('#uploadpic  .fileList img[data-id]').length < keyList.length ){
                     ui_alert("照片资料不全，请补充上传");
                     return;
@@ -235,14 +239,14 @@
                     url: apiUrl +'/api/order/save',
                     datatype:'json',
                     data: {
-                        'id':order_id,
-						'loan_limit':loan_limit,
-                        'loan_term':loan_term
+                        'id': order_id,
+						'loan_limit': loan_limit,
+                        'loan_term': loan_term
                     },
                     success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
                         if(data.code == 1){
                             ui_alert("订单提交成功", function () {
-                                  window.location.href = '/mobile/order/indexDealer' ;
+                                  window.location.href = wechatStaticPath + '/order/index.html?status=3' ;
                              })
                         }else{
                             if (typeof(data.msg) == 'string') {

@@ -133,23 +133,23 @@
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
+			var i = index + 1;
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + '1' + '</td>'
-		  		+'<td>'+ '武当4S店' +'</td>'
-		  		+'<td>￥'+ '200000' +'</td>'
-		  		+'<td>￥'+ '199999' +'</td>'
-		  		+'<td>'+ '1' +'</td>'
-		  		+'<td>'+ 'wo' +'</td>'
+		  		+'<td>' + i + '</td>'
+		  		+'<td>'+ data[index].dealer_name +'</td>'
+		  		+'<td>￥'+ data[index].money +'</td>'
+		  		+'<td>￥'+ data[index].actual_amount +'</td>'
+		  		+'<td>'+ data[index].fee +'</td>'
+		  		+'<td>'+ '无' +'</td>'
 		  		+'<td>'+ '线下转账' +'</td>'
-		  		+'<td>'+ '处理中' +'</td>'
-		  		+'<td>'+ '' +'</td>'
+		  		+'<td>'+ g_examineStatus[data[index].status] +'</td>'
+		  		+'<td>'+ data[index].descr +'</td>'
 		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].sn+'">审核</a></td>'
 		  		 +'</tr>'
 			}
 		}
 		return html;
 	};
-	var  info = [{},{}];
 	$('#table-withdrawExamine tbody').html(tpl(info));
 
     $(function(){
@@ -158,7 +158,7 @@
     	$('#table-withdrawExamine').on('click','.opera',function(){
 	   		var orderSn = $(this).attr('data');
 	   		ajax_jquery({
-		        // url:'',
+		        url: apiUrl + '/admin/finance/withdraw',
 		        data:{
 		            'orderSn': orderSn
 		        },
@@ -192,7 +192,7 @@
 	            return false;
 	   	 	}
 	   	 	ajax_jquery({
-		        // url: apiUrl +'/admin/finance/loan',
+		        url: apiUrl +'/admin/finance/withdraw',
 		        data:{
 		        	'own_account': own_account,
 		        	'actual_amount': actual_amount,

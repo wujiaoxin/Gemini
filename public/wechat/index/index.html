@@ -29,12 +29,12 @@
             margin-left: 20px;
             border-radius: 50%;
             width: 72px;
+            overflow: hidden;
         }
         .user-info-name {
             color: #333333;
             font-size: 20px;
             max-width: 160px;
-            overflow: hidden;
         }
         .user-info-xcodeMini {
             margin-right: 20px;
@@ -114,34 +114,34 @@
                                 <div class="user-info-face">
                                         <img src="/public/wap/images/user.png" width="100%"/>                                  
                                 </div>
-                                <div class="user-info-name">VP贷用户</div>
+                                <div class="user-info-name"></div>
                                 <!-- <div class="user-info-xcodeMini right"><img src="/public/wap/images/QRCodeMini.png"></div> -->
                             </div>
                         </div>
                         <div class="order-block">
                             <div class="order-item" id="orderPending">
-                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html');">
+                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?status=0');">
                                     <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
-                                    <div class="order-item-title">待受理订单</div>
-                                    <div class="order-item-number right">2</div>
+                                    <div class="order-item-title">待提交订单</div>
+                                    <div class="order-item-number right">1</div>
                                 </a>
                             </div>
                             <div class="order-item" id="orderSubmitted">
-                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html');">
+                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?status=3');">
                                     <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
-                                    <div class="order-item-title">资料提交订单</div>
+                                    <div class="order-item-title">资料审核订单</div>
                                     <div class="order-item-number right">22</div>
                                 </a>
                             </div>
                             <div class="order-item" id="orderSupplying">
-                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html');">
+                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?stauts=5');">
                                     <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
                                     <div class="order-item-title">资料补充订单</div>
                                     <div class="order-item-number right">0</div>
                                 </a>
                             </div>
                             <div class="order-item" id="orderLoaned">
-                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html');">
+                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?stauts=1');">
                                     <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
                                     <div class="order-item-title">已放款订单</div>
                                     <div class="order-item-number right">112</div>
@@ -176,9 +176,11 @@
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/public/wap/js/order.js"></script>
+
     <script type="text/javascript">
         ajax_jquery({
-            url: apiUrl+ '/api/user/userInfo?t=' + Math.random(),
+            url: apiUrl+ '/api/user/userInfo',
             success: function (resp) {
                 if(resp.code == 1){
                     $(".user-info-face img").attr('src',resp.data.headerimgurl);
@@ -191,6 +193,14 @@
                 }
             }
         });
+        var orderPending = getOrderTotal(1,0);
+        var orderSubmitted = getOrderTotal(1,3);
+        var orderSupplying = getOrderTotal(1,5);
+        var orderLoaned = getOrderTotal(1,1);
+        $('#orderPending .order-item-number').text(orderPending.order_num);
+        $('#orderSubmitted .order-item-number').text(orderSubmitted.order_num);
+        $('#orderSupplying .order-item-number').text(orderSupplying.order_num);
+        $('#orderLoaned .order-item-number').text(orderLoaned.order_num);
     </script>
 </body>
 </html>

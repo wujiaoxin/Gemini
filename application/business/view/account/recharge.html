@@ -90,7 +90,7 @@ $(function(){
 	        },
 	        success:function(resp){
 	            if (resp.code == "1" ) {
-                    ui_alert("alert-success","充值成功");
+                    ui_alert("alert-success","充值成功,等待审核");
                     setTimeout('window.location.reload()',1000);
 	            }else{
 	                if (typeof(resp.msg) == 'string') {

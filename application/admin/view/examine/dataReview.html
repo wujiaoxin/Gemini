@@ -2,6 +2,14 @@
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
 {/block}
 {block name="body"}
 <div class="main-box clearfix">
@@ -48,25 +56,24 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + 'sn12121212' + '</td>'
-		  		+'<td>'+ '车抵贷' +'</td>'
-		  		+'<td>'+ '申请审核' +'</td>'
-		  		+'<td>'+ '王羲之' +'</td>'
-		  		+'<td>'+ '23442443434' +'</td>'
-		  		+'<td>'+ '张三丰' +'</td>'
-		  		+'<td>'+ '武当4S店' +'</td>'
-		  		+'<td>￥'+ '200000' +'</td>'
-		  		+'<td>'+ '7' +'天</td>'
-		  		+'<td>'+ '1000' +'</td>'
+		  		+'<td>' + data[index].sn + '</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
+		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
+		  		+'<td>'+ data[index].name +'</td>'
+		  		+'<td>'+ data[index].idcard_num +'</td>'
+		  		+'<td>'+ data[index].salesman +'</td>'
+		  		+'<td>'+ data[index].dealername +'</td>'
+		  		+'<td>￥'+ data[index].loan_limit +'</td>'
+		  		+'<td>'+ data[index].endtime +'天</td>'
+		  		+'<td>'+ data[index].fee +'</td>'
 		  		+'<td>'+ '正常' +'</td>'
-		  		+'<td>'+ '2017-02-34' +'</td>'
-		  		+'<td><a href="/admin/examine/view?id='+ "10001" + '">查看</a></td>'
+		  		+'<td>'+ data[index].create_time +'</td>'
+		  		+'<td><a href="/admin/examine/view?id='+ data[index].id + '">查看</a></td>'
 		  		 +'</tr>'
 			}
 		}
 		return html;
 	};
-	var  info = [{},{}];
 	$('#table-orderExamine tbody').html(tpl(info));
 
     $(function(){
