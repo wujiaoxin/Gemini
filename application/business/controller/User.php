@@ -199,7 +199,7 @@ use app\business\controller\Baseness;
 				$resp['data']= $result;
 			}else{
 				$resp['code'] = '0';
-				$resp['msg'] = '未查到数据';
+				// $resp['msg'] = '未查到数据';
 			}
 			return json($resp);
 		}
@@ -238,7 +238,7 @@ use app\business\controller\Baseness;
 				$resp['data']= $order_repay;
 			}else{
 				$resp['code'] = '0';
-				$resp['msg'] = '未查到数据';
+				// $resp['msg'] = '未查到数据';
 			}
 			return json($resp);
 		}else{
@@ -338,7 +338,7 @@ use app\business\controller\Baseness;
 					$resp['data']= $order_pay;
 				}else{
 					$resp['code'] = '0';
-					$resp['msg'] = '未查到数据';
+					// $resp['msg'] = '未查到数据';
 				}
 			}
 			return json($resp);
