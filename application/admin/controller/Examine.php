@@ -189,6 +189,8 @@ class examine extends Admin {
 			}
 			// var_dump($resp);die;
 			examine_log(ACTION_NAME,CONTROLLER_NAME,serialize($data),$data['id'], $data['status'],$resp['msg']);
+			return json($resp);
+			// var_dump($resp);die;
 
 		}else{
 			$id   = input('id', '', 'trim,intval');

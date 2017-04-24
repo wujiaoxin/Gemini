@@ -156,32 +156,32 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-			
+			// var_dump($data);die;
 			if (isset($data['status'])) {
 
-				$datas = array(
+				/*$datas = array(
 
 					'status'=>$data['status'],
 
 					'descr' => $data['descr']
 
-				);
+				);*/
 
 				if ($data['status'] == '1') {
 
-					$result = db('recharge')->field('uid,money')->where('sn',$data['id'])->find();
+					$result = db('recharge')->field('uid')->where('sn',$data['id'])->find();
 					// var_dump($result);die;
 
 					$name = serch_name($result['uid']);
 
 					$deal_money = db('dealer')->field('money')->where('mobile',$name['mobile'])->find();
 
-					$total_money = $deal_money['money'] + $result['money'];
+					$total_money = $deal_money['money'] + $data['actual_amount'];
 					// echo $total_money;die;
 
 					db('dealer')->where('mobile',$name['mobile'])->setField('money',$total_money);
-					
-					db('recharge')->where('sn',$data['id'])->update($datas);
+					// var_dump($data);die;
+					db('recharge')->where('sn',$data['id'])->update($data);
 
 					$resp['code'] = 1;
 
@@ -242,24 +242,20 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-
+			// var_dump($data);die;
 			if (isset($data['status'])) {
 				
-				$datas = array(
-
-					'status'=>$data['status'],
-
-					'descr' => $data['descr']
-
-				);
-
 				$datas['update_time'] = time();
 
 				if ($data['status']) {
 
-					db('carry')->where('sn',$data['id'])->update($datas);
+					//可用额度设置
+					
+					// $dealer_money = db('Dealer')->field('lines_ky')->where('')->find();
 
-					db('order')->where('id',$data['id'])->setField('finance','4');
+					db('carry')->where('sn',$data['orderSn'])->update($datas);
+
+					db('order')->where('id',$data['orderSn'])->setField('finance','4');
 
 					$resp['code'] = 1;
 
@@ -267,20 +263,19 @@ class Finance extends Admin {
 
 				}else{
 
-					db('carry')-> where('sn',$data['id'])->update($datas);
+					db('carry')-> where('sn',$data['orderSn'])->update($datas);
 
 					$resp['code'] = 0;
 
 					$resp['msg'] = '提现审核失败!';
 				}
-
-
+				examine_log(ACTION_NAME,CONTROLLER_NAME,serialize($data),$data['orderSn'], $data['status'],$resp['msg']);
 			}else{
 
-				$result = db('carry')->where('sn',$data['id'])->find();
+				$result = db('carry')->where('sn',$data['orderSn'])->find();
 
 				$sercher = serch_name($result['uid']);
-				// var_dump($sercher);die;
+				// var_dump($result);die;
 
 				$result['dealer_name'] = $sercher['dealer_name'];
 
@@ -292,7 +287,7 @@ class Finance extends Admin {
 				$resp['data'] = $result;
 
 			}
-			examine_log(ACTION_NAME,CONTROLLER_NAME,serialize($data),$data['id'], $data['status'],$resp['msg']);
+			
 			return json($resp);
 
 		}else{
@@ -391,11 +386,11 @@ class Finance extends Admin {
 			return json($resp);
 
 		}else{
-			$result = db('order_repay')->where('status','>',-1)->select();
+			$result = db('order_repay')->where('status','>',-2)->select();
 
 			foreach ($result as $k => $v) {
 
-				$sercher = serch_name($v['uid']);
+				$sercher = serch_name($v['mid']);
 				// var_dump($sercher);die;
 
 				$result[$k]['dealer_name'] = $sercher['dealer_name'];
