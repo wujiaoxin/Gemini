@@ -10,7 +10,7 @@
 namespace app\admin\controller;
 use app\common\controller\Admin;
 
-class assetChannel extends Admin {
+class assetchannel extends Admin {
 
 	public function index() {
 		//define('IS_ROOT', is_administrator());		
