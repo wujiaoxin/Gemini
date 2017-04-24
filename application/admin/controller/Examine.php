@@ -61,7 +61,7 @@ class examine extends Admin {
 
 	public function dataReview() {
 
-		$list = db('Order')->order('create_time')->select();
+		$list = db('Order')->where('status','3')->order('create_time')->select();
 		// var_dump($list);die;
 		foreach ($list as $k => $v) {
 			$list[$k]['salesman'] = serch_realname($v['uid']);
@@ -121,46 +121,14 @@ class examine extends Admin {
 
 		}else{
 			
-			$id   = input('id', '', 'trim,intval');
-
-			$order_info = db('order')->where('id', $id)->find();
-
-			$name = serch_name($order_info['mid']);
-
-			$channel_info = db('dealer')->where('name',$name['dealer_name'])->find();
-
-			$yewu = db('member')->field('realname,mobile')->where('uid',$order_info['uid'])->find();
-
-			$channel_info['salesman'] = $yewu['realname'];
-			
-			$channel_info['salesmobile'] = $yewu['mobile'];
-
-			$member_info = db('member')->where('uid', $order_info['mid'])->find();
-
-			$repay_info = db('order_repay')->where('order_id', $order_info['sn'])->find();
-
-
-			$fileFilter['order_id'] = $id;
-
-			$fileFilter['status'] = 1;//有效文件
-
-			$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($fileFilter)->limit(100)->select();
-
-			$list = array(
-
-				'order_info' => $order_info,//订单信息
-
-				'channel_info' => $channel_info,//渠道信息
-
-				'member_info' => $member_info,//客户信息
-
-				'repay_info' => $repay_info,//还款信息
-
-				'files'   => $files,//附件资料
-
-				);
-
-			
+			$list = db('Order')->where('status','4')->order('create_time')->select();
+			// var_dump($list);die;
+			foreach ($list as $k => $v) {
+				$list[$k]['salesman'] = serch_realname($v['uid']);
+				$name = serch_name($v['mid']);
+				$list[$k]['dealername'] = $name['dealer_name'];
+			}
+			// var_dump($list);die;
 			$data = array(
 
 				'infoStr' =>json_encode($list)
@@ -280,8 +248,9 @@ class examine extends Admin {
 		}
 		$link = db('Order');
 
-		$map    = array('id' => array('IN', $id));
-		$result = $link->where($map)->update('status','-1');
+		$map    = array('id' => $id);
+		// var_dump($map);die;
+		$result = $link->where($map)->update(['status'=>'-1']);
 		if ($result) {
 			return $this->success("删除成功！");
 		} else {

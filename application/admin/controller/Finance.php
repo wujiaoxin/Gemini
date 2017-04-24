@@ -29,7 +29,7 @@ class Finance extends Admin {
 			);
 
 		$this->assign($data);
-
+		$this->setMeta('支付审核');
 		return $this->fetch();
 	}
 
@@ -92,14 +92,16 @@ class Finance extends Admin {
 
 				}else{
 
+					unset($datas['status']);
+
 					db('order')->where('id',$data['id'])->update($datas);
 
-					$resp['code'] = 1;
+					$resp['code'] = -1;
 
 					$resp['msg'] = '放款审核失败!';
 
 				}
-				
+				examine_log(ACTION_NAME,CONTROLLER_NAME,serialize($data),$data['id'], $data['status'],$resp['msg']);
 			}else{
 
 				$result = db('order')->where('id',$data['id'])->find();
@@ -143,7 +145,7 @@ class Finance extends Admin {
 			$this->assign($data);
 
 		}
-
+		$this->setMeta('放款审核');
 		return $this->fetch();
 
 	}
@@ -210,6 +212,7 @@ class Finance extends Admin {
 
 				$resp['data'] = $result;
 			}
+			examine_log(ACTION_NAME,CONTROLLER_NAME,serialize($data),$data['id'], $data['status'],$resp['msg']);
 			return json($resp);
 		}else{
 			$result = db('recharge')->order('create_time DESC,status ASC')->select();
@@ -229,6 +232,7 @@ class Finance extends Admin {
 
 			$this->assign($data);
 		}
+		$this->setMeta('充值审核');
 		return $this->fetch();
 	}
 
@@ -288,6 +292,7 @@ class Finance extends Admin {
 				$resp['data'] = $result;
 
 			}
+			examine_log(ACTION_NAME,CONTROLLER_NAME,serialize($data),$data['id'], $data['status'],$resp['msg']);
 			return json($resp);
 
 		}else{
@@ -380,6 +385,9 @@ class Finance extends Admin {
 				$resp['data'] = $result;
 
 			}
+
+			examine_log(ACTION_NAME,CONTROLLER_NAME,serialize($data),$data['id'], $data['status'],$resp['msg']);
+			
 			return json($resp);
 
 		}else{
@@ -402,6 +410,7 @@ class Finance extends Admin {
 			$this->assign($data);
 
 		}
+		$this->setMeta('回款审核');
 		return $this->fetch();
 	}
 
@@ -415,7 +424,7 @@ class Finance extends Admin {
 			);
 
 		$this->assign($data);
-
+		$this->setMeta('平台资金记录');
 		return $this->fetch();
 	}
 
