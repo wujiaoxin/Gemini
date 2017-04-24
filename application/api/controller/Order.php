@@ -208,4 +208,14 @@ class Order extends Api {
 		return $controller->$action();
 	}
 	
+	//更新银行卡信息 TODO
+	public function updateBankInfo($type = null, $bank_name = null, $bank_branch = null, $bank_account_name = null, $bank_account_id = null){
+		$resp = '{
+			"code": 1,
+			"msg": "保存成功"
+		}';
+		$resp = json_decode($resp);
+		return $resp;
+	}
+	
 }
