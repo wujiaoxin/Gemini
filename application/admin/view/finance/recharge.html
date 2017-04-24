@@ -24,7 +24,7 @@
 				<thead>
 					<tr>
 						<th>编号</th>
-						<th>流水号</th>
+						<th>订单号</th>
 						<th>渠道名称</th>
 						<th>充值金额</th>
 						<th>到账金额</th>
@@ -141,7 +141,7 @@
 			var i = index + 1;
 		  	html += '<tr class="odd gradex">'
 		  		+'<td>' + i + '</td>'
-		  		+'<td>' + data[index].serial_num + '</td>'
+		  		+'<td>' + data[index].sn + '</td>'
 		  		+'<td>'+ data[index].dealer_name +'</td>'
 		  		+'<td>￥'+ data[index].money +'</td>'
 		  		+'<td>￥'+ data[index].actual_amount +'</td>'
@@ -160,19 +160,19 @@
 	$('#table-rechargeExamine tbody').html(tpl(info));
 
     $(function(){
+    	var sn = "";
     	TableManaged.init();
 
     	$('#table-rechargeExamine').on('click','.opera',function(){
-	   		var orderSn = $(this).attr('data');
+	   		var sn = $(this).attr('data');
 	   		ajax_jquery({
 		        url: apiUrl + '/admin/finance/recharge',
 		        data:{
-		            'sn': orderSn
+		            'id': sn
 		        },
 		        success:function(resp){
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
-		            		console.log(this.tagName)
 							var name = $(this).attr('id');
 						    if(resp.data[name] !=''&&this.tagName == 'p'){
 						        $(this).text(resp.data[name]);
@@ -209,6 +209,7 @@
 	   	 	ajax_jquery({
 		        url: apiUrl +'/admin/finance/recharge',
 		        data:{
+		        	'id': sn,
 		        	'dealer_bank_account': dealer_bank_account,
 		        	'dealer_bank': dealer_bank,
 		        	'dealer_bank_branch': dealer_bank_branch,

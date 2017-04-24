@@ -10,12 +10,12 @@
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all"> 
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
     <style type="text/css">
         #pie-container {
             height: 185px;
         }
-    </style>   
+    </style>
 </head>
 <body>
     <div class="views">
@@ -39,10 +39,10 @@
                         <div class="user-item-con clearfix">
                             <ul>
                                 <li>
-                                    <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html');">我的订单<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
+                                    <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html');">我的订单<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
                                 </li>
                                 <!-- <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/user/myPoints')}')">我的积分<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
+                                    <a href="javascript:goToUrl('{:url('mobile/user/myPoints')}')">我的积分<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
                                 </li> -->
                                 <li>
                                     <a href="javascript:goToUrl(wechatStaticPath + '/user/myCustomers.html');">我的客户<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
@@ -58,7 +58,7 @@
                         <div class="user-item-con clearfix">
                             <ul>
                                 <li>
-                                    <a href="javascript:goToUrl(wechatStaticPath + '/open/help.html');">帮助中心<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
+                                    <a href="javascript:goToUrl(wechatStaticPath + '/open/help.html');">帮助中心<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
                                 </li>
                                 <li>
                                     <a href="javascript:goToUrl(wechatStaticPath + '/open/aboutus.html');">关于我们<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
@@ -74,7 +74,7 @@
                         <div class="content-block">
                             <a class="button button-big button-raised butcom-css dpblue"
                                href="javascript:logout();">退出登录</a>
-                        </div>       
+                        </div>
                     </div>
                 </div>
             </div>
@@ -171,26 +171,19 @@
                             }
                         ]
                     };
-                        
+
                 myChart.setOption(option);
             }
         );
     </script>
     <script type="text/javascript">
         function logout(){
-            window.location.href = wechatStaticPath + "/user/login.html" 
-            // ajax_jquery({
-            //     url: apiUrl + '/api/user/logout',   
-            //     success: function(resp){
-            //         if(resp.code == 1){  
-            //             window.location.href = wechatStaticPath + "/user/login.html"       
-            //         }else{
-            //             if (typeof(resp.msg) == 'string') {
-            //                 ui_alert(resp.msg);
-            //             }
-            //         }
-            //     }
-            // }); 
+            ajax_jquery({
+                url: apiUrl + '/api/user/logout',
+                success: function(resp){
+                    window.location.href = wechatStaticPath + "/user/login.html"
+                }
+            });
         }
     </script>
 </body>
