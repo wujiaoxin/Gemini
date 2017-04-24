@@ -53,21 +53,21 @@
       		<div class="form-group">
 		    	<label class="col-sm-2 control-label">平台账户</label>
 			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">effe2323</p>
+			      	<p class="form-control-static item-info" id="platform_account"></p>
 			    </div>
 			    <label class="col-sm-2 control-label">渠道名称</label>
 			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">滨江宝马</p>
+			      	<p class="form-control-static item-info" id="dealer_name"></p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
 		    	<label class="col-sm-2 control-label">充值金额</label>
 			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">20000</p>
+			      	<p class="form-control-static item-info" id="money"></p>
 			    </div>
 			    <label class="col-sm-2 control-label">手续费</label>
 			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">2</p>
+			      	<p class="form-control-static item-info" id="fee"></p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
@@ -77,27 +77,27 @@
 			    </div>
 			    <label class="col-sm-2 control-label">充值时间</label>
 			    <div class="col-sm-4">
-			      	<p class="form-control-static item-info">2017-04-20</p>
+			      	<p class="form-control-static item-info" id="create_time"></p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
 		    	<label class="col-sm-2 control-label">对方账户</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="number" id="dealer_bank_account" value="">
+			      	<input type="number" id="dealer_bank_account" class="item-info">
 			    </div>
 			    <label class="col-sm-2 control-label">开户银行</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="dealer_bank" value="">
+			      	<input type="text" id="dealer_bank" class="item-info">
 			    </div>
 		  	</div>
 		  	<div class="form-group">
 		    	<label class="col-sm-2 control-label">开户网点</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="dealer_bank_branch" value="">
+			      	<input type="text" id="dealer_bank_branch" class="item-info">
 			    </div>
 			    <label class="col-sm-2 control-label">流水号</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="serial_num" value="">
+			      	<input type="text" id="serial_num" class="item-info">
 			    </div>
 		  	</div>
           	<div class="form-group">
@@ -110,7 +110,7 @@
 	            </div>
 	            <label class="col-sm-2 control-label">到账金额*</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="number" id="actual_amount" value="">
+			      	<input type="number" id="actual_amount" class="item-info">
 			    </div>
           	</div>
           	<div class="form-group">
@@ -150,7 +150,7 @@
 		  		+'<td>'+ '线下转账' +'</td>'
 		  		+'<td>'+ g_examineStatus[data[index].status] +'</td>'
 		  		+'<td>'+ data[index].descr +'</td>'
-		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].sn+'">审核</a></td>'
+		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].sn +'">审核</a></td>'
 		  		 +'</tr>'
 			}
 		}
@@ -165,19 +165,21 @@
     	$('#table-rechargeExamine').on('click','.opera',function(){
 	   		var orderSn = $(this).attr('data');
 	   		ajax_jquery({
-		        apiUrl + '/admin/finance/recharge',
+		        url: apiUrl + '/admin/finance/recharge',
 		        data:{
-		            'orderSn': orderSn
+		            'sn': orderSn
 		        },
 		        success:function(resp){
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
+		            		console.log(this.tagName)
 							var name = $(this).attr('id');
-						    if(typeof(resp.data[name]) == "string" &&resp.data[name] !=''){
+						    if(resp.data[name] !=''&&this.tagName == 'p'){
 						        $(this).text(resp.data[name]);
+						    }else if(resp.data[name] !=''&&this.tagName == 'input'){
+						    	$(this).value(resp.data[name]);
 						    }
 						});
-				   		// $('#myModal').modal();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert(resp.msg);
@@ -217,7 +219,7 @@
 		        },
 		        success:function(resp){
 		            if (resp.code == "1" ) {
-		            	ui_alert("支付成功","success");
+		            	ui_alert("审核通过","success");
 		            	window.location.reload();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
