@@ -209,6 +209,12 @@ class examine extends Admin {
 
 			$repay_info = db('order_repay')->where('order_id', $order_info['sn'])->find();
 
+			$examine_log  =db('examine_log')->where('record_id',$id)->select();
+
+			foreach ($examine_log as $k => $v) {
+				$examine_log[$k]['params'] = unserialize($v['param']);
+			}
+			// var_dump($examine_log);die;
 
 			$fileFilter['order_id'] = $id;
 
@@ -227,6 +233,8 @@ class examine extends Admin {
 				'repay_info' => $repay_info,//还款信息
 
 				'files'   => $files,//附件资料
+
+				'examine_log'   => $examine_log,//审核历史
 
 				);
 
