@@ -114,17 +114,18 @@ class Order extends \app\common\model\Base {
 	public function add_order($uid, $data){
 		$dealer_mobile = db('member')->alias('m')->field('d.mobile')->join('dealer d','d.invite_code = m.invite_code')->where('m.uid',$uid)->find();
 		$mid = db('member')->field('uid')->where('mobile',$dealer_mobile['mobile'])->find();
-		$orderid = $this->build_order_sn();
+		$order_sn = $this->build_order_sn();
 		$data =array(
 			'uid'=>$uid,
 			'mid'=>$mid['uid'],
 			'mobile'=>$data['mobile'],
 			'loan_limit'=>$data['price'],
-			'sn' =>$orderid
+			'sn' =>$order_sn
 			);
 		// var_dump($data);die;
 		$result = $this->allowField(true)->save($data);
-		return $orderid;
+		
+		return $this->id;
 	}
 	//保存订单
 	public function save_order($uid, $data){
