@@ -63,6 +63,7 @@ CREATE TABLE `gemini_carry` (
   `serial_num` varchar(255) DEFAULT '0' COMMENT '提现银行流水',
   `descr` varchar(255) NOT NULL DEFAULT '0' COMMENT '提现备注',
   `actual_amount` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '提现到账金额',
+  `platform_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '平台账户',
   PRIMARY KEY (`sn`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='提现表';
@@ -99,6 +100,11 @@ CREATE TABLE `gemini_order_repay` (
   `loantime` int(11) NOT NULL COMMENT '还款期限',
   `repay_period` tinyint(2) DEFAULT '0' COMMENT '还款期数',
   `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '回款备注',
+  `dealer_bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方账户',
+  `dealer_bank` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方开户银行',
+  `dealer_bank_branch` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方开户网点',
+  `serial_num` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方流水号',
+  `platform_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '平台账户',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='还款记录表';
 
