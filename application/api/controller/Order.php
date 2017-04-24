@@ -160,6 +160,7 @@ class Order extends Api {
 		// var_dump($_POST);die;
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
+		// echo $role;die;
 		// var_dump($_SESSION);die;
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
@@ -185,10 +186,17 @@ class Order extends Api {
 		$filter['order_id'] = $info['id'];
 		$filter['status'] = 1;//有效文件
 		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->limit(100)->select();
+
+		$result = db('member')->field('realname,mobile')->where('uid',$info['uid'])->find();
+		$result_one = db('dealer')->alias('d')->join('__MEMBER__ m','m.mobile = d.mobile')->field('name')->where('m.uid',$info['mid'])->find();
+		$result['dealer_name'] = $result_one['name'];
+		// var_dump($result);die;
 		$data = array(
 				'info'    => $info,
 				'files'   => $files,
+				'result' => $result
 		);
+
 		if ($data) {
 			$resp['code'] = 1;
 			$resp['msg'] = '获取成功!';
