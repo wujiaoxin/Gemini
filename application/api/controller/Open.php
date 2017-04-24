@@ -112,6 +112,10 @@ class Open extends Base {
 		return view();
 	}
 	
+	public function appdl() {
+		return view();
+	}
+	
 
 	
 }
