@@ -29,13 +29,13 @@ alter table gemini_order  add credit_status int(11) DEFAULT 0  COMMENT '授信�
 
 DROP TABLE IF EXISTS `gemini_recharge`;
 CREATE TABLE `gemini_recharge` (
-  `uid` int(11) NOT NULL COMMENT '充值商户id',
+ `uid` int(11) NOT NULL COMMENT '充值商户id',
   `sn` varchar(255) NOT NULL COMMENT '充值订单号',
   `status` int(1) NOT NULL DEFAULT '0' COMMENT '是否充值:0审核失败,1已充值,-1审核中',
   `money` int(11) NOT NULL COMMENT '充值金额',
   `pay_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付方式',
   `create_time` int(11) NOT NULL COMMENT '充值创建时间',
-  `bank_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
+  `dealer_bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户（车商）',
   `descr` varchar(255) NOT NULL COMMENT '充值备注',
   `recharge_type` tinyint(3) NOT NULL DEFAULT '1' COMMENT '充值方式:1线下充值',
   `platform_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '平台账户',
@@ -43,6 +43,8 @@ CREATE TABLE `gemini_recharge` (
   `actual_amount` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '到账金额',
   `fee` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '手续费',
   `fee_bear` varchar(255) NOT NULL DEFAULT '0' COMMENT '手续费承担方',
+  `dealer_bank` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户银行（车商）',
+  `dealer_bank_branch` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户网点（车商）',
   PRIMARY KEY (`sn`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='充值记录表';
@@ -60,6 +62,7 @@ CREATE TABLE `gemini_carry` (
   `fee` int(11) DEFAULT '0' COMMENT '提现费用',
   `serial_num` varchar(255) DEFAULT '0' COMMENT '提现银行流水',
   `descr` varchar(255) NOT NULL DEFAULT '0' COMMENT '提现备注',
+  `actual_amount` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '提现到账金额',
   PRIMARY KEY (`sn`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='提现表';
