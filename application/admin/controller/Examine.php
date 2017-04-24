@@ -78,7 +78,7 @@ class examine extends Admin {
 		
 		$this->setMeta('资料复核');
 
-		return $this->fetch();
+		return $this->fetch('dataReview');
 	}
 
 	public function loanLimit() {
@@ -142,7 +142,7 @@ class examine extends Admin {
 
 		$this->setMeta('借款额度审批');
 
-		return $this->fetch();
+		return $this->fetch('loanLimit');
 	}
 
 
