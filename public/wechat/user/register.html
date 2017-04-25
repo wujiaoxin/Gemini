@@ -13,7 +13,6 @@
     <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all">
 </head>
 <body>
-    
     <div class="views">
         <div class="view view-main">
             <div class="navbar wb">
@@ -23,7 +22,7 @@
                             <i class="icon icon-back color-orange"></i>
                         </a>
                     </div>
-                    <div class="center">用户注册</div>
+                    <div class="center">员工注册</div>
                 </div>
             </div>
             <div class="pages navbar-through">
@@ -81,9 +80,6 @@
                                 <a id="submit" class="button button-fill button-big color-orange" onclick="return doDealerRegisterPost();">注册</a>
                                 <a class="button button-big color-orange mt15" href="javascript:goToUrl(wechatStaticPath + '/user/login.html');">我已有账号，直接登录</a>
                             </div>
-                            <div class="content-block">
-                                
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -99,25 +95,30 @@
     <div id="loading"></div>
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>    
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
     <script type="text/javascript" src="/public/wap/js/md5.js"></script>
     <script type="text/javascript" src="/public/wap/js/user.js"></script>
     <script type="text/javascript">
         ajax_jquery({
             url: apiUrl + '/api/session/create',
             data: {
-                'client':'wechat' 
+                'client':'wechat'
             },
-            success: function(resp) { 
+            success: function(resp) {
                 if(resp.code == 1){
                     localStorage.setItem('sid', resp.data.sid);
                 }else{
                     if (typeof(resp.msg) == 'string') {
                         ui_alert(resp.msg);
-                    }  
+                    }
                 }
             }
-        }); 
+        });
+
+        var authcode = getUrlParam('authcode');
+        if(typeof authcode =='string'){
+            $('#authcode').val(authcode);
+        }
     </script>
 </body>
 </html>

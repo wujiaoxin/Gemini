@@ -53,7 +53,7 @@ function doLoginPost(){
                 } else {
 					if (typeof(resp.msg) == 'string') {
 						ui_alert(resp.msg);
-					}                 
+					}
                 }
             }
         });
@@ -143,12 +143,12 @@ function doRegisterPost() {
             success: function (resp) {
 				if(resp.code == 1){
 					ui_alert("注册成功!", function () {
-                         window.location.href = '/mobile' ;            
+                         window.location.href = '/mobile' ;
                      });
 				}else{
 					if (typeof(resp.msg) == 'string') {
 						ui_alert(resp.msg);
-					}  
+					}
 				}
             }
         });
@@ -286,20 +286,20 @@ function sendSmsCode(send_code, type) {
             "send_code": send_code,
             "send_type": type
         };
-		
+
 		if (type == "voice") {					//TODO:record phone num
 			 ui_alert("请稍后再试或联系客服");
 			 return;
-		}		
-		
+		}
+
         ajax_jquery({
             url: '/mobile/open/sendSmsCode?t=' + Math.random(),
             data: param,
-            success: function (resp) {            
+            success: function (resp) {
                 if (resp.code == "1") {
                     if (type == "voice") {
                         ui_alert('验证码将以电话形式通知到您，请注意接听', null, '获取语音验证码');
-                    } else if (type == "sms") {  
+                    } else if (type == "sms") {
                     	//$(".none-box").show();
                     	//$(".is_realname").val(1);
                         settime();
@@ -328,7 +328,7 @@ function doDealerRegisterPost() {
     var authcode = $.trim($('#authcode').val());
     var smsverify = $.trim($("#smsVerify").val());
     var password = $("#password").val();
-    
+
     if (mobile == "") {
         ui_alert("请输入手机号!");
     } else if (!validatePhoneNumber(mobile)) {
@@ -358,7 +358,7 @@ function doDealerRegisterPost() {
             success: function (resp) {
                 if(resp.code == 1){
                     ui_alert("注册成功!", function () {
-                         window.location.href = '/mobile/index/indexDealer' ;            
+                         window.location.href = wechatStaticPath + '/user/login.html';
                     });
                 }else{
                     if (typeof(resp.msg) == 'string') {
@@ -458,7 +458,7 @@ function doResetDealerPassword() {
             success: function (resp) {
                 if (resp.code == "1") {
                     ui_alert("修改成功", function () {
-                        window.location.href = wechatStaticPath + '/user/login';
+                        window.location.href = wechatStaticPath + '/user/login.html';
                     });
                 } else {
                     if (typeof(resp.msg) == 'string') {
@@ -491,8 +491,8 @@ function doEditpwdDealer() {
     }else{
         var param = {
             "token": token,
-            "oldpassword": oldPasswd,
-            "password": newPasswd
+            "oldPassword": oldPasswd,
+            "newPassword": newPasswd
         };
         $("#editpwd").attr("disabled", "disabled");
         ajax_jquery({
@@ -501,7 +501,7 @@ function doEditpwdDealer() {
             success: function (resp) {
                if (resp.code == "1") {
                     ui_alert("修改成功", function () {
-                        window.location.href = '/mobile/user/loginDealer';
+                        window.location.href = wechatStaticPath + "/user/personalCenter.html";
                     });
                 } else {
                     if (typeof(resp.msg) == 'string') {
