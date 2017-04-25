@@ -68,7 +68,7 @@
 				    </div>
 				    <label class="col-sm-2 control-label">手续费</label>
 				    <div class="col-sm-4">
-				      	<p class="form-control-static item-info" id="fee"></p>
+				      	<p class="form-control-static item-info" id="manage_money"></p>
 				    </div>
 			  	</div>
 			  	<div class="form-group">
@@ -145,11 +145,11 @@
 		  		+'<td>'+ data[index].dealer_name +'</td>'
 		  		+'<td>'+ data[index].id +'</td>'
 		  		+'<td>￥'+ data[index].repay_money +'</td>'
-		  		+'<td>￥'+ data[index].actual_money +'</td>'
-		  		+'<td>￥'+ data[index].fee +'</td>'
+		  		+'<td>￥'+ data[index].true_repay_money +'</td>'
+		  		+'<td>￥'+ data[index].manage_money +'</td>'
 		  		+'<td>'+ '无' +'</td>'
 		  		+'<td>'+ '线下转账' +'</td>'
-		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ g_repayStatus[data[index].status] +'</td>'
 		  		+'<td>'+ data[index].descr +'</td>'
 		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].id+'">审核</a></td>'
 		  		 +'</tr>'
@@ -174,13 +174,17 @@
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
 							var name = $(this).attr('id');
-						    if(resp.data[name] !=''&&this.tagName == 'p'){
+						    if(resp.data[name] !='' && this.tagName == 'P'){
 						        $(this).text(resp.data[name]);
-						    }else if(resp.data[name] !=''&&this.tagName == 'input'){
+						        console.log(this)
+						    }else if(resp.data[name] !='' && this.tagName == 'Input'){
 						    	$(this).value(resp.data[name]);
 						    }
+						    if(name == 'create_time'){
+						    	$(this).text(formatDate(resp.data[name]));
+						    }
 						});
-				   		// $('#myModal').modal();
+				   		$('#myModal').modal();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert(resp.msg);
@@ -189,7 +193,6 @@
 		            }
 		        }
 			});
-			$('#myModal').modal();
 	   	});
 
 	   	$('#examineBtn').click(function(){

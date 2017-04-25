@@ -75,7 +75,7 @@
 			      	<p class="form-control-static item-info" id="create_time"></p>
 			    </div>
 			    <label class="col-sm-2 control-label">提现账户</label>
-			    <div class="col-sm-4 pt5">
+			    <div class="col-sm-4">
 			      	<p class="form-control-static item-info" id="bank_account"></p>
 			    </div>
 		  	</div>
@@ -145,7 +145,7 @@
 		  		+'<td>'+ data[index].dealer_name +'</td>'
 		  		+'<td>￥'+ data[index].money +'</td>'
 		  		+'<td>￥'+ data[index].actual_amount +'</td>'
-		  		+'<td>'+ data[index].fee +'</td>'
+		  		+'<td>￥'+ data[index].fee +'</td>'
 		  		+'<td>'+ '无' +'</td>'
 		  		+'<td>'+ '线下转账' +'</td>'
 		  		+'<td>'+ g_examineStatus[data[index].status] +'</td>'
@@ -173,13 +173,13 @@
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
 							var name = $(this).attr('id');
-						    if(resp.data[name] !=''&&this.tagName == 'p'){
+						    if(resp.data[name] !=''&&this.tagName == 'P'){
 						        $(this).text(resp.data[name]);
-						    }else if(resp.data[name] !=''&&this.tagName == 'input'){
+						    }else if(resp.data[name] !=''&&this.tagName == 'Input'){
 						    	$(this).value(resp.data[name]);
 						    }
 						});
-				   		// $('#myModal').modal();
+				   		$('#myModal').modal();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert(resp.msg);
@@ -188,7 +188,6 @@
 		            }
 		        }
 			});
-			$('#myModal').modal();
 	   	});
 
 	   	$('#examineBtn').click(function(){
