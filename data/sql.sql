@@ -280,7 +280,7 @@ INSERT INTO `gemini_auth_group` VALUES ('3', 'admin', '', '风控审核专员', 
 INSERT INTO `gemini_auth_group` VALUES ('4', 'admin', '', 'VP贷财务经理', '财务审核', '1', '39,38,35,34,1');
 INSERT INTO `gemini_auth_group` VALUES ('5', 'admin', '', 'VP贷财务出纳', '财务出纳', '1', '39,38,35,34,1');
 INSERT INTO `gemini_auth_group` VALUES ('6', 'admin', '', '资方联系专员', '合作资金方', '1', '39,38,35,34,1');
-INSERT INTO `gemini_auth_group` VALUES ('7', 'admin', '', '车商', '车商企业', '1', '');
+INSERT INTO `gemini_auth_group` VALUES ('7', 'admin', '', '车商管理员', '车商企业', '1', '');
 INSERT INTO `gemini_auth_group` VALUES ('8', 'admin', '', '车商财务', '车商财务员工', '1', '');
 
 -- ----------------------------
