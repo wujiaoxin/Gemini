@@ -54,9 +54,10 @@ class Open extends Base {
 				"msg": "获取成功！",
 				"data": {
 					"android": {
-						"version": "1.0.0",
+						"versioncode": 2,
+						"versionname": "1.0.1",
 						"log": "1.更新了XXX功能；2.修复了XXX问题",
-						"url": "https://www.vpdai.com/public/apk/1.apk",
+						"url": "https://www.vpdai.com/public/apk/2.apk",
 						"updatetime": 1493027758
 					},
 					"indeximg": {
