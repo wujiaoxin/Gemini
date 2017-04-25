@@ -179,6 +179,9 @@
 						    }else if(resp.data[name] !=''&&this.tagName == 'Input'){
 						    	$(this).value(resp.data[name]);
 						    }
+						    if(name == 'create_time'){
+						    	$(this).text(formatDate(resp.data[name]));
+						    }
 						});
 						$('#myModal').modal();
 		            } else {

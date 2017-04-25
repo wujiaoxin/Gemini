@@ -206,7 +206,7 @@
 	}
 	jQuery(document).ready(function(){
 		$('#totalAccount').text(formatAmount(info['money']));
-		$('#availableAssets').text(formatAmount(info['money_jk']));
+		$('#availableAssets').text(formatAmount(info['available_money']));
 		$('#pendingAssets').text(formatAmount(info['repay_money']));
 		ajaxBalance('1','0','');
 		ajaxBalance('2','0','');
