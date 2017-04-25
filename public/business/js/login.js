@@ -151,7 +151,8 @@ var Login = function () {
 		            data:{
 		            	"mobile": username,
 		            	"password": password,
-		            	"smsverify": smsverify
+		            	"smsverify": smsverify,
+						"authcode":"dealer"
 		            },
 		            success:function(resp){
 		                if (resp.code == "1" ) {

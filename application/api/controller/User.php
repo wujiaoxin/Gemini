@@ -26,29 +26,32 @@ class User extends Api {
 		$storeSmsCode = session('smsCode');
 		
 		$dealer_id = null;
+		$access_group_id = 0;//C端客户
 		
 		if(!empty($authcode)){
-			$dealerInfo = db('Dealer')->field('id,name')->where('invite_code',$authcode)->where('status',1)->find();
-			if($dealerInfo == null){
-					$resp["code"] = 0;
-					$resp["msg"] = '车商邀请码有误！';
-					return json($resp);
+			if($authcode == "dealer"){
+				$access_group_id = 7;//车商管理员
 			}else{
-				$dealer_id = $dealerInfo["id"];
-				//TODO:roleid
+				$dealerInfo = db('Dealer')->field('id,name')->where('invite_code',$authcode)->where('status',1)->find();
+				if($dealerInfo == null){
+						$resp["code"] = 0;
+						$resp["msg"] = '车商邀请码有误！';
+						return json($resp);
+				}else{
+					$dealer_id = $dealerInfo["id"];
+					$access_group_id = 1;//车商员工
+					//TODO:roleid
+				}
 			}
 		}
-
 
 		if($mobile != $storeMobile || $smsverify != $storeSmsCode){
 			return ['code'=>1005,'msg'=>'短信验证码错误'];
 		}
 		
-
-		
 		$uid = $model->registerByMobile($mobile, $password, $password, false);
 		if (0 < $uid) {
-			$userinfo = array('nickname' => $mobile,'dealer_id' => $dealer_id,'invite_code' => $invitecode, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
+			$userinfo = array('nickname' => $mobile,'realname' => "未实名",'dealer_id' => $dealer_id,'access_group_id' => $access_group_id,'invite_code' => $invitecode, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
 			if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 				$resp["code"] = 0;
 				$resp["msg"] = '注册失败';
