@@ -267,7 +267,6 @@ class Finance extends Admin {
 
 				$sercher = serch_name($result['uid']);
 				// var_dump($result);die;
-
 				$result['dealer_name'] = $sercher['dealer_name'];
 
 				$resp['code'] = 1;
