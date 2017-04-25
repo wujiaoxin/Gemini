@@ -26,11 +26,19 @@ class User extends Api {
 		$storeSmsCode = session('smsCode');
 		
 		$dealer_id = null;
-		//TODO:$authcode TO DEALER_ID
-		if(!empty($authcode)){
-			$dealer_id = 1;
-		}
 		
+		if(!empty($authcode)){
+			$dealerInfo = db('Dealer')->field('id,name')->where('invite_code',$authcode)->where('status',1)->find();
+			if($dealerInfo == null){
+					$resp["code"] = 0;
+					$resp["msg"] = '车商邀请码有误！';
+					return json($resp);
+			}else{
+				$dealer_id = $dealerInfo["id"];
+				//TODO:roleid
+			}
+		}
+
 
 		if($mobile != $storeMobile || $smsverify != $storeSmsCode){
 			return ['code'=>1005,'msg'=>'短信验证码错误'];
