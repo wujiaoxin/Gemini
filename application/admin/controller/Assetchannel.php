@@ -24,11 +24,19 @@ class assetchannel extends Admin {
 			}
 		}
 		$order = "id desc";
-		$list  = db('Dealer')->where($map)->order($order)->paginate(10);
-
+		// $list  = db('Dealer')->where($map)->order($order)->paginate(10);
+		$list  = db('Dealer')->where($map)->order($order)->select();
+		foreach ($list as $k => $v) {
+			$list[$k]['qrcode_url'] = 'https://pan.baidu.com/share/qrcode?w=512&h=512&url='.url("/public/wechat/user/register").'?authcode='.$v['invite_code'];
+		}
+		// var_dump($list);die;
+		$result =array(
+			'data' =>$list,
+			);
 		$data = array(
-			'infoStr' =>json_encode($list),
+			'infoStr' =>json_encode($result),
 		);
+		// var_dump($data);die;
 		$this->assign($data);
 		$this->setMeta("资产渠道");
 		return $this->fetch('');
@@ -39,7 +47,7 @@ class assetchannel extends Admin {
 		$link = model('Dealer');
 		if (IS_POST) {
 			$data = input('post.');
-			var_dump($data);die;
+			// var_dump($data);die;
 			$uid = session('user_auth.uid');
 			if($uid > 0){
 				$data['uid'] = $uid;

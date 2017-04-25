@@ -292,6 +292,8 @@ class Account extends Baseness {
 		$mobile = session('mobile');
 		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic,dealer_lic_pic,invite_code')->where('mobile',$mobile)->find();
 		if($deals){
+			$deals['qrcode_url'] = 'https://pan.baidu.com/share/qrcode?w=512&h=512&url='.url("/public/wechat/user/register").'?authcode='.$deals['invite_code'];
+			// var_dump($deals);die;
 			$data['code'] = '1';
 			$data['info']=$deals;
 			$data['infoStr'] = json_encode($deals);
