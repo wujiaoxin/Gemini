@@ -24,14 +24,23 @@ class User extends Api {
 		}
 		$storeMobile = session('mobile');
 		$storeSmsCode = session('smsCode');
+		
+		$dealer_id = null;
+		//TODO:$authcode TO DEALER_ID
+		if(!empty($authcode)){
+			$dealer_id = 1;
+		}
+		
 
 		if($mobile != $storeMobile || $smsverify != $storeSmsCode){
 			return ['code'=>1005,'msg'=>'短信验证码错误'];
 		}
 		
+
+		
 		$uid = $model->registerByMobile($mobile, $password, $password, false);
 		if (0 < $uid) {
-			$userinfo = array('nickname' => $mobile, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
+			$userinfo = array('nickname' => $mobile,'dealer_id' => $dealer_id,'invite_code' => $invitecode, 'status' => 1, 'reg_time' => time(), 'last_login_time' => time(), 'last_login_ip' => get_client_ip(1));
 			if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 				$resp["code"] = 0;
 				$resp["msg"] = '注册失败';
