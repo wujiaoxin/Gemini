@@ -169,20 +169,20 @@ class assetchannel extends Admin {
 
 	// 新增员工
 	public function addStaff(){
-		// var_dump($GLOBALS);die;
+
 		if (IS_POST){
+
 			$data = input('post.');
-			// var_dump($data);die;
+
 			if ($data) {
-				// $invit = db('Dealer')->alias('d')->field('d.invite_code')->join('__MEMBER__ m','m.mobile = d.mobile')->where('uid',$data['id'])->find();
-				$invit =db('Dealer')->field('invite_code')->where('id',$data['id'])->find();
-				// var_dump($invit);die;
-				// $data = $this->request->param();
+				
+				$invit = db('Dealer')->alias('d')->field('d.invite_code,d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
 				$user = model('User');
+
 				//创建注册用户
-				// var_dump($data);die;
+
 				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
-				// echo $uid;die;
+
 				if ($uid > 0) {
 					$userinfo['realname'] = $data['name'];
 					$userinfo['nickname'] = $data['name'];
@@ -194,6 +194,7 @@ class assetchannel extends Admin {
 					$userinfo['tel'] = $data['telphone'];
 					$userinfo['reg_time'] = time();
 					$userinfo['last_login_ip'] = get_client_ip(1);
+					$userinfo['dealer_id'] = $invit['id'];
 					//保存信息
 					if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 						$resp["code"] = 0;

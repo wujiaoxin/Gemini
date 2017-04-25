@@ -83,16 +83,12 @@ use app\business\controller\Baseness;
 	 * 商户新增员工接口
 	 * */
 	public function addStaff(){
-		// var_dump($GLOBALS);die;
 		if (IS_POST){
 			$data = input('post.');
-			// var_dump($data);die;
 			if ($data) {
-				$invit = db('Dealer')->alias('d')->field('d.invite_code')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
-				// $data = $this->request->param();
+				$invit = db('Dealer')->alias('d')->field('d.invite_code,d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
 				$user = model('User');
 				//创建注册用户
-				// var_dump($data);die;
 				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
 				// echo $uid;die;
 				if ($uid > 0) {
@@ -106,6 +102,7 @@ use app\business\controller\Baseness;
 					$userinfo['tel'] = $data['telphone'];
 					$userinfo['reg_time'] = time();
 					$userinfo['last_login_ip'] = get_client_ip(1);
+					$userinfo['dealer_id'] = $invit['id'];
 					//保存信息
 					if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 						$resp["code"] = 0;
