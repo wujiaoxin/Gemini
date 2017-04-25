@@ -216,7 +216,7 @@
         // 借款中的订单
         $order_loan = db('order')->where('mid',$uid)->count('id');
         //还款中的订单
-        $order_repay = db('order_repay')->where('mid',$uid)->count('id');
+        $order_repay = db('order_repay')->where('mid',$uid)->where('status','-1')->count('id');
         $data = array(
           'available_money'=>$money,
           'loan_money'=>$money_jk,
