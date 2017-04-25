@@ -203,8 +203,9 @@
       //借款金额（记录为状态未审核通过）
         $where = array(
             'mid'=>$uid,
-            'status'=>'1'
           );
+        $name = '3,4,5';
+        $where['status'] = array('IN',$name);
         $money_jk = db('order')->where($where)->sum('loan_limit');
       //待还资金
         $where_repay = array(
