@@ -172,7 +172,7 @@ class User extends Api {
 			return $resp;
 		}
 		
-		$needImgVerify = session('needImgVerify');
+		/*$needImgVerify = session('needImgVerify');
 		if($needImgVerify == 1 ){
 			if($imgverify == null){
 				session('needImgVerify', 1);
@@ -187,7 +187,7 @@ class User extends Api {
 					return $resp;
 				}
 			}
-		}
+		}*/
 		
 		$lastSmsSendTime = session('lastSmsSendTime');
 		if($lastSmsSendTime != null){

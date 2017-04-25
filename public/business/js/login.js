@@ -238,8 +238,10 @@ var Login = function () {
 	                    ui_alert("alert-success","验证码发送成功,请注意查收");
 	                } else {
 	                    if(resp.code == "-2" || resp.code == "1001"){
-	                        isimgverify = 1;
+	                        isimgverify = 1;							
+							$("#regImgVerifyPic").attr("src",apiUrl + "/api/user/getImgVerify?sid=" + localStorage.sid + "&random=" + Math.random());
 	                        $(".rvalicode-cont").show();
+							
 	                    }else {
 	                        isimgverify = 0;
 	                        $(".rvalicode-cont").hide();
@@ -262,7 +264,7 @@ var Login = function () {
 	    var verify=$(id).attr('src');
 	    if(verify){
 	        var verifyUrl= verify.split('?');
-	        $(id).attr('src', verifyUrl[0] + '?' + Math.random());
+	        $(id).attr('src', verifyUrl[0] + '?'+ 'sid=' + localStorage.sid +'&random = ' + Math.random());
 	    }
 	}
 
