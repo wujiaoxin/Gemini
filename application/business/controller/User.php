@@ -182,7 +182,7 @@ use app\business\controller\Baseness;
 	    			$map['status'] = $data['status'];
 	    		}
 			}
-
+			$map['credit_status'] = '3';
 			if ($data['dateRange']) {
 				// echo $data['dateRange'];die;
 				$result = to_datetime($data['dateRange']);

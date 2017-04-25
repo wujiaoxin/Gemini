@@ -96,13 +96,14 @@ class Order extends Api {
 	}
 
 	
-	public function getQRCode($type = null, $mobile = null, $price = null) {
+	public function getQRCode($id = null, $mobile = null, $price = null) {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 		$orderModel = model('Order');
-		$result = input('post.');
+		//$result = input('post.');
 		// var_dump($result);die;
-		$data["url"] = "https://t.vpdai.com/api/open/appdl?mobile=".$result['mobile']."&order_id=".$result['id']."&from=order&price=".$result['price'];
+		$data["url"] = "https://t.vpdai.com/api/open/appdl?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
+		$data["url"] = urlencode($data["url"]);
 		$data["url"] = "https://pan.baidu.com/share/qrcode?w=512&h=512&url=".$data['url'];
 		$resp['code'] = 1;
 		$resp['msg'] = '获取成功';
