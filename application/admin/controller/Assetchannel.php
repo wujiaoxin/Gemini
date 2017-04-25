@@ -179,12 +179,10 @@ class assetchannel extends Admin {
 		if (IS_POST){
 
 			$data = input('post.');
-
+			// var_dump($data);die;
 			if ($data) {
-
-				$invit = db('Dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
+				
 				$user = model('User');
-
 				//创建注册用户
 
 				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
@@ -199,7 +197,7 @@ class assetchannel extends Admin {
 					$userinfo['tel'] = $data['telphone'];
 					$userinfo['reg_time'] = time();
 					$userinfo['last_login_ip'] = get_client_ip(1);
-					$userinfo['dealer_id'] = $invit['id'];
+					$userinfo['dealer_id'] = $data['id'];
 					//保存信息
 					if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 						$resp["code"] = 0;
