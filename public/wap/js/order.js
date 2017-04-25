@@ -19,7 +19,6 @@ function hideOrder(id,type){
     },function () {
         return false;
     });
-	
 }
 
 //身份证识别
@@ -84,12 +83,12 @@ function examine(id){
         success: function (resp) {
             if(resp.code == 1){
                 ui_alert("提交成功!", function () {
-                     window.location.href = '/mobile/order' ;            
+                     window.location.href = '/mobile/order' ;
                  });
             }else{
                 if (typeof(resp.msg) == 'string') {
                     ui_alert(resp.msg);
-                }  
+                }
             }
         }
     })
@@ -108,7 +107,13 @@ function getOrderTotal(type,status){
             if(resp.code == 1){
                 data = resp.data.total;
             }else{
-                data = '-1';
+                if(resp.code == '-1' || resp.code == '-3'){
+                    window.location.href = wechatStaticPath + "/user/login.html";
+                }else{
+                    ui_alert(resp.msg);
+                    data = '-1';
+                }
+
             }
         }
     });
