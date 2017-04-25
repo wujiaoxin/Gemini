@@ -15,7 +15,6 @@ class Account extends Baseness {
 	public function index() {
 		if (IS_POST) {
 			$data = input('post.');
-	      	// var_dump($data);die;
 	      	$mobile = session("mobile");
 			if (isset($data['smsVerify'])) {
 				$storeSmsCode = session('smsCode');
@@ -78,7 +77,6 @@ class Account extends Baseness {
 	          		'info'=>$account,
 	          		'infoStr'=>json_encode($account)
 	          	);
-	            // var_dump($data);die;
 	            $this->assign($data);
 	      	} else{
 		        $data['code'] = '1';
@@ -94,7 +92,6 @@ class Account extends Baseness {
 	    $uid = session('user_auth.uid');
 	    if (IS_POST) {
 	    	$data = input('post.');
-	    	// var_dump($data);die;
 	    	$map['uid'] = $uid;
 	    	if (isset($data['status'])) {
 	    		if ($data['status'] != '') {
@@ -140,7 +137,6 @@ class Account extends Baseness {
 					$resp['msg'] = '未查到数据';
 				}
 	    	}
-	    	// var_dump($resp);die;
 			return json($resp);
 	    	
 	    }else{
@@ -150,7 +146,6 @@ class Account extends Baseness {
 	          'info' => $info,
 	          'infoStr'=>json_encode($info)
 	        );
-	      // var_dump($data);die;
 	      $this->assign($data);
 	      return $this->fetch();
 	    }
@@ -168,7 +163,6 @@ class Account extends Baseness {
 				//加入资金记录
 				money_record($data, $uid, 3, 0);
 			    $resp = modify_account($data,$uid,'recharge','INSERT');
-			    // var_dump($resp);die;
 			    return json($resp);
 			}
 		}else{
@@ -208,9 +202,7 @@ class Account extends Baseness {
 			    'mid'=>$uid,
 			    'finance'=>'2'
 			  );
-			// var_dump($map);die;
 			$orders =db('order')->where($map)->select();
-			// var_dump($orders);die;
 			foreach ($orders as $k => $v) {
 			    $orders[$k]['realname'] = serch_real($v['uid']);
 			}
@@ -222,7 +214,6 @@ class Account extends Baseness {
 			    'info'    => $info,
 			    'infoStr' => json_encode($info),
 			);
-			// var_dump($data);die;
 			$this->assign($data);
 			return $this->fetch();
 		}
@@ -236,7 +227,6 @@ class Account extends Baseness {
 				'info'=>$bankcard,
 				'infoStr'=>json_encode($bankcard)
 			);
-		// var_dump($data);die;
 		$this->assign($data);
 		return $this->fetch();
 	}
@@ -244,7 +234,6 @@ class Account extends Baseness {
 		$uid = session('user_auth.uid');
 		if (IS_POST) {
 			$data = input('post.');
-			// var_dump($data);die;
 			$map['uid']=$uid;
 			if ($data['type']) {
 				$map['type'] = $data['type'];
@@ -257,7 +246,6 @@ class Account extends Baseness {
 			}else{
 				$info = db('dealer_money')->where($map)->order('id DESC')->select();
 			}
-			// var_dump($info);die;
 			if ($info) {
 				$resp['code'] = '1';
 				$resp['msg'] = 'OK';
@@ -313,15 +301,6 @@ class Account extends Baseness {
 		return $this->fetch();
   	}
 	public function message() {
-		/*$password = '011316';
-		$mobile = session('mobile');
-		$user = db('member')->where('mobile',$mobile)->find();
-		// echo $user['paypassword'].'<br>';
-		// echo md5($password.$mobile);
-		// die;
-		if(md5($password.$user['mobile']) === $user['paypassword']){
-		    // echo 111;die;
-		}*/
 		return $this->fetch();
 	}
 }

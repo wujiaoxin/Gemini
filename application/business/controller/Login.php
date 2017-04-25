@@ -20,7 +20,12 @@ class Login extends Base {
 				$resp["msg"] = '用户名或者密码不能为空！';
 				return json($resp);
 			}
-
+			$success = db('member')->field('access_group_id')->where('mobile',$mobile)->find();
+			if ($success['access_group_id'] != '7') {
+				$resp["code"] = 0;
+				$resp["msg"] = '没有权限登陆此后台！';
+				return json($resp);
+			}
 			$user = model('User');
 			$uid  = $user->login($mobile, $password);
 
@@ -44,8 +49,8 @@ class Login extends Base {
 				return json($resp);
 			}
 		} else {
-			$is_success = db('dealer')->field('bank_account_id')->where('mobile',$mobile)->find();
-			if ($is_success['bank_account_id']){
+			$is_success = db('dealer')->field('status')->where('mobile',$mobile)->find();
+			if ($is_success['status'] != '1'){
 				return $this->redirect("/business/user/guide");
 			}
 			return $this->fetch();
@@ -61,7 +66,6 @@ class Login extends Base {
 	public function waiting(){
 		$mobile = session('mobile');
 		$status = db('dealer')->field('status')->where('mobile',$mobile)->find();
-		// var_dump($status);die;
 		if ($status['status'] == '1') {
 			$this->redirect(url('index/index'));
 		}else{

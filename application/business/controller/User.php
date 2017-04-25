@@ -49,7 +49,7 @@ use app\business\controller\Baseness;
 	public function myStaff() {
 		//商家员工
 		$uid = session('user_auth.uid');
-		$members = db('member')->alias('m')->join('__DEALER__ d','m.invite_code = d.invite_code')->field("m.uid,m.realname,m.mobile,m.reg_time,m.status,m.access_group_id")->select();
+		$members = db('member')->alias('m')->join('__DEALER__ d','m.dealer_id = d.id')->field("m.uid,m.realname,m.mobile,m.reg_time,m.status,m.access_group_id")->select();
 		$data = array(
 				'info'    => $members,
 				'infoStr' => json_encode($members),
@@ -83,16 +83,12 @@ use app\business\controller\Baseness;
 	 * 商户新增员工接口
 	 * */
 	public function addStaff(){
-		// var_dump($GLOBALS);die;
 		if (IS_POST){
 			$data = input('post.');
-			// var_dump($data);die;
 			if ($data) {
-				$invit = db('Dealer')->alias('d')->field('d.invite_code')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
-				// $data = $this->request->param();
+				$invit = db('Dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
 				$user = model('User');
 				//创建注册用户
-				// var_dump($data);die;
 				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
 				// echo $uid;die;
 				if ($uid > 0) {
@@ -100,12 +96,12 @@ use app\business\controller\Baseness;
 					$userinfo['nickname'] = $data['name'];
 					$userinfo['mobile'] = $data['mobile'];
 					$userinfo['status'] = 1;
-					$userinfo['invite_code'] = $invit['invite_code'];
 					$userinfo['access_group_id'] = $data['job'];
 					$userinfo['desc'] = $data['remark'];
 					$userinfo['tel'] = $data['telphone'];
 					$userinfo['reg_time'] = time();
 					$userinfo['last_login_ip'] = get_client_ip(1);
+					$userinfo['dealer_id'] = $invit['id'];
 					//保存信息
 					if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 						$resp["code"] = 0;

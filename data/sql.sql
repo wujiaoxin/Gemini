@@ -280,7 +280,7 @@ INSERT INTO `gemini_auth_group` VALUES ('3', 'admin', '', '风控审核专员', 
 INSERT INTO `gemini_auth_group` VALUES ('4', 'admin', '', 'VP贷财务经理', '财务审核', '1', '39,38,35,34,1');
 INSERT INTO `gemini_auth_group` VALUES ('5', 'admin', '', 'VP贷财务出纳', '财务出纳', '1', '39,38,35,34,1');
 INSERT INTO `gemini_auth_group` VALUES ('6', 'admin', '', '资方联系专员', '合作资金方', '1', '39,38,35,34,1');
-INSERT INTO `gemini_auth_group` VALUES ('7', 'admin', '', '车商', '车商企业', '1', '');
+INSERT INTO `gemini_auth_group` VALUES ('7', 'admin', '', '车商管理员', '车商企业', '1', '');
 INSERT INTO `gemini_auth_group` VALUES ('8', 'admin', '', '车商财务', '车商财务员工', '1', '');
 
 -- ----------------------------
@@ -1224,7 +1224,7 @@ CREATE TABLE `gemini_member` (
   `wechat` char(32) NOT NULL DEFAULT '' COMMENT '微信号',
   `openid` varchar(50) DEFAULT NULL COMMENT '微信第三方ID',
   `access_group_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '用户组id',
-  `invite_code` varchar(32) NOT NULL DEFAULT '0' COMMENT '车商邀请码',
+  `invite_code` varchar(32) DEFAULT NULL COMMENT '注册邀请码',
   `addr` varchar(255) NOT NULL DEFAULT '' COMMENT '联系地址',
   `desc` varchar(255) DEFAULT NULL COMMENT '备注',
   `tel` varchar(255) DEFAULT NULL COMMENT '固定电话',
@@ -1233,6 +1233,7 @@ CREATE TABLE `gemini_member` (
   `bankcard` varchar(64) DEFAULT '' COMMENT '银行卡号码',
   `idcard` varchar(64) DEFAULT '' COMMENT '身份证号码',
   `headerimgurl` varchar(1024) DEFAULT '' COMMENT '用户头像',
+  `dealer_id` int(11) DEFAULT NULL COMMENT '商家id',
   PRIMARY KEY (`uid`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='会员表';

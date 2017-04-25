@@ -92,10 +92,8 @@ class assetchannel extends Admin {
 		} else {
 			$map  = array('id' => $id);
 			$info = db('Dealer')->where($map)->find();
-			$sales = db('member')->alias('m')->field('m.*')->join('__DEALER__ d','m.invite_code = d.invite_code')->where('d.id',$id)->select();
-			// var_dump($sales);die;
+			$sales = db('member')->alias('m')->field('m.*')->join('__DEALER__ d','m.dealer_id = d.id')->where('d.id',$id)->select();
 			$info['sales'] = $sales;
-			// var_dump($info);die;
 			$data = array(
 				'keyList' => $link->keyList,
 				'info'    => $info,
@@ -169,31 +167,31 @@ class assetchannel extends Admin {
 
 	// 新增员工
 	public function addStaff(){
-		// var_dump($GLOBALS);die;
+
 		if (IS_POST){
+
 			$data = input('post.');
-			// var_dump($data);die;
+
 			if ($data) {
-				// $invit = db('Dealer')->alias('d')->field('d.invite_code')->join('__MEMBER__ m','m.mobile = d.mobile')->where('uid',$data['id'])->find();
-				$invit =db('Dealer')->field('invite_code')->where('id',$data['id'])->find();
-				// var_dump($invit);die;
-				// $data = $this->request->param();
+
+				$invit = db('Dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
 				$user = model('User');
+
 				//创建注册用户
-				// var_dump($data);die;
+
 				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
-				// echo $uid;die;
+
 				if ($uid > 0) {
 					$userinfo['realname'] = $data['name'];
 					$userinfo['nickname'] = $data['name'];
 					$userinfo['mobile'] = $data['mobile'];
 					$userinfo['status'] = 1;
-					$userinfo['invite_code'] = $invit['invite_code'];
 					$userinfo['access_group_id'] = $data['job'];
 					$userinfo['desc'] = $data['remark'];
 					$userinfo['tel'] = $data['telphone'];
 					$userinfo['reg_time'] = time();
 					$userinfo['last_login_ip'] = get_client_ip(1);
+					$userinfo['dealer_id'] = $invit['id'];
 					//保存信息
 					if (!db('Member')->where(array('uid' => $uid))->update($userinfo)) {
 						$resp["code"] = 0;
