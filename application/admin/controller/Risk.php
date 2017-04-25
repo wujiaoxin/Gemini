@@ -44,7 +44,7 @@ class risk extends Admin {
 
 	public function ratingInfo() {
 		$this->setMeta('评级详情');
-		return $this->fetch();
+		return $this->fetch('ratingInfo');
 	}
 
 	public function blacklist() {
@@ -54,6 +54,6 @@ class risk extends Admin {
 
 	public function addBlacklist() {
 		$this->setMeta('黑名单');
-		return $this->fetch();
+		return $this->fetch('addBlacklist');
 	}
 }
