@@ -142,6 +142,12 @@ class Account extends Baseness {
 	    }else{
 	      //资金记录
 	      $info = get_money($uid,'money');
+	      $dealer_money = db('dealer')->alias('d')->field('money as total_money')->join('__MEMBER__ m','d.mobile = m.mobile')->where('m.uid',$uid)->find();
+	      // var_dump($dealer_money);
+	      // var_dump($info);die;
+	      $info['money'] = $dealer_money['total_money'] + $info['available_money'];
+	      
+	      // var_dump($info);die;
 	      $data = array(
 	          'info' => $info,
 	          'infoStr'=>json_encode($info)
