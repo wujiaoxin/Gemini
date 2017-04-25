@@ -81,12 +81,12 @@
 		  	</div>
 		  	<div class="form-group">
 		    	<label class="col-sm-2 control-label">开户银行</label>
-			    <div class="col-sm-4 pt5">
-			      	<p class="form-control-static item-info" id="bank_name"></p>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" id="dealer_bank"></p>
 			    </div>
 			    <label class="col-sm-2 control-label">卡户网点</label>
-			    <div class="col-sm-4 pt5">
-			      	<p class="form-control-static item-info" id="bank_branch"></p>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" id="dealer_bank_branch"></p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
@@ -173,9 +173,9 @@
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
 							var name = $(this).attr('id');
-						    if(resp.data[name] !=''&&this.tagName == 'P'){
+						    if(typeof resp.data[name] !='object' && this.tagName == 'P'){
 						        $(this).text(resp.data[name]);
-						    }else if(resp.data[name] !=''&&this.tagName == 'Input'){
+						    }else if(typeof resp.data[name] !='object' && this.tagName == 'Input'){
 						    	$(this).value(resp.data[name]);
 						    }
 						});
