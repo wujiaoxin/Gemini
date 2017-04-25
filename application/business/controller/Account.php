@@ -103,9 +103,9 @@ class Account extends Baseness {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$carrys = db('carry')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+					$carrys = db('carry')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('create_time DESC')->select();
 				}else{
-					$carrys = db('carry')->where($map)->select();
+					$carrys = db('carry')->where($map)->order('create_time DESC')->select();
 				}
 	    		if ($carrys) {
 					$resp['code'] = '1';
@@ -123,9 +123,9 @@ class Account extends Baseness {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$recharge = db('recharge')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+					$recharge = db('recharge')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('create_time DESC')->select();
 				}else{
-					$recharge = db('recharge')->where($map)->select();
+					$recharge = db('recharge')->where($map)->order('create_time DESC')->select();
 				}
 				if ($recharge) {
 					$resp['code'] = '1';
