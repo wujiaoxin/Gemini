@@ -25,7 +25,8 @@
 					<tr>
 						<th>项目编号</th>
 						<th>项目类型</th>
-						<th>流程节点</th>
+						<th>订单状态</th>
+						<th>财务状态</th>
 						<th>客户姓名</th>
 						<th>客户证件号</th>
 						<th>业务员</th>
@@ -59,6 +60,7 @@
 		  		+'<td>' + data[index].sn + '</td>'
 		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
+		  		+'<td>'+ g_financeStatus[data[index].finance] +'</td>'
 		  		+'<td>'+ data[index].name +'</td>'
 		  		+'<td>'+ data[index].idcard_num +'</td>'
 		  		+'<td>'+ data[index].salesman +'</td>'

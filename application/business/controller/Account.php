@@ -103,9 +103,9 @@ class Account extends Baseness {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$carrys = db('carry')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+					$carrys = db('carry')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('create_time DESC')->select();
 				}else{
-					$carrys = db('carry')->where($map)->select();
+					$carrys = db('carry')->where($map)->order('create_time DESC')->select();
 				}
 	    		if ($carrys) {
 					$resp['code'] = '1';
@@ -123,9 +123,9 @@ class Account extends Baseness {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$recharge = db('recharge')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+					$recharge = db('recharge')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('create_time DESC')->select();
 				}else{
-					$recharge = db('recharge')->where($map)->select();
+					$recharge = db('recharge')->where($map)->order('create_time DESC')->select();
 				}
 				if ($recharge) {
 					$resp['code'] = '1';
@@ -142,6 +142,12 @@ class Account extends Baseness {
 	    }else{
 	      //资金记录
 	      $info = get_money($uid,'money');
+	      $dealer_money = db('dealer')->alias('d')->field('money as total_money')->join('__MEMBER__ m','d.mobile = m.mobile')->where('m.uid',$uid)->find();
+	      // var_dump($dealer_money);
+	      // var_dump($info);die;
+	      $info['money'] = $dealer_money['total_money'] + $info['available_money'];
+	      
+	      // var_dump($info);die;
 	      $data = array(
 	          'info' => $info,
 	          'infoStr'=>json_encode($info)

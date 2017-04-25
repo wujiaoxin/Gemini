@@ -203,8 +203,9 @@
       //借款金额（记录为状态未审核通过）
         $where = array(
             'mid'=>$uid,
-            'status'=>'1'
           );
+        $name = '3,4,5';
+        $where['status'] = array('IN',$name);
         $money_jk = db('order')->where($where)->sum('loan_limit');
       //待还资金
         $where_repay = array(
@@ -215,7 +216,7 @@
         // 借款中的订单
         $order_loan = db('order')->where('mid',$uid)->count('id');
         //还款中的订单
-        $order_repay = db('order_repay')->where('mid',$uid)->count('id');
+        $order_repay = db('order_repay')->where('mid',$uid)->where('status','-1')->count('id');
         $data = array(
           'available_money'=>$money,
           'loan_money'=>$money_jk,
