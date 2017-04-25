@@ -75,12 +75,6 @@
 	.order-status {
 		display: inline-block;
 	}
-	.order-status {
-		width:54px;
-	}
-	.order-status img{
-		width:100%;
-	}
 	.order-list-info {
 		height: 40px;
 		line-height: 40px;
@@ -216,13 +210,12 @@
 			'1':'orderLoaned.png',
 			'2':'orderRefused.png',
 			'3':'orderExaming.png',
-			'4':'orderExaming.png',
-			'5':'orderSupplying.png',
-			'9':'record.png'};
+			'5':'orderSupplying.png'};
 	  	var loading = false;  // 加载flag
 		var current_page = 1;
 		var status = getUrlParam('status');
 		var orderType = getUrlParam("type");
+		var dateRange = $('')
 		if(status == 'null')
 			{
 				status = '';
@@ -232,10 +225,6 @@
 			var html = '';
 			if(typeof(data) =='object'){
 			for(var index = 0; index < data.length; index++){
-				var orderStatus = data[index].status;
-				if(orderStatus < 0 || orderStatus > 5){
-					orderStatus = 9;
-				}
 			  	html += '<li class="order-list" data="' + data[index].id + '">'
 							+'<div class="order-list-info">'
 								+'<div class="order-id">' + data[index].sn + '</div>'
@@ -247,7 +236,7 @@
 									+'<div class="order-customer-mobile">' + data[index].mobile + '</div>'
 								+'</div>'
 								+'<div class="order-status right" data="' + data[index].status + '">'
-									+'<img src="/public/wap/images/'+orderStatusImg[orderStatus]+'">'
+									+'<img src="/public/wap/images/'+orderStatusImg[data[index].status]+'">'
 								+'</div>'
 							+'</div>'
 						+'</li>';
@@ -275,7 +264,7 @@
 									+ '</div>';
 						}else if(resp.data.data.length != 0){
 							current_page++;
-							liHtml = tpl(resp.data.data);
+							liHtml=tpl(resp.data.data);
 						};
 						$("ul.orderList").append(liHtml);
 						if(resp.data.total <= (resp.data.per_page * resp.data.current_page)){

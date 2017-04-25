@@ -107,11 +107,10 @@ var guide = function () {
                     }else if(index == 3){
                         var property = encodeCheckbox('property');
                         var forms = encodeCheckbox('forms');
-                        // if(property == ""){
-                        //     ui_alert("alert-error","请选择门店属性");
-                        //     return false;
-                        // }else
-                        if(forms == ""){
+                        if(property == ""){
+                            ui_alert("alert-error","请选择门店属性");
+                            return false;
+                        }else if(forms == ""){
                             ui_alert("alert-error","请选择合作形式");
                             return false;
                         }
