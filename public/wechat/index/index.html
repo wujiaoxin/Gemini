@@ -43,6 +43,7 @@
 
         .order-block {
             padding: 15px;
+            margin-bottom: 20px;
         }
         .order-item {
             height: 50px;
@@ -51,8 +52,6 @@
             border-radius: 10px;
             margin-bottom: 15px;
             font-size: 24px;
-        }
-        .order-item a {
             color: #ffffff;
         }
         .order-item div {
@@ -63,8 +62,8 @@
             height: 35px;
         }
         .order-item-title {
-            margin-left: 10px;  
-            line-height: 50px;    
+            margin-left: 10px;
+            line-height: 50px;
         }
         #orderPending {
             background-color: #FFAD33;
@@ -79,12 +78,12 @@
             background-color: #63B1FB;
         }
 
-        .popup-overlay.modal-overlay-visible {
+/*        .popup-overlay.modal-overlay-visible {
             display: none;
         }
         .popup-info-supply {
             margin-top: 40px;
-        }
+        }*/
 
     </style>
 <body>
@@ -105,7 +104,7 @@
                     </div>-->
                 </div>
             </div>
-            <div class="pages navbar-through">
+            <div class="pages navbar-through toolbar-fixed">
                 <div data-page="dqassess" class="page">
                     <div class="page-content">
                         <div class="user-info-container">
@@ -118,34 +117,34 @@
                             </div>
                         </div>
                         <div class="order-block">
-                            <div class="order-item" id="orderPending">
-                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?status=0');">
+                            <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?status=0');">
+                                <div class="order-item" id="orderPending">
                                     <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
                                     <div class="order-item-title">待提交订单</div>
-                                    <div class="order-item-number right">1</div>
-                                </a>
-                            </div>
-                            <div class="order-item" id="orderSubmitted">
-                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?status=3');">
+                                    <div class="order-item-number right"></div>
+                                </div>
+                            </a>
+                            <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?status=3');">
+                                <div class="order-item" id="orderSubmitted">
                                     <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
                                     <div class="order-item-title">资料审核订单</div>
-                                    <div class="order-item-number right">22</div>
-                                </a>
-                            </div>
-                            <div class="order-item" id="orderSupplying">
-                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?status=5');">
+                                    <div class="order-item-number right"></div>
+                                </div>
+                            </a>
+                            <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?status=5');">
+                                <div class="order-item" id="orderSupplying">
                                     <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
                                     <div class="order-item-title">资料补充订单</div>
-                                    <div class="order-item-number right">0</div>
-                                </a>
-                            </div>
-                            <div class="order-item" id="orderLoaned">
-                                <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?status=1');">
+                                    <div class="order-item-number right"></div>
+                                </div>
+                            </a>
+                            <a href="javascript:goToUrl(wechatStaticPath + '/order/index.html?status=1');">
+                                <div class="order-item" id="orderLoaned">
                                     <div class="order-item-media"><img src="/public/wap/images/orderView.png"></div>
                                     <div class="order-item-title">已放款订单</div>
-                                    <div class="order-item-number right">112</div>
-                                </a>
-                            </div>
+                                    <div class="order-item-number right"></div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -157,7 +156,7 @@
                     </a>
                     <a href="javascript:goToUrl(wechatStaticPath + '/order/newOrder.html');" class="toolbar-inner-block">
                         <span><img src="/public/wap/images/newOrder.png"></span>
-                    </a>  
+                    </a>
                     <a href="javascript:goToUrl(wechatStaticPath + '/user/personalCenter.html');" class="toolbar-inner-block">
                         <span><img src="/public/wap/images/personalCenter.png"></span>
                     </a>
@@ -188,7 +187,7 @@
                     if (typeof(resp.msg) == 'string') {
                         ui_alert(resp.msg);
 						window.location.href = wechatStaticPath + "/user/login.html";
-                    }  
+                    }
                 }
             }
         });

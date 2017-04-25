@@ -202,6 +202,7 @@ function _ajax_success(data, textStatus) {
     this; // 调用本次AJAX请求时传递的options参数
 }
 
+
 function trim(str) {
     if (typeof( str ) == 'string') {
         return str.replace(/(^\s*)|(\s*$)/g, "");

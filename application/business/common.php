@@ -281,7 +281,7 @@
     $begintime =strtotime(date('Y-m-d 23:59:59',time()));//开始时间
     switch ($dateRange) {
       case '1':
-        $endtime = strtotime(date('Y-m-d 00:00:00',time()-3600*24));//结束时间    
+        $endtime = strtotime(date('Y-m-d 00:00:00',time()));//结束时间    
         break;
       case '2':
       //7

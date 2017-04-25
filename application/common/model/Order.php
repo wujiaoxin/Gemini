@@ -104,6 +104,7 @@ class Order extends \app\common\model\Base {
 			$filter['status'] = $status;
 		}
 		$total = '';
+		$filter['credit_status'] = '3';
 		$total['order_num'] = db('Order')->where($filter)->count();
 		$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
 		$total['loan_limit'] = $ord['loan_limit'];
