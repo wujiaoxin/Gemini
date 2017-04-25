@@ -976,7 +976,7 @@ function setNavActive (navId) {
 }
 setNavActive("page-sidebar-menu");
 
-function logout(n) {
+function logout() {
     var token = localStorage.getItem('token');
     ajax_jquery({
         url: apiUrl +'/business/login/logout',
