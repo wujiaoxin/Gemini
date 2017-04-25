@@ -164,7 +164,7 @@
     	TableManaged.init();
 
     	$('#table-rechargeExamine').on('click','.opera',function(){
-	   		var sn = $(this).attr('data');
+	   		sn = $(this).attr('data');
 	   		ajax_jquery({
 		        url: apiUrl + '/admin/finance/recharge',
 		        data:{
