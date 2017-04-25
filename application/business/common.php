@@ -54,7 +54,8 @@
                 'money'=>$data['money'],
                 'type'=>'0',
                 'bank_account'=>$data['bank_name'],
-                'update_time'=>$data['update_time'],
+                'dealer_bank'=>$data['dealer_bank'],
+                'dealer_bank_branch'=>$data['dealer_bank_branch'],
                 'create_time'=>time()
             );
           $result = db('carry')->insert($data_moneys);
@@ -93,8 +94,15 @@
     $uid = session('user_auth.uid');
     // echo $o_id;die;
     $order = db('order')->where('sn',$o_id)->select();
+
+    
     // var_dump($order);die;
     if ($order) {
+
+      $priv_bank_account_id = db('dealer')->where('priv_bank_account_id',$bank_name)->find();
+      $bank_account_id = db('dealer')->where('bank_account_id',$bank_name)->find();
+      // var_dump($bank_account_id);die;
+
       $datas =array(
           'sn'=>$o_id,
           'status'=>'0',
@@ -104,6 +112,14 @@
           'update_time'=>'0',
           'descr'=>'提现申请'
         );
+      if ($priv_bank_account_id) {
+        $datas['dealer_bank'] = $priv_bank_account_id['priv_bank_name'];
+        $datas['dealer_bank_branch'] = $priv_bank_account_id['priv_bank_branch'];
+      }
+      if ($bank_account_id) {
+         $datas['dealer_bank'] = $bank_account_id['bank_name'];
+         $datas['dealer_bank_branch'] = $bank_account_id['bank_branch'];
+      }
       // echo $uid;
       // var_dump($datas);die;
       modify_account($datas,$uid,'4','1','withdraw','INSERT');
