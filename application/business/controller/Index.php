@@ -22,7 +22,7 @@ class Index extends Baseness {
 			$this->redirect('/business/user/guide');
 		}
 		$result = db('Dealer')->field('status')->where('mobile',$mobile)->find();
-		if ($result['status'] == '3') {
+		if ($result['status'] != '1') {
 			return $this->redirect('/business/login/waiting');
 		}
 		

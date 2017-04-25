@@ -62,9 +62,15 @@ class Order extends \app\common\model\Base {
 		if($status == null){
 			$filter['status'] = ['>',-1];
 		}else{
-			$filter['status'] = $status;
+			if ($status == 3) {
+				$filter['status'] = 3;
+				$filter['status'] .= ' AND status = 4';
+			}else{
+				$filter['status'] = $status;
+			}
 		}
 		//$filter['status'] = ['>',-1];
+		// var_dump($filter);die;
 		$sort = "id desc";
 		$list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
 		// var_dump($list);die;
