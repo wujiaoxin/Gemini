@@ -246,6 +246,30 @@ var TableManaged = function () {
             jQuery('#table-transaction_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
             // jQuery('#table-transaction_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
 
+             // 贷后管理模块-订单列表table  id="table-postloan-Repayment"
+            $('#table-postloan-Repayment').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                configData
+            });
+
+            jQuery('#table-postloan-Repayment_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-postloan-Repayment_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-postloan-Repayment_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
         }
     };
 }();
