@@ -164,7 +164,7 @@ class User extends Api {
 	
 
 	
-	public function sendSmsVerify($mobile = "", $imgVerify = null){
+	public function sendSmsVerify($mobile = "", $imgverify = null){
 	
 		if(!preg_match("/^1[34578]{1}\d{9}$/",$mobile)){
 			$resp["code"] = 0;
@@ -174,14 +174,14 @@ class User extends Api {
 		
 		$needImgVerify = session('needImgVerify');
 		if($needImgVerify == 1 ){
-			if($imgVerify == null){
+			if($imgverify == null){
 				session('needImgVerify', 1);
 				$resp["code"] = -2;
 				$resp["msg"] = "需要图形验证码";
 				return $resp;
 			}else{
 				$storeImgVerify = session('imgVerify');
-				if($storeImgVerify != $imgVerify){
+				if($storeImgVerify != $imgverify){
 					$resp["code"] = 1001;
 					$resp["msg"] = "图形验证码错误";
 					return $resp;
