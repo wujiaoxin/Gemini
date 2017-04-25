@@ -221,6 +221,14 @@ class examine extends Admin {
 			$examine_log  =db('examine_log')->where('record_id',$id)->select();
 
 			foreach ($examine_log as $k => $v) {
+				
+				$result = db('member')->field('username')->where('uid',$v['uid'])->find();
+				
+				$examine_log[$k]['operator'] =  $result['username'];
+
+			}
+			// var_dump($examine_log);die;
+			foreach ($examine_log as $k => $v) {
 				$examine_log[$k]['params'] = json_decode($v['param']);
 				unset($examine_log[$k]['param']);
 			}

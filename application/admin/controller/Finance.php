@@ -156,7 +156,6 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-			// var_dump($data);die;
 			if (isset($data['status'])) {
 
 				if ($data['status'] == '1') {
