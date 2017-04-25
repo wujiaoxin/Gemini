@@ -63,8 +63,8 @@ class Order extends \app\common\model\Base {
 			$filter['status'] = ['>',-1];
 		}else{
 			if ($status == 3) {
-				$filter['status'] = 3;
-				$filter['status'] .= ' AND status = 4';
+				$name = '3,4';
+				$filter['status'] = array('IN',$name);
 			}else{
 				$filter['status'] = $status;
 			}
