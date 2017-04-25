@@ -92,10 +92,8 @@ class assetchannel extends Admin {
 		} else {
 			$map  = array('id' => $id);
 			$info = db('Dealer')->where($map)->find();
-			$sales = db('member')->alias('m')->field('m.*')->join('__DEALER__ d','m.invite_code = d.invite_code')->where('d.id',$id)->select();
-			// var_dump($sales);die;
+			$sales = db('member')->alias('m')->field('m.*')->join('__DEALER__ d','m.dealer_id = d.id')->where('d.id',$id)->select();
 			$info['sales'] = $sales;
-			// var_dump($info);die;
 			$data = array(
 				'keyList' => $link->keyList,
 				'info'    => $info,
@@ -175,8 +173,8 @@ class assetchannel extends Admin {
 			$data = input('post.');
 
 			if ($data) {
-				
-				$invit = db('Dealer')->alias('d')->field('d.invite_code,d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
+
+				$invit = db('Dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
 				$user = model('User');
 
 				//创建注册用户
@@ -188,7 +186,6 @@ class assetchannel extends Admin {
 					$userinfo['nickname'] = $data['name'];
 					$userinfo['mobile'] = $data['mobile'];
 					$userinfo['status'] = 1;
-					$userinfo['invite_code'] = $invit['invite_code'];
 					$userinfo['access_group_id'] = $data['job'];
 					$userinfo['desc'] = $data['remark'];
 					$userinfo['tel'] = $data['telphone'];

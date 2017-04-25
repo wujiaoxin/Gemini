@@ -49,7 +49,7 @@ use app\business\controller\Baseness;
 	public function myStaff() {
 		//商家员工
 		$uid = session('user_auth.uid');
-		$members = db('member')->alias('m')->join('__DEALER__ d','m.invite_code = d.invite_code')->field("m.uid,m.realname,m.mobile,m.reg_time,m.status,m.access_group_id")->select();
+		$members = db('member')->alias('m')->join('__DEALER__ d','m.dealer_id = d.id')->field("m.uid,m.realname,m.mobile,m.reg_time,m.status,m.access_group_id")->select();
 		$data = array(
 				'info'    => $members,
 				'infoStr' => json_encode($members),
@@ -86,7 +86,7 @@ use app\business\controller\Baseness;
 		if (IS_POST){
 			$data = input('post.');
 			if ($data) {
-				$invit = db('Dealer')->alias('d')->field('d.invite_code,d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
+				$invit = db('Dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
 				$user = model('User');
 				//创建注册用户
 				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
@@ -96,7 +96,6 @@ use app\business\controller\Baseness;
 					$userinfo['nickname'] = $data['name'];
 					$userinfo['mobile'] = $data['mobile'];
 					$userinfo['status'] = 1;
-					$userinfo['invite_code'] = $invit['invite_code'];
 					$userinfo['access_group_id'] = $data['job'];
 					$userinfo['desc'] = $data['remark'];
 					$userinfo['tel'] = $data['telphone'];

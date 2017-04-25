@@ -21,7 +21,7 @@ class Login extends Base {
 				return json($resp);
 			}
 			$success = db('member')->field('access_group_id')->where('mobile',$mobile)->find();
-			if ($success['access_group_id'] != '1') {
+			if ($success['access_group_id'] != '7') {
 				$resp["code"] = 0;
 				$resp["msg"] = '没有权限登陆此后台！';
 				return json($resp);
@@ -49,8 +49,8 @@ class Login extends Base {
 				return json($resp);
 			}
 		} else {
-			$is_success = db('dealer')->field('bank_account_id')->where('mobile',$mobile)->find();
-			if ($is_success['bank_account_id']){
+			$is_success = db('dealer')->field('status')->where('mobile',$mobile)->find();
+			if ($is_success['status'] != '1'){
 				return $this->redirect("/business/user/guide");
 			}
 			return $this->fetch();
