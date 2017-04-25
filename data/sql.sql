@@ -1634,7 +1634,6 @@ CREATE TABLE `gemini_dealer` (
   `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
   `idno` varchar(20) NOT NULL DEFAULT '' COMMENT '身份证号码',
   `is_old` tinyint(1) NOT NULL DEFAULT '0' COMMENT '证照状态',
-  `radiotime` int(10) NOT NULL DEFAULT '0' COMMENT '营业时间',
   `money` decimal(20,2) NOT NULL COMMENT '总金额',
   `lines` decimal(20,2) NOT NULL COMMENT '信用额度',
   `b_money` decimal(20,2) NOT NULL COMMENT '保证金金额',
@@ -1642,6 +1641,7 @@ CREATE TABLE `gemini_dealer` (
   `money_level` int(11) NOT NULL DEFAULT '0' COMMENT '保证金比例',
   `lines_ky` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '可用额度',
   `lock_money` decimal(20,2) DEFAULT '0.00' COMMENT '冻结资金',
+  `lic_validity` varchar(20) DEFAULT '' COMMENT '营业期限',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='车商信息表';
 
