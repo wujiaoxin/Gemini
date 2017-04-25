@@ -1777,12 +1777,14 @@ CREATE TABLE `gemini_carry` (
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '提现方式',
   `create_time` int(11) NOT NULL COMMENT '提现创建时间',
   `update_time` int(11) NOT NULL COMMENT '更新提现时间',
-  `bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户',
+  `bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户(车商)',
   `fee` int(11) DEFAULT '0' COMMENT '提现费用',
   `serial_num` varchar(255) DEFAULT '0' COMMENT '提现银行流水',
   `descr` varchar(255) NOT NULL DEFAULT '0' COMMENT '提现备注',
   `actual_amount` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '提现到账金额',
   `platform_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '平台账户',
+  `dealer_bank` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户银行（车商）',
+  `dealer_bank_branch` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户网点（车商）',
   PRIMARY KEY (`sn`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='提现表';

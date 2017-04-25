@@ -49,7 +49,8 @@ use app\business\controller\Baseness;
 	public function myStaff() {
 		//商家员工
 		$uid = session('user_auth.uid');
-		$members = db('member')->alias('m')->join('__DEALER__ d','m.dealer_id = d.id')->field("m.uid,m.realname,m.mobile,m.reg_time,m.status,m.access_group_id")->select();
+		$result = db('member')->alias('m')->join('__DEALER__ d','m.mobile = d.mobile')->field('d.id')->where('m.uid',$uid)->find();
+		$members = db('member')->where('dealer_id',$result['id'])->select();
 		$data = array(
 				'info'    => $members,
 				'infoStr' => json_encode($members),
@@ -86,7 +87,8 @@ use app\business\controller\Baseness;
 		if (IS_POST){
 			$data = input('post.');
 			if ($data) {
-				$invit = db('Dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->find();
+				$uid = session('user_auth.uid');
+				$invit = db('Dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->where('m.uid',$uid)->find();
 				$user = model('User');
 				//创建注册用户
 				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
