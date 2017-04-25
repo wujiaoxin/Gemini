@@ -54,6 +54,7 @@ class Credit extends Api {
 			$mobileCollect = array(
 				'token'       => $mobileCollectToken,
 				'password'    => $mobilepassword,
+				'mobile'      => $mobile,
 				'step'        => 1,
 				'time'        => time()
 			);
@@ -76,6 +77,9 @@ class Credit extends Api {
 		if($httpResp->code == 12291){
 			$resp['code'] = 1;
 			$resp['msg'] = '数据源授权成功';
+			
+			$this->setCreditResult(3);
+			
 			return json($resp);
 		}
 
@@ -120,6 +124,7 @@ class Credit extends Api {
 		if($httpResp->code == 12291){
 			$resp['code'] = 1;
 			$resp['msg'] = '数据源授权成功';
+			$this->setCreditResult(3);
 			return json($resp);
 		}
 
@@ -162,6 +167,7 @@ class Credit extends Api {
 		if($httpResp->code == 12291){
 			$resp['code'] = 1;
 			$resp['msg'] = '数据源授权成功';
+			$this->setCreditResult(3);
 			return json($resp);
 		}
 
@@ -227,6 +233,35 @@ class Credit extends Api {
 		$resp = json_decode($respStr);
  
 		return json($resp);
+	}
+	
+	protected function setCreditResult( $credit_status = 0 ) {
+		
+		$uid = session('user_auth.uid');
+		$mobile = session('mobileCollect.mobile');
+		$mobile_password = session('mobileCollect.password');
+		$mobile_collect_token = session('mobileCollect.token');
+		
+		if(empty($mobile)){
+			return false;
+		}
+		
+		$data['uid'] = $uid;
+		$data['mobile'] = $mobile;
+		
+		$data['mobile_password'] = $mobile_password;
+		
+		
+		$data['credit_status'] = $credit_status;
+		$data['mobile_collect_token'] = $mobile_collect_token;
+		$data['update_time'] = time();		
+		$result = db('credit')->insert($data);
+		
+		$orderData['credit_status'] = $credit_status;		
+		db('order')->where("mobile",$mobile)->update($orderData);
+		
+		return $result;
+
 	}
 
 	

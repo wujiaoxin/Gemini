@@ -174,12 +174,13 @@
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
 							var name = $(this).attr('id');
-						    if(resp.data[name] !=''&&this.tagName == 'p'){
+						    if(resp.data[name] !=''&&this.tagName == 'P'){
 						        $(this).text(resp.data[name]);
-						    }else if(resp.data[name] !=''&&this.tagName == 'input'){
+						    }else if(resp.data[name] !=''&&this.tagName == 'Input'){
 						    	$(this).value(resp.data[name]);
 						    }
 						});
+						$('#myModal').modal();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert(resp.msg);
@@ -188,7 +189,6 @@
 		            }
 		        }
 			});
-			$('#myModal').modal();
 	   	});
 
 	   	$('#examineBtn').click(function(){
