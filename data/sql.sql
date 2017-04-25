@@ -1224,7 +1224,7 @@ CREATE TABLE `gemini_member` (
   `wechat` char(32) NOT NULL DEFAULT '' COMMENT '微信号',
   `openid` varchar(50) DEFAULT NULL COMMENT '微信第三方ID',
   `access_group_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '用户组id',
-  `invite_code` varchar(32) NOT NULL DEFAULT '0' COMMENT '车商邀请码',
+  `invite_code` varchar(32) DEFAULT NULL COMMENT '注册邀请码',
   `addr` varchar(255) NOT NULL DEFAULT '' COMMENT '联系地址',
   `desc` varchar(255) DEFAULT NULL COMMENT '备注',
   `tel` varchar(255) DEFAULT NULL COMMENT '固定电话',
@@ -1233,6 +1233,7 @@ CREATE TABLE `gemini_member` (
   `bankcard` varchar(64) DEFAULT '' COMMENT '银行卡号码',
   `idcard` varchar(64) DEFAULT '' COMMENT '身份证号码',
   `headerimgurl` varchar(1024) DEFAULT '' COMMENT '用户头像',
+  `dealer_id` int(11) DEFAULT NULL COMMENT '商家id',
   PRIMARY KEY (`uid`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='会员表';

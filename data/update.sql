@@ -9,6 +9,7 @@ alter table gemini_member add paypassword varchar(255) DEFAULT '' COMMENT '支�
 alter table gemini_member add bankcard varchar(64)  DEFAULT '' COMMENT '银行卡号码';
 alter table gemini_member add idcard varchar(64)  DEFAULT '' COMMENT '身份证号码';
 alter table gemini_member add headerimgurl varchar(1024)  DEFAULT '' COMMENT '用户头像';
+alter table gemini_member add dealer_id int(11) DEFAULT NULL COMMENT '商家id';
 
 
 alter table gemini_dealer  add idno varchar(20) DEFAULT '' COMMENT '法人身份证号码';
