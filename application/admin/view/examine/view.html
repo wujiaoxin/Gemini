@@ -273,13 +273,6 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
 						</tbody>
 					</table>
 					<div id="orderExamine">
@@ -333,6 +326,26 @@
 	        }
 	    }
 	});
+
+	function historyTpl(data){
+		var html = '';
+		var operate = {'view':'审核','loan':'放款审核','recharge':'充值','withdraw':'提现','receivable':'回款'};
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+
+			var i = index + 1;
+		  	html +='<tr>'
+		  		+'<td>'+ i+'</td>'
+		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
+		  		+'<td>'+ data[index].operator +'</td>'
+		  		+'<td>'+ operate[data[index].action] +'</td>'
+		  		+'<td>'+ formatDatetime(data[index].create_time) +'</td>'
+		  		 +'</tr>';
+			}
+		}
+		return html;
+	}
+	$('#examine-history tbody').html(historyTpl(info.examine_log));
 
 	function picTpl(data){
 		var html = '';

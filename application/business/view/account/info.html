@@ -57,7 +57,7 @@
 				<div class="control-group">
 					<label class="control-label">渠道代码</label>
 					<div class="controls">
-						<span id="invite_code" class="info-item"></span>
+						<a title="点击查看二维码" id="qrcode_url" target="_blank"><span id="invite_code" class="info-item"></span></a>
 					</div>
 				</div>
 				<div class="control-group">
@@ -114,15 +114,16 @@ $(function(){
 	        $(this).text(info[name]);
 	    }
 	});
+	$('#qrcode_url').attr('href',info.qrcode_url);
 
 	if(info['forms']!=""){
-		var forms =['按揭垫资','二手车垫资','车抵贷'];
+		var forms =['二手车按揭贷款','二手车按揭垫资','新车按揭贷款','新车按揭垫资'];
 		var formsData = info['forms'].split(',');
 		var formsText = "";
 		for(var i in formsData){
-	       formsText += (forms[formsData[i]-1]+' ');
+	       formsText += (forms[formsData[i]-1]+'&nbsp;&nbsp;&nbsp;&nbsp;');
 	    }
-	    $('#forms').text(formsText);
+	    $('#forms').html(formsText);
 	}
 	//初始化三级联动city
 	if(typeof(info['city']) == "string" && info['city'] != ''){

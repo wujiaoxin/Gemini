@@ -1,4 +1,4 @@
-var g_orderType = {'1':'新车垫资','2':'二手车垫资','3':'车抵贷'};
+var g_orderType = {'1':'二手车按揭贷款','2':'二手车按揭垫资','3':'新车按揭贷款','4':'新车按揭垫资'};
 var g_orderStatus = {'-2':'编辑中','-1':'已撤回','0':'待审核','1':'审核通过','2':'审核拒绝','3':'资料审核','4':'额度审核','5':'补充资料'};
 var g_financeStatus ={'1':'待支付订单费用','2':'支付完成','3':'放款中','4':'放款完成'};
 var g_repayStatus = {'-1':'未还','1':'已还','2':'逾期'};
@@ -129,7 +129,7 @@ function sendSms(id) {
     });
 }
 
-//获取
+//获取url参数
 function getUrlParam(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
