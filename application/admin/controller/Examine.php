@@ -156,7 +156,16 @@ class examine extends Admin {
 
 			if (isset($data['status'])) {
 
-				$result = db('order')->where('id',$data['id'])->setField('status',$data['status']);
+				if ($data['status'] == '1') {
+					$info = array(
+							'status' => '1',
+							'finance' => '1'
+						);
+					$result = db('order')->where('id',$data['id'])->update($info);
+				}else{
+
+					$result = db('order')->where('id',$data['id'])->setField('status',$data['status']);
+				}
 				// echo $result;die;
 				if ($result) {
 
