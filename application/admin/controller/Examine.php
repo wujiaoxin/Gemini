@@ -66,8 +66,18 @@ class examine extends Admin {
 			$data = input('post.');
 
 			if (isset($data['status'])) {
+
+				$info = array(
+
+					'status'=>$data['status']
+
+					);
 				
-					$result = db('order')->where('id',$data['id'])->setField('status',$data['status']);
+				if ($data['status'] == '1') {
+					
+					$info['descr'] = $data['descr'];
+
+					$result = db('order')->where('id',$data['id'])->update($info);
 
 					if ($result) {
 
@@ -81,6 +91,28 @@ class examine extends Admin {
 						$resp['msg'] = '审核异常';
 
 					}
+
+				}
+
+				if ($data['status'] == '2') {
+
+					$info['reject_reason'] = $data['descr'];
+
+					$result = db('order')->where('id',$data['id'])->update($info);
+
+					if ($result) {
+
+						$resp['code'] = 1;
+
+						$resp['msg'] = '审核通过';
+					}else{
+
+						$resp['code'] = 0;
+
+						$resp['msg'] = '审核异常';
+
+					}
+				}
 					
 			}else{
 
@@ -88,7 +120,6 @@ class examine extends Admin {
 
 				$resp['msg'] = '审核失败';
 			}
-				
 			
 			// var_dump($resp);die;
 			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
@@ -96,9 +127,13 @@ class examine extends Admin {
 			
 		}else{
 			$list = db('Order')->where('status','3')->order('create_time')->select();
+
 			foreach ($list as $k => $v) {
+
 				$list[$k]['salesman'] = serch_realname($v['uid']);
+
 				$name = serch_name($v['mid']);
+
 				$list[$k]['dealername'] = $name['dealer_name'];
 			}
 			// var_dump($list);die;
@@ -120,26 +155,33 @@ class examine extends Admin {
 		if (IS_POST){
 
 			$data = input('post.');
-			// var_dump($data);die;
+
 			if (isset($data['status'])) {
 
 				if ($data['status'] == '1') {
-					$info = array(
+
+					$infos = array(
 							'status' => '1',
-							'finance' => '1'
+							'finance' => '1',
+							'examine_limit' =>$data['examine_limit'],
+							'descr'=>$data['descr']
 						);
-					$result = db('order')->where('id',$data['id'])->update($info);
+
+					$result = db('order')->where('id',$data['id'])->update($infos);
 
 					if ($result) {
 
-						$info = db('order')->field('loan_limit,endtime')->where('id',$data['id'])->find();
-						$fee = fee_money($info['endtime'],$info['loan_limit']);
+						$info = db('order')->field('loan_limit,endtime,type')->where('id',$data['id'])->find();
 
-						if ($fee) {
+						if ($info['type'] == '2' || $info['type'] == '4') {
 
-							db('order')->where('id',$data['id'])->setField('fee',$fee);
+							$fee = fee_money($info['endtime'],$info['loan_limit']);
+
+							if ($fee) {
+
+								db('order')->where('id',$data['id'])->setField('fee',$fee);
+							}
 						}
-
 						$resp['code'] = 1;
 
 						$resp['msg'] = '审核通过';
@@ -152,7 +194,17 @@ class examine extends Admin {
 					}
 				}else{
 
-					$result = db('order')->where('id',$data['id'])->setField('status',$data['status']);
+					$info_s = array(
+
+						'reject_reason' => $data['descr'],
+
+						'status' =>$data['status'],
+
+						'examine_limit' =>$data['examine_limit']
+
+						);
+
+					$result = db('order')->where('id',$data['id'])->update($info_s);
 				}
 
 			}else{
@@ -163,6 +215,7 @@ class examine extends Admin {
 			}
 
 			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
+
 			return json($resp);
 
 		}else{
@@ -170,8 +223,11 @@ class examine extends Admin {
 			$list = db('Order')->where('status','4')->order('create_time')->select();
 
 			foreach ($list as $k => $v) {
+
 				$list[$k]['salesman'] = serch_realname($v['uid']);
+
 				$name = serch_name($v['mid']);
+
 				$list[$k]['dealername'] = $name['dealer_name'];
 			}
 
@@ -223,7 +279,9 @@ class examine extends Admin {
 		}
 		// var_dump($examine_log);die;
 		foreach ($examine_log as $k => $v) {
+
 			$examine_log[$k]['params'] = json_decode($v['param']);
+
 			unset($examine_log[$k]['param']);
 		}
 
@@ -251,7 +309,6 @@ class examine extends Admin {
 
 			);
 
-
 		$data = array(
 
 			'infoStr' =>json_encode($list)
@@ -265,18 +322,22 @@ class examine extends Admin {
 	}
 
 	public function delete(){
-		// $id = $this->getArrayParam('id');
+
 		$id   = input('id', '', 'trim,intval');
-		// echo $id;die;
+
 		if (empty($id)) {
+
 			return $this->error('非法操作！');
 		}
+
 		$link = db('Order');
 
 		$map    = array('id' => $id);
-		// var_dump($map);die;
+
 		$result = $link->where($map)->update(['status'=>'-1']);
+		
 		if ($result) {
+			
 			return $this->success("删除成功！");
 		} else {
 			return $this->error("删除失败！");
