@@ -1881,7 +1881,7 @@ CREATE TABLE `gemini_credit` (
   `mobile_password` varchar(20) DEFAULT NULL COMMENT '手机运营商密码',
   `mobile_collect_token` varchar(64) DEFAULT NULL COMMENT '葫芦数据授信token',
   `credit_status` int(11) DEFAULT 0  COMMENT '授信状态:1.待授信;2.授信中;3.已授信;',
-  `credit_result` int(11) DEFAULT 0  COMMENT '授信结果:0.待审核;1.通过;2.更换常用银行卡;3.更换常用手机号;',
+  `credit_result` int(11) DEFAULT 0  COMMENT '授信结果:-1.审核未通过;0.待审核;1.通过;2.更换常用银行卡;3.更换常用手机号;',
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `descr` varchar(255) NOT NULL DEFAULT 'NULL' COMMENT '备注',

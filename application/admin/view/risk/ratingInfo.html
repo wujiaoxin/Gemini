@@ -655,7 +655,7 @@
 			if(refuseReason == 1){
 				credit_result = treatment;
 			}else{
-				//credit_result
+				credit_result = -1;
 			}
 		}
 
@@ -664,6 +664,7 @@
 			url: apiUrl +'/admin/risk/ratingInfo',
 			data:{
 					"id": info.id,
+					"mobile":info.mobile,
 					"credit_result": credit_result,
 
 				},

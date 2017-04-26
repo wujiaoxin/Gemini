@@ -256,6 +256,17 @@ class Credit extends Api {
 				}';
 			}
 			
+			if($creditResult['credit_result'] == -1){
+				$respStr = '{
+					"code": 1,
+					"msg": "获取成功！",
+					"data": {
+						"resultcode": -1,
+						"resultmsg": "审核未通过"
+					}
+				}';
+			}
+			
 			if($creditResult['credit_result'] == 1){//TODO 获取金融方案
 				$respStr = '{
 					"code": 1,
@@ -336,8 +347,8 @@ class Credit extends Api {
 			$result = db('credit')->where('id', $creditResult['id'])->update($data);
 		}		
 		
-		$orderData['credit_status'] = $credit_status;		
-		db('order')->where("mobile",$mobile)->update($orderData);
+		$orderData['credit_status'] = $credit_status;
+		db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);
 		
 		return $result;
 
