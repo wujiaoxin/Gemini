@@ -191,10 +191,24 @@ class Credit extends Api {
 	
 	
 	public function results() {
-		//TODO 根据订单审核结果返回
-		
-		$mobileCollectToken = session('mobileCollect.token');
-		if(empty($mobileCollectToken)){
+	
+		$uid = session('user_auth.uid');		
+	
+		$creditResult = db('credit')->field('uid,mobile,credit_status,credit_result')->where("uid",$uid)->order('id desc')->find();
+
+		if($creditResult == null){
+			
+			$userInfo = db('member')->field('uid,mobile,status')->where('uid',$uid)->find();
+			$mobile = $userInfo['mobile'];	
+			
+			$data['uid'] = $uid;
+			$data['mobile'] = $mobile;			
+			$data['credit_status'] = 2;
+			$data['credit_result'] = 0;
+			$data['update_time'] = time();
+			$data['create_time'] = time();
+			$result = db('credit')->insert($data);
+			
 			$respStr = '{
 				"code": 1,
 				"msg": "获取成功！",
@@ -203,42 +217,94 @@ class Credit extends Api {
 					"resultmsg": "资料待提交"
 				}
 			}';
-		}else{
-			$respStr = '{
+			$resp = json_decode($respStr); 
+			return json($resp);
+		} 
+		
+		if($creditResult['credit_status'] == 3){
+			
+			if($creditResult['credit_result'] == 0){
+				$respStr = '{
+					"code": 1,
+					"msg": "获取成功！",
+					"data": {
+						"resultcode": 4,
+						"resultmsg": "资料审核中"
+					}
+				}';
+			}
+			
+			if($creditResult['credit_result'] == 2){
+				$respStr = '{
+					"code": 1,
+					"msg": "获取成功！",
+					"data": {
+						"resultcode": 2,
+						"resultmsg": "更换常用银行卡"
+					}
+				}';
+			}
+			
+			if($creditResult['credit_result'] == 3){
+				$respStr = '{
+					"code": 1,
+					"msg": "获取成功！",
+					"data": {
+						"resultcode": 3,
+						"resultmsg": "使用常用手机号重新注册申请"
+					}
+				}';
+			}
+			
+			if($creditResult['credit_result'] == 1){//TODO 获取金融方案
+				$respStr = '{
+					"code": 1,
+					"msg": "获取成功！",
+					"data": {
+						"resultcode": 1,
+						"resultmsg": "授信通过",
+						"name": "90贷",
+						"month": 36,
+						"downpay": 10000,
+						"loan": 2000,
+						"avgmonthpay": 3333,
+						"repay": [
+							{
+								"plan": "第一年",
+								"period": "1-12",
+								"monthpay": 7999
+							},
+							{
+								"plan": "第二年",
+								"period": "13-24",
+								"monthpay": 6999
+							},
+							{
+								"plan": "第三年",
+								"period": "25-36",
+								"monthpay": 6999
+							}
+						]
+					}
+				}';
+			}
+			
+			$resp = json_decode($respStr); 
+			return json($resp);
+		}
+		
+		//默认返回
+		$respStr = '{
 				"code": 1,
 				"msg": "获取成功！",
 				"data": {
-					"resultcode": 1,
-					"resultmsg": "授信通过",
-					"name": "90贷",
-					"month": 36,
-					"downpay": 10000,
-					"loan": 2000,
-					"avgmonthpay": 3333,
-					"repay": [
-						{
-							"plan": "第一年",
-							"period": "1-12",
-							"monthpay": 7999
-						},
-						{
-							"plan": "第二年",
-							"period": "13-24",
-							"monthpay": 6999
-						},
-						{
-							"plan": "第三年",
-							"period": "25-36",
-							"monthpay": 6999
-						}
-					]
+					"resultcode": 5,
+					"resultmsg": "资料待提交"
 				}
 			}';
-		}
-			
-		$resp = json_decode($respStr);
- 
+		$resp = json_decode($respStr); 
 		return json($resp);
+
 	}
 	
 	protected function setCreditResult( $credit_status = 0 ) {
@@ -260,8 +326,15 @@ class Credit extends Api {
 		
 		$data['credit_status'] = $credit_status;
 		$data['mobile_collect_token'] = $mobile_collect_token;
-		$data['update_time'] = time();		
-		$result = db('credit')->insert($data);
+		$data['update_time'] = time();
+		
+		$creditResult = db('credit')->field('id')->where("uid",$uid)->order('id desc')->find();
+		if($creditResult == null){
+			$data['create_time'] = time();
+			$result = db('credit')->insert($data);			
+		}else{
+			$result = db('credit')->where('id', $creditResult['id'])->update($data);
+		}		
 		
 		$orderData['credit_status'] = $credit_status;		
 		db('order')->where("mobile",$mobile)->update($orderData);
