@@ -99,7 +99,8 @@ class Order extends \app\common\model\Base {
 	
 	//订单统计
 	public function get_all_order_total($uid = 0, $type = null, $status = null){
-		$filter['uid'] = $uid;
+
+		$filter['mid'] = $uid;
 		if($type == null){
 			$filter['type'] =['<',3];
 		}else{
@@ -108,10 +109,16 @@ class Order extends \app\common\model\Base {
 		if($status == null){
 			$filter['status'] = ['>',-1];
 		}else{
-			$filter['status'] = $status;
+			if ($status == 3) {
+				$name = '3,4';
+				$filter['status'] = array('IN',$name);
+			}else{
+				$filter['status'] = $status;
+			}
 		}
 		$total = '';
 		$filter['credit_status'] = '3';
+		// var_dump($filter);die;
 		$total['order_num'] = db('Order')->where($filter)->count();
 		$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
 		$total['loan_limit'] = $ord['loan_limit'];
@@ -120,18 +127,37 @@ class Order extends \app\common\model\Base {
 
 	//添加订单
 	public function add_order($uid, $data){
-		$dealer_mobile = db('member')->alias('m')->field('d.mobile')->join('dealer d','d.invite_code = m.invite_code')->where('m.uid',$uid)->find();
+
+
+		$dealer_mobile = db('member')->alias('m')->field('d.mobile')->join('dealer d','d.id = m.dealer_id')->where('m.uid',$uid)->find();
+
 		$mid = db('member')->field('uid')->where('mobile',$dealer_mobile['mobile'])->find();
-		$order_sn = $this->build_order_sn();
-		$data =array(
-			'uid'=>$uid,
-			'mid'=>$mid['uid'],
-			'mobile'=>$data['mobile'],
-			'loan_limit'=>$data['price'],
-			'sn' =>$order_sn
-			);
-		// var_dump($data);die;
-		$result = $this->allowField(true)->save($data);
+		// var_dump($mid);die;
+		$is_order = db('order')->field('mobile')->where('mobile',$data['mobile'])->find();
+
+		if (isset($is_order)) {
+
+			if ($is_order['mobile'] == $data['mobile']) {
+				
+				$data['car_price'] = $data['price'];
+				$result = $this->allowField(true)->save($data,['mobile'=>$data['mobile']]);
+				return 111;
+			}
+
+		}else{
+			$order_sn = $this->build_order_sn();
+			$data =array(
+				'uid'=>$uid,
+				'mid'=>$mid['uid'],
+				'mobile'=>$data['mobile'],
+				'car_price'=>$data['price'],
+				'sn' =>$order_sn,
+				'status'=>-2
+				);
+			$result = $this->allowField(true)->save($data);
+		}
+
+		
 		
 		return $this->id;
 	}
