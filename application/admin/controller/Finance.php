@@ -22,8 +22,6 @@ class Finance extends Admin {
 
 		$result = db('order')->where('status','1')->order('finance DESC')->select();
 
-		// var_dump($result);die;
-
 		$data = array(
 				'infoStr' => json_encode($result)
 			);
@@ -50,11 +48,11 @@ class Finance extends Admin {
 
 				);
 				
-				if ($data['status']) {
+				if ($data['status'] == '1') {
 
 					$money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.id',$data['id'])->find();
 
-					$result = db('order')->field('fee,loan_limit')->where('id',$data['id'])->find();
+					$result = db('order')->field('fee,loan_limit,examine_limit,type')->where('id',$data['id'])->find();
 					
 					if ($money['lock_money'] >= $result['fee']) {//判断冻结金额和订单费用
 						
@@ -62,7 +60,7 @@ class Finance extends Admin {
 
 						//可用额度设置
 
-						$lines_result = $money['lines_ky'] - $result['loan_limit'];//最终可用额度
+						$lines_result = $money['lines_ky'] - $result['examine_limit'];//最终可用额度
 
 						if ($lines_result < '0') {
 
@@ -87,9 +85,18 @@ class Finance extends Admin {
 
 						db('order')->where('id',$data['id'])->update($datas);//更新订单状态
 
-						//生成还款计划表
-						set_order_repay($data['id']);
 
+						//生成还款计划表
+						if ($result['type'] == '2') {
+
+							set_order_repay($data['id']);//垫资还款
+
+						}else{
+
+							//到期还本息
+							
+						}
+						
 						$resp['code'] = 1;
 
 						$resp['msg'] = '放款审核成功!';
@@ -100,10 +107,7 @@ class Finance extends Admin {
 						$resp['msg'] = '冻结资金异常!';
 					}
 					
-
 				}else{
-
-					unset($datas['status']);
 
 					db('order')->where('id',$data['id'])->update($datas);
 
@@ -118,11 +122,8 @@ class Finance extends Admin {
 				$result = db('order')->where('id',$data['id'])->find();
 
 				$sercher =  serch_name($result['mid']);
-				// var_dump($sercher);die;
 
 				$result['dealer_name'] = $sercher['dealer_name'];//渠道名称
-
-				// var_dump($result);die;
 
 				$resp['code'] = 1;
 
@@ -141,13 +142,10 @@ class Finance extends Admin {
 			foreach ($result as $k => $v) {
 
 				$sercher = serch_name($v['mid']);
-				// var_dump($sercher);die;
 
 				$result[$k]['dealer_name'] = $sercher['dealer_name'];//渠道名称
 
 			}
-
-			// var_dump($result);die;
 
 			$data = array(
 				'infoStr' => json_encode($result)

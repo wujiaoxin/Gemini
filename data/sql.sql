@@ -1459,7 +1459,8 @@ CREATE TABLE `gemini_order` (
   `endtime` int(11) NOT NULL COMMENT '借款期限',
   `fee` int(11) NOT NULL COMMENT '借款费用',
   `credit_status` int(11) DEFAULT '0' COMMENT '授信状态:1.待授信;2.授信中;3.已授信',
-  `car_price` varchar(255) NOT NULL DEFAULT '0' COMMENT '购车价格',
+  `car_price` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '购车价格',
+  `examine_limit` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '实际审批额度',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
 
