@@ -3,7 +3,12 @@
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
 <script type="text/javascript">
-
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
 </script>
 {/block}
 {block name="body"}
@@ -43,28 +48,35 @@
 <script type="text/javascript" src="__JS__/table-managed.js"></script>
 <script type="text/javascript" src="__JS__/manager.js"></script>
 <script type="text/javascript">
+
+	var creditStatusText = ["待评级","已通过","更换银行卡","更换手机号"];
+	
 	function tpl(data){
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
+			var userInfo = data[index];
+			if(userInfo.credit_result < 4 &&  userInfo.credit_result > -1){
+				userInfo.credit_status = creditStatusText[userInfo.credit_result];
+			}
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + 'kh10001' + '</td>'
-		  		+'<td>'+ '张无忌' +'</td>'
-		  		+'<td>'+ '1234567890123456' +'</td>'
-		  		+'<td>'+ '张翠山' +'</td>'
-		  		+'<td>'+ '冰火岛' +'</td>'
-		  		+'<td>'+ '1001-01-23' +'</td>'
-		  		+'<td>'+ '已评级' +'</td>'
+		  		+'<td>'+ userInfo.uid + '</td>'
+		  		+'<td>'+ userInfo.realname +'</td>'
+		  		+'<td>'+ userInfo.idcard +'</td>'
+		  		+'<td>'+ '-' +'</td>'
+		  		+'<td>'+ '-' +'</td>'
+		  		+'<td>'+ formatDatetime(userInfo.create_time) +'</td>'
+		  		+'<td>'+ userInfo.credit_status +'</td>'
 		  		+'<td>'+ '人工评级' +'</td>'
-		  		+'<td>'+ '优' +'</td>'
-		  		+'<td><a href="/admin/risk/ratingInfo?id='+ '10001' + '">评级</a></td>'
+		  		+'<td>'+ '-' +'</td>'
+		  		+'<td><a href="/admin/risk/ratingInfo?id='+ userInfo.id + '">评级</a></td>'
 		  		 +'</tr>'
 			}
 		}
 		return html;
 	};
 
-	var info = [{},{}];
+	//var info = [{},{}];
 	$('#table-rating tbody').html(tpl(info));
 
     $(function(){
