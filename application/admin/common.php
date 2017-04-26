@@ -228,19 +228,19 @@ function serch_realname($uid){
 
   		if ($time <= 5 && $time >=1 ) {
 
-  			$interest_rate = 0.08/10;
+  			$interest_rate = 0.08/1000;
   			
   		}elseif ($time >5 && $time <=9) {
 
-  			$interest_rate = 1/10;
+  			$interest_rate = 1/1000;
 
   		}elseif ($time >9 && $time <=12) {
 
-  			$interest_rate = 1.2/10;
+  			$interest_rate = 1.2/1000;
 
   		}elseif ($time >12 && $time <=15) {
 
-  			$interest_rate = 1.5/10;
+  			$interest_rate = 1.5/1000;
 
   		}else {
 
