@@ -100,7 +100,7 @@ class Order extends \app\common\model\Base {
 	//订单统计
 	public function get_all_order_total($uid = 0, $type = null, $status = null){
 
-		$filter['mid'] = $uid;
+		$filter['uid'] = $uid;
 		if($type == null){
 			$filter['type'] =['<',3];
 		}else{

@@ -56,6 +56,7 @@ class assetchannel extends Admin {
 				$data['lines'] = '1000000';
 				$data['b_money'] = '1';
 				$data['money_level'] = '1000000';
+				$data['lines_ky'] = '1000000';
 			}
 			if ($data) {
 				unset($data['id']);
@@ -97,6 +98,7 @@ class assetchannel extends Admin {
 					$data['lines'] = '1000000';
 					$data['b_money'] = '1';
 					$data['money_level'] = '1000000';
+					$data['lines_ky'] = '1000000';
 				}
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {
