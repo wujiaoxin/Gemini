@@ -69,7 +69,10 @@
 	.order-type {
 		font-size: 14px;
 	}
-	.order-id,
+	.order-sn {
+		letter-spacing: 0;
+	}
+	.order-sn,
 	.order-type,
 	.order-customer,
 	.order-status {
@@ -125,7 +128,7 @@
 	        <div class="navbar">
 	            <div class="navbar-inner">
 	                <div class="left">
-	                    <a href="javascript:goToUrl(wechatStaticPath + '/user/personalCenter.html');" class="link icon-only back">
+	                    <a href="javascript:history.go(-1);" class="link icon-only back">
 	                        <i class="icon icon-back color-orange"></i>
 	                    </a>
 	                </div>
@@ -238,7 +241,7 @@
 				}
 			  	html += '<li class="order-list" data="' + data[index].id + '">'
 							+'<div class="order-list-info">'
-								+'<div class="order-id">' + data[index].sn + '</div>'
+								+'<div class="order-sn">' + data[index].sn + '</div>'
 									+'<div class="order-type right">' + g_orderType[data[index].type] + '</div>'
 							+'</div>'
 							+'<div class="order-list-item">'

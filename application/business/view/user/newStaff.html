@@ -97,28 +97,28 @@
 		   	var telphone = $("#telphone").val();
 		   	var remark = $("#remark").val();
 		   	if(name == ""){
-		   		ui_alert("alert-error","请输入员工姓名");
+		   		ui_alert("请输入员工姓名");
 		   		return;
 		   	}else if(mobile == ""){
-		   		ui_alert("alert-error","请输入手机号");
+		   		ui_alert("请输入手机号");
 		   		return;
 		   	}else if(!validatePhoneNumber(mobile)){
-		   		ui_alert("alert-error","请输入正确手机号");
+		   		ui_alert("请输入正确手机号");
 		   		return;
 		   	}else if(password == ""){
-		   		ui_alert("alert-error","请输入密码");
+		   		ui_alert("请输入密码");
 		   		return;
 		   	}else if(!validatePassword(password)){
-		   		ui_alert("alert-error","请输入8-16位英文数字组合密码");
+		   		ui_alert("请输入8-16位英文数字组合密码");
 		   		return;
 		   	}else if(rePassword == ""){
-		   		ui_alert("alert-error","请再次输入密码");
+		   		ui_alert("请再次输入密码");
 		   		return;
 		   	}else if(rePassword != password){
-		   		ui_alert("alert-error","两次输入密码不一致");
+		   		ui_alert("两次输入密码不一致");
 		   		return;
 		   	}else if(job == ""){
-		   		ui_alert("alert-error","请选择员工职位");
+		   		ui_alert("请选择员工职位");
 		   		return;
 		   	}
 		   	ajax_jquery({
@@ -133,11 +133,11 @@
 	            },
 	            success:function(resp){
 	                if (resp.code == "1" ) {
-	                		ui_alert("alert-success","新增成功");
+	                		ui_alert("新增成功","success");
 	                        window.location.href = "/business/user/myStaff";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
-	                        ui_alert("alert-error",resp.msg);
+	                        ui_alert(resp.msg);
 	                    } 
 	                    return false;          
 	                }

@@ -18,8 +18,10 @@
 		<span class="selectParm-title">业务类型:</span>
 		<ul class="selectParm selectOrderType">
 			<li data='' class="active" >全部</li>
-			<li data='1'>按揭垫资</li>
-			<li data='3'>车抵贷</a></li>
+			<li data='1'>二手车按揭贷款</li>
+			<li data='2'>二手车按揭垫资</li>
+			<li data='3'>新车按揭贷款</li>
+			<li data='4'>新车按揭垫资</li>
 		</ul>
 	</div>
 	<div class="select-block">
@@ -108,7 +110,7 @@
 	            	$('#table-loanItem').dataTable({"bDestroy":true});
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
-	                    ui_alert("alert-error",resp.msg);
+	                    ui_alert(resp.msg);
 	                    return false;
 	                }
 	            }

@@ -89,7 +89,7 @@
 	};
 	$('#table-myStaff tbody').html(tpl(info));
 
-	jQuery(document).ready(function() {       
+	jQuery(document).ready(function() {
 	   // App.init();
 	   TableManaged.init();
 	   $('#table-myStaff').on('click','.updateStatus',function(){
@@ -116,9 +116,9 @@
 	                    }
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
-		                    ui_alert("alert-error",resp.msg);
+		                    ui_alert(resp.msg);
 		                    window.location.reload();
-		                }                 
+		                }
 		            }
 		        }
     		});
@@ -127,4 +127,4 @@
 
 	});
 </script>
-{/block}	
+{/block}
