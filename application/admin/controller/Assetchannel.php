@@ -229,4 +229,20 @@ class assetchannel extends Admin {
 			return $this->fetch('addStaff');
 		}
 	}
+	public function editStaff(){
+		if (IS_POST) {
+			$data = input('post.');
+			if($data){
+				$status = db('Member')->where('mobile',$data['mobile'])->setField('status',$data['status']);
+				if ($status) {
+					$data['code'] = '1';
+					$data['msg'] = '更新成功';
+				}else{
+					$data['code'] = '0';
+					$data['msg'] = '更新失败';
+				}
+			}
+			return json($data);
+		}
+	}
 }
