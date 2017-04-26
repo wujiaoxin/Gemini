@@ -11,6 +11,16 @@
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/common.css"/>
 <!-- <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'> -->
 <link rel="stylesheet" type="text/css" href="__CSS__/style.css"/>
+<style type="text/css" media="screen">
+	#col-left .subnav-item-cont{
+		list-style: none;
+		color: #777;
+	}
+	#col-left a:hover, #col-left .nav-active a.nav-link, #col-left a.active {
+     color: #03a9f4;
+     text-decoration: none;
+}
+</style>
 <script src="__PUBLIC__/js/jquery.js"></script>
 <script type="text/javascript">
 	var BASE_URL = "{:config('base_url')}"; //根目录地址
@@ -142,35 +152,19 @@
 						<div id="sidebar-nav">
 							<ul class="nav nav-pills nav-stacked">
 								{volist name="__menu__['child']" id="nav"}
-								<li class="nav-header hidden-sm hidden-xs">{$key}</li>
-								{volist name="nav" id="item"}
-								{if isset($item['_child'])}
-								<li class="{$item['style']}">
-									<a href="#" class="dropdown-toggle">
-										<i class="fa fa-{$item['icon']|default='file'}"></i>
-										<span>{$item['title']}</span>
-										<i class="fa fa-angle-right drop-icon"></i>
-									</a>
-									<ul class="submenu">
-										{volist name="item['_child']" id="vo" key="k"}
-										<li class="{$vo['style']}">
-											<a href="{$vo['url']|url}">
-												<i class="fa fa-{$vo['icon']|default='file'}"></i>
-												<span>{$vo['title']}</span>
+								<li class="subnav">
+									<a href="#" class="subnav-item nav-header hidden-sm hidden-xs">{$key}</a>
+									<ul class="subnav-item-cont" style="display: none">
+										{volist name="nav" id="item"}
+										<li class="subnav-item {$item['style']}">
+											<a class="subnav-item-cont" href="{$item['url']|url}">
+												<i class="fa fa-{$item['icon']|default='file'}"></i>
+												<span>{$item['title']}</span>
 											</a>
 										</li>
 										{/volist}
 									</ul>
 								</li>
-								{else/}
-								<li class="{$item['style']}">
-									<a href="{$item['url']|url}">
-										<i class="fa fa-{$item['icon']|default='file'}"></i>
-										<span>{$item['title']}</span>
-									</a>
-								</li>
-								{/if}
-								{/volist}
 								{/volist}
 								{if isset($extend_menu)}
 								{volist name="extend_menu" id="sub"}
@@ -256,7 +250,10 @@
 	// 	$("#content-wrapper").height(baseContentHeight);
 	// 	$("#nav-col").height(baseContentHeight);
 	// }
-	
+	$('.nav').on('click','.subnav',function(){
+		$(this).children('.subnav-item-cont').slideToggle('fast')
+			.parent('.subnav').siblings('.subnav').children('.subnav-item-cont').slideUp();
+	})
 })();
 </script>
 <script src="__PUBLIC__/js/core.js"></script>
