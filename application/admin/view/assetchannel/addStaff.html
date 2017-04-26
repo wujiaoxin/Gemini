@@ -126,7 +126,7 @@
 	            success:function(resp){
 	                if (resp.code == "1" ) {
 	                		ui_alert("新增成功","success");
-	                        window.location.href = "/admin/assetChannel/";
+	                        window.location.href = "/admin/assetChannel/edit?id="+dealer_id;
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 	                        ui_alert(resp.msg);

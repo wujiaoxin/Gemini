@@ -477,9 +477,9 @@ var App = function () {
                 var content = $($($(this).attr("href")));
                 var tab = $(this).parent().parent();
                 if (tab.height() > content.height()) {
-                    content.css('min-height', tab.height());    
-                } 
-            });            
+                    content.css('min-height', tab.height());
+                }
+            });
         }
 
         // fix tab content on tab shown
@@ -901,15 +901,19 @@ var App = function () {
 
 }();
 
+//定义ui_alert
+function ui_alert(msg,type,position){
+   $.messager.show(msg, {placement: position,type:type});
+};
 
-function ui_alert(classname,message){
-        jQuery('.alert').removeClass('alert-error alert-success').children('span').text(message).end()
-                .addClass(classname).show();
-        setTimeout("$('.alert').slideUp('slow')",3000);
-    };
-jQuery('.alert > .close').click(function(){
-    jQuery('.alert').removeClass('alert-error alert-success').hide();
-});
+// function ui_alert(classname,message){
+//         jQuery('.alert').removeClass('alert-error alert-success').children('span').text(message).end()
+//                 .addClass(classname).show();
+//         setTimeout("$('.alert').slideUp('slow')",3000);
+//     };
+// jQuery('.alert > .close').click(function(){
+//     jQuery('.alert').removeClass('alert-error alert-success').hide();
+// });
 
 function ajax_jquery(options) {
     if (options == undefined) {
@@ -948,12 +952,12 @@ function _ajax_error(XMLHttpRequest, textStatus, errorThrown) {
 //    this; // 调用本次AJAX请求时传递的options参数
     var session_status = XMLHttpRequest.getResponseHeader("Session-Status"); //通过XMLHttpRequest取得响应头，Session-Status，
     if (session_status == 'TimeOut') {
-        ui_alert('alert-error','登录超时，请重新登录');
+        ui_alert('登录超时，请重新登录');
         // window.location.href = "/mobile/user/login"; //如果超时就处理 ，指定要跳转的页面
     } else if (session_status == 'Empty') {
-        ui_alert('alert-error','权限限制，请联系管理员');
+        ui_alert('权限限制，请联系管理员');
     } else if (textStatus == 'timeout') {
-        ui_alert('alert-error','加载超时，请重试');
+        ui_alert('加载超时，请重试');
     } else {
         console.log("XHR="+XMLHttpRequest+"\ntextStatus="+textStatus+"\nerrorThrown=" + errorThrown);
     }
@@ -984,7 +988,7 @@ function logout() {
                     window.location.href = "/business/login/login";
             } else {
                 if (typeof(resp.msg) == 'string') {
-                    ui_alert("alert-error",resp.msg);
+                    ui_alert(resp.msg);
                 }
             }
         }
@@ -997,22 +1001,22 @@ $("#editPasswordBtn").click(function(event) {
     var confirmPassword = $("#confirmPassword").val();
     var token = localStorage.getItem('token');
     if(oldPassword == ""){
-        ui_alert("alert-error","请输入原密码");
+        ui_alert("请输入原密码");
         return;
     }else if(!validatePassword(oldPassword)){
-        ui_alert("alert-error","原密码输入有误");
+        ui_alert("原密码输入有误");
         return;
     }else if(newPassword == ""){
-        ui_alert("alert-error","请输入新密码");
+        ui_alert("请输入新密码");
         return;
     }else if(!validatePassword(newPassword)){
-        ui_alert("alert-error","请输入8-16位英文数字组合");
+        ui_alert("请输入8-16位英文数字组合");
         return;
     }else if(confirmPassword == ""){
-        ui_alert("alert-error","请确认新密码");
+        ui_alert("请确认新密码");
         return;
     }else if(newPassword != confirmPassword){
-        ui_alert("alert-error","两次输入密码不一致");
+        ui_alert("两次输入密码不一致");
         return;
     }
 
@@ -1024,10 +1028,11 @@ $("#editPasswordBtn").click(function(event) {
         },
         success:function(resp){
             if (resp.code == "1" ) {
-                    ui_alert("alert-success","密码重置成功");
+                    ui_alert("密码重置成功","success");
+                    setTimeout('window.location.reload();',1000);
             } else {
                 if (typeof(resp.msg) == 'string') {
-                    ui_alert("alert-error",resp.msg);
+                    ui_alert(resp.msg);
                     return false;
                 }
             }
@@ -1081,10 +1086,10 @@ function sendSms(id) {
     var mobile = $('#'+formName+'-username').val();
     var imgverify = $('#'+formName+'-rvalicode').val();
     if (mobile == "") {
-        ui_alert("alert-error","请输入手机号!");
+        ui_alert("请输入手机号!");
     }else if (!validatePhoneNumber(mobile)) {
-        ui_alert("alert-error","请输入正确的手机号!");
-    } 
+        ui_alert("请输入正确的手机号!");
+    }
     ajax_jquery({
         url: apiUrl + '/business/user/sendSmsVerify',
         data: {
@@ -1092,18 +1097,19 @@ function sendSms(id) {
          },
         success: function (resp) {
             if (resp.code == "1") {
-                ui_alert("alert-success","验证码发送成功,请注意查收");
+                ui_alert("验证码发送成功,请注意查收","success");
             } else {
                 if (typeof(resp.msg) == 'string' && resp.msg != '') {
-                    ui_alert("alert-error",resp.msg);
+                    ui_alert(resp.msg);
                 } else {
-                    ui_alert("alert-error","验证码发送失败");
+                    ui_alert("验证码发送失败");
                 }
                 return false;
             }
         }
     });
 }
+
 
 
 

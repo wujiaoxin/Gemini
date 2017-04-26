@@ -169,7 +169,7 @@
 	            	$('#table-deposit tbody').html(tpl(resp.data));
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
-	                    ui_alert("alert-error",resp.msg);
+	                    ui_alert(resp.msg);
 	                    return false;
 	                }
 	            }
@@ -182,7 +182,7 @@
 			var creditLimit = $('#creditLimit').val();
 			var descr = $('#descr').val();
 			if(creditLimit == ""){
-				ui_alert("alert-error","请输入申请额度");
+				ui_alert("请输入申请额度");
         		return false;
 			}
 			ajax_jquery({
@@ -193,15 +193,15 @@
 	            },
 	            success:function(resp){
 	                if (resp.code == "1" ) {
-	                		ui_alert("alert-success","申请成功,正在处理");
+	                		ui_alert("申请成功,正在处理","success");
 	                        window.location.href = "/business/account/lineOfCredit";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
-	                        ui_alert("alert-error",resp.msg);
+	                        ui_alert(resp.msg);
 	                    } else {
-	                        ui_alert("alert-error","申请失败，请重试!");
+	                        ui_alert("申请失败，请重试!");
 	                    }
-	                    return false;          
+	                    return false;
 	                }
 	            }
 	        });
@@ -212,7 +212,7 @@
 			var payDepositMode = $('#payDepositMode').val();
 			var depositDescr = $('#depositDescr').val();
 			if(depositLimit == ""){
-				ui_alert("alert-error","请输入补缴金额");
+				ui_alert("请输入补缴金额");
         		return false;
 			}
 			ajax_jquery({
@@ -223,15 +223,15 @@
 	            },
 	            success:function(resp){
 	                if (resp.code == "1" ) {
-	                		ui_alert("alert-success","申请成功,正在处理");
+	                		ui_alert("申请成功,正在处理","success");
 	                        window.location.href = "/business/account/lineOfCredit";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
-	                        ui_alert("alert-error",resp.msg);
+	                        ui_alert(resp.msg);
 	                    } else {
-	                        ui_alert("alert-error","申请失败，请重试!");
+	                        ui_alert("申请失败，请重试!");
 	                    }
-	                    return false;          
+	                    return false;
 	                }
 	            }
 	        });

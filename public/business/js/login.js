@@ -28,19 +28,19 @@ var Login = function () {
 	        	var imgverify = jQuery("#login-rvalicode").val();
 	        	var remember = jQuery("input[name='remember']").prop('checked');
 	        	if(username == ""){
-	        		ui_alert("alert-error","请输入手机号");
+	        		ui_alert("请输入手机号");
 	        		return false;
 	        	}else if(!validatePhoneNumber(username)){
-	        		ui_alert("alert-error","手机号输入错误");
+	        		ui_alert("手机号输入错误");
 	        		return false;
 	        	}else if(password == ""){
-					ui_alert("alert-error","请输入密码");
+					ui_alert("请输入密码");
 	        		return false;
 	        	}else if(!validatePassword(password)){
-	        		ui_alert("alert-error","请输入8-16位英文数字组合密码");
+	        		ui_alert("请输入8-16位英文数字组合密码");
 	        		return false;
 	        	} else if (isimgverify && imgverify == "") {
-        			ui_alert("alert-error","请输入图形验证码");
+        			ui_alert("请输入图形验证码");
         			return false;
         		}
         		if(remember){
@@ -58,7 +58,7 @@ var Login = function () {
 		            },
 		            success:function(resp){
 		                if (resp.code == "1" ) {
-		                		ui_alert("alert-success","登录成功");
+		                		ui_alert("登录成功","success");
 		                		//localStorage.setItem('token',resp.data.token);
 		                        window.location.href = "/business/index/index";
 		                } else {
@@ -70,9 +70,9 @@ var Login = function () {
 		                        $(".rvalicode-cont").hide();
 		                    }
 		                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
-		                        ui_alert("alert-error",resp.msg);
+		                        ui_alert(resp.msg);
 		                    } else {
-		                        ui_alert("alert-error","登录失败，请重试!");
+		                        ui_alert("登录失败，请重试!");
 		                    }
 		                    doRefreshVerfiy();
 		                    return false;
@@ -86,19 +86,19 @@ var Login = function () {
 	        	var password = jQuery('#reset-password').val();
 	        	var smsverify = jQuery('#reset-smsVerify').val();
 	        	if(username == ""){
-	        		ui_alert("alert-error","请输入手机号");
+	        		ui_alert("请输入手机号");
 	        		return false;
 	        	}else if(!validatePhoneNumber(username)){
-	        		ui_alert("alert-error","手机号输入错误");
+	        		ui_alert("手机号输入错误");
 	        		return false;
 	        	}else if(smsverify == ""){
-					ui_alert("alert-error","请输入手机验证码");
+					ui_alert("请输入手机验证码");
 	        		return false;
 	        	}else if(password == ""){
-					ui_alert("alert-error","请输入密码");
+					ui_alert("请输入密码");
 	        		return false;
 	        	}else if(!validatePassword(password)){
-	        		ui_alert("alert-error","请输入8-16位英文数字组合密码");
+	        		ui_alert("请输入8-16位英文数字组合密码");
 	        		return false;
 	        	}
 	        	 ajax_jquery({
@@ -110,11 +110,11 @@ var Login = function () {
 		            },
 		            success:function(resp){
 		                if (resp.code == "1" ) {
-		                		ui_alert("alert-success","密码重置成功");
-		                        window.location.href = "/business/user/login";
+		                		ui_alert("密码重置成功","success");
+		                        setTimeout('window.location.href = "/business/user/login";',3000);
 		                } else {
 		                    if (typeof(resp.msg) == 'string') {
-		                        ui_alert("alert-error",resp.msg);
+		                        ui_alert(resp.msg);
 		                        return false;
 		                    }
 		                }
@@ -128,22 +128,22 @@ var Login = function () {
 	        	var smsverify = jQuery('#register-smsVerify').val();
 	        	var tncChecked = jQuery('#register_tnc').prop("checked");
 	        	if(username == ""){
-	        		ui_alert("alert-error","请输入手机号");
+	        		ui_alert("请输入手机号");
 	        		return false;
 	        	}else if(!validatePhoneNumber(username)){
-	        		ui_alert("alert-error","手机号输入错误");
+	        		ui_alert("手机号输入错误");
 	        		return false;
 	        	}else if(password == ""){
-					ui_alert("alert-error","请输入密码");
+					ui_alert("请输入密码");
 	        		return false;
 	        	}else if(!validatePassword(password)){
-	        		ui_alert("alert-error","请输入8-16位英文数字组合密码");
+	        		ui_alert("请输入8-16位英文数字组合密码");
 	        		return false;
 	        	}else if(smsverify == ""){
-	        		ui_alert("alert-error","请输入短信验证码");
+	        		ui_alert("请输入短信验证码");
 	        		return false;
         		}else if(!tncChecked){
-        			ui_alert("alert-error","请点击同意合作协议");
+        			ui_alert("请点击同意合作协议");
 	        		return false;
         		}
 		        ajax_jquery({
@@ -156,13 +156,13 @@ var Login = function () {
 		            },
 		            success:function(resp){
 		                if (resp.code == "1" ) {
-		                		ui_alert("alert-success","注册成功，请登录");
+		                		ui_alert("注册成功，请登录","success");
 		                        setTimeout('window.location.href = "/business/login/login"',3000);
 		                } else {
 		                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
-		                        ui_alert("alert-error",resp.msg);
+		                        ui_alert(resp.msg);
 		                    } else {
-		                        ui_alert("alert-error","注册失败，请重试!");
+		                        ui_alert("注册失败，请重试!");
 		                    }
 		                    return false;
 		                }
@@ -221,11 +221,11 @@ var Login = function () {
 	    var mobile = $('#'+formName+'-username').val();
 	    var imgverify = $('#'+formName+'-rvalicode').val();
 	    if (mobile == "") {
-	        ui_alert("alert-error","请输入手机号!");
+	        ui_alert("请输入手机号!");
 	    } else if (!validatePhoneNumber(mobile)) {
-	        ui_alert("alert-error","请输入正确的手机号!");
+	        ui_alert("请输入正确的手机号!");
 	    } else if (isimgverify && imgverify == "") {
-	        ui_alert("alert-error","请输入图形验证码");
+	        ui_alert("请输入图形验证码");
 	    } else {
 	        var param = {
 	            "mobile": mobile,
@@ -236,21 +236,20 @@ var Login = function () {
 	            data: param,
 	            success: function (resp) {
 	                if (resp.code == "1") {
-	                    ui_alert("alert-success","验证码发送成功,请注意查收");
+	                    ui_alert("验证码发送成功,请注意查收","success");
 	                } else {
 	                    if(resp.code == "-2" || resp.code == "1001"){
-	                        isimgverify = 1;							
+	                        isimgverify = 1;
 							$("#regImgVerifyPic").attr("src",apiUrl + "/api/user/getImgVerify?sid=" + localStorage.sid + "&random=" + Math.random());
 	                        $(".rvalicode-cont").show();
-							
 	                    }else {
 	                        isimgverify = 0;
 	                        $(".rvalicode-cont").hide();
 	                    }
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
-	                       	ui_alert("alert-error",resp.msg);
+	                       	ui_alert(resp.msg);
 	                    } else {
-	                        ui_alert("alert-error","验证码发送失败");
+	                        ui_alert("验证码发送失败");
 	                    }
 	                    doRefreshVerfiy();
 	                    return false;
