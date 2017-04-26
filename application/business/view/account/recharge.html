@@ -70,13 +70,13 @@ $(function(){
 		var rechargeMode = $('#rechargeMode').val();
 		var desc = $('#desc').val();
 		if(amount == ""){
-			ui_alert("alert-error","请输入充值金额");
+			ui_alert("请输入充值金额");
 	        return false;
 		}else if(rechargeMode == ""){
-			ui_alert("alert-error","请选择充值方式");
+			ui_alert("请选择充值方式");
 	        return false;
 		}else if(platform_account == ""){
-			ui_alert("alert-error","请选择充值银行");
+			ui_alert("请选择充值银行");
 	        return false;
 		}
 
@@ -90,11 +90,11 @@ $(function(){
 	        },
 	        success:function(resp){
 	            if (resp.code == "1" ) {
-                    ui_alert("alert-success","充值成功,等待审核");
+                    ui_alert("充值成功,等待审核","success");
                     setTimeout('window.location.reload()',1000);
 	            }else{
 	                if (typeof(resp.msg) == 'string') {
-	                    ui_alert("alert-error",resp.msg);
+	                    ui_alert(resp.msg);
 	                    return false;
 	                }
 	            }

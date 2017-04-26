@@ -111,7 +111,7 @@
 					+'<td><input type="checkbox" class="checkboxes"></td>'
 					+'<td class="order_id">' + data[index].sn + '</td>'
 					+'<td>￥<span class="order_amount" data-amount="'+ data[index].loan_limit +'">' + formatAmount(data[index].loan_limit) + '</span></td>'
-					+'<td>' + data[index].type + '</td>'
+					+'<td>' + g_orderType[data[index].type] + '</td>'
 					+'<td>' + formatDatetime(data[index].create_time) + '</td>'
 					+'<td>' + formatDatetime(data[index].update_time) + '</td>'
 					+'<td>' + data[index].name + '</td>'
@@ -152,13 +152,13 @@
 	            withdrawOrders[i] = $(this).parents('tr').find('.order_id').text();
             });
             if(typeof bank_card == 'undefined' || bank_card == ''){
-            	ui_alert('alert-error','请选择提现银行卡');
+            	ui_alert('请选择提现银行卡');
             	return false;
             }else if(withdrawOrders == ''){
-            	ui_alert('alert-error','请选择提现订单');
+            	ui_alert('请选择提现订单');
             	return false;
             }else if(payPwd == ''){
-            	ui_alert('alert-error','请输入交易密码');
+            	ui_alert('请输入交易密码');
             	return false;
             }
             ajax_jquery({
@@ -170,11 +170,11 @@
                 },
                 success:function(resp){
                     if (resp.code == "1" ) {
-                       	ui_alert("alert-success","提交成功,请等待审核");
-                    	setTimeout('window.location.reload()',5000);
+                       	ui_alert("提交成功,请等待审核","success");
+                    	setTimeout('window.location.reload()',4000);
                     } else {
                         if (typeof(resp.msg) == 'string') {
-                            ui_alert("alert-error",resp.msg);
+                            ui_alert(resp.msg);
                             return false;
                         }
                     }

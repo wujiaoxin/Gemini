@@ -11,116 +11,12 @@
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">    
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script>
+        window.location.href = wechatStaticPath + '/index/index.html';
+    </script>
 </head>
 <body>
-    
-    <div class="views">
-        <div class="view view-main">
-            <div class="navbar wb">
-                <div class="navbar-inner">
-                    <div class="left">
-                        <a href="javascript:goToUrl('{:url('mobile/index/index')}');" class="link icon-only">
-                            <i class="icon icon-back color-orange"></i>
-                        </a>
-                    </div>
-                    <div class="center">个人中心</div>
-                    <!--<div class="right">
-                        <a href="javascript:toUserMessage();" class="link icon-only ">
-                            <img src="/public/wap/images/message.png" height="40%"/>
-                        </a>
-                    </div>-->
-                </div>
-            </div>
-            <div class="pages navbar-through">
-                <div data-page="dqassess" class="page">
-                    <div class="page-content">
-                        <div class="user-info-tcon dpblue clearfix">
-                            <div class="user-info-tl left">
-                               <div class="user-face left rela"  >
-                                    <a id="myAvatar" >
-									{if isset($user['headimgurl'])}
-										<img src="{$user['headimgurl']}" width="100%"/>
-									{else /}
-										<img src="/public/wap/images/user.png" width="100%"/>
-									{/if}
-                                    </a>
-                                </div>
-                                <div class="user-info-t left">
-                                    <h2></h2>
-                                    <p><b class="fz7" >{$user['nickname']}</b></p>
-									<p>{$user['addr']}</p>
-                                </div>
-                            </div>
-                            <div class="user-info-rig right">
-                            <!--    <p class="gt-color">所属车商</p>
-                                <p><b class="fz7" id="a">杭州宝荣4S店</b></p>
-								-->
-                            </div>
-                        </div>
-						<!--
-                        <div class="user-item-con clearfix">
-                            <ul>
-                                <li>
-                                    <a href="javascript:toUserCenter();">我的资料</a>
-                                </li>
-                            </ul>
-                        </div>
-						-->
-                        <div class="user-item-con clearfix">
-                            <ul>
-                                <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}?type=1')">垫资订单 <span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
-                                </li>
-                                <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/index')}?type=3')">车抵订单 <span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
-                                </li>
-                                <!--<li>
-                                    <a href="javascript:goToUrl('{:url('mobile/order/progress')}')">进度查询<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a> 
-                                </li>-->
-                            </ul>
-                        </div>
-                        <div class="user-item-con clearfix">
-                            <ul>
-                                <li>
-                                    <a href="javascript:goToUrl('{:url('mobile/user/editpwd')}')">更改密码<span class="right"><img class="cg-right-ico" src="/public/wap/images/right.png" /></span></a>
-                                </li>
-								<!--
-                                <li>
-                                    <a href="javascript:toUpdatePhone();">更改手机号</a>
-                                </li>
-								-->
-                            </ul>
-                        </div>
-                        <div class="user-item-con clearfix">
-                            <ul>
-                                <li>
-                                    <a href="javascript:toCallPhone();">
-                                        联系客服
-                                        <span class="right"><span class="vm">0571-87813085</span><img class="cg-right-ico" src="/public/wap/images/right.png" /></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="content-block">
-                            <a class="button button-big button-raised butcom-css dpblue"
-                               href="javascript:goToUrl('{:url('mobile/user/logout')}')">退出登录</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-  	<div id="dialog" class="dialog">
-        <div id="dialogContent">
-            <div id="dialogMain"></div>
-        </div>
-    </div>
-
-    <div id="loading"></div>
-    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
-
 </body>
 </html>

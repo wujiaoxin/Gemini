@@ -1459,6 +1459,7 @@ CREATE TABLE `gemini_order` (
   `endtime` int(11) NOT NULL COMMENT '借款期限',
   `fee` int(11) NOT NULL COMMENT '借款费用',
   `credit_status` int(11) DEFAULT '0' COMMENT '授信状态:1.待授信;2.授信中;3.已授信',
+  `car_price` varchar(255) NOT NULL DEFAULT '0' COMMENT '购车价格',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
 
@@ -1814,8 +1815,8 @@ CREATE TABLE `gemini_order_repay` (
   `repay_money` decimal(20,2) NOT NULL COMMENT '还款金额',
   `manage_money` decimal(20,2) NOT NULL COMMENT '管理费',
   `repay_time` int(11) NOT NULL COMMENT '还款时间',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-1还款中,0提前,1准时还款,2逾期还款',
-  `has_repay` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-1未还,1已还,2逾期',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-2还款申请,-1还款中,0提前,1准时还款,2逾期还款',
+  `has_repay` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-2还款申请,-1未还,1已还,2逾期',
   `true_repay_time` int(11) NOT NULL COMMENT '真实还款时间',
   `loantime` int(11) NOT NULL COMMENT '还款期限',
   `repay_period` tinyint(2) DEFAULT '0' COMMENT '还款期数',

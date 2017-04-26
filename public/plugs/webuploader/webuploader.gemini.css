@@ -28,6 +28,10 @@
 	border-radius: 10px;
 	margin:1%;
 }
+.gemini-uploader .labelList {
+    position: absolute;
+    z-index: 3;
+}
 .gemini-uploader .labelList li{
 	background-color:#f6f6f6;
 	padding-top:31%;
@@ -158,7 +162,7 @@
 
 .gemini-uploader .fileList li p.imgWrap {
     position: relative;
-    z-index: 2;
+    z-index: 4;
 
     vertical-align: middle;
     overflow: hidden;

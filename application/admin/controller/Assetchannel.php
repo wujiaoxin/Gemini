@@ -56,6 +56,7 @@ class assetchannel extends Admin {
 				$data['lines'] = '1000000';
 				$data['b_money'] = '1';
 				$data['money_level'] = '1000000';
+				$data['lines_ky'] = '1000000';
 			}
 			if ($data) {
 				unset($data['id']);
@@ -97,6 +98,7 @@ class assetchannel extends Admin {
 					$data['lines'] = '1000000';
 					$data['b_money'] = '1';
 					$data['money_level'] = '1000000';
+					$data['lines_ky'] = '1000000';
 				}
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {
@@ -227,6 +229,22 @@ class assetchannel extends Admin {
 		}else {
 			$this->setMeta("新增员工");
 			return $this->fetch('addStaff');
+		}
+	}
+	public function editStaff(){
+		if (IS_POST) {
+			$data = input('post.');
+			if($data){
+				$status = db('Member')->where('mobile',$data['mobile'])->setField('status',$data['status']);
+				if ($status) {
+					$data['code'] = '1';
+					$data['msg'] = '更新成功';
+				}else{
+					$data['code'] = '0';
+					$data['msg'] = '更新失败';
+				}
+			}
+			return json($data);
 		}
 	}
 }

@@ -11,7 +11,6 @@ var guide = function () {
                 'nextSelector': '.button-next',
                 'previousSelector': '.button-previous',
                 onTabClick: function (tab, navigation, index) {
-                    // ui_alert("alert-error",'on tab click disabled');
                     return false;
                 },
                 onNext: function (tab, navigation, index) {
@@ -26,22 +25,22 @@ var guide = function () {
                         var lic_validity = $("#lic_validity").val();
                         var field_dealer_lic_pic = $("#field_dealer_lic_pic").val();
                         if(name == ""){
-                            ui_alert("alert-error","请输入企业名称");
+                            ui_alert("请输入企业名称");
                             return false;
                         }else if(credit_code == ""){
-                            ui_alert("alert-error","请输入企业信用代码");
+                            ui_alert("请输入企业信用代码");
                             return false;
-                        }else if(!loc_province && !loc_city && !loc_town){
-                            ui_alert("alert-error","请选择单位所在地");
+                        }else if(!loc_province || !loc_city || !loc_town){
+                            ui_alert("请选择单位所在地");
                             return false;
                         }else if(addr == ""){
-                            ui_alert("alert-error","请填写详细地址");
+                            ui_alert("请填写详细地址");
                             return false;
                         }else if(lic_validity == ""){
-                            ui_alert("alert-error","请填写营业期限");
+                            ui_alert("请填写营业期限");
                             return false;
                         }else if(field_dealer_lic_pic == ""){
-                            ui_alert("alert-error","请上传营业执照照片");
+                            ui_alert("请上传营业执照照片");
                             return false;
                         }
                         ajax_jquery({
@@ -58,7 +57,7 @@ var guide = function () {
                                 if (resp.code == "1" ) {
                                 } else {
                                     if (typeof(resp.msg) == 'string') {
-                                        ui_alert("alert-error",resp.msg);
+                                        ui_alert(resp.msg);
                                         return false;
                                     }
                                 }
@@ -70,19 +69,19 @@ var guide = function () {
                         var field_rep_idcard_pic = $("#field_rep_idcard_pic").val();
                         var field_rep_idcard_back_pic = $("#field_rep_idcard_back_pic").val();
                         if(rep == ""){
-                            ui_alert("alert-error","请填写法人姓名");
+                            ui_alert("请填写法人姓名");
                             return false;
                         }else if(idno == ""){
-                            ui_alert("alert-error","请填写法人身份证号");
+                            ui_alert("请填写法人身份证号");
                             return false;
                         }else if(!validateIdCard(idno)){
-                            ui_alert("alert-error","身份证号填写有误");
+                            ui_alert("身份证号填写有误");
                             return false;
                         }else if(field_rep_idcard_pic == ""){
-                            ui_alert("alert-error","请上传身份证正面照");
+                            ui_alert("请上传身份证正面照");
                             return false;
                         }else if(field_rep_idcard_back_pic == ""){
-                            ui_alert("alert-error","请上传身份证反面照");
+                            ui_alert("请上传身份证反面照");
                             return false;
                         }
 
@@ -98,7 +97,7 @@ var guide = function () {
                                 if (resp.code == "1" ) {
                                 } else {
                                     if (typeof(resp.msg) == 'string') {
-                                        ui_alert("alert-error",resp.msg);
+                                        ui_alert(resp.msg);
                                         return false;
                                     }
                                 }
@@ -108,11 +107,11 @@ var guide = function () {
                         var property = encodeCheckbox('property');
                         var forms = encodeCheckbox('forms');
                         // if(property == ""){
-                        //     ui_alert("alert-error","请选择门店属性");
+                        //     ui_alert("请选择门店属性");
                         //     return false;
                         // }else
                         if(forms == ""){
-                            ui_alert("alert-error","请选择合作形式");
+                            ui_alert("请选择合作形式");
                             return false;
                         }
                         ajax_jquery({
@@ -125,7 +124,7 @@ var guide = function () {
                                 if (resp.code == "1" ) {
                                 } else {
                                     if (typeof(resp.msg) == 'string') {
-                                        ui_alert("alert-error",resp.msg);
+                                        ui_alert(resp.msg);
                                         return false;
                                     }
                                 }
@@ -220,34 +219,34 @@ var guide = function () {
                 var priv_bank_branch = $("#priv_bank_branch").val();
 
                 if(bank_account_name == ""){
-                    ui_alert("alert-error","请输入公户开户人姓名");
+                    ui_alert("请输入公户开户人姓名");
                     return false;
                 }else if(bank_name == ""){
-                    ui_alert("alert-error","请输入公户开户银行");
+                    ui_alert("请输入公户开户银行");
                     return false;
                 }else if(bank_account_id == ""){
-                    ui_alert("alert-error","请输入公户开户银行账号");
+                    ui_alert("请输入公户开户银行账号");
                     return false;
                 }else if(!validateBankNum(bank_account_id)){
-                    ui_alert("alert-error","公户开户银行账号输入有误");
+                    ui_alert("公户开户银行账号输入有误");
                     return false;
                 }else if(bank_branch == ""){
-                    ui_alert("alert-error","请输入公户开户支行名称");
+                    ui_alert("请输入公户开户支行名称");
                     return false;
                 }else if(priv_bank_account_name == ""){
-                    ui_alert("alert-error","请输入私户开户人姓名");
+                    ui_alert("请输入私户开户人姓名");
                     return false;
                 }else if(priv_bank_name == ""){
-                    ui_alert("alert-error","请输入私户开户银行");
+                    ui_alert("请输入私户开户银行");
                     return false;
                 }else if(priv_bank_account_id == ""){
-                    ui_alert("alert-error","请输入私户开户银行账号");
+                    ui_alert("请输入私户开户银行账号");
                     return false;
                 }else if(!validateBankNum(priv_bank_account_id)){
-                    ui_alert("alert-error","私户银行账号输入有误");
+                    ui_alert("私户银行账号输入有误");
                     return false;
                 }else if(priv_bank_branch == ""){
-                    ui_alert("alert-error","请输入私户开户支行名称");
+                    ui_alert("请输入私户开户支行名称");
                     return false;
                 }
 
@@ -265,11 +264,11 @@ var guide = function () {
                     },
                     success:function(resp){
                         if (resp.code == "1" ) {
-                            ui_alert("alert-success",'提交成功')
+                            ui_alert("提交成功","success");
                             window.location.href = "/business/login/waiting.html";
                         } else {
                             if (typeof(resp.msg) == 'string') {
-                                ui_alert("alert-error",resp.msg);
+                                ui_alert(resp.msg);
                                 return false;
                             }
                         }

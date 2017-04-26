@@ -92,7 +92,6 @@ use app\business\controller\Baseness;
 				$user = model('User');
 				//创建注册用户
 				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
-				// echo $uid;die;
 				if ($uid > 0) {
 					$userinfo['realname'] = $data['name'];
 					$userinfo['nickname'] = $data['name'];
@@ -127,15 +126,15 @@ use app\business\controller\Baseness;
 		$uid =session('user_auth.uid');
 		$mobile = session('mobile');
 		//分组统计
-		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->order('result DESC')->group('uid')->select();
+		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($result as $k => $v) {
 			$result[$k]['realname'] = serch_real($v['uid']);
 		}
-		$num = db('order')->field('mid,uid,count(id) as result')->order('result DESC')->group('uid')->select();
+		$num = db('order')->field('mid,uid,count(id) as result')->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($num as $k => $v) {
 			$num[$k]['realname'] = serch_real($v['uid']);
 		}
-		$avg = db('order')->field('mid,uid,avg(loan_limit) as result')->order('result DESC')->group('uid')->select();
+		$avg = db('order')->field('mid,uid,avg(loan_limit) as result')->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($num as $k => $v) {
 			$avg[$k]['realname'] = serch_real($v['uid']);
 		}
@@ -143,14 +142,12 @@ use app\business\controller\Baseness;
 		//一个月内每天的订单数量
 		$times = time()-24*3600*30;
 		$time =db('order')->field("FROM_UNIXTIME(create_time,'%Y-%m-%d') as time,create_time,count(id) as num,sum(loan_limit) as total_money")->group('time')->wheretime('create_time','>',$times)->order('time')->select();
-		// var_dump($time);
 		$temp['time'] ='0';
 		$temp['num'] ='0';
 		$temp['total_money'] ='0';
 		for ($i=count($time); $i < 30; $i++) {
 			array_unshift($time,$temp);
 		}
-		// var_dump($time);die;
 		$info = array(
 				'money'=>$result,
 				'num'=>$num,
@@ -167,11 +164,9 @@ use app\business\controller\Baseness;
 
 	public function loanItem() {
 		$uid = session('user_auth.uid');
-		// var_dump($_SESSION);die;
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
-			// var_dump($data);die;
 			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
@@ -182,14 +177,12 @@ use app\business\controller\Baseness;
 			}
 			$map['credit_status'] = '3';
 			if ($data['dateRange']) {
-				// echo $data['dateRange'];die;
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
 
 				$result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
 			}else{
-				// var_dump($map);die;
 				$result = db('order')->where($map)->select();
 			}
 			
@@ -214,7 +207,6 @@ use app\business\controller\Baseness;
 		$mobile = session('mobile');
 		if (IS_POST) {
 			$data = input('post.');
-			// var_dump($data);die;
 			
 			if (isset($data['payPwd']) && isset($data['orderId'])){
 				
@@ -233,14 +225,15 @@ use app\business\controller\Baseness;
 					$info = array(
 						'true_repay_money' =>$ids['repay_money'],
 						'true_repay_time' =>time(),
-						'status' =>'1',
-						'has_repay' =>'1',
+						'status' =>'-2',
+						'has_repay' =>'-2',
 						'descr' => '还款时间为：'.date('Y-m-d H:i:s',time()).'还id为'.$data['orderId'].'的订单',
 						'platform_account'=>$data['bankcard']
 						);
 					db('order_repay')->where('order_id',$data['orderId'])->update($info);
 					$resp['code'] = '1';
 					$resp['msg'] = '还款申请成功';
+					return json($resp);
 				}else{
 					$resp['code'] = '0';
 					$resp['msg'] = '交易密码错误';
@@ -264,11 +257,9 @@ use app\business\controller\Baseness;
 				}else{
 					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
 				}
-				// var_dump($map);die;
 				foreach ($order_repay as $k => $v) {
 					$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
 				}
-				// var_dump($order_repay);die;
 				if ($order_repay) {
 					$resp['code'] = '1';
 					$resp['msg'] = '数据正常';
@@ -291,38 +282,45 @@ use app\business\controller\Baseness;
 	}
 
 	public function payItem() {
+
 		$uid =session('user_auth.uid');
+
 		$mobile = session('mobile');
+
 		if (IS_POST) {
+
 			$data = input('post.');
-			// var_dump($data);die;
+
 			if (isset($data['payPwd']) && isset($data['payOrder'])) {
+
 				$user = db('member')->field('paypassword')->where('mobile',$mobile)->find();
+
 				if(md5($data['payPwd'].$mobile) == $user['paypassword']){
 					//车商只做费用记录
 					$fee = db('order')->field('fee')->where('sn',$data['payOrder'])->find();
-					// var_dump($fee);die;
+
 					$money = db('dealer')->field('money,lock_money')->where('mobile',$mobile)->find();
 
 					$use_money = $money['money'] - $fee['fee'];
 
-					// echo $use_money;die;
-
 					if ($use_money < 0) {
+
 						$resp['code'] = '0';
+
 						$resp['msg'] = '余额不足，请充值！！！';
 					}else{
-						// echo $use_money;die;
+
 						$lock_money = $money['lock_money'] + $fee['fee'];
+
 						$datas = array(
 							'money'=>$use_money,
 							'lock_money' => $lock_money
 							);
-						// var_dump($data);die;
-						$fee['order_id'] = $data['payOrder'];
+
 						db('Dealer')->where('mobile',$mobile)->update($datas);//冻结资金
-						$data['money'] = $fee;
+						$data['money'] = $fee['fee'];
 						$data['descr'] = '订单编号:'.$data['payOrder'].'支付成功';
+
 						money_record($data, $uid, 5, 0);//资金记录
 						//支付完成进行放款中
 						$fk_deal = array(
@@ -342,8 +340,6 @@ use app\business\controller\Baseness;
 					$resp['code'] = '0';
 					$resp['msg'] = '交易密码错误';
 				}
-				// var_dump($resp);
-				// die;
 			}else{
 
 				$map['mid'] =$uid;
@@ -360,7 +356,6 @@ use app\business\controller\Baseness;
 					}
 					
 				}
-				// var_dump($map);die;
 				if ($data['dateRange']) {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
@@ -369,8 +364,6 @@ use app\business\controller\Baseness;
 				}else{
 					$order_pay = db('order')->where($map)->order('finance ASC')->select();
 				}
-				// $order_pay = db('order')->where($map)->order('status ASC')->select();
-				// var_dump($order_pay);die;
 				foreach ($order_pay as $k => $v) {
 					$order_pay[$k]['realname'] = serch_real($v['uid']);
 				}
@@ -467,5 +460,25 @@ use app\business\controller\Baseness;
 			$resp["msg"] = "发送失败！";
 		}
 		return $resp;
+	}
+	//修改账户密码
+	public function editPassword($oldPassword = '', $newPassword = '') {
+		$user = model('User');
+		
+		$data['uid']  = session('user_auth.uid');
+		
+		$data['oldpassword'] = $oldPassword;
+		$data['password'] = $newPassword;
+		
+		$result = $user->editpw($data);
+		if ($result !== false) {
+			$resp["code"] = 1;
+			$resp["msg"] = "修改成功！";
+			return json($resp);
+		}else{
+			$resp["code"] = 0;
+			$resp["msg"] = $user->getError();
+			return json($resp);
+		}
 	}
 }

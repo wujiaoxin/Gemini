@@ -206,7 +206,7 @@ class Account extends Baseness {
 			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 			$map = array(
 			    'mid'=>$uid,
-			    'finance'=>'2'
+			    'finance'=>'3'
 			  );
 			$orders =db('order')->where($map)->select();
 			foreach ($orders as $k => $v) {

@@ -23,8 +23,10 @@
 		<span class="selectParm-title">业务类型:</span>
 		<ul class="selectParm selectOrderType">
 			<li data='' class="active" >全部</li>
-			<li data='1'>按揭垫资</li>
-			<li data='3'>车抵贷</a></li>
+			<li data='1'>二手车按揭贷款</li>
+			<li data='2'>二手车按揭垫资</li>
+			<li data='3'>新车按揭贷款</li>
+			<li data='4'>新车按揭垫资</li>
 		</ul>
 	</div>
 	<div class="select-block">
@@ -172,7 +174,7 @@
 	            	$('#table-repayItem').dataTable({"bDestroy":true});
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
-	                    ui_alert("alert-error",resp.msg);
+	                    ui_alert(resp.msg);
 	                    return false;
 	                }
 	            }
@@ -211,13 +213,13 @@
 	   		var bankcardChecked = $('input[name="bankcard"]:checked').val();
 	   		var bankcard = $('#'+bankcardChecked).val();
 	   		if(bankcard == ''){
-				ui_alert("alert-error","请选择还款银行卡");
+				ui_alert("请选择还款银行卡");
 	            return false;
 	   	 	}else if(payPwd == ''){
-	   	 		ui_alert("alert-error","请输入交易密码");
+	   	 		ui_alert("请输入交易密码");
 	            return false;
 	   	 	}else if(orderId == ""){
-	   	 		ui_alert("alert-error","未获取订单号，请重试");
+	   	 		ui_alert("未获取订单号，请重试");
 	            return false;
 	   	 	}
 	   	 	ajax_jquery({
@@ -229,11 +231,11 @@
 		        },
 		        success:function(resp){
 		            if (resp.code == "1" ) {
-		            	ui_alert("alert-success","还款成功");
+		            	ui_alert("还款成功","success");
 		            	ajaxRepayItem('','','');
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
-		                    ui_alert("alert-error",resp.msg);
+		                    ui_alert(resp.msg);
 		                    return false;
 		                }
 		            }

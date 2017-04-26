@@ -275,12 +275,13 @@ $(function(){
         var status = $(statusTd).attr('data-status');
         status = status>0?0:1; //更改stautus
         ajax_jquery({
-            url: apiUrl +'/business/user/editStaff',
+            url: apiUrl +'/admin/assetchannel/editStaff',
             data:{
                 'mobile': mobile,
                 'status': status
             },
             success:function(resp){
+                console.log(mobile)
                 if (resp.code == "1" ) {
                     $(statusTd).attr('data-status',status);
                     if(status){

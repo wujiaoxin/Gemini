@@ -34,7 +34,7 @@ class Customer extends Admin {
 		);
 
 		$this->assign($data);
-
+		$this->setMeta('客户管理');
 		return $this->fetch();
 
 	}

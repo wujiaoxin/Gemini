@@ -241,19 +241,19 @@
 			var newPayPwd = $('#newPayPwd').val();
 			var confirmPayPwd = $('#confirmPayPwd').val();
 			if(smsVerify == ""){
-        		ui_alert("alert-error","请输入短信验证码");
+        		ui_alert("请输入短信验证码");
         		return false;
         	}else if(newPayPwd == ""){
-				ui_alert("alert-error","请输入交易密码");
+				ui_alert("请输入交易密码");
         		return false;
         	}else if(!validatePayPwd(newPayPwd)){
-        		ui_alert("alert-error","请输入6位数字交易密码");
+        		ui_alert("请输入6位数字交易密码");
         		return false;
         	}else if(confirmPayPwd == ""){
-        		ui_alert("alert-error","请确认交易密码");
+        		ui_alert("请确认交易密码");
         		return false;
     		}else if(confirmPayPwd != newPayPwd){
-    			ui_alert("alert-error","两次输入密码不一致");
+    			ui_alert("两次输入密码不一致");
         		return false;
     		}
 	        ajax_jquery({
@@ -264,13 +264,13 @@
 	            },
 	            success:function(resp){
 	                if (resp.code == "1" ) {
-	                		ui_alert("alert-success","交易密码修改成功");
+	                		ui_alert("交易密码修改成功","success");
 	                        window.location.href = "/business/account/index";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
-	                        ui_alert("alert-error",resp.msg);
+	                        ui_alert(resp.msg);
 	                    } else {
-	                        ui_alert("alert-error","修改失败，请重试!");
+	                        ui_alert("修改失败，请重试!");
 	                    }
 	                    return false;
 	                }
@@ -282,13 +282,13 @@
 			var smsVerify = $('#editMobile-smsVerify').val();
 			var newMobile = $('#newMobile').val();
 			if(smsVerify == ""){
-        		ui_alert("alert-error","请输入短信验证码");
+        		ui_alert("请输入短信验证码");
         		return false;
         	}else if(newMobile == ""){
-				ui_alert("alert-error","请输入新手机号");
+				ui_alert("请输入新手机号");
         		return false;
         	}else if(!validatePhoneNumber(newMobile)){
-        		ui_alert("alert-error","请输入正确手机号");
+        		ui_alert("请输入正确手机号");
         		return false;
         	}
 	        ajax_jquery({
@@ -299,13 +299,13 @@
 	            },
 	            success:function(resp){
 	                if (resp.code == "1" ) {
-	                		ui_alert("alert-success","手机号修改成功");
+	                		ui_alert("手机号修改成功","success");
 	                        window.location.href = "/business/account/index";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
-	                        ui_alert("alert-error",resp.msg);
+	                        ui_alert(resp.msg);
 	                    } else {
-	                        ui_alert("alert-error","修改失败，请重试!");
+	                        ui_alert("修改失败，请重试!");
 	                    }
 	                    return false;
 	                }
@@ -316,10 +316,10 @@
 		$('#editMailBtn').click(function(){
 			var email = $('#newMail').val();
 			if(email == ""){
-        		ui_alert("alert-error","请输入邮箱地址");
+        		ui_alert("请输入邮箱地址");
         		return false;
         	}else if(!checkEmail(email)){
-				ui_alert("alert-error","请输入正确邮箱地址");
+				ui_alert("请输入正确邮箱地址");
         		return false;
         	}
 	        ajax_jquery({
@@ -329,13 +329,13 @@
 	            },
 	            success:function(resp){
 	                if (resp.code == "1" ) {
-	                		ui_alert("alert-success","邮箱修改成功");
+	                		ui_alert("邮箱修改成功","success");
 	                        window.location.href = "/business/account/index";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
-	                        ui_alert("alert-error",resp.msg);
+	                        ui_alert(resp.msg);
 	                    } else {
-	                        ui_alert("alert-error","修改失败，请重试!");
+	                        ui_alert("修改失败，请重试!");
 	                    }
 	                    return false;
 	                }

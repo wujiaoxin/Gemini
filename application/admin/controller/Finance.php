@@ -39,7 +39,7 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-			// var_dump($data);die;
+
 			if (isset($data['status'])) {
 
 				$datas = array(
@@ -55,13 +55,24 @@ class Finance extends Admin {
 					$money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.id',$data['id'])->find();
 
 					$result = db('order')->field('fee,loan_limit')->where('id',$data['id'])->find();
-
-					if ($money['lock_money'] > $result['fee']) {//判断冻结金额和订单费用
+					
+					if ($money['lock_money'] >= $result['fee']) {//判断冻结金额和订单费用
 						
 						$datas['finance'] = '3';
 
+						//可用额度设置
+
 						$lines_result = $money['lines_ky'] - $result['loan_limit'];//最终可用额度
 
+						if ($lines_result < '0') {
+
+							$resp['code'] = 0;
+
+							$resp['msg'] = '可用额度不足，请提醒用户充值！';
+
+							return json($resp);
+						}
+					
 						$lock_money_result = $money['lock_money'] - $result['fee'];//剩余冻结金额
 
 						$moeny_result = array(
@@ -233,16 +244,14 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-			// var_dump($data);die;
+
 			if (isset($data['status'])) {
 				
 				$data['update_time'] = time();
 
 				if ($data['status']) {
 
-					//可用额度设置
-					
-					// $dealer_money = db('Dealer')->field('lines_ky')->where('')->find();
+
 
 					db('carry')->where('sn',$data['id'])->update($data);
 
@@ -261,12 +270,13 @@ class Finance extends Admin {
 					$resp['msg'] = '提现审核失败!';
 				}
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
+
 			}else{
 
 				$result = db('carry')->where('sn',$data['id'])->find();
 
 				$sercher = serch_name($result['uid']);
-				// var_dump($result);die;
+
 				$result['dealer_name'] = $sercher['dealer_name'];
 
 				$resp['code'] = 1;
@@ -286,12 +296,10 @@ class Finance extends Admin {
 			foreach ($result as $k => $v) {
 
 				$sercher = serch_name($v['uid']);
-				// var_dump($sercher);die;
 
 				$result[$k]['dealer_name'] = $sercher['dealer_name'];
 
 			}
-			// var_dump($result);die;
 
 			$data = array(
 				'infoStr' => json_encode($result)
@@ -300,6 +308,7 @@ class Finance extends Admin {
 			$this->assign($data);
 
 		}
+		$this->setMeta('提现审核');
 		return $this->fetch();
 	}
 	
@@ -309,26 +318,28 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-			// var_dump($data);die;
+
 			if (isset($data['status'])) {
 				
 				if ($data['status']) {
 
 					$money = db('dealer')->alias('d')->field('d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('order_repay o','m.uid = o.mid')->where('o.id',$data['id'])->find();
+					if ($data['status'] == '1') {
 
-					$ids = db('order_repay')->field('order_id')->where('id',$data['id'])->find();
+						$ids = db('order_repay')->field('order_id')->where('id',$data['id'])->find();
 
-					$result = db('order')->field('loan_limit')->where('id',$ids['order_id'])->find();
+						$result = db('order')->field('loan_limit')->where('id',$ids['order_id'])->find();
 
-					$lines_result = $money['lines_ky'] + $result['loan_limit'];//最终可用额度
+						$lines_result = $money['lines_ky'] + $result['loan_limit'];//最终可用额度
 
-					$moeny_result = array(
+						$moeny_result = array(
 
 						'lines_ky' =>$lines_result
 
 						);
 
-					db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变可用额度
+						db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变可用额度
+					}
 					$data['has_repay'] = '1';
 					db('order_repay')->where('id',$data['id'])->update($data);//更新订单状态
 
@@ -340,10 +351,9 @@ class Finance extends Admin {
 
 					$resp['code'] = 0;
 
-					$resp['msg'] = '回款审核失败!';
+					$resp['msg'] = '还款审核失败!';
 
 				}
-
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
 			}else{
 
@@ -367,7 +377,7 @@ class Finance extends Admin {
 			return json($resp);
 
 		}else{
-			$result = db('order_repay')->where('status','>',-2)->select();
+			$result = db('order_repay')->where('status','>',-3)->order('status')->select();
 
 			foreach ($result as $k => $v) {
 
