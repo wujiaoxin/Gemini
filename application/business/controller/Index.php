@@ -15,7 +15,7 @@ class Index extends Baseness {
 		$uid = session("user_auth.uid");
 		$mobile =session('mobile');
 		if($uid == null){
-			return $this->error("请先登录",url("/business/user/login"));
+			return $this->redirect(url("/business/login/login"));
 		}
 		$is_success = db('Dealer')->field('priv_bank_name')->where('mobile',$mobile)->find();
 		if(!$is_success['priv_bank_name']){
