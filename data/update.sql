@@ -135,3 +135,20 @@ CREATE TABLE `gemini_collect_data` (
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='原始数据采集表';
+
+DROP TABLE IF EXISTS `gemini_credit`;
+CREATE TABLE `gemini_credit` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(10) NOT NULL DEFAULT '0' COMMENT '用户ID ',
+  `order_id` int(11) DEFAULT 0 COMMENT '关联订单号',
+  `idcard` varchar(64) DEFAULT '' COMMENT '身份证号码',
+  `mobile` varchar(20) DEFAULT NULL COMMENT '手机号码',
+  `mobile_password` varchar(20) DEFAULT NULL COMMENT '手机运营商密码',
+  `mobile_collect_token` varchar(64) DEFAULT NULL COMMENT '葫芦数据授信token',
+  `credit_status` int(11) DEFAULT 0  COMMENT '授信状态:1.待授信;2.授信中;3.已授信;',
+  `credit_result` int(11) DEFAULT 0  COMMENT '授信结果:0.待审核;1.通过;2.更换常用银行卡;3.更换常用手机号;',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `descr` varchar(255) NOT NULL DEFAULT 'NULL' COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户授信记录表';
