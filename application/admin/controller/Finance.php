@@ -39,7 +39,7 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-			// var_dump($data);die;
+
 			if (isset($data['status'])) {
 
 				$datas = array(
@@ -55,13 +55,24 @@ class Finance extends Admin {
 					$money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.id',$data['id'])->find();
 
 					$result = db('order')->field('fee,loan_limit')->where('id',$data['id'])->find();
-
-					if ($money['lock_money'] > $result['fee']) {//判断冻结金额和订单费用
+					
+					if ($money['lock_money'] >= $result['fee']) {//判断冻结金额和订单费用
 						
 						$datas['finance'] = '3';
 
+						//可用额度设置
+
 						$lines_result = $money['lines_ky'] - $result['loan_limit'];//最终可用额度
 
+						if ($lines_result < '0') {
+
+							$resp['code'] = 0;
+
+							$resp['msg'] = '可用额度不足，请提醒用户充值！';
+
+							return json($resp);
+						}
+					
 						$lock_money_result = $money['lock_money'] - $result['fee'];//剩余冻结金额
 
 						$moeny_result = array(
@@ -240,24 +251,7 @@ class Finance extends Admin {
 
 				if ($data['status']) {
 
-					if ($data['status'] == '1') {
-						//可用额度设置
-						$dealer_mobile = db('member')->alias('m')->field('m.mobile,c.money')->join('__CARRY__ c','m.uid = c.uid')->where('sn',$data['id'])->find();
 
-						$dealer_lines = db('Dealer')->field('lines_ky')->where('mobile',$dealer_mobile['mobile'])->find();
-
-						$total_lines = $dealer_lines['lines_ky'] - $dealer_mobile['money'];
-
-						if ($total_lines < '0') {
-
-							$resp['code'] = 0;
-
-							$resp['msg'] = '可用额度不足，请提醒用户充值！';
-
-							return json($resp);
-						}
-						db('Dealer')->where('mobile',$dealer_mobile['mobile'])->setField('lines_ky',$total_lines);
-					}
 
 					db('carry')->where('sn',$data['id'])->update($data);
 

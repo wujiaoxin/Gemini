@@ -461,4 +461,24 @@ use app\business\controller\Baseness;
 		}
 		return $resp;
 	}
+	//修改账户密码
+	public function editPassword($oldPassword = '', $newPassword = '') {
+		$user = model('User');
+		
+		$data['uid']  = session('user_auth.uid');
+		
+		$data['oldpassword'] = $oldPassword;
+		$data['password'] = $newPassword;
+		
+		$result = $user->editpw($data);
+		if ($result !== false) {
+			$resp["code"] = 1;
+			$resp["msg"] = "修改成功！";
+			return json($resp);
+		}else{
+			$resp["code"] = 0;
+			$resp["msg"] = $user->getError();
+			return json($resp);
+		}
+	}
 }
