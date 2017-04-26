@@ -743,7 +743,7 @@ function toHotApp() {
 
 function toCallPhone(phoneNum) {
 	if(phoneNum == null){
-		phoneNum = '0571-87813085';
+		phoneNum = '400-677-1982';
 	}
     var u = navigator.userAgent;
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('iPhone') > -1) {//手机
