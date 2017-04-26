@@ -101,11 +101,11 @@ class Order extends \app\common\model\Base {
 	public function get_all_order_total($uid = 0, $type = null, $status = null){
 
 		$filter['uid'] = $uid;
-		if($type == null){
+		/*if($type == null){
 			$filter['type'] =['<',3];
 		}else{
 			$filter['type'] = $type;
-		}
+		}*/
 		if($status == null){
 			$filter['status'] = ['>',-1];
 		}else{
@@ -128,10 +128,13 @@ class Order extends \app\common\model\Base {
 	//添加订单
 	public function add_order($uid, $data){
 
+		unset($data['type']);
 
 		$dealer_mobile = db('member')->alias('m')->field('d.mobile')->join('dealer d','d.id = m.dealer_id')->where('m.uid',$uid)->find();
 
 		$mid = db('member')->field('uid')->where('mobile',$dealer_mobile['mobile'])->find();
+
+		$forms = db('dealer')->field('forms')->where('mobile',$dealer_mobile['mobile'])->find();
 		// var_dump($mid);die;
 		$is_order = db('order')->field('mobile')->where('mobile',$data['mobile'])->find();
 
@@ -146,18 +149,19 @@ class Order extends \app\common\model\Base {
 
 		}else{
 			$order_sn = $this->build_order_sn();
+
 			$data =array(
 				'uid'=>$uid,
 				'mid'=>$mid['uid'],
 				'mobile'=>$data['mobile'],
 				'car_price'=>$data['price'],
 				'sn' =>$order_sn,
-				'status'=>-2
+				'status'=>-2,
+				'type' =>$forms['forms']
 				);
+
 			$result = $this->allowField(true)->save($data);
 		}
-
-		
 		
 		return $this->id;
 	}

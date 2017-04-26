@@ -31,7 +31,7 @@ class Order extends Api {
 	}
 	
 	//添加
-	public function add($type = null, $mobile = null, $price = null) {
+	public function add($mobile = null, $price = null) {
 
 		$uid = session('user_auth.uid');
 		$resp['code'] = 0;
@@ -71,11 +71,11 @@ class Order extends Api {
 			}else{
 				$map = $map.' and status ='.(int)$status;
 			}
-			if($type == '3'){
+			/*if($type == '3'){
 				$map = $map.' and type = 3';
 			}else{
 				$map = $map.' and type < 3';
-			}
+			}*/
 			
 			$sort = "id desc";
 			$list  = db('Order')->where($map)->order($sort)->paginate(15);
@@ -123,6 +123,7 @@ class Order extends Api {
 		$orderModel = model('Order');
 		if ($_POST) {
 			$data = input('post.');
+			unset($data['type']);
 			// var_dump($data);die;
 			$list = $orderModel->save_order($uid,$data);
 			if ($list) {
