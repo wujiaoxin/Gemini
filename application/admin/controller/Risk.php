@@ -11,8 +11,7 @@ class risk extends Admin {
 
 	public function rating() {
 		
-		$creditList = db('credit')->alias('c')->join('__MEMBER__ m','c.uid = m.uid')->where("credit_status",3)->order('id desc')->fetchSQL(false)->select();
-		//TODO: JOIN 不支持 field?...
+		$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard')->join('__MEMBER__ m','c.uid = m.uid')->where("credit_status",3)->order('id desc')->fetchSQL(false)->select();
 		
 		$data = array(
 			'infoStr' =>json_encode($creditList),
@@ -39,7 +38,7 @@ class risk extends Admin {
 			}
 			
 		}else{
-			$creditList = db('credit')->alias('c')->join('__MEMBER__ m','c.uid = m.uid')->where("id",$id)->order('id desc')->fetchSQL(false)->find();			
+			$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard')->join('__MEMBER__ m','c.uid = m.uid')->where("id",$id)->order('id desc')->fetchSQL(false)->find();			
 			$data = array(
 				'infoStr' =>json_encode($creditList),
 			);			
