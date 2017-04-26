@@ -196,14 +196,20 @@ class Credit extends Api {
 		$mobileCollectToken = session('mobileCollect.token');
 		if(empty($mobileCollectToken)){
 			$respStr = '{
-				"code": 5,
-				"msg": "资料待提交"
+				"code": 1,
+				"msg": "获取成功！",
+				"data": {
+					"resultcode": 5,
+					"resultmsg": "资料待提交"
+				}
 			}';
 		}else{
 			$respStr = '{
 				"code": 1,
-				"msg": "获取成功",
+				"msg": "获取成功！",
 				"data": {
+					"resultcode": 1,
+					"resultmsg": "授信通过",
 					"name": "90贷",
 					"month": 36,
 					"downpay": 10000,
