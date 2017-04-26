@@ -127,15 +127,15 @@ use app\business\controller\Baseness;
 		$uid =session('user_auth.uid');
 		$mobile = session('mobile');
 		//分组统计
-		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->order('result DESC')->group('uid')->select();
+		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($result as $k => $v) {
 			$result[$k]['realname'] = serch_real($v['uid']);
 		}
-		$num = db('order')->field('mid,uid,count(id) as result')->order('result DESC')->group('uid')->select();
+		$num = db('order')->field('mid,uid,count(id) as result')->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($num as $k => $v) {
 			$num[$k]['realname'] = serch_real($v['uid']);
 		}
-		$avg = db('order')->field('mid,uid,avg(loan_limit) as result')->order('result DESC')->group('uid')->select();
+		$avg = db('order')->field('mid,uid,avg(loan_limit) as result')->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($num as $k => $v) {
 			$avg[$k]['realname'] = serch_real($v['uid']);
 		}
@@ -291,38 +291,45 @@ use app\business\controller\Baseness;
 	}
 
 	public function payItem() {
+
 		$uid =session('user_auth.uid');
+
 		$mobile = session('mobile');
+
 		if (IS_POST) {
+
 			$data = input('post.');
-			// var_dump($data);die;
+
 			if (isset($data['payPwd']) && isset($data['payOrder'])) {
+
 				$user = db('member')->field('paypassword')->where('mobile',$mobile)->find();
+
 				if(md5($data['payPwd'].$mobile) == $user['paypassword']){
 					//车商只做费用记录
 					$fee = db('order')->field('fee')->where('sn',$data['payOrder'])->find();
-					// var_dump($fee);die;
+
 					$money = db('dealer')->field('money,lock_money')->where('mobile',$mobile)->find();
 
 					$use_money = $money['money'] - $fee['fee'];
 
-					// echo $use_money;die;
-
 					if ($use_money < 0) {
+
 						$resp['code'] = '0';
+
 						$resp['msg'] = '余额不足，请充值！！！';
 					}else{
-						// echo $use_money;die;
+
 						$lock_money = $money['lock_money'] + $fee['fee'];
+
 						$datas = array(
 							'money'=>$use_money,
 							'lock_money' => $lock_money
 							);
-						// var_dump($data);die;
-						$fee['order_id'] = $data['payOrder'];
+
 						db('Dealer')->where('mobile',$mobile)->update($datas);//冻结资金
-						$data['money'] = $fee;
+						$data['money'] = $fee['fee'];
 						$data['descr'] = '订单编号:'.$data['payOrder'].'支付成功';
+
 						money_record($data, $uid, 5, 0);//资金记录
 						//支付完成进行放款中
 						$fk_deal = array(
@@ -360,7 +367,6 @@ use app\business\controller\Baseness;
 					}
 					
 				}
-				// var_dump($map);die;
 				if ($data['dateRange']) {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
@@ -369,8 +375,6 @@ use app\business\controller\Baseness;
 				}else{
 					$order_pay = db('order')->where($map)->order('finance ASC')->select();
 				}
-				// $order_pay = db('order')->where($map)->order('status ASC')->select();
-				// var_dump($order_pay);die;
 				foreach ($order_pay as $k => $v) {
 					$order_pay[$k]['realname'] = serch_real($v['uid']);
 				}

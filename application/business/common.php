@@ -92,16 +92,11 @@
   */
   function cl_order($o_id,$bank_name){
     $uid = session('user_auth.uid');
-    // echo $o_id;die;
     $order = db('order')->where('sn',$o_id)->select();
-
-    
-    // var_dump($order);die;
     if ($order) {
 
       $priv_bank_account_id = db('dealer')->where('priv_bank_account_id',$bank_name)->find();
       $bank_account_id = db('dealer')->where('bank_account_id',$bank_name)->find();
-      // var_dump($bank_account_id);die;
 
       $datas =array(
           'sn'=>$o_id,
@@ -170,21 +165,6 @@
     }*/
   }
   /*
-  ** type 操作类型
-  ** data 操作内容（数组）
-  */
-  function editemail($data,$type){
-    if ($type == 'newPayPwd') {
-     
-    }
-    if ($type =='newMobile') {
-      
-    }
-    if ($type =='mail') {
-      
-    }
-  }
-  /*
   ** 首页资金记录
   ** uid 车商uid
   ** type 资金类型
@@ -224,35 +204,6 @@
           'order_loan_num'=>$order_loan,
           'order_repay_num'=>$order_repay,
           );
-    }
-    return $data;
-  }
-
-  /*
-  ** 订单排行
-  ** type 业务类型
-  ** money 金额排行
-  ** num 数量排行
-  ** avg 均价排行
-  */
-  function get_order($mid,$uid,$type){
-    if ($type =='money') {
-      $map = array(
-          'uid'=>$uid,
-          'status'=>'11'
-        );
-      $money = db('order')->where($map)->sum('loan_limit');
-      $real_name = serch_real($uid);
-      $data = array(
-        'money'=>$money,
-        'realname'=>$realname
-        );
-    }
-    if ($type =='num') {
-     
-    }
-    if ($type =='avg') {
-     
     }
     return $data;
   }

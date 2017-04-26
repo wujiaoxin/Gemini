@@ -233,16 +233,31 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-			// var_dump($data);die;
+
 			if (isset($data['status'])) {
 				
 				$data['update_time'] = time();
 
 				if ($data['status']) {
 
-					//可用额度设置
-					
-					// $dealer_money = db('Dealer')->field('lines_ky')->where('')->find();
+					if ($data['status'] == '1') {
+						//可用额度设置
+						$dealer_mobile = db('member')->alias('m')->field('m.mobile,c.money')->join('__CARRY__ c','m.uid = c.uid')->where('sn',$data['id'])->find();
+
+						$dealer_lines = db('Dealer')->field('lines_ky')->where('mobile',$dealer_mobile['mobile'])->find();
+
+						$total_lines = $dealer_lines['lines_ky'] - $dealer_mobile['money'];
+
+						if ($total_lines < '0') {
+
+							$resp['code'] = 0;
+
+							$resp['msg'] = '可用额度不足，请提醒用户充值！';
+
+							return json($resp);
+						}
+						db('Dealer')->where('mobile',$dealer_mobile['mobile'])->setField('lines_ky',$total_lines);
+					}
 
 					db('carry')->where('sn',$data['id'])->update($data);
 
@@ -261,12 +276,13 @@ class Finance extends Admin {
 					$resp['msg'] = '提现审核失败!';
 				}
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
+
 			}else{
 
 				$result = db('carry')->where('sn',$data['id'])->find();
 
 				$sercher = serch_name($result['uid']);
-				// var_dump($result);die;
+
 				$result['dealer_name'] = $sercher['dealer_name'];
 
 				$resp['code'] = 1;
@@ -286,12 +302,10 @@ class Finance extends Admin {
 			foreach ($result as $k => $v) {
 
 				$sercher = serch_name($v['uid']);
-				// var_dump($sercher);die;
 
 				$result[$k]['dealer_name'] = $sercher['dealer_name'];
 
 			}
-			// var_dump($result);die;
 
 			$data = array(
 				'infoStr' => json_encode($result)
@@ -309,7 +323,7 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-			// var_dump($data);die;
+
 			if (isset($data['status'])) {
 				
 				if ($data['status']) {
@@ -340,10 +354,9 @@ class Finance extends Admin {
 
 					$resp['code'] = 0;
 
-					$resp['msg'] = '回款审核失败!';
+					$resp['msg'] = '还款审核失败!';
 
 				}
-
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
 			}else{
 
