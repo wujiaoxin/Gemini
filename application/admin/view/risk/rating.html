@@ -58,6 +58,8 @@
 			var userInfo = data[index];
 			if(userInfo.credit_result < 4 &&  userInfo.credit_result > -1){
 				userInfo.credit_status = creditStatusText[userInfo.credit_result];
+			}else{
+				userInfo.credit_status = "审核拒绝";
 			}
 		  	html += '<tr class="odd gradex">'
 		  		+'<td>'+ userInfo.uid + '</td>'
