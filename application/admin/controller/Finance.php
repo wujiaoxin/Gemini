@@ -314,6 +314,7 @@ class Finance extends Admin {
 			$this->assign($data);
 
 		}
+		$this->setMeta('提现审核');
 		return $this->fetch();
 	}
 	
@@ -329,20 +330,22 @@ class Finance extends Admin {
 				if ($data['status']) {
 
 					$money = db('dealer')->alias('d')->field('d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('order_repay o','m.uid = o.mid')->where('o.id',$data['id'])->find();
+					if ($data['status'] == '1') {
 
-					$ids = db('order_repay')->field('order_id')->where('id',$data['id'])->find();
+						$ids = db('order_repay')->field('order_id')->where('id',$data['id'])->find();
 
-					$result = db('order')->field('loan_limit')->where('id',$ids['order_id'])->find();
+						$result = db('order')->field('loan_limit')->where('id',$ids['order_id'])->find();
 
-					$lines_result = $money['lines_ky'] + $result['loan_limit'];//最终可用额度
+						$lines_result = $money['lines_ky'] + $result['loan_limit'];//最终可用额度
 
-					$moeny_result = array(
+						$moeny_result = array(
 
 						'lines_ky' =>$lines_result
 
 						);
 
-					db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变可用额度
+						db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变可用额度
+					}
 					$data['has_repay'] = '1';
 					db('order_repay')->where('id',$data['id'])->update($data);//更新订单状态
 
@@ -380,7 +383,7 @@ class Finance extends Admin {
 			return json($resp);
 
 		}else{
-			$result = db('order_repay')->where('status','>',-2)->select();
+			$result = db('order_repay')->where('status','>',-3)->order('status')->select();
 
 			foreach ($result as $k => $v) {
 

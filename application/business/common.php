@@ -194,7 +194,8 @@
           );
         $repay_money = db('order_repay')->where($where_repay)->sum('repay_money');
         // 借款中的订单
-        $order_loan = db('order')->where('mid',$uid)->count('id');
+
+        $order_loan = db('order')->where($where)->count('id');
         //还款中的订单
         $order_repay = db('order_repay')->where('mid',$uid)->where('status','-1')->count('id');
         $data = array(
@@ -233,8 +234,11 @@
        }
     }
     if ($type == 'order_repay') {
-        $data = db('order_repay')->alias('o')->field('o.*,d.type')->join('__ORDER__ d','o.order_id = d.sn')->limit(5)->select();
-       // $data = db('order_repay')->where('mid',$mid)->limit(4)->select();
+        $data = db('order_repay')->where('mid',$mid)->select();
+        foreach ($data as $k => $v) {
+          $type = db('order')->field('type')->where('id',$v['order_id'])->find();
+          $data[$k]['type'] = $type['type'];
+        }
     }
     if ($type == 'dealer_money') {
       $data = db('order_repay')->where('status ','>',3)->where('mid',$mid)->limit(5)->select();

@@ -92,7 +92,6 @@ use app\business\controller\Baseness;
 				$user = model('User');
 				//创建注册用户
 				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
-				// echo $uid;die;
 				if ($uid > 0) {
 					$userinfo['realname'] = $data['name'];
 					$userinfo['nickname'] = $data['name'];
@@ -143,14 +142,12 @@ use app\business\controller\Baseness;
 		//一个月内每天的订单数量
 		$times = time()-24*3600*30;
 		$time =db('order')->field("FROM_UNIXTIME(create_time,'%Y-%m-%d') as time,create_time,count(id) as num,sum(loan_limit) as total_money")->group('time')->wheretime('create_time','>',$times)->order('time')->select();
-		// var_dump($time);
 		$temp['time'] ='0';
 		$temp['num'] ='0';
 		$temp['total_money'] ='0';
 		for ($i=count($time); $i < 30; $i++) {
 			array_unshift($time,$temp);
 		}
-		// var_dump($time);die;
 		$info = array(
 				'money'=>$result,
 				'num'=>$num,
@@ -167,11 +164,9 @@ use app\business\controller\Baseness;
 
 	public function loanItem() {
 		$uid = session('user_auth.uid');
-		// var_dump($_SESSION);die;
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
-			// var_dump($data);die;
 			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
@@ -182,14 +177,12 @@ use app\business\controller\Baseness;
 			}
 			$map['credit_status'] = '3';
 			if ($data['dateRange']) {
-				// echo $data['dateRange'];die;
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
 
 				$result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
 			}else{
-				// var_dump($map);die;
 				$result = db('order')->where($map)->select();
 			}
 			
@@ -214,7 +207,6 @@ use app\business\controller\Baseness;
 		$mobile = session('mobile');
 		if (IS_POST) {
 			$data = input('post.');
-			// var_dump($data);die;
 			
 			if (isset($data['payPwd']) && isset($data['orderId'])){
 				
@@ -233,14 +225,15 @@ use app\business\controller\Baseness;
 					$info = array(
 						'true_repay_money' =>$ids['repay_money'],
 						'true_repay_time' =>time(),
-						'status' =>'1',
-						'has_repay' =>'1',
+						'status' =>'-2',
+						'has_repay' =>'-2',
 						'descr' => '还款时间为：'.date('Y-m-d H:i:s',time()).'还id为'.$data['orderId'].'的订单',
 						'platform_account'=>$data['bankcard']
 						);
 					db('order_repay')->where('order_id',$data['orderId'])->update($info);
 					$resp['code'] = '1';
 					$resp['msg'] = '还款申请成功';
+					return json($resp);
 				}else{
 					$resp['code'] = '0';
 					$resp['msg'] = '交易密码错误';
@@ -264,11 +257,9 @@ use app\business\controller\Baseness;
 				}else{
 					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
 				}
-				// var_dump($map);die;
 				foreach ($order_repay as $k => $v) {
 					$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
 				}
-				// var_dump($order_repay);die;
 				if ($order_repay) {
 					$resp['code'] = '1';
 					$resp['msg'] = '数据正常';
@@ -349,8 +340,6 @@ use app\business\controller\Baseness;
 					$resp['code'] = '0';
 					$resp['msg'] = '交易密码错误';
 				}
-				// var_dump($resp);
-				// die;
 			}else{
 
 				$map['mid'] =$uid;
