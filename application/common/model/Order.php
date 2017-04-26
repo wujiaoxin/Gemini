@@ -127,18 +127,37 @@ class Order extends \app\common\model\Base {
 
 	//添加订单
 	public function add_order($uid, $data){
-		$dealer_mobile = db('member')->alias('m')->field('d.mobile')->join('dealer d','d.invite_code = m.invite_code')->where('m.uid',$uid)->find();
+
+
+		$dealer_mobile = db('member')->alias('m')->field('d.mobile')->join('dealer d','d.id = m.dealer_id')->where('m.uid',$uid)->find();
+
 		$mid = db('member')->field('uid')->where('mobile',$dealer_mobile['mobile'])->find();
-		$order_sn = $this->build_order_sn();
-		$data =array(
-			'uid'=>$uid,
-			'mid'=>$mid['uid'],
-			'mobile'=>$data['mobile'],
-			'loan_limit'=>$data['price'],
-			'sn' =>$order_sn
-			);
-		// var_dump($data);die;
-		$result = $this->allowField(true)->save($data);
+		// var_dump($mid);die;
+		$is_order = db('order')->field('mobile')->where('mobile',$data['mobile'])->find();
+
+		if (isset($is_order)) {
+
+			if ($is_order['mobile'] == $data['mobile']) {
+				
+				$data['car_price'] = $data['price'];
+				$result = $this->allowField(true)->save($data,['mobile'=>$data['mobile']]);
+				return 111;
+			}
+
+		}else{
+			$order_sn = $this->build_order_sn();
+			$data =array(
+				'uid'=>$uid,
+				'mid'=>$mid['uid'],
+				'mobile'=>$data['mobile'],
+				'car_price'=>$data['price'],
+				'sn' =>$order_sn,
+				'status'=>-2
+				);
+			$result = $this->allowField(true)->save($data);
+		}
+
+		
 		
 		return $this->id;
 	}
