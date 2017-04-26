@@ -256,6 +256,17 @@ class Credit extends Api {
 				}';
 			}
 			
+			if($creditResult['credit_result'] == -1){
+				$respStr = '{
+					"code": 1,
+					"msg": "获取成功！",
+					"data": {
+						"resultcode": -1,
+						"resultmsg": "审核未通过"
+					}
+				}';
+			}
+			
 			if($creditResult['credit_result'] == 1){//TODO 获取金融方案
 				$respStr = '{
 					"code": 1,
