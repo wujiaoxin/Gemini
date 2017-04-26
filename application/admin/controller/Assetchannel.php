@@ -52,6 +52,11 @@ class assetchannel extends Admin {
 			if($uid > 0){
 				$data['uid'] = $uid;
 			}
+			if ($data['status'] == '1') {
+				$data['lines'] = '1000000';
+				$data['b_money'] = '1';
+				$data['money_level'] = '1000000';
+			}
 			if ($data) {
 				unset($data['id']);
 				$data['invite_code'] = $link->buildInviteCode();
@@ -88,6 +93,11 @@ class assetchannel extends Admin {
 			$data = input('post.');
 			if ($data) {
 				//$data['status'] = 1;
+				if ($data['status'] == 1) {
+					$data['lines'] = '1000000';
+					$data['b_money'] = '1';
+					$data['money_level'] = '1000000';
+				}
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {
 					return $this->success("修改成功！", url('assetchannel/index'));
