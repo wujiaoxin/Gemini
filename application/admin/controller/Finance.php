@@ -33,19 +33,12 @@ class Finance extends Admin {
 
 	// 放款审核
 	public function loan() {
-		// make_repay_plan('1080');
-		$data['id'] = 1080;
-		$result = make_repay_plan($data['id']);
-		// var_dump($result);die;
-		foreach ($result as $k => $v) {
-			var_dump($v);
-			db('order_repay')->insert($v);
-		}
-		die;
+
 		if (IS_POST) {
 
 			$data = input('post.');
 
+			// var_dump($data);die;
 			if (isset($data['status'])) {
 
 				$datas = array(
@@ -62,62 +55,69 @@ class Finance extends Admin {
 
 					$result = db('order')->field('fee,loan_limit,examine_limit,type')->where('id',$data['id'])->find();
 					
-					if ($money['lock_money'] >= $result['fee']) {//判断冻结金额和订单费用
+					if ($result['type'] == '2' || $result['type'] == '4') {
+
+						if ($money['lock_money'] >= $result['fee']) {//判断冻结金额和订单费用
 						
-						$datas['finance'] = '3';
+							$datas['finance'] = '3';
 
-						//可用额度设置
+							//可用额度设置
 
-						$lines_result = $money['lines_ky'] - $result['examine_limit'];//最终可用额度
+							$lines_result = $money['lines_ky'] - $result['examine_limit'];//最终可用额度
 
-						if ($lines_result < '0') {
+							if ($lines_result < '0') {
 
+								$resp['code'] = 0;
+
+								$resp['msg'] = '可用额度不足，请提醒用户充值！';
+
+								return json($resp);
+							}
+						
+							$lock_money_result = $money['lock_money'] - $result['fee'];//剩余冻结金额
+
+							$moeny_result = array(
+
+								'lock_money' => $lock_money_result,
+
+								'lines_ky' =>$lines_result
+
+								);
+
+							db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变资金流水
+
+							db('order')->where('id',$data['id'])->update($datas);//更新订单状态
+
+							//生成还款计划表
+							set_order_repay($data['id']);//垫资还款
+							$resp['code'] = 1;
+
+							$resp['msg'] = '放款审核成功!';
+
+						}else{
 							$resp['code'] = 0;
 
-							$resp['msg'] = '可用额度不足，请提醒用户充值！';
-
-							return json($resp);
+							$resp['msg'] = '冻结资金异常!';
 						}
-					
-						$lock_money_result = $money['lock_money'] - $result['fee'];//剩余冻结金额
 
-						$moeny_result = array(
+					}else{
 
-							'lock_money' => $lock_money_result,
+						$datas['finance'] = '3';
 
-							'lines_ky' =>$lines_result
-
-							);
-
-						db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变资金流水
+						$datas['descr'] = $data['descr'];
 
 						db('order')->where('id',$data['id'])->update($datas);//更新订单状态
 
+						//等额本息
+						$result1 = make_repay_plan($data['id']);
 
-						//生成还款计划表
-						if ($result['type'] == '2') {
-
-							set_order_repay($data['id']);//垫资还款
-
-						}else{
-
-							//等额本息
-							$result = make_repay_plan($data['id']);
-
-							foreach ($result as $k => $v) {
-								
-								db('order_repay')->insert($v);
-							}
+						foreach ($result1 as $k => $v) {
+							
+							db('order_repay')->insert($v);
 						}
-						
 						$resp['code'] = 1;
 
 						$resp['msg'] = '放款审核成功!';
-
-					}else{
-						$resp['code'] = 0;
-
-						$resp['msg'] = '冻结资金异常!';
 					}
 					
 				}else{
