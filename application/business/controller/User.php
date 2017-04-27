@@ -49,7 +49,7 @@ use app\business\controller\Baseness;
 	public function myStaff() {
 		//商家员工
 		$uid = session('user_auth.uid');
-		$result = db('member')->alias('m')->join('__DEALER__ d','m.mobile = d.mobile')->field('d.id')->where('m.uid',$uid)->find();
+		$result = db('member')->alias('m')->join('__DEALER__ d','m.mobile = d.mobile')->field('d.id')->where('m.uid',$uid)->order('id DESC')->find();
 		$members = db('member')->where('dealer_id',$result['id'])->select();
 		$data = array(
 				'info'    => $members,
@@ -86,16 +86,17 @@ use app\business\controller\Baseness;
 	public function addStaff(){
 		if (IS_POST){
 			$data = input('post.');
+			// var_dump($data);die;
 			if ($data) {
 				$uid = session('user_auth.uid');
 				$invit = db('Dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->where('m.uid',$uid)->find();
 				$user = model('User');
 				//创建注册用户
-				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
+				$uid = $user->registeraddStaff($data['mobile'], $data['password'], $data['password'],NULL, false);
 				if ($uid > 0) {
 					$userinfo['realname'] = $data['name'];
 					$userinfo['nickname'] = $data['name'];
-					$userinfo['mobile'] = $data['mobile'];
+					$userinfo['username'] = $data['mobile'];
 					$userinfo['status'] = 1;
 					$userinfo['access_group_id'] = $data['job'];
 					$userinfo['desc'] = $data['remark'];
@@ -294,11 +295,22 @@ use app\business\controller\Baseness;
 			if (isset($data['payPwd']) && isset($data['payOrder'])) {
 
 				$user = db('member')->field('paypassword')->where('mobile',$mobile)->find();
-
+				if (empty($user['paypassword'])) {
+					$resp['code'] = '2';
+					$resp['msg'] = '未设置交易密码';
+					return json($resp);
+				}
 				if(md5($data['payPwd'].$mobile) == $user['paypassword']){
-					//车商只做费用记录
-					$fee = db('order')->field('fee')->where('sn',$data['payOrder'])->find();
 
+					//车商只做费用记录
+					$fee = db('order')->field('fee,status')->where('sn',$data['payOrder'])->find();
+
+					if ($fee['status'] == '2') {
+						
+						$resp['code'] = '0';
+						$resp['msg'] = '重复支付';
+
+					}
 					$money = db('dealer')->field('money,lock_money')->where('mobile',$mobile)->find();
 
 					$use_money = $money['money'] - $fee['fee'];
@@ -365,6 +377,7 @@ use app\business\controller\Baseness;
 					$order_pay = db('order')->where($map)->order('finance ASC')->select();
 				}
 				foreach ($order_pay as $k => $v) {
+
 					$order_pay[$k]['realname'] = serch_real($v['uid']);
 				}
 				if ($order_pay) {

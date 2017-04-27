@@ -112,7 +112,7 @@ class assetchannel extends Admin {
 		} else {
 			$map  = array('id' => $id);
 			$info = db('Dealer')->where($map)->find();
-			$sales = db('member')->alias('m')->field('m.*')->join('__DEALER__ d','m.dealer_id = d.id')->where('d.id',$id)->select();
+			$sales = db('member')->alias('m')->field('m.*')->join('__DEALER__ d','m.dealer_id = d.id')->where('d.id',$id)->order('id DESC')->select();
 			$info['sales'] = $sales;
 			$data = array(
 				'keyList' => $link->keyList,
@@ -197,7 +197,7 @@ class assetchannel extends Admin {
 				$user = model('User');
 				//创建注册用户
 
-				$uid = $user->register($data['mobile'], $data['password'], $data['password'],NULL, false);
+				$uid = $user->registeraddStaff($data['mobile'], $data['password'], $data['password'],NULL, false);
 
 				if ($uid > 0) {
 					$userinfo['realname'] = $data['name'];
