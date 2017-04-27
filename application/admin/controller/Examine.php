@@ -83,12 +83,12 @@ class examine extends Admin {
 
 						$resp['code'] = 1;
 
-						$resp['msg'] = '审核通过';
+						$resp['msg'] = '提交成功';
 					}else{
 
 						$resp['code'] = 0;
 
-						$resp['msg'] = '审核异常';
+						$resp['msg'] = '提交失败';
 
 					}
 
@@ -105,12 +105,12 @@ class examine extends Admin {
 
 						$resp['code'] = 1;
 
-						$resp['msg'] = '审核通过';
+						$resp['msg'] = '提交成功';
 					}else{
 
 						$resp['code'] = 0;
 
-						$resp['msg'] = '审核异常';
+						$resp['msg'] = '提交失败';
 
 					}
 				}
@@ -119,11 +119,11 @@ class examine extends Admin {
 
 				$resp['code'] = 0;
 
-				$resp['msg'] = '审核失败';
+				$resp['msg'] = '提交失败';
 			}
 			
 			// var_dump($resp);die;
-			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
+			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			return json($resp);
 			
 		}else{
@@ -156,14 +156,12 @@ class examine extends Admin {
 		if (IS_POST){
 
 			$data = input('post.');
-
 			if (isset($data['status'])) {
 
 				if ($data['status'] == '1') {
 
 					$infos = array(
 							'status' => '1',
-							'finance' => '1',
 							'examine_limit' =>$data['examine_limit'],
 							'descr'=>$data['descr']
 						);
@@ -178,20 +176,24 @@ class examine extends Admin {
 
 							$fee = fee_money($info['endtime'],$info['loan_limit']);
 
-							if ($fee) {
+							$fee1['fee'] = $fee;
+							$fee1['finance'] = '1';
+							db('order')->where('id',$data['id'])->update($fee1);
+						}else{
 
-								db('order')->where('id',$data['id'])->setField('fee',$fee);
-							}
+							db('order')->where('id',$data['id'])->setField('finance','3');
 						}
 						$resp['code'] = 1;
 
-						$resp['msg'] = '审核通过';
+						$resp['msg'] = '提交成功';
 
 					}else{
 
 						$resp['code'] = 0;
 
-						$resp['msg'] = '审核失败';
+						$resp['msg'] = '提交失败';
+
+						return json($resp);
 					}
 				}else{
 
@@ -204,18 +206,30 @@ class examine extends Admin {
 						'examine_limit' =>$data['examine_limit']
 
 						);
-
 					$result = db('order')->where('id',$data['id'])->update($info_s);
+					if ($result) {
+
+						$resp['code'] = 1;
+
+						$resp['msg'] = '提交成功';
+					}else{
+
+						$resp['code'] = 0;
+
+						$resp['msg'] = '提交失败';
+
+					}
+
 				}
 
 			}else{
 
 				$resp['code'] = 0;
 
-				$resp['msg'] = '审核异常';
+				$resp['msg'] = '提交异常';
 			}
 
-			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
+			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 
 			return json($resp);
 

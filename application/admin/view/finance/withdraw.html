@@ -198,7 +198,7 @@
 	   	 	var serial_num = $('#serial_num').val();
 	   	 	var actual_amount = $('#actual_amount').val();
 	   	 	var platform_account = $('#platform_account').val();
-	   	 	var descr = $('#descr').val();
+	   	 	var descr = $('#descr').val().replace(/\n/g,"");
 	   	 	if(serial_num == ''){
 	   	 		ui_alert("请输入流水号");
 	            return false;
