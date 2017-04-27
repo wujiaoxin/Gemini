@@ -25,6 +25,7 @@ alter table gemini_order  add mid int(11) DEFAULT 0  COMMENT '车商id';
 alter table gemini_order  add endtime int(11) NOT NULL  COMMENT '借款期限';
 alter table gemini_order  add fee int(11) NOT NULL  COMMENT '借款费用';
 alter table gemini_order  add credit_status int(11) DEFAULT 0  COMMENT '授信状态:1.待授信;2.授信中;3.已授信';
+alter table gemini_order  add dealer_id int(11) DEFAULT NULL COMMENT '商家id';
 
 -- 修复充值字段表和提现字段表
 
@@ -92,7 +93,7 @@ DROP TABLE IF EXISTS `gemini_order_repay`;
 CREATE TABLE `gemini_order_repay` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
-  `mid` int(11) NOT NULL COMMENT '车商id',
+  `uid` int(11) NOT NULL COMMENT '还款人id',
   `true_repay_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '真实还款金额（本息）',
   `repay_money` decimal(20,2) DEFAULT NULL COMMENT '预计还款金额（本息）',
   `manage_money` decimal(20,2) NOT NULL COMMENT '管理费',
@@ -114,8 +115,9 @@ CREATE TABLE `gemini_order_repay` (
   `true_interest_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '真实还款利息',
   `self_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '需还本金',
   `rate` decimal(10,0) NOT NULL DEFAULT '0' COMMENT '月利率',
+  `dealer_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '车商ID',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='还款记录表';
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='还款记录表';
 
 DROP TABLE IF EXISTS `gemini_dealer_credit`;
 CREATE TABLE `gemini_dealer_credit` (
