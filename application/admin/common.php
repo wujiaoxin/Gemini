@@ -178,7 +178,7 @@ function serch_realname($uid){
 }
 
  /*
-  **生成还款列表
+  **生成还款列表（垫资还款）
   */
   function set_order_repay($order_id){
 
@@ -194,7 +194,7 @@ function serch_realname($uid){
 
           'mid'=>$order['mid'],
 
-          'repay_money'=>$order['loan_limit'],
+          'repay_money'=>$order['examine_limit'],
 
           'manage_money'=>'0',
 
@@ -279,3 +279,8 @@ function serch_realname($uid){
 		
 		db('examine_log')->insert($data);
 	}
+
+	/*
+	**还款计划（等额本息）
+	*/
+	

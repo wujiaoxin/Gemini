@@ -69,11 +69,8 @@ class Order extends \app\common\model\Base {
 				$filter['status'] = $status;
 			}
 		}
-		//$filter['status'] = ['>',-1];
-		// var_dump($filter);die;
 		$sort = "id desc";
 		$list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
-		// var_dump($list);die;
 		return $list;
 	}
 	public function get_all_order_list($uid = 0, $role = 0, $status = null){
@@ -101,11 +98,11 @@ class Order extends \app\common\model\Base {
 	public function get_all_order_total($uid = 0, $type = null, $status = null){
 
 		$filter['uid'] = $uid;
-		if($type == null){
+		/*if($type == null){
 			$filter['type'] =['<',3];
 		}else{
 			$filter['type'] = $type;
-		}
+		}*/
 		if($status == null){
 			$filter['status'] = ['>',-1];
 		}else{
@@ -118,7 +115,6 @@ class Order extends \app\common\model\Base {
 		}
 		$total = '';
 		$filter['credit_status'] = '3';
-		// var_dump($filter);die;
 		$total['order_num'] = db('Order')->where($filter)->count();
 		$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
 		$total['loan_limit'] = $ord['loan_limit'];
@@ -128,11 +124,13 @@ class Order extends \app\common\model\Base {
 	//添加订单
 	public function add_order($uid, $data){
 
+		unset($data['type']);
 
 		$dealer_mobile = db('member')->alias('m')->field('d.mobile')->join('dealer d','d.id = m.dealer_id')->where('m.uid',$uid)->find();
 
 		$mid = db('member')->field('uid')->where('mobile',$dealer_mobile['mobile'])->find();
-		// var_dump($mid);die;
+
+		$forms = db('dealer')->field('forms')->where('mobile',$dealer_mobile['mobile'])->find();
 		$is_order = db('order')->field('mobile')->where('mobile',$data['mobile'])->find();
 
 		if (isset($is_order)) {
@@ -146,18 +144,19 @@ class Order extends \app\common\model\Base {
 
 		}else{
 			$order_sn = $this->build_order_sn();
+
 			$data =array(
 				'uid'=>$uid,
 				'mid'=>$mid['uid'],
 				'mobile'=>$data['mobile'],
 				'car_price'=>$data['price'],
 				'sn' =>$order_sn,
-				'status'=>-2
+				'status'=>-2,
+				'type' =>$forms['forms']
 				);
+
 			$result = $this->allowField(true)->save($data);
 		}
-
-		
 		
 		return $this->id;
 	}
@@ -182,11 +181,9 @@ class Order extends \app\common\model\Base {
 
 
 		$mobile = db('member')->field('mobile')->where('uid',$id)->find();
-		// var_dump($mobile);die;
 		$orders = db('Order')->alias('o')->field('o.*')->join('__MEMBER__ m','m.mobile = o.mobile')->where('o.mobile',$mobile['mobile'])->select();
 
 		foreach ($orders as $k => $v) {
-			// echo $v['sn'];die;
 			$status  = db('order_repay')->field('status,has_repay')->where('order_id', $v['sn'])->find();
 			$orders[$k]['repay_status'] = $status['has_repay'];
 		}
@@ -207,7 +204,6 @@ class Order extends \app\common\model\Base {
 				'orders' => $orders,
 				'nums' =>$num_repay
 			);
-		// var_dump($result);die;
 		return $result;
 	}
 

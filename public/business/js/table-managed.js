@@ -71,6 +71,7 @@ var TableManaged = function () {
                     null,
                     null,
                     null,
+                    null,
                     null
                 ],
                 config
@@ -108,7 +109,7 @@ var TableManaged = function () {
                     null,
                     null,
                     null,
-                    null   
+                    null
                 ],
                 config
             });

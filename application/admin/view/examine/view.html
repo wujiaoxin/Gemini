@@ -275,20 +275,55 @@
 						<tbody>
 						</tbody>
 					</table>
-					<div id="orderExamine">
+					<div id="orderExamine" class="form-horizontal">
 						<p>审核结果</p>
 						<div class="form-group">
-							<label class="control-label">审核*</label>
-			            	<div class="pt5">
-				            	<select id="examineStatus">
+					    	<label class="col-sm-2 control-label">审核*</label>
+						    <div class="col-sm-2 pt5">
+						      	<select id="examineStatus">
 				            		<option id="examinePass">通过</option>
 				            		<option value="2">拒绝</option>
 				            	</select>
-				            </div>
+						    </div>
+						</div>
+						<div class="form-group" id="examine_limit-block" style="display: none;">
+						    <label class="col-sm-2 control-label">审批额度</label>
+						    <div class="col-sm-2 pt5">
+						      	<input type="number" id="examine_limit">
+						    </div>
+					  	</div>
+						<div class="form-group" id="reject_reason" style="display: none;">
+							<label class="col-sm-2 control-label">拒绝原因</label>
+			            	<div class="col-sm-9 pt5">
+								<label class="col-sm-2">
+									<input type="checkbox" name="reject_reason" value="1">超过时效
+								</label>
+								<label class="col-sm-2">
+									<input type="checkbox" name="reject_reason" value="2">评级偏低客户
+								</label>
+								<label class="col-sm-2">
+									<input type="checkbox" name="reject_reason" value="3">不良信息客户
+								</label>
+								<label class="col-sm-2">
+									<input type="checkbox" name="reject_reason" value="4">欺诈客户
+								</label>
+								<label class="col-sm-2">
+									<input type="checkbox" name="reject_reason" value="5">黑名单客户
+								</label>
+								<label class="col-sm-2">
+									<input type="checkbox" name="reject_reason" value="6">资料缺失
+								</label>
+								<label class="col-sm-2">
+									<input type="checkbox" name="reject_reason" value="7">未满足基础准入
+								</label>
+								<label class="col-sm-2">
+									<input type="checkbox" name="reject_reason" value="8">其他原因
+								</label>
+							</div>
 						</div>
 						<div class="form-group">
-				            <label class="control-label">审核备注</label>
-						    <div class="pt5">
+				            <label class="col-sm-2 control-label">审核备注</label>
+						    <div class="col-sm-6 pt5">
 						      	<textarea id="descr"></textarea>
 						    </div>
 						</div>
@@ -326,6 +361,8 @@
 	        }
 	    }
 	});
+	$('span[name="bankcard"]').text(info['member_info']['bankcard']);
+	$('span[name="score"]').text(info['member_info']['score']);
 
 	function historyTpl(data){
 		var html = '';
@@ -358,7 +395,19 @@
 		}
 		return html;
 	}
-	$('#tab_1_6 .pic-container').html(picTpl(info.files))
+	$('#tab_1_6 .pic-container').html(picTpl(info.files));
+
+	$('#examine_limit').val(info['order_info']['loan_limit']);
+	$('#examineStatus').change(function(){
+		if($(this).val() == '2'){
+			$('#reject_reason').slideDown('fast');
+		}else{
+			$('#reject_reason').slideUp('fast');
+		}
+	});
+	if(info['order_info']['status'] == '4'){
+		$('#examine_limit-block').show();
+	}
 </script>
 <script>
 $(function(){
@@ -397,12 +446,16 @@ $(function(){
 		}
 		var id = info['order_info']['id'];
 		var status = $('#examineStatus').val();
+		var examine_limit = $('#examine_limit').val();
+		var reject_reason = encodeCheckbox('reject_reason');
 		var descr = $('#descr').val();
 		ajax_jquery({
 	        url: apiUrl + ajaxUrl,
 	        data:{
 	        	'id': id,
 	        	'status': status,
+	        	'examine_limit': examine_limit,
+	        	'reject_reason': reject_reason,
 	        	'descr': descr
 	        },
 	        success:function(resp){

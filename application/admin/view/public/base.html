@@ -16,10 +16,13 @@
 		list-style: none;
 		color: #777;
 	}
-	#col-left a:hover, #col-left .nav-active a.nav-link, #col-left a.active {
-     color: #03a9f4;
-     text-decoration: none;
-}
+	#col-left a:hover, #col-left a.active {
+     	color: #03a9f4;
+     	text-decoration: none;
+	}
+	.subnav-item {
+		padding: 4px 0;
+	}
 </style>
 <script src="__PUBLIC__/js/jquery.js"></script>
 <script type="text/javascript">
@@ -153,7 +156,7 @@
 							<ul class="nav nav-pills nav-stacked">
 								{volist name="__menu__['child']" id="nav"}
 								<li class="subnav">
-									<a href="#" class="subnav-item nav-header hidden-sm hidden-xs">{$key}</a>
+									<a href="#" class="nav-header hidden-sm hidden-xs">{$key}</a>
 									<ul class="subnav-item-cont" style="display: none">
 										{volist name="nav" id="item"}
 										<li class="subnav-item {$item['style']}">
@@ -250,9 +253,18 @@
 	// 	$("#content-wrapper").height(baseContentHeight);
 	// 	$("#nav-col").height(baseContentHeight);
 	// }
+	var pathname = window.location.pathname;
+	$(".nav .subnav-item").each(function(){
+		var thisHref = $(this).find('a').attr('href');
+		if(thisHref.indexOf(pathname) != '-1'){
+			$(this).parent('.subnav-item-cont').show().parent('.subnav').addClass('active').end().end()
+	       		.find('a').addClass("active");
+	        //   .slideDown().parent('.subnav').siblings('.subnav-item').slideUp();
+	    }
+	});
 	$('.nav').on('click','.subnav',function(){
 		$(this).children('.subnav-item-cont').slideToggle('fast')
-			.parent('.subnav').siblings('.subnav').children('.subnav-item-cont').slideUp();
+			.parent('.subnav').siblings('.subnav').not('.active').children('.subnav-item-cont').slideUp();
 	})
 })();
 </script>

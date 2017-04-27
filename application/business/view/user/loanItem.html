@@ -60,6 +60,7 @@
 					<th>借款时间</th>
 					<th>业务员</th>
 					<th>借款金额</th>
+					<th>审批额度</th>
 					<th>费用</th>
 					<th>借款期限</th>
 					<th>状态</th>
@@ -87,6 +88,7 @@
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].examine_limit) +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].fee) +'</td>'
 		  		+'<td>'+ data[index].endtime +'</td>'
 		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
