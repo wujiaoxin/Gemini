@@ -70,7 +70,7 @@
 		  		+'<td>'+ formatDatetime(userInfo.create_time) +'</td>'
 		  		+'<td>'+ userInfo.credit_status +'</td>'
 		  		+'<td>'+ '人工评级' +'</td>'
-		  		+'<td>'+ '-' +'</td>'
+		  		+'<td>'+ (userInfo.credit_level||'-') +'</td>'
 		  		+'<td><a href="/admin/risk/ratingInfo?id='+ userInfo.id + '">评级</a></td>'
 		  		 +'</tr>'
 			}

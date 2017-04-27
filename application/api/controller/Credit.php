@@ -339,16 +339,21 @@ class Credit extends Api {
 		$data['mobile_collect_token'] = $mobile_collect_token;
 		$data['update_time'] = time();
 		
+		$orderData = db('order')->field('id,credit_status')->where("mobile",$mobile)->where("status",-2)->order('id desc')->find();		
+		if($orderData != null){			
+			$data['order_id'] = $orderData['id'];
+		}
+		
 		$creditResult = db('credit')->field('id')->where("uid",$uid)->order('id desc')->find();
-		if($creditResult == null){
+		if($creditResult == null){//TODO 未关联订单错误提示
 			$data['create_time'] = time();
 			$result = db('credit')->insert($data);			
 		}else{
 			$result = db('credit')->where('id', $creditResult['id'])->update($data);
-		}		
+		}
 		
 		$orderData['credit_status'] = $credit_status;
-		db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);
+		db('order')->where("mobile",$mobile)->update($orderData);
 		
 		return $result;
 

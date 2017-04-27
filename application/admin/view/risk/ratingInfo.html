@@ -493,7 +493,7 @@
 								<th>序号</th>
 								<th>接收日期</th>
 								<th>发送方号码</th>
-								<th>发送方号码</th>
+								<th>发送方名称</th>
 								<th>发送方类型分析</th>
 								<th>短信内容</th>
 								<th>内容筛选</th>
@@ -506,15 +506,16 @@
 								<td>-</td>
 								<td>-</td>
 								<td>-</td>
-								<td>B</td>
 								<td>-</td>
-								<td>A</td>
-								<td>否</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				<div class="tab-pane form-horizontal" id="tab_1_7">
+					<!--
 					<table class="table table-hover">
 						<tr>
 							<td>序号</td>
@@ -525,28 +526,40 @@
 							<td>-</td>
 						</tr>
 					</table>
+					-->
 					<div class="form-group">
 						<label class="col-sm-2 control-label">合作金融方案</label>
 						<div class="col-sm-10 pt5">
 							<span class="col-sm-2">银行机构 平安银行</span>
-							<span class="col-sm-2">贷款 70000</span>
-							<span class="col-sm-2">月供 1000*12</span>
+							<span class="col-sm-2" id="loan_limit">贷款 70000</span>
+							<!--<span class="col-sm-2">月供 1000*12</span>-->
 						</div>
 					</div>
 					<div class="form-group">
 					    <label class="col-sm-2 control-label">授信等级</label>
 					    <div class="col-sm-2 pt5">
-					     	<input type="text" id="credit_level">
+
+							<select id="credit_level">
+								<option value="AA">AA</option>
+					      		<option value="A">A</option>
+					      		<option value="B">B</option>
+					      		<option value="C">C</option>
+					      		<option value="D">D</option>
+					      		<option value="E">E</option>
+					      		<option value="F">F</option>
+					      	</select>
 					    </div>
 					    <label class="col-sm-2 control-label">授信评分</label>
 					    <div class="col-sm-2 pt5">
-					      	<input type="text" id="credit_score">
+					      	<input type="number" id="credit_score">
+
+							
 					    </div>
 					</div>
-					<div class="form-group">
+					<!--<div class="form-group">
 					    <label class="col-sm-2 control-label">额度</label>
 					    <div class="col-sm-2 pt5">
-					     	<input type="text" id="lineOfCredit">
+					     	<input type="number" id="lineOfCredit">
 					    </div>
 					    <label class="col-sm-2 control-label">期限</label>
 					    <div class="col-sm-2 pt5">
@@ -565,13 +578,13 @@
 					<div class="form-group">
 					    <label class="col-sm-2 control-label">日利率(‰)</label>
 					    <div class="col-sm-2 pt5">
-					     	<input type="text" id="dayRate">
+					     	<input type="number" id="dayRate">‰
 					    </div>
 					    <label class="col-sm-2 control-label">首付比例</label>
 					    <div class="col-sm-2 pt5">
-					      	<input type="text" id="downPaymentRatio">
+					      	<input type="number" id="downPaymentRatio">%
 					    </div>
-					</div>
+					</div>-->
 					<div class="form-group">
 						<label class="col-sm-2 control-label">审核</label>
 		            	<div class="col-sm-2 pt5">
@@ -625,6 +638,9 @@
 	$("#realname").text(info.realname);
 	$("#idcard").text(info.idcard);
 	$("#mobile").text(info.mobile);
+	$("#loan_limit").text('贷款金额：' + info.loan_limit+'元');
+	//loan_limit
+	//info.loan_limit
 
 	$('#examineStatus').change(function(){
 		if($(this).val() == '-1'){
@@ -640,16 +656,27 @@
 			$('#treatmentBlock').slideUp('fast');
 		}
 	});
-
+ 
+	
 	$('#examineBtn').click(function(){
 		var credit_result = 0;
+		
+		var credit_score = $("#credit_score").val();
+		var credit_level = $("#credit_level").val();		
 		var examineStatus = $("#examineStatus").val();
-		var refuseReason = $("#refuseReason").val();
+		var refuseReason = $("#refuseReason").val();		
 		var treatment = $("#treatment").val();
+		var descr = $("#descr").val();
 
+		if(credit_score > 100 || credit_score < 0){
+			ui_alert("请输入正确授信评分");
+			$("#credit_score").focus();
+			return false;
+		}
+		
 		if(examineStatus == 0){
 			credit_result = 1;
-		}else{
+		}else{		
 			if(refuseReason == 1){
 				credit_result = treatment;
 			}else{
@@ -657,17 +684,20 @@
 			}
 		}
 
+		
 		ajax_jquery({
 			url: apiUrl +'/admin/risk/ratingInfo',
 			data:{
 					"id": info.id,
 					"mobile":info.mobile,
 					"credit_result": credit_result,
-
+					"credit_level" : credit_level,
+					"credit_score" : credit_score,
+					"descr" : descr
 				},
 			success:function(resp){
 				if (resp.code == "1" ) {
-						ui_alert("审核","success");
+						ui_alert("提交成功","success");
 						window.location.href = "/admin/risk/rating";
 				} else {
 					if (typeof(resp.msg) == 'string' && resp.msg != '') {
@@ -677,6 +707,7 @@
 				}
 			}
 		});
+		
 	})
 </script>
 {/block}
