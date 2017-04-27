@@ -41,7 +41,7 @@ class examine extends Admin {
 		$list = db('Order')->order('create_time')->select();
 		foreach ($list as $k => $v) {
 			$list[$k]['salesman'] = serch_realname($v['uid']);
-			$name = serch_name($v['mid']);
+			$name = serch_name($v['dealer_id']);
 			$list[$k]['dealername'] = $name['dealer_name'];
 		}
 		$data = array(
@@ -130,7 +130,7 @@ class examine extends Admin {
 
 				$list[$k]['salesman'] = serch_realname($v['uid']);
 
-				$name = serch_name($v['mid']);
+				$name = serch_name($v['dealer_id']);
 
 				$list[$k]['dealername'] = $name['dealer_name'];
 			}
@@ -238,7 +238,7 @@ class examine extends Admin {
 
 				$list[$k]['salesman'] = serch_realname($v['uid']);
 
-				$name = serch_name($v['mid']);
+				$name = serch_name($v['dealer_id']);
 
 				$list[$k]['dealername'] = $name['dealer_name'];
 			}
@@ -266,7 +266,7 @@ class examine extends Admin {
 
 		$order_info = db('order')->where('id', $id)->find();
 
-		$name = serch_name($order_info['mid']);
+		$name = serch_name($order_info['dealer_id']);
 
 		$channel_info = db('dealer')->where('name',$name['dealer_name'])->find();
 
@@ -291,7 +291,7 @@ class examine extends Admin {
 			$examine_log[$k]['operator'] =  $result['username'];
 
 		}
-		// var_dump($examine_log);die;
+		// var_dump($repay_info);die;
 		foreach ($examine_log as $k => $v) {
 
 			$examine_log[$k]['params'] = json_decode($v['param']);
