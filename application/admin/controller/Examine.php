@@ -178,7 +178,7 @@ class examine extends Admin {
 							db('order')->where('id',$data['id'])->update($fee1);
 						}else{
 
-							db('order')->where('id',$data['id'])->setField('finance','3');
+							db('order')->where('id',$data['id'])->setField('finance','2');
 						}
 						$resp['code'] = 1;
 
