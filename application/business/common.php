@@ -215,9 +215,9 @@
   ** status 订单状态
   ** type 业务类型
   */ 
-  function get_orders($mid,$status=0,$type){
+  function get_orders($uid,$status=0,$type){
     if ($type == 'order') {
-       $data = db('order')->where('mid',$mid)->where('status','>','-1')->limit(5)->order('status ASC,id DESC')->select();
+       $data = db('order')->where('mid',$uid)->where('status','>','-1')->limit(5)->order('status ASC,id DESC')->select();
        foreach ($data as $k => $v) {
          if ($v['status'] == '-1') {
             $data[$k]['progress'] = '1';
@@ -237,14 +237,15 @@
        }
     }
     if ($type == 'order_repay') {
-        $data = db('order_repay')->where('mid',$mid)->select();
+        $ids = db('dealer')->field('id')->where('mobile',$uid)->find();
+        $data = db('order_repay')->where('dealer_id',$ids['id'])->select();
         foreach ($data as $k => $v) {
           $type = db('order')->field('type')->where('id',$v['order_id'])->find();
           $data[$k]['type'] = $type['type'];
         }
     }
     if ($type == 'dealer_money') {
-      $data = db('order_repay')->where('status ','>',3)->where('mid',$mid)->limit(5)->select();
+      $data = db('order_repay')->where('status ','>',3)->where('mid',$uid)->limit(5)->select();
     }
     return $data;
   }
