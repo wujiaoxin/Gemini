@@ -1439,7 +1439,6 @@ CREATE TABLE `gemini_order` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '订单标识ID',
   `sn` varchar(32) NOT NULL DEFAULT '' COMMENT '订单编号',
   `mid` int(11) DEFAULT '0' COMMENT '车商uid',
-  `did` int(11) DEFAULT '0' COMMENT '车商did',
   `uid` int(10) NOT NULL DEFAULT '0' COMMENT '报单人用户ID ',
   `bank_uid` int(10) NOT NULL DEFAULT '0' COMMENT '银行审核人员ID ',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1:新车垫资 2：二手车垫资 3:车抵贷 4:其他订单',
@@ -1462,6 +1461,7 @@ CREATE TABLE `gemini_order` (
   `credit_status` int(11) DEFAULT '0' COMMENT '授信状态:1.待授信;2.授信中;3.已授信',
   `car_price` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '购车价格',
   `examine_limit` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '实际审批额度',
+  `dealer_id` int(11) DEFAULT NULL COMMENT '商家id',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
 
@@ -1807,12 +1807,11 @@ CREATE TABLE `gemini_dealer_money` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='资金记录表';
 
-
 DROP TABLE IF EXISTS `gemini_order_repay`;
 CREATE TABLE `gemini_order_repay` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
-  `mid` int(11) NOT NULL COMMENT '车商id',
+  `uid` int(11) NOT NULL COMMENT '还款人id',
   `true_repay_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '真实还款金额（本息）',
   `repay_money` decimal(20,2) DEFAULT NULL COMMENT '预计还款金额（本息）',
   `manage_money` decimal(20,2) NOT NULL COMMENT '管理费',
@@ -1834,8 +1833,9 @@ CREATE TABLE `gemini_order_repay` (
   `true_interest_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '真实还款利息',
   `self_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '需还本金',
   `rate` decimal(10,0) NOT NULL DEFAULT '0' COMMENT '月利率',
+  `dealer_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '车商ID',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='还款记录表';
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='还款记录表';
 
 DROP TABLE IF EXISTS `gemini_dealer_credit`;
 CREATE TABLE `gemini_dealer_credit` (
