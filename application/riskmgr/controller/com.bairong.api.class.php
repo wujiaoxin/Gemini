@@ -175,8 +175,9 @@ class Core{
 		if(STATUS == 2){
 			$meal = '';
 		}else{
+			$meal = '';
 			//$meal = join(',',$this -> headerTitle);
-			$meal = join(',',$titles);
+			//$meal = join(',',$titles);
 		}
 		
 		
