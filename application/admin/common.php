@@ -162,12 +162,19 @@ function modify_account($data,$uid,$name=0,$money_type=0,$type=0,$memod=0){
 **查询车商名称
 */
 function serch_name($uid){
-	$result = db('dealer')->alias('d')->field('d.name as dealer_name,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->where('m.uid',$uid)->find();
-	// var_dump($result);die;
+
+	$result = db('dealer')->field('name as dealer_name')->where('id',$uid)->find();
 	return $result;
 
 }
 
+
+function serch_name_dealer($uid){
+	$result = db('dealer')->alias('d')->field('d.name as dealer_name,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->where('m.uid',$uid)->find();
+
+	return $result;
+
+}
 /*
 **查询车商名称
 */
@@ -192,7 +199,9 @@ function serch_realname($uid){
 
           'order_id'=>$order_id,
 
-          'mid'=>$order['mid'],
+          'uid'=>$mobile['uid'],
+
+          'dealer_id'=> $order['dealer_id'],
 
           'repay_money'=>$order['examine_limit'],
 
@@ -204,7 +213,7 @@ function serch_realname($uid){
 
           'has_repay'=>'0',
 
-          'loadtime'=>['endtime'],
+          'loadtime'=>$order['endtime'],
 
           'true_repay_money'=>'0',
 
@@ -329,7 +338,8 @@ function serch_realname($uid){
 		$has_use_self_money = 0;
 		
 		$repay_day = time();
-		
+
+		$uids = db('member')->field('uid')->where('mobile',$deal['mobile'])->find();
 		for($i=1; $i <= $totalperiod; $i++){
 
 			$load_repay = array();
@@ -341,7 +351,7 @@ function serch_realname($uid){
 
 			$load_repay['totalperiod'] = intval($totalperiod);
 
-			$load_repay['rate'] = $deal['rate'];
+			$load_repay['rate'] = $deal['rate']*100;
 
 			$load_repay['repay_money'] = pl_it_formula($deal['examine_limit'],$deal['rate'],$totalperiod);
 
@@ -356,7 +366,9 @@ function serch_realname($uid){
 			
 			$load_repay['order_id'] = $deal['id'];
 
-			$load_repay['mid'] = $deal['mid'];
+			$load_repay['uid'] = $uids['uid'];
+
+			$load_repay['dealer_id'] = $deal['dealer_id'];
 
 			$load_repay['status'] = -1;
 

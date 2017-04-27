@@ -202,7 +202,7 @@ class assetchannel extends Admin {
 				if ($uid > 0) {
 					$userinfo['realname'] = $data['name'];
 					$userinfo['nickname'] = $data['name'];
-					$userinfo['mobile'] = $data['mobile'];
+					$userinfo['username'] = $data['mobile'];
 					$userinfo['status'] = 1;
 					$userinfo['access_group_id'] = $data['job'];
 					$userinfo['desc'] = $data['remark'];
