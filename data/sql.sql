@@ -1439,6 +1439,7 @@ CREATE TABLE `gemini_order` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '订单标识ID',
   `sn` varchar(32) NOT NULL DEFAULT '' COMMENT '订单编号',
   `mid` int(11) DEFAULT '0' COMMENT '车商uid',
+  `did` int(11) DEFAULT '0' COMMENT '车商did',
   `uid` int(10) NOT NULL DEFAULT '0' COMMENT '报单人用户ID ',
   `bank_uid` int(10) NOT NULL DEFAULT '0' COMMENT '银行审核人员ID ',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1:新车垫资 2：二手车垫资 3:车抵贷 4:其他订单',

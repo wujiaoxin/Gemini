@@ -411,7 +411,6 @@ function serch_realname($uid){
 	function get_self_money($idx,$amount_money,$month_repay_money,$rate){
 		return $month_repay_money - get_benjin($idx,$idx,$amount_money,$month_repay_money,$rate)*$rate/$idx/100;
 
-
 	}
 	/**
 	 * 获取该期剩余本金

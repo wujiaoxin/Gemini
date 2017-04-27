@@ -54,6 +54,7 @@ class Order extends \app\common\model\Base {
 	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null){
 		$filter['auth_uid'] = $uid;
 		$filter['auth_role'] = $role;
+		$filter['uid'] = $uid;
 		if($type == 3){
 			$filter['type'] = $type;
 		}else{

@@ -267,6 +267,8 @@ class examine extends Admin {
 
 		$member_info = db('member')->where('uid', $order_info['mid'])->find();
 
+		$credit_info = db('credit')->where('mobile', $order_info['mobile'])->order('id desc')->find();
+
 		$repay_info = db('order_repay')->where('order_id', $order_info['sn'])->find();
 
 		$examine_log  =db('examine_log')->where('record_id',$id)->select();
@@ -301,6 +303,8 @@ class examine extends Admin {
 			'channel_info' => $channel_info,//渠道信息
 
 			'member_info' => $member_info,//客户信息
+			
+			'credit_info' => $credit_info,
 
 			'repay_info' => $repay_info,//还款信息
 
