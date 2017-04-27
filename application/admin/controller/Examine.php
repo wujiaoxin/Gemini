@@ -163,7 +163,6 @@ class examine extends Admin {
 
 					$infos = array(
 							'status' => '1',
-							'finance' => '1',
 							'examine_limit' =>$data['examine_limit'],
 							'descr'=>$data['descr']
 						);
@@ -179,9 +178,12 @@ class examine extends Admin {
 							$fee = fee_money($info['endtime'],$info['loan_limit']);
 
 							if ($fee) {
-
-								db('order')->where('id',$data['id'])->setField('fee',$fee);
+								$fee['finance'] = '1';
+								db('order')->where('id',$data['id'])->update($fee);
 							}
+						}else{
+
+							db('order')->where('id',$data['id'])->setField('finance','3');
 						}
 						$resp['code'] = 1;
 
