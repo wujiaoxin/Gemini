@@ -115,7 +115,7 @@ $(function(){
         var priv_bank_account_id = $("#priv_bank_account_id").val();
         var priv_bank_branch = $("#priv_bank_branch").val();
         var status = $('#status').val();
-        var descr = $('#descr').val();
+        var descr = $('#descr').val().replace(/\n/g,"");
 
         if(name == ""){
             ui_alert("请输入企业名称");
