@@ -217,8 +217,11 @@
 		        success:function(resp){
 		            if (resp.code == "1" ) {
 		            	ui_alert("支付成功","success");
-		            	ajaxPayItem('','','');
-		            } else {
+		            	setTimeout('window.location.reload()',2000);
+		            }else if (resp.code == "2" ) {
+		            	ui_alert("请设置交易密码");
+		            	setTimeout('window.location.href="/business/account/index"',2000);
+		            }else {
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert(resp.msg);
 		                    return false;

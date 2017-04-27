@@ -86,7 +86,7 @@
 		   	var rePassword = $("#rePassword").val();
 		   	var job = $("#job").val();
 		   	var telphone = $("#telphone").val();
-		   	var remark = $("#remark").val();
+		   	var remark = $("#remark").val().replace(/\n/g,"");
 		   	if(name == ""){
 		   		ui_alert("请输入员工姓名");
 		   		return;

@@ -12,16 +12,43 @@
 <!-- <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'> -->
 <link rel="stylesheet" type="text/css" href="__CSS__/style.css"/>
 <style type="text/css" media="screen">
-	#col-left .subnav-item-cont{
+	#sidebar-nav .subnav-block{
 		list-style: none;
+	}
+	#sidebar-nav a{
 		color: #777;
 	}
-	#col-left a:hover, #col-left a.active {
+	#sidebar-nav a:hover, #sidebar-nav a.active {
      	color: #03a9f4;
      	text-decoration: none;
 	}
 	.subnav-item {
 		padding: 4px 0;
+	}
+	#sidebar-nav  .nav-header > .arrow:before {
+	    float: right;
+	    margin-top: 1px;
+	    margin-right: 5px;
+	    display: inline;
+	    font-size: 16px;
+	    font-family: FontAwesome;
+	    height: auto;
+	    content: "\f104";
+	    font-weight: 300;
+	    text-shadow: none
+	}
+
+	#sidebar-nav  .nav-header > .arrow.open:before {
+	    float: right;
+	    margin-top: 1px;
+	    margin-right: 3px;
+	    display: inline;
+	    font-family: FontAwesome;
+	    height: auto;
+	    font-size: 16px;
+	    content: "\f107";
+	    font-weight: 300;
+	    text-shadow: none;
 	}
 </style>
 <script src="__PUBLIC__/js/jquery.js"></script>
@@ -156,8 +183,8 @@
 							<ul class="nav nav-pills nav-stacked">
 								{volist name="__menu__['child']" id="nav"}
 								<li class="subnav">
-									<a href="#" class="nav-header hidden-sm hidden-xs">{$key}</a>
-									<ul class="subnav-item-cont" style="display: none">
+									<a href="#" class="nav-header hidden-sm hidden-xs">{$key}<span class="arrow"></span></a>
+									<ul class="subnav-block" style="display: none">
 										{volist name="nav" id="item"}
 										<li class="subnav-item {$item['style']}">
 											<a class="subnav-item-cont" href="{$item['url']|url}">
@@ -257,15 +284,17 @@
 	$(".nav .subnav-item").each(function(){
 		var thisHref = $(this).find('a').attr('href');
 		if(thisHref.indexOf(pathname) != '-1'){
-			$(this).parent('.subnav-item-cont').show().parent('.subnav').addClass('active').end().end()
-	       		.find('a').addClass("active");
-	        //   .slideDown().parent('.subnav').siblings('.subnav-item').slideUp();
+			$(this).find('a').addClass("active").parents('.subnav-block').show().parent('.subnav').addClass('active');
+			$(this).parent('.subnav-block').prev('.nav-header').find('span').addClass('open');
 	    }
 	});
 	$('.nav').on('click','.subnav',function(){
-		$(this).children('.subnav-item-cont').slideToggle('fast')
-			.parent('.subnav').siblings('.subnav').not('.active').children('.subnav-item-cont').slideUp();
-	})
+		$(this).children('.subnav-block').slideToggle('fast').end()
+				.children('.nav-header').find('span').toggleClass('open');
+		$(this).siblings('.subnav').not('.active')
+				.children('.subnav-block').slideUp().end()
+				.children('.nav-header').find('span').removeClass('open');
+	});
 })();
 </script>
 <script src="__PUBLIC__/js/core.js"></script>

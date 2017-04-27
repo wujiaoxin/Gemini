@@ -268,6 +268,7 @@
 								<th>序号</th>
 								<th>流程节点</th>
 								<th>操作人</th>
+								<th>操作</th>
 								<th>备注</th>
 								<th>时间</th>
 							</tr>
@@ -366,16 +367,16 @@
 
 	function historyTpl(data){
 		var html = '';
-		var operate = {'view':'审核','loan':'放款审核','recharge':'充值','withdraw':'提现','receivable':'回款'};
+		var operate = {'view':'查看','loan':'放款审核','recharge':'充值','withdraw':'提现','receivable':'回款','datareview':'资料审核','loanlimit':'额度审核'};
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
-
 			var i = index + 1;
 		  	html +='<tr>'
 		  		+'<td>'+ i+'</td>'
 		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
 		  		+'<td>'+ data[index].operator +'</td>'
 		  		+'<td>'+ operate[data[index].action] +'</td>'
+		  		+'<td>'+ data[index].descr +'</td>'
 		  		+'<td>'+ formatDatetime(data[index].create_time) +'</td>'
 		  		 +'</tr>';
 			}
@@ -384,17 +385,59 @@
 	}
 	$('#examine-history tbody').html(historyTpl(info.examine_log));
 
+
+	var keyList = [
+            {
+                form_key:"orderSupplement_pic_1",
+                form_label:"身份证正面照"
+            },
+            {
+                form_key:"orderSupplement_pic_2",
+                form_label:"身份证反面照"
+            },
+            {
+                form_key:"orderSupplement_pic_3",
+                form_label:"人车合照"
+            },
+            {
+                form_key:"orderSupplement_pic_4",
+                form_label:"合格证"
+            },
+            {
+                form_key:"orderSupplement_pic_5",
+                form_label:"保单证书"
+            },
+            {
+                form_key:"orderSupplement_pic_6",
+                form_label:"购车发票"
+            },
+            {
+                form_key:"orderSupplement_pic_7",
+                form_label:"首付凭证"
+            },
+            {
+                form_key:"orderSupplement_pic_8",
+                form_label:"垫资合同"
+            }];
 	function picTpl(data){
 		var html = '';
 		if(typeof(data) =='object'){
-		for(var index = 0; index < data.length; index++){
-		  	html +='<div class="pic-block col-sm-3">'
-		  		+'<img src="' + data[index].path + '">'
-		  		+'</div>'
-			}
+			$.each(keyList,function(){
+				var form_key = this.form_key;
+				for(var index = 0; index < data.length; index++){
+					if(form_key == data[index].form_key){
+						html +='<div class="pic-block col-sm-3">'
+					  		+'<img src="' + data[index].path + '">'
+					  		+'</div>';
+					  	break;
+					}
+				}
+				return true;
+			});
 		}
 		return html;
 	}
+
 	$('#tab_1_6 .pic-container').html(picTpl(info.files));
 
 	$('#examine_limit').val(info['order_info']['loan_limit']);
@@ -461,7 +504,7 @@ $(function(){
 		var status = $('#examineStatus').val();
 		var examine_limit = $('#examine_limit').val();
 		var reject_reason = encodeCheckbox('reject_reason');
-		var descr = $('#descr').val();
+		var descr = $('#descr').val().replace(/\n/g,"");
 		ajax_jquery({
 	        url: apiUrl + ajaxUrl,
 	        data:{
