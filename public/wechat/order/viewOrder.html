@@ -334,6 +334,9 @@
                     var status = resp.data.info.status;
                     if(status == 1){
                         stepbarShow(4);
+                    }else if(status == 2){
+                        stepbarShow(1);
+                        $('.stepShow .num_circle').eq(0).text('已退回');
                     }else if(status == 4){
                         stepbarShow(3);
                     }else{

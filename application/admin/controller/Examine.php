@@ -73,7 +73,7 @@ class examine extends Admin {
 
 					);
 				
-				if ($data['status'] == '1') {
+				if ($data['status'] == '4') {
 					
 					$info['descr'] = $data['descr'];
 
@@ -96,7 +96,8 @@ class examine extends Admin {
 
 				if ($data['status'] == '2') {
 
-					$info['reject_reason'] = $data['descr'];
+					$info['reject_reason'] = $data['reject_reason'];
+					$info['descr'] = $data['descr'];
 
 					$result = db('order')->where('id',$data['id'])->update($info);
 
