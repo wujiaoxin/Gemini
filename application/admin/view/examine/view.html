@@ -413,6 +413,14 @@
 	$('input[name="credit_level"]').text(info['order_info']['credit_level']);
 
 
+	var referrer = window.document.referrer;
+	if(referrer.indexOf('application') != '-1'){
+		$('#orderExamine').hide();
+		$('#orderExamineBtn').hide();
+	}else{
+		$('#orderRevokeBtn').hide();
+	}
+
 </script>
 <script>
 $(function(){

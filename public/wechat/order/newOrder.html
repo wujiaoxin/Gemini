@@ -18,6 +18,7 @@
             min-height: 200px;
         }
         .QRCode img {
+            display: none;
             width: 100%;
         }
     </style>
@@ -63,7 +64,7 @@
                                 </li>
                             </ul>
                             <div class="QRCode">
-                                <img class="QRCodeImg" src="">
+                                <img class="QRCodeImg" src=""/>
                             </div>
                             <div class="content-block">
                                 <button type="button" id="submit" class="button button-big button-fill dpblue" style="width:100%">生成二维码</button>
@@ -125,7 +126,7 @@
                                 },
                                 success: function(resp) {
                                     if(resp.code == 1){
-                                        $(".QRCodeImg").attr('src',resp.data.url);
+                                        $(".QRCodeImg").attr('src',resp.data.url).show();
                                     }else{
                                         if (typeof(resp.msg) == 'string') {
                                             ui_alert(resp.msg);
