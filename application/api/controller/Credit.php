@@ -275,15 +275,17 @@ class Credit extends Api {
 				$orderData = db('order')->field('id,car_price,loan_limit,credit_status')->where("id",$order_id)->order('id desc')->find();
 				$car_price = $orderData['car_price'];
 				
-				$downpay = (int)$car_price * 0.1;
-				$loan = (int)$car_price * 0.9;
+				$downpay = round((int)$car_price * 0.1);
+				$loan = round((int)$car_price * 0.9);
 				
-				$avgmonthpay = $loan/36;
+				$avgmonthpay = round($loan*1.1/36);
 				
-				$firstYear = $loan*0.2/12 + $loan*0.7/36;
-				$secYear = $loan*0.7/36;
+				$bankrepay = round($loan*0.7*1.1/36);
 				
-				//TODO 利息计算
+				$firstYear = round($loan*0.2*1.1/12) + $bankrepay;
+
+				
+				//TODO 利息计算修正
 				
 				$respStr = '{
 					"code": 1,
@@ -305,12 +307,12 @@ class Credit extends Api {
 							{
 								"plan": "第二年",
 								"period": "13-24",
-								"monthpay": '.$secYear.'
+								"monthpay": '.$bankrepay.'
 							},
 							{
 								"plan": "第三年",
 								"period": "25-36",
-								"monthpay": '.$secYear.'
+								"monthpay": '.$bankrepay.'
 							}
 						]
 					}

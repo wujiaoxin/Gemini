@@ -352,7 +352,18 @@ class User extends Api {
 				$saveData["bankcard"] = $bankcard;
 			}
 			
-			db('member')->where('uid',$uid)->update($saveData);
+			db('member')->where('uid',$uid)->update($saveData);			
+			
+			$userInfo = db('member')->field('mobile')->where("uid",$uid)->find();
+			
+			if($userInfo != null ){
+				$mobile = $userInfo['mobile'];
+				if(!empty($mobile)){
+					$orderData['name'] = $realname;
+					$orderData['idcard_num'] = $idcard;					
+					db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);//更新order表					
+				}
+			}
 			
 			$resp["code"] = 1;
 			$resp["msg"] = '更新成功';	
