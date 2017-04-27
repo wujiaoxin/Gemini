@@ -134,7 +134,7 @@ class Finance extends Admin {
 
 				$result = db('order')->where('id',$data['id'])->find();
 
-				$sercher =  serch_name($result['mid']);
+				$sercher =  serch_name($result['dealer_id']);
 
 				$result['dealer_name'] = $sercher['dealer_name'];//渠道名称
 
@@ -154,7 +154,7 @@ class Finance extends Admin {
 
 			foreach ($result as $k => $v) {
 
-				$sercher = serch_name($v['mid']);
+				$sercher = serch_name($v['dealer_id']);
 
 				$result[$k]['dealer_name'] = $sercher['dealer_name'];//渠道名称
 
@@ -370,7 +370,7 @@ class Finance extends Admin {
 
 				$result = db('order_repay')->where('id',$data['id'])->find();
 
-				$sercher = serch_name($result['mid']);
+				$sercher = serch_name($result['dealer_id']);
 				// var_dump($result);die;
 
 				$result['dealer_name'] = $sercher['dealer_name'];
@@ -392,7 +392,7 @@ class Finance extends Admin {
 
 			foreach ($result as $k => $v) {
 
-				$sercher = serch_name($v['mid']);
+				$sercher = serch_name($v['dealer_id']);
 				// var_dump($sercher);die;
 
 				$result[$k]['dealer_name'] = $sercher['dealer_name'];
@@ -417,7 +417,7 @@ class Finance extends Admin {
 		$result = db('dealer_money')->order('create_time DESC')->select();
 
 		foreach ($result as $k => $v) {
-			$serch_name = serch_name($v['uid']);
+			$serch_name = serch_name_dealer($v['uid']);
 			$result[$k]['dealer_name'] = $serch_name['dealer_name'];
 		}
 
