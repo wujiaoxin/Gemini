@@ -194,7 +194,7 @@ class Credit extends Api {
 	
 		$uid = session('user_auth.uid');		
 	
-		$creditResult = db('credit')->field('uid,mobile,credit_status,credit_result')->where("uid",$uid)->order('id desc')->find();
+		$creditResult = db('credit')->field('uid,mobile,order_id,credit_status,credit_result')->where("uid",$uid)->order('id desc')->find();
 
 		if($creditResult == null){
 			
@@ -268,6 +268,21 @@ class Credit extends Api {
 			}
 			
 			if($creditResult['credit_result'] == 1){//TODO 获取金融方案
+			
+				$order_id = $creditResult['order_id'];
+				$orderData = db('order')->field('id,car_price,loan_limit,credit_status')->where("id",$order_id)->order('id desc')->find();
+				$car_price = $orderData['car_price'];
+				
+				$downpay = (int)$car_price * 0.1;
+				$loan = (int)$car_price * 0.9;
+				
+				$avgmonthpay = $loan/36;
+				
+				$firstYear = $loan*0.2/12 + $loan*0.7/36;
+				$secYear = $loan*0.7/36;
+				
+				//TODO 利息计算
+				
 				$respStr = '{
 					"code": 1,
 					"msg": "获取成功！",
@@ -276,24 +291,24 @@ class Credit extends Api {
 						"resultmsg": "授信通过",
 						"name": "90贷",
 						"month": 36,
-						"downpay": 10000,
-						"loan": 2000,
-						"avgmonthpay": 3333,
+						"downpay": '.$downpay.',
+						"loan": '.$loan.',
+						"avgmonthpay": '.$avgmonthpay.',
 						"repay": [
 							{
 								"plan": "第一年",
 								"period": "1-12",
-								"monthpay": 7999
+								"monthpay": '.$firstYear.'
 							},
 							{
 								"plan": "第二年",
 								"period": "13-24",
-								"monthpay": 6999
+								"monthpay": '.$secYear.'
 							},
 							{
 								"plan": "第三年",
 								"period": "25-36",
-								"monthpay": 6999
+								"monthpay": '.$secYear.'
 							}
 						]
 					}
