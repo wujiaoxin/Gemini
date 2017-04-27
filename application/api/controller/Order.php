@@ -59,7 +59,8 @@ class Order extends Api {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 		if($uid > 0){
-			$map = '(uid = '.$uid.' or bank_uid = '.$uid.')';
+			$map = '(uid = '.$uid.')';
+			// $map = '(uid = '.$uid.' or bank_uid = '.$uid.')';
 		}else{
 			$resp['code'] = 0;
 			$resp['msg'] = '请重新登录';

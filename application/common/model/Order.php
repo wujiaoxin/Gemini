@@ -70,7 +70,8 @@ class Order extends \app\common\model\Base {
 			}
 		}
 		$sort = "id desc";
-		$list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
+		$list = db('Order')->where($filter)->select();
+		// $list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
 		return $list;
 	}
 	public function get_all_order_list($uid = 0, $role = 0, $status = null){
