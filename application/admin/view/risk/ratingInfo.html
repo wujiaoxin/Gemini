@@ -640,6 +640,10 @@
 		$("#idcard").text(info.idcard);
 		$("#mobile").text(info.mobile);
 		$("#loan_limit").text('贷款金额：' + (info.car_price * 0.9) + '元');
+		$("#credit_score").val(info.credit_score || "");
+		$("#descr").val(info.descr || "");
+ 
+		
 	}else{
 		ui_alert("获取数据失败");
 	}
@@ -670,7 +674,8 @@
 		var examineStatus = $("#examineStatus").val();
 		var refuseReason = $("#refuseReason").val();		
 		var treatment = $("#treatment").val();
-		var descr = $("#descr").val();
+		var descr = $("#descr").val().replace(/\n/g,"");
+
 
 		if(credit_score > 100 || credit_score < 0){
 			ui_alert("请输入正确授信评分");
