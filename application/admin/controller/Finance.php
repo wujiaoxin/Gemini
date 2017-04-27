@@ -129,7 +129,7 @@ class Finance extends Admin {
 					$resp['msg'] = '放款审核失败!';
 
 				}
-				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
+				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			}else{
 
 				$result = db('order')->where('id',$data['id'])->find();
@@ -208,7 +208,7 @@ class Finance extends Admin {
 
 					$resp['msg'] = '充值审核失败!';
 				}
-				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
+				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			}else{
 
 				$result = db('recharge')->where('sn',$data['id'])->find();
@@ -280,7 +280,7 @@ class Finance extends Admin {
 
 					$resp['msg'] = '提现审核失败!';
 				}
-				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
+				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 
 			}else{
 
@@ -365,7 +365,7 @@ class Finance extends Admin {
 					$resp['msg'] = '还款审核失败!';
 
 				}
-				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
+				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			}else{
 
 				$result = db('order_repay')->where('id',$data['id'])->find();

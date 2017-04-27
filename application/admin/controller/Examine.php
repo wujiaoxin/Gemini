@@ -123,7 +123,7 @@ class examine extends Admin {
 			}
 			
 			// var_dump($resp);die;
-			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
+			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			return json($resp);
 			
 		}else{
@@ -217,7 +217,7 @@ class examine extends Admin {
 				$resp['msg'] = '审核异常';
 			}
 
-			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg']);
+			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 
 			return json($resp);
 
