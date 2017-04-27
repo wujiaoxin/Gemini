@@ -261,7 +261,7 @@ function serch_realname($uid){
 	 * @param int $record_id 触发行为的记录id
 	 * @param int $user_id 执行行为的用户id
 	 */
-	function examine_log($action = null,$controller = null,$param = null , $record_id = null,$status = null , $type) {
+	function examine_log($action = null,$controller = null,$param = null , $record_id = null,$status = null , $type, $descr =null) {
 
 		if (empty($user_id)) {
 			$user_id = is_login();
@@ -276,6 +276,7 @@ function serch_realname($uid){
 		$data['status'] = $status;
 		$data['type'] = $type;
 		$data['create_time'] = time();
+		$data['descr'] = $descr;
 		
 		db('examine_log')->insert($data);
 	}

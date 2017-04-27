@@ -61,6 +61,8 @@ class Credit extends Api {
 			session('mobileCollect', $mobileCollect);
 			
 		}else{
+			$resp['code'] = $httpResp->code;
+			$resp['msg'] = $httpResp->message;
 			return json($resp);
 		}
 		
