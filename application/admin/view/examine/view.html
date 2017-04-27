@@ -154,7 +154,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="tab-pane" id="tab_1_3" name="order_info">
+				<div class="tab-pane" id="tab_1_3" name="member_info">
 					<div class="form-horizontal">
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">手机号</label>
@@ -165,13 +165,13 @@
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">真实姓名</label>
 						    <div class="col-sm-10 pt5">
-						     	<span name="name" class="customer-info"></span>
+						     	<span name="realname" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">身份证号</label>
 						    <div class="col-sm-10 pt5">
-						     	<span name="idcard_num" class="customer-info"></span>
+						     	<span name="idcard" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
@@ -183,13 +183,13 @@
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">评分</label>
 						    <div class="col-sm-10 pt5">
-						     	<span name="score" class="customer-info"></span>
+						     	<span name="credit_score" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">评分等级</label>
 						    <div class="col-sm-10 pt5">
-						     	<span name="" class="customer-info"></span>
+						     	<span name="credit_level" class="customer-info"></span>
 						    </div>
 						</div>
 						<div class="form-group">
@@ -408,6 +408,11 @@
 	if(info['order_info']['status'] == '4'){
 		$('#examine_limit-block').show();
 	}
+
+	$('input[name="credit_score"]').text(info['order_info']['credit_score']);
+	$('input[name="credit_level"]').text(info['order_info']['credit_level']);
+
+
 </script>
 <script>
 $(function(){
