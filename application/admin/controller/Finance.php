@@ -33,7 +33,15 @@ class Finance extends Admin {
 
 	// 放款审核
 	public function loan() {
-
+		// make_repay_plan('1080');
+		$data['id'] = 1080;
+		$result = make_repay_plan($data['id']);
+		// var_dump($result);die;
+		foreach ($result as $k => $v) {
+			var_dump($v);
+			db('order_repay')->insert($v);
+		}
+		die;
 		if (IS_POST) {
 
 			$data = input('post.');
@@ -93,8 +101,13 @@ class Finance extends Admin {
 
 						}else{
 
-							//到期还本息
-							
+							//等额本息
+							$result = make_repay_plan($data['id']);
+
+							foreach ($result as $k => $v) {
+								
+								db('order_repay')->insert($v);
+							}
 						}
 						
 						$resp['code'] = 1;
