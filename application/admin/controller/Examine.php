@@ -38,15 +38,12 @@ class examine extends Admin {
 	}
 
 	public function application() {
-
 		$list = db('Order')->order('create_time')->select();
-		// var_dump($list);die;
 		foreach ($list as $k => $v) {
 			$list[$k]['salesman'] = serch_realname($v['uid']);
 			$name = serch_name($v['mid']);
 			$list[$k]['dealername'] = $name['dealer_name'];
 		}
-		// var_dump($list);die;
 		$data = array(
 
 			'infoStr' =>json_encode($list)
@@ -54,7 +51,7 @@ class examine extends Admin {
 
 		$this->assign($data);
 
-		$this->setMeta('借款申请');
+		$this->setMeta('贷款申请');
 
 		return $this->fetch();
 	}

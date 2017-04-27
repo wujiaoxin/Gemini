@@ -147,6 +147,33 @@ class User extends Base{
 			return false;
 		}
 	}
+
+	/**
+	 * 车商用户添加
+	 * @param  integer $user 用户信息数组
+	 */
+	function registeraddStaff($mobile, $password, $repassword, $email, $isautologin = true){
+		$data['mobile'] = $mobile;
+		$data['salt'] = rand_string(6);
+		$data['password'] = $password;
+		$data['repassword'] = $repassword;
+		$data['username'] = '1';
+		$data['email'] = $email;
+		$result = $this->validate(true)->save($data);
+		if ($result) {
+			$data['uid'] = $this->data['uid'];
+			//$this->extend()->save($data);
+			if ($isautologin) {
+				$this->autoLogin($this->data);
+			}
+			return $data['uid'];
+		}else{
+			if (!$this->getError()) {
+				$this->error = "注册失败！";
+			}
+			return false;
+		}
+	}
 	/**
 	 * 用户手机注册
 	 * @param  integer $user 用户信息数组
