@@ -1875,6 +1875,7 @@ CREATE TABLE `gemini_examine_log` (
   `status` int(3) NOT NULL COMMENT '操作状态',
   `type` int(3) NOT NULL COMMENT '操作流程节点',
   `create_time` int(11) NOT NULL COMMENT '操作时间',
+  `descr` varchar(255) NOT NULL DEFAULT '0' COMMENT '审核备注',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='审核记录表';
 
