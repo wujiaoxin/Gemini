@@ -286,7 +286,7 @@
 				            	</select>
 						    </div>
 						</div>
-						<div class="form-group" id="examine_limit-block">
+						<div class="form-group" id="examine_limit-block" style="display: none;">
 						    <label class="col-sm-2 control-label">审批额度</label>
 						    <div class="col-sm-2 pt5">
 						      	<input type="number" id="examine_limit">
@@ -361,6 +361,8 @@
 	        }
 	    }
 	});
+	$('span[name="bankcard"]').text(info['member_info']['bankcard']);
+	$('span[name="score"]').text(info['member_info']['score']);
 
 	function historyTpl(data){
 		var html = '';
@@ -403,8 +405,8 @@
 			$('#reject_reason').slideUp('fast');
 		}
 	});
-	if(info['order_info']['status'] == '3'){
-
+	if(info['order_info']['status'] == '4'){
+		$('#examine_limit-block').show();
 	}
 </script>
 <script>
@@ -459,7 +461,7 @@ $(function(){
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	ui_alert("审核通过","success");
-	            	// window.location.href = apiUrl + "/admin/examine/loanLimit";
+	            	window.location.href = apiUrl + "/admin/examine/loanLimit";
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);

@@ -65,8 +65,8 @@
             line-height: 38px;
             font-size: 14px;
         }
-        #order-amount,
-        #order-term {
+        .order-amount,
+        .order-term {
             padding-left: 0;
             border-bottom: 1px solid #dedede;
         }
@@ -142,19 +142,43 @@
                                     </a>
                                     <div class="accordion-item-content">
                                         <div class="content-block">
-                                            <div class="item-content order-info-amount" id="order-amount">
-                                                <div class="item-inner">
-                                                    <div class="item-title label">垫资金额</div>
-                                                    <div class="item-input">
-                                                        <input type="number" name="loan_limit" id="loan_limit" value="" placeholder="请输入垫资金额">
+                                            <div id="type-1" style="display: none;">
+                                                <div class="item-content order-info-amount order-amount">
+                                                    <div class="item-inner">
+                                                        <div class="item-title label">借款金额(元)</div>
+                                                        <div class="item-input">
+                                                            <input type="number" name="loan_limit" placeholder="请输入借款金额">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="item-content order-info-term order-term">
+                                                    <div class="item-inner">
+                                                        <div class="item-title label">借款期限(月)</div>
+                                                        <div class="item-input">
+                                                            <select name="loan_term">
+                                                                <option value="365">12个月</option>
+                                                                <option value="730">24个月</option>
+                                                                <option value="1095">36个月</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="item-content order-info-term" id="order-term">
-                                                <div class="item-inner">
-                                                    <div class="item-title label">垫资期限</div>
-                                                    <div class="item-input">
-                                                        <input type="number" name="loan_term" id="loan_term" value="" placeholder="请输入垫资期限">
+                                            <div id="type-2" style="display: none;">
+                                                <div class="item-content order-info-amount order-amount">
+                                                    <div class="item-inner">
+                                                        <div class="item-title label">垫资金额(元)</div>
+                                                        <div class="item-input">
+                                                            <input type="number" name="loan_limit" placeholder="请输入垫资金额">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="item-content order-info-term order-term">
+                                                    <div class="item-inner">
+                                                        <div class="item-title label">垫资期限(天)</div>
+                                                        <div class="item-input">
+                                                             <input type="number" name="loan_term" value="" placeholder="垫资期限为1-15天">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -194,6 +218,7 @@
     <script type="text/javascript">
         var order_id = getUrlParam('id');
         var sid = localStorage.getItem('sid');
+        var order_type = '';
         ajax_jquery({
             url: apiUrl +'/api/order/detail',
             data: {
@@ -207,6 +232,8 @@
                     $(".order-mobile").text(resp.data.info.mobile);
                     $(".order-idcardNum").text(resp.data.info.idcard_num);
                     $(".order-date").text(formatDate(resp.data.info.create_time));
+                    order_type = resp.data.info.type;
+                    $('#type-' + order_type).show();
                 }else{
                     if (typeof(resp.msg) == 'string') {
                         ui_alert(resp.msg);
@@ -222,13 +249,16 @@
 
         $(function(){
             $("#submit").click(function(){
-                var loan_limit = $('#loan_limit').val();
-                var loan_term = $('#loan_term').val();
+                var loan_limit = $('#type-'+order_type+' input[name=loan_limit]').val();
+                var loan_term = $('#type-'+order_type+' [name=loan_term]').val();
                 if(loan_limit == ""){
-                    ui_alert('请输入垫资金额');
+                    ui_alert('请输入借款金额');
                     return;
                 }else if(loan_term == ""){
-                    ui_alert('请输入垫资期限');
+                    ui_alert('请输入借款期限');
+                    return;
+                 }else if(order_type == 2 && (loan_term < 1 || loan_term > 15)){
+                    ui_alert('垫资期限为1-15天');
                     return;
                 }else if( $('#uploadpic  .fileList img[data-id]').length < keyList.length ){
                     ui_alert("照片资料不全，请补充上传");
