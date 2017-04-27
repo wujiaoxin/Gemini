@@ -640,18 +640,16 @@
 			$('#treatmentBlock').slideUp('fast');
 		}
 	});
- 
-	
+
 	$('#examineBtn').click(function(){
 		var credit_result = 0;
-		
-		var examineStatus = $("#examineStatus").val();		
-		var refuseReason = $("#refuseReason").val();		
+		var examineStatus = $("#examineStatus").val();
+		var refuseReason = $("#refuseReason").val();
 		var treatment = $("#treatment").val();
-		
+
 		if(examineStatus == 0){
 			credit_result = 1;
-		}else{		
+		}else{
 			if(refuseReason == 1){
 				credit_result = treatment;
 			}else{
@@ -659,7 +657,6 @@
 			}
 		}
 
-		
 		ajax_jquery({
 			url: apiUrl +'/admin/risk/ratingInfo',
 			data:{
@@ -680,7 +677,6 @@
 				}
 			}
 		});
-		
 	})
 </script>
 {/block}

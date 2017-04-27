@@ -177,3 +177,28 @@ function initCity(data){
         return city_addr;
     }
 }
+
+//格式化checkBox
+function encodeCheckbox(name){
+    var data='';
+    $("input[name="+name+"]:checkbox:checked").each(function() {
+        data += $(this).val() + ',';
+    })
+    data = data.substring(0, data.length - 1);
+    return data;
+}
+
+//初始化checkBox
+function initCheckBox(name){
+    var initData = {};
+    if( typeof(info[name]) == "string" && info[name] != ''){
+        initData = info[name].split(',');
+        $("input[name="+name+"]:checkbox").each(function() {
+            var thisValue = $(this).val();
+            var isInArray = initData.indexOf(thisValue);
+            if(isInArray != '-1'){
+                $(this).click();
+            }
+        })
+    }
+}

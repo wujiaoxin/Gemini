@@ -67,31 +67,6 @@ function btnSentUploader(picName){
     });
 };
 
-//格式化checkBox
-function encodeCheckbox(name){
-    var data='';
-    $("input[name="+name+"]:checkbox:checked").each(function() {
-        data += $(this).val() + ',';
-    })
-    data = data.substring(0, data.length - 1);
-    return data;
-}
-
-//初始化checkBox
-function initCheckBox(name){
-    var initData = {};
-    if( typeof(info[name]) == "string" && info[name] != ''){
-        initData = info[name].split(',');
-        $("input[name="+name+"]:checkbox").each(function() {
-            var thisValue = $(this).val();
-            var isInArray = initData.indexOf(thisValue);
-            if(isInArray != '-1'){
-                $(this).click();
-            }
-        })
-    }
-}
-
 $(function(){
     var id = getUrlParam('id');
     TableManaged.init();
@@ -130,6 +105,7 @@ $(function(){
         var field_rep_idcard_back_pic = $("#field_rep_idcard_back_pic").val();
         var property = encodeCheckbox('property');
         var forms = encodeCheckbox('forms');
+        var formsLen = $("input[name='forms']:checked").length;
         var bank_account_name = $("#bank_account_name").val();
         var bank_name = $("#bank_name").val();
         var bank_account_id = $("#bank_account_id").val();
@@ -182,6 +158,9 @@ $(function(){
             return false;
         }else if(forms == ""){
             ui_alert("请选择合作形式");
+            return false;
+        }else if(formsLen != "1"){
+            ui_alert("请选择唯一合作形式");
             return false;
         }else if(bank_account_name == ""){
             ui_alert("请输入公户开户人姓名");
@@ -252,7 +231,7 @@ $(function(){
             },
             success:function(resp){
                 if (resp.code == "1" ) {
-                    ui_alert('提交成功')
+                    ui_alert("提交成功","success")
                     window.location.href = "/admin/assetChannel/index.html";
                 } else {
                     if (typeof(resp.msg) == 'string') {

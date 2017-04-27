@@ -128,7 +128,7 @@
 	        <div class="navbar">
 	            <div class="navbar-inner">
 	                <div class="left">
-	                    <a href="javascript:history.go(-1);" class="link icon-only back">
+	                    <a href="javascript:goToUrl(wechatStaticPath + '/index/index.html');" class="link icon-only back">
 	                        <i class="icon icon-back color-orange"></i>
 	                    </a>
 	                </div>
@@ -208,7 +208,6 @@
             dataRange = $(this).attr('data');
             $('.open-dateRange span').text(clickedLink);
             myApp.closeModal('.popover-dateRange', clickedLink);
-
         });
 
 
@@ -225,7 +224,7 @@
 	  	var loading = false;  // 加载flag
 		var current_page = 1;
 		var status = getUrlParam('status');
-		var orderType = getUrlParam("type");
+		// var orderType = getUrlParam("type");
 		if(status == 'null')
 			{
 				status = '';
@@ -266,7 +265,7 @@
 				data:{
 					'page': pageid,
 					'status': status,
-					'type': orderType
+					// 'type': orderType
 				},
 				success: function (resp){
 					var liHtml = '';
@@ -340,7 +339,6 @@
 			// 	ev.preventDefault();
 			// })
 		});
-	
 	</script>
 </body>
 </html>
