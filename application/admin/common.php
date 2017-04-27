@@ -325,8 +325,11 @@ function serch_realname($uid){
 			$deal['rate'] = 1.5/100;
 		}
 		$list = array();
+		
 		$has_use_self_money = 0;
+		
 		$repay_day = time();
+		
 		for($i=1; $i <= $totalperiod; $i++){
 
 			$load_repay = array();
@@ -344,8 +347,8 @@ function serch_realname($uid){
 
 			$deal['month_repay_money'] = $load_repay['repay_money'];
 
-			// $load_repay['self_money'] = get_self_money($i,$deal['examine_limit'],$deal['month_repay_money'],$deal['rate']);
-			$load_repay['self_money'] = round($deal['examine_limit']/$totalperiod,2);
+			$load_repay['self_money'] = round($deal['examine_limit'] *$deal['rate']*pow((1+$deal['rate']),$i-1)/(pow(($deal['rate']+1),$totalperiod)-1),2);
+
 
 			$has_use_self_money += $load_repay['self_money'];
 
@@ -365,7 +368,6 @@ function serch_realname($uid){
 
 			$list[] = $load_repay;
 		}
-		// var_dump($list);die;
 		return $list;
 	}
 	function next_replay_month($time,$m=1){
