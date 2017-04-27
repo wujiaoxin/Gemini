@@ -211,10 +211,10 @@
   /*
   ** status 订单状态
   ** type 业务类型
-  */
+  */ 
   function get_orders($mid,$status=0,$type){
     if ($type == 'order') {
-       $data = db('order')->where('mid',$mid)->limit(5)->order('status ASC,id DESC')->select();
+       $data = db('order')->where('mid',$mid)->where('status','>','-1')->limit(5)->order('status ASC,id DESC')->select();
        foreach ($data as $k => $v) {
          if ($v['status'] == '-1') {
             $data[$k]['progress'] = '1';

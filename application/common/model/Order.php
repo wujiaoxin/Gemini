@@ -54,6 +54,7 @@ class Order extends \app\common\model\Base {
 	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null){
 		$filter['auth_uid'] = $uid;
 		$filter['auth_role'] = $role;
+		$filter['uid'] = $uid;
 		if($type == 3){
 			$filter['type'] = $type;
 		}else{
@@ -132,6 +133,12 @@ class Order extends \app\common\model\Base {
 
 		$forms = db('dealer')->field('forms')->where('mobile',$dealer_mobile['mobile'])->find();
 		$is_order = db('order')->field('mobile')->where('mobile',$data['mobile'])->find();
+		// var_dump($is_order);die;
+
+		if (empty($forms['forms'])) {
+
+			$forms['forms'] = '1';
+		}
 
 		if (isset($is_order)) {
 
