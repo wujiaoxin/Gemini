@@ -531,7 +531,7 @@
 						<label class="col-sm-2 control-label">合作金融方案</label>
 						<div class="col-sm-10 pt5">
 							<span class="col-sm-2">银行机构 平安银行</span>
-							<span class="col-sm-2" id="loan_limit">贷款 70000</span>
+							<span class="col-sm-2" id="loan_limit">-</span>
 							<!--<span class="col-sm-2">月供 1000*12</span>-->
 						</div>
 					</div>
@@ -635,10 +635,14 @@
 
 <script>
 
-	$("#realname").text(info.realname);
-	$("#idcard").text(info.idcard);
-	$("#mobile").text(info.mobile);
-	$("#loan_limit").text('贷款金额：' + (info.car_price * 0.9) + '元');
+	if(info){
+		$("#realname").text(info.realname);
+		$("#idcard").text(info.idcard);
+		$("#mobile").text(info.mobile);
+		$("#loan_limit").text('贷款金额：' + (info.car_price * 0.9) + '元');
+	}else{
+		ui_alert("获取数据失败");
+	}
 	//loan_limit
 	//info.loan_limit
 
