@@ -54,7 +54,7 @@ class examine extends Admin {
 
 		$this->assign($data);
 
-		$this->setMeta('借款申请');
+		$this->setMeta('贷款申请');
 
 		return $this->fetch();
 	}

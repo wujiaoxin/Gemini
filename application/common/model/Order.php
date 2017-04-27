@@ -124,16 +124,12 @@ class Order extends \app\common\model\Base {
 
 		$mid = db('member')->field('uid')->where('mobile',$dealer_mobile['mobile'])->find();
 
-		$is_order = db('order')->field('mobile')->where('mobile',$data['mobile'])->find();
+		$is_order = db('order')->field('mobile,status,id')->where('mobile',$data['mobile'])->order('id DESC')->find();
 
-		if (isset($is_order)) {
-
-			if ($is_order['mobile'] == $data['mobile']) {
-				
-				$data['car_price'] = $data['price'];
-				$result = $this->allowField(true)->save($data,['mobile'=>$data['mobile']]);
-				return 111;
-			}
+		if ($is_order['status'] == -2) {
+			$data['car_price'] = $data['price'];
+			$result = $this->allowField(true)->save($data,['id'=>$is_order['id']]);
+			return 111;
 
 		}else{
 			$order_sn = $this->build_order_sn();
