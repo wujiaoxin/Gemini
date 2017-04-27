@@ -104,6 +104,7 @@ $(function(){
         var field_rep_idcard_pic = $("#field_rep_idcard_pic").val();
         var field_rep_idcard_back_pic = $("#field_rep_idcard_back_pic").val();
         var property = encodeCheckbox('property');
+        var propertyLen = $("input[name='property']:checked").length;
         var forms = encodeCheckbox('forms');
         var formsLen = $("input[name='forms']:checked").length;
         var bank_account_name = $("#bank_account_name").val();
@@ -155,6 +156,9 @@ $(function(){
             return false;
         }else if(property == ""){
             ui_alert("请选择门店属性");
+            return false;
+        }else if(propertyLen != "1"){
+            ui_alert("请选择唯一门店属性");
             return false;
         }else if(forms == ""){
             ui_alert("请选择合作形式");
