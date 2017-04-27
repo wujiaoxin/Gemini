@@ -9,10 +9,10 @@
     <title>VP贷-享全款的汽车分期</title>
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
-    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css"> 
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.css">
     <link rel="stylesheet" type="text/css" href="/public/plugs/webuploader/webuploader.gemini.css">
-    <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all">  
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/new-app.css" media="all">
     <script type="text/javascript">
         var BASE_URL = "";
 
@@ -155,11 +155,12 @@
                                                     <div class="item-inner">
                                                         <div class="item-title label">借款期限(月)</div>
                                                         <div class="item-input">
-                                                            <select name="loan_term">
+                                                            <!-- <select name="loan_term" class="button">
                                                                 <option value="365">12个月</option>
                                                                 <option value="730">24个月</option>
                                                                 <option value="1095">36个月</option>
-                                                            </select>
+                                                            </select> -->
+                                                            <input type="text" placeholder="借款期限" readonly id="myPicker">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -246,11 +247,26 @@
             formData: {fileType:"image",order_id:order_id,sid:sid},
         });
 
-
+        var myPicker = myApp.picker({
+            input: '#myPicker',
+            toolbarCloseText: '完成',
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['12个月','24个月','36个月']
+                }
+            ]
+        });
+        var formatValues = {'12个月':'365','24个月':'730','36个月':'1095'};
         $(function(){
             $("#submit").click(function(){
                 var loan_limit = $('#type-'+order_type+' input[name=loan_limit]').val();
-                var loan_term = $('#type-'+order_type+' [name=loan_term]').val();
+                var loan_term = '';
+                if(order_type == 1){
+                    loan_term = formatValues[$('#myPicker').val()];
+                }else if(order_type == 2){
+                    loan_term = $('#type-'+order_type+' [name=loan_term]').val();
+                }
                 if(loan_limit == ""){
                     ui_alert('请输入借款金额');
                     return;
