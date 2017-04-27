@@ -282,7 +282,7 @@ class Credit extends Api {
 				
 				$bankrepay = round($loan*0.7*1.1/36);
 				
-				$firstYear = round($loan*0.2*1.1/12 + $bankrepay;
+				$firstYear = round($loan*0.2*1.1/12) + $bankrepay;
 
 				
 				//TODO 利息计算修正
