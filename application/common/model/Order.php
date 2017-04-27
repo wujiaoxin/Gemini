@@ -132,6 +132,12 @@ class Order extends \app\common\model\Base {
 
 		$forms = db('dealer')->field('forms')->where('mobile',$dealer_mobile['mobile'])->find();
 		$is_order = db('order')->field('mobile')->where('mobile',$data['mobile'])->find();
+		// var_dump($is_order);die;
+
+		if (empty($forms['forms'])) {
+
+			$forms['forms'] = '1';
+		}
 
 		if (isset($is_order)) {
 

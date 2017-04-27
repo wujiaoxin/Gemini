@@ -283,4 +283,149 @@ function serch_realname($uid){
 	/*
 	**还款计划（等额本息）
 	*/
-	
+	function make_repay_plan($data){
+
+		$deal = db('order')->where('id',$data)->find();
+
+		if ($deal['type'] == '1') {
+
+			$deal['product_name'] = '二手车按揭贷款';
+			
+		}elseif ($deal['type'] == '2') {
+
+			$deal['product_name'] = '二手车按揭垫资';
+
+			
+		}elseif ($deal['type'] == '3') {
+
+			$deal['product_name'] = '新车按揭贷款';
+
+			
+		}elseif ($deal['type'] == '4') {
+
+			$deal['product_name'] = '新车按揭垫资';
+
+		}
+
+
+		$totalperiod = floor($deal['endtime']/30);
+
+		if ($totalperiod == '12') {
+			
+			$deal['rate'] = 1.1/100;
+
+
+		}elseif ($totalperiod == '24') {
+			
+			$deal['rate'] = 1.3/100;
+
+		}elseif ($totalperiod == '36') {
+			
+			$deal['rate'] = 1.5/100;
+		}
+		$list = array();
+		$has_use_self_money = 0;
+		$repay_day = time();
+		for($i=1; $i <= $totalperiod; $i++){
+
+			$load_repay = array();
+
+			// $load_repay['repay_time'] = time()+30*24*60*60*$i;
+			$load_repay['repay_time']  = $repay_day = next_replay_month ($repay_day);
+			// $load_repay['repay_money11'] = date('Y-m-d H:i:s',$load_repay['repay_time']);
+			$load_repay['repay_period'] = $i;
+
+			$load_repay['totalperiod'] = intval($totalperiod);
+
+			$load_repay['rate'] = $deal['rate'];
+
+			$load_repay['repay_money'] = pl_it_formula($deal['examine_limit'],$deal['rate'],$totalperiod);
+
+			$deal['month_repay_money'] = $load_repay['repay_money'];
+
+			// $load_repay['self_money'] = get_self_money($i,$deal['examine_limit'],$deal['month_repay_money'],$deal['rate']);
+			$load_repay['self_money'] = round($deal['examine_limit']/$totalperiod,2);
+
+			$has_use_self_money += $load_repay['self_money'];
+
+			$load_repay['interest_money'] = $load_repay['repay_money'] - $load_repay['self_money'];
+			
+			$load_repay['order_id'] = $deal['id'];
+
+			$load_repay['mid'] = $deal['mid'];
+
+			$load_repay['status'] = -1;
+
+			$load_repay['has_repay'] = -1;
+
+			$load_repay['loantime'] = $deal['endtime'];
+
+			$load_repay['product_name'] = $deal['product_name'];
+
+			$list[] = $load_repay;
+		}
+		// var_dump($list);die;
+		return $list;
+	}
+	function next_replay_month($time,$m=1){
+		$str_t = to_timespan(to_date($time)." ".$m." month ");
+		return $str_t;
+	}
+	function to_date($utc_time, $format = 'Y-m-d H:i:s') {
+		if (empty ( $utc_time )) {
+			return '';
+		}
+		$timezone = time();
+		$time = $utc_time + 8 * 3600; 
+		return date ($format, $time );
+	}
+	function to_timespan($str, $format = 'Y-m-d H:i:s'){
+		$timezone = 8; 
+		$time = intval(strtotime($str));
+		if($time!=0)
+			$time = $time - $timezone * 3600;
+	    return $time;
+	}
+	/**
+	 * 等额本息还款计算方式
+	 * $money 贷款金额
+	 * $rate 月利率
+	 * $remoth 还几个月
+	 * 返回  每月还款额
+	*/
+	function pl_it_formula($money,$rate,$remoth){
+		if((pow(1+$rate,$remoth)-1) > 0)
+			return round($money * ($rate*pow(1+$rate,$remoth)/(pow(1+$rate,$remoth)-1)),2);
+
+		else
+			return 0;
+	}
+
+	/**
+	 * 获取该期本金
+	 * int $Idx  第几期
+	 * floatval $amount_money 总的借款多少
+	 * floatval $month_repay_money 月还本息
+	 * floatval $rate 费率
+	 */
+	function get_self_money($idx,$amount_money,$month_repay_money,$rate){
+		return $month_repay_money - get_benjin($idx,$idx,$amount_money,$month_repay_money,$rate)*$rate/$idx/100;
+
+
+	}
+	/**
+	 * 获取该期剩余本金
+	 * int $Idx  第几期
+	 * int $all_idx 总的是几期
+	 * floatval $amount_money 总的借款多少
+	 * floatval $month_repay_money 月还本息
+	 * floatval $rate 费率
+	 */
+	function get_benjin($idx,$all_idx,$amount_money,$month_repay_money,$rate){
+		//计算剩多少本金
+		$benjin = $amount_money;
+		for($i=1;$i<$idx+1;$i++){
+			$benjin = $benjin - ($month_repay_money - $benjin*$rate/$idx/100);
+		}
+		return $benjin;
+	}
