@@ -52,8 +52,15 @@ class Order extends \app\common\model\Base {
 	
 	
 	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null){
-		$filter['auth_uid'] = $uid;
-		$filter['auth_role'] = $role;
+		// $filter['auth_uid'] = $uid;
+		// $filter['auth_uid'] = $uid;
+		// $filter['auth_role'] = $role;
+		if ($role == '0') {
+			$ids = db('member')->field('mobile')->where('uid',$uid)->find();
+			$filter['mobile'] = $ids['mobile'];
+		}else{
+			$filter['uid'] = $uid;
+		}
 		if($type == 3){
 			$filter['type'] = $type;
 		}else{
@@ -75,8 +82,15 @@ class Order extends \app\common\model\Base {
 		return $list;
 	}
 	public function get_all_order_list($uid = 0, $role = 0, $status = null){
-		$filter['auth_uid'] = $uid;
-		$filter['auth_role'] = $role;
+		// $filter['auth_uid'] = $uid;
+		// $filter['auth_role'] = $role;
+
+		if ($role == '0') {
+			$ids = db('member')->field('mobile')->where('uid',$uid)->find();
+			$filter['mobile'] = $ids['mobile'];
+		}else{
+			$filter['uid'] = $uid;
+		}
 		if($status == null){
 			$filter['status'] = ['>',-1];
 		}else{
@@ -84,7 +98,8 @@ class Order extends \app\common\model\Base {
 		}
 		//$filter['status'] = ['>',-1];
 		$sort = "id desc";
-		$list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
+		// $list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
+		$list = db('Order')->where($filter)->select();
 		return $list;
 	}
 	

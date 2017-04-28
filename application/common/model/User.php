@@ -157,7 +157,7 @@ class User extends Base{
 		$data['salt'] = rand_string(6);
 		$data['password'] = $password;
 		$data['repassword'] = $repassword;
-		$data['username'] = '1';
+		$data['username'] = $mobile;
 		// $data['email'] = $email;
 		$data['access_group_id'] = $role_id;
 		$result = $this->validate(true)->save($data);
