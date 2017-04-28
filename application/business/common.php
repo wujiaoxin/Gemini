@@ -186,10 +186,12 @@
           );
         $name = '3,4,5';
         $where['status'] = array('IN',$name);
+        // var_dump($where);die;
         $money_jk = db('order')->where($where)->sum('loan_limit');
       //待还资金
+         $uids = db('dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->where('m.uid',$uid)->find();
         $where_repay = array(
-          'mid'=>$uid,
+          'dealer_id'=>$uids['id'],
           'status'=>'-1'
           );
         $repay_money = db('order_repay')->where($where_repay)->sum('repay_money');
@@ -197,7 +199,8 @@
 
         $order_loan = db('order')->where($where)->count('id');
         //还款中的订单
-        $order_repay = db('order_repay')->where('mid',$uid)->where('status','-1')->count('id');
+       
+        $order_repay = db('order_repay')->where('dealer_id',$uids['id'])->where('status','-1')->count('id');
         $data = array(
           'available_money'=>$money,
           'loan_money'=>$money_jk,
