@@ -52,12 +52,12 @@ class Order extends \app\common\model\Base {
 	
 	
 	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null){
-		// $filter['auth_uid'] = $uid;
-		// $filter['auth_uid'] = $uid;
-		// $filter['auth_role'] = $role;
 		if ($role == '0') {
 			$ids = db('member')->field('mobile')->where('uid',$uid)->find();
 			$filter['mobile'] = $ids['mobile'];
+		}elseif($role == '7'){
+			$filter['mid'] = $uid;
+			$filter['uid'] = $uid;
 		}else{
 			$filter['uid'] = $uid;
 		}
@@ -77,13 +77,12 @@ class Order extends \app\common\model\Base {
 			}
 		}
 		$sort = "id desc";
+		$filter['credit_status'] = '3';
 		$list = db('Order')->where($filter)->order($sort)->paginate(15);
 		// $list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
 		return $list;
 	}
 	public function get_all_order_list($uid = 0, $role = 0, $status = null){
-		// $filter['auth_uid'] = $uid;
-		// $filter['auth_role'] = $role;
 
 		if ($role == '0') {
 			$ids = db('member')->field('mobile')->where('uid',$uid)->find();
@@ -98,6 +97,7 @@ class Order extends \app\common\model\Base {
 		}
 		//$filter['status'] = ['>',-1];
 		$sort = "id desc";
+		$filter['credit_status'] = '3';
 		// $list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
 		$list = db('Order')->where($filter)->order($sort)->paginate(15);
 		return $list;
@@ -111,9 +111,24 @@ class Order extends \app\common\model\Base {
 	*/
 	
 	//订单统计
-	public function get_all_order_total($uid = 0, $type = null, $status = null){
+	public function get_all_order_total($uid = 0, $role = 0 ,$type = null, $status = null){
 
-		$filter['uid'] = $uid;
+		if ($role == '1') {
+
+			$filter['uid'] = $uid;
+
+		}elseif($role == '7'){
+
+			$filter['mid'] = $uid;
+
+			$filter['uid'] = $uid;
+
+
+		}else{
+
+			$filter['uid'] = $uid;
+		}
+		
 		if($status == null){
 			$filter['status'] = ['>',-1];
 		}else{
@@ -126,7 +141,7 @@ class Order extends \app\common\model\Base {
 		}
 		$total = '';
 		$filter['credit_status'] = '3';
-		// var_dump($filter);die;
+
 		$total['order_num'] = db('Order')->where($filter)->count();
 		$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
 		$total['loan_limit'] = $ord['loan_limit'];
@@ -134,12 +149,22 @@ class Order extends \app\common\model\Base {
 	}
 
 	//添加订单
-	public function add_order($uid, $data){
+	public function add_order($uid, $role,$data){
 		unset($data['type']);
-		$dealer_mobile = db('member')->alias('m')->field('d.mobile,d.id,d.forms')->join('dealer d','d.id = m.dealer_id')->where('m.uid',$uid)->find();
 
-		$mid = db('member')->field('uid')->where('mobile',$dealer_mobile['mobile'])->find();
+		if ($role == '1') {
+			
+			$dealer_mobile = db('member')->alias('m')->field('d.mobile,d.id,d.forms')->join('dealer d','d.id = m.dealer_id')->where('m.uid',$uid)->find();
 
+			$mid = db('member')->field('uid')->where('mobile',$dealer_mobile['mobile'])->find();
+
+		}elseif ($role == '7') {
+			$dealer_mobile = db('member')->alias('m')->field('d.mobile,d.id,d.forms')->join('dealer d','d.mobile = m.mobile')->where('m.uid',$uid)->find();
+
+			$mid['uid'] = $uid;
+		}
+
+		
 		$is_order = db('order')->field('mobile,status,id')->where('mobile',$data['mobile'])->order('id DESC')->find();
 
 		if ($is_order['status'] == -2) {

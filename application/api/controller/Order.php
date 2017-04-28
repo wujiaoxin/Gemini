@@ -34,12 +34,14 @@ class Order extends Api {
 	public function add($mobile = null, $price = null) {
 
 		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		// echo $role;die;
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 		if ($_POST) {
 			$data = input('post.');
 			$orderModel = model('Order');
-			$list = $orderModel->add_order($uid, $data);
+			$list = $orderModel->add_order($uid,$role,$data);
 			if (!$list) {
 				$resp['code'] = 0;
 				$resp['msg'] = '提交失败！';
@@ -148,12 +150,13 @@ class Order extends Api {
 	
 	public function total($type = null,$status= null) {
 		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 		$orderModel = model('Order');
 		
 		
-		$data['total'] = $orderModel->get_all_order_total($uid, $type, $status);
+		$data['total'] = $orderModel->get_all_order_total($uid,$role, $type, $status);
 		
 		$resp['code'] = 1;
 		$resp['msg'] = '获取成功!';
