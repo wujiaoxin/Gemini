@@ -318,7 +318,7 @@ class Finance extends Admin {
 
 						$resp['code'] = 2;
 
-						$resp['msg'] = '提现已提交!';
+						$resp['msg'] = '提现已审核!';
 					}
 					
 				}else{
@@ -392,21 +392,32 @@ class Finance extends Admin {
 				if ($data['status']) {
 
 					$money = db('dealer')->alias('d')->field('d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('order_repay o','m.uid = o.mid')->where('o.id',$data['id'])->find();
+
 					if ($data['status'] == '1') {
 
-						$ids = db('order_repay')->field('order_id')->where('id',$data['id'])->find();
+						$ids = db('order_repay')->field('order_id,status')->where('id',$data['id'])->find();
 
-						$result = db('order')->field('loan_limit')->where('id',$ids['order_id'])->find();
+						if ($ids['status'] == '-2') {
 
-						$lines_result = $money['lines_ky'] + $result['loan_limit'];//最终可用额度
+							$result = db('order')->field('loan_limit')->where('id',$ids['order_id'])->find();
 
-						$moeny_result = array(
+							$lines_result = $money['lines_ky'] + $result['loan_limit'];//最终可用额度
 
-						'lines_ky' =>$lines_result
+							$moeny_result = array(
 
-						);
+								'lines_ky' =>$lines_result
 
-						db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变可用额度
+							);
+
+							db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变可用额度
+						}else{
+
+							$resp['code'] = 2;
+
+							$resp['msg'] = '回款审核已提交！';
+
+						}
+						
 					}
 					$data['has_repay'] = '1';
 					db('order_repay')->where('id',$data['id'])->update($data);//更新订单状态
