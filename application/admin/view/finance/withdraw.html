@@ -25,7 +25,7 @@
 					<tr>
 						<th>编号</th>
 						<th>渠道名称</th>
-						<th>充值金额</th>
+						<th>提现金额</th>
 						<th>到账金额</th>
 						<th>手续费</th>
 						<th>手续费承担方</th>
@@ -173,10 +173,10 @@
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
 							var name = $(this).attr('id');
-						    if(typeof resp.data[name] !='object' && this.tagName == 'P'){
+						    if(typeof(resp.data[name])!='object' && this.tagName == 'P'){
 						        $(this).text(resp.data[name]);
-						    }else if(typeof resp.data[name] !='object' && this.tagName == 'Input'){
-						    	$(this).value(resp.data[name]);
+						    }else if(typeof(resp.data[name])!='' &&  (this.tagName == 'INPUT' || this.tagName == 'TEXTAREA')){
+						    	$(this).val(resp.data[name]);
 						    }
 						    if(name == 'create_time'){
 						    	$(this).text(formatDate(resp.data[name]));

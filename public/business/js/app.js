@@ -1088,8 +1088,10 @@ function sendSms(id) {
     var imgverify = $('#'+formName+'-rvalicode').val();
     if (mobile == "") {
         ui_alert("请输入手机号!");
+        return false;
     }else if (!validatePhoneNumber(mobile)) {
         ui_alert("请输入正确的手机号!");
+        return false;
     }
     ajax_jquery({
         url: apiUrl + '/business/user/sendSmsVerify',
@@ -1099,6 +1101,7 @@ function sendSms(id) {
         success: function (resp) {
             if (resp.code == "1") {
                 ui_alert("验证码发送成功,请注意查收","success");
+                settime();
             } else {
                 if (typeof(resp.msg) == 'string' && resp.msg != '') {
                     ui_alert(resp.msg);
@@ -1110,6 +1113,33 @@ function sendSms(id) {
         }
     });
 }
+
+var countdown = 30;
+    var isCounting = false;
+    function settime() {
+        if(!isCounting){
+            countTime();
+        }
+    }
+    function countTime(){
+        isCounting = true;
+        if (countdown == 0) {
+            $(".getcode").removeAttr("disabled");
+            $(".getcode").val("发送验证码");
+            $(".getcode").html("发送验证码");
+            countdown = 30;
+            isCounting = false;
+            return;
+        } else {
+            $(".getcode").attr("disabled", true);
+            $(".getcode").val("重新发送(" + countdown + ")");
+            $(".getcode").html("重新发送(" + countdown + ")");
+            countdown--;
+        }
+            setTimeout(function () {
+                countTime();
+            }, 1000);
+    }
 
 
 

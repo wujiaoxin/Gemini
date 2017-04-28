@@ -284,30 +284,3 @@ var Login = function () {
 	if(rememberUsername){
 		$("#username").val('rememberUsername');
 	}
-
-	var countdown = 30;
-	var isCounting = false;
-	function settime() {
-	    if(!isCounting){
-	    	countTime();
-	    }
-    }
-    function countTime(){
-    	isCounting = true;
-    	if (countdown == 0) {
-	        $(".getcode").removeAttr("disabled");
-	        $(".getcode").val("发送验证码");
-	        $(".getcode").html("发送验证码");
-	        countdown = 30;
-	        isCounting = false;
-	        return;
-	    } else {
-	        $(".getcode").attr("disabled", true);
-	        $(".getcode").val("重新发送(" + countdown + ")");
-	        $(".getcode").html("重新发送(" + countdown + ")");
-	        countdown--;
-	    }
-	    	setTimeout(function () {
-			    countTime();
-			}, 1000);
-    }

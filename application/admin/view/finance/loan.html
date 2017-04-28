@@ -145,8 +145,10 @@
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
 							var name = $(this).attr('id');
-						    if(typeof resp.data[name] !='object'){
+						    if(typeof(resp.data[name])!='object' && this.tagName == 'P'){
 						        $(this).text(resp.data[name]);
+						    }else if(typeof(resp.data[name])!='' && (this.tagName == 'INPUT' || this.tagName == 'TEXTAREA')){
+						    	$(this).val(resp.data[name]);
 						    }
 						});
 						$('#create_time').text(formatDate(resp.data['create_time']));
