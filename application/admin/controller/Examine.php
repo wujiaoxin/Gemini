@@ -134,7 +134,6 @@ class examine extends Admin {
 
 				$list[$k]['dealername'] = $name['dealer_name'];
 			}
-			// var_dump($list);die;
 			$data = array(
 
 				'infoStr' =>json_encode($list)
@@ -291,7 +290,6 @@ class examine extends Admin {
 			$examine_log[$k]['operator'] =  $result['username'];
 
 		}
-		// var_dump($repay_info);die;
 		foreach ($examine_log as $k => $v) {
 
 			$examine_log[$k]['params'] = json_decode($v['param']);
@@ -299,7 +297,6 @@ class examine extends Admin {
 			unset($examine_log[$k]['param']);
 		}
 
-		// var_dump($examine_log);die;
 
 		$fileFilter['order_id'] = $id;
 

@@ -61,6 +61,9 @@ class assetchannel extends Admin {
 			if ($data) {
 				unset($data['id']);
 				$data['invite_code'] = $link->buildInviteCode();
+				$passwords = 'vpdai'.substr($data['idno'],12,6);
+				// echo $passwords;die;
+				model('User')->registeraddStaff($data['mobile'],$passwords,'',$passwords,false,7);
 				$result = $link->save($data);
 				if ($result) {
 					return $this->success("新建成功！", url('Dealer/index'));
