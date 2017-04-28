@@ -178,33 +178,66 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
+
 			if (isset($data['status'])) {
 
-				if ($data['status'] == '1') {
 
-					$result = db('recharge')->field('uid')->where('sn',$data['id'])->find();
+				$result = db('recharge')->field('uid,status')->where('sn',$data['id'])->find();
 
-					$name = serch_name_dealer($result['uid']);
+				if ($result['status'] == '-1') {
 
-					$deal_money = db('dealer')->field('money')->where('mobile',$name['mobile'])->find();
+					if ($data['status'] == '1') {
 
-					$total_money = $deal_money['money'] + $data['actual_amount'];
+						$name = serch_name_dealer($result['uid']);
 
-					db('dealer')->where('mobile',$name['mobile'])->setField('money',$total_money);
-					db('recharge')->where('sn',$data['id'])->update($data);
+						$deal_money = db('dealer')->field('money')->where('mobile',$name['mobile'])->find();
 
-					$resp['code'] = 1;
+						$total_money = $deal_money['money'] + $data['actual_amount'];
 
-					$resp['msg'] = '充值审核成功!';
+						db('dealer')->where('mobile',$name['mobile'])->setField('money',$total_money);
+						
+						db('recharge')->where('sn',$data['id'])->update($data);
+
+						$resp['code'] = 1;
+
+						$resp['msg'] = '充值审核成功!';
+
+					}else{
+
+						$datas['status'] = array(
+
+							'status' => $data['status'],
+
+							'descr'=>$data['descr']
+
+							);
+
+						db('recharge')->where('sn',$data['id'])->update($datas);
+
+						$resp['code'] = 0;
+
+						$resp['msg'] = '充值审核失败!';
+					}
+					
 
 				}else{
+
+					$resp['code'] = 2;
+
+					$resp['msg'] = '已审核!';
+
+				}
+
+				
+
+				/*}else{
 
 					db('recharge')->where('sn',$data['id'])->update($datas);
 
 					$resp['code'] = 0;
 
 					$resp['msg'] = '充值审核失败!';
-				}
+				}*/
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			}else{
 
@@ -248,30 +281,61 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-
+			// var_dump($data);die;
 			if (isset($data['status'])) {
 				
 				$data['update_time'] = time();
 
 				if ($data['status']) {
 
+					$status = db('carry')->field('status')->where('sn',$data['id'])->find();
 
+					$datas = array(
 
-					db('carry')->where('sn',$data['id'])->update($data);
+						'status' => $data['status'],
 
-					db('order')->where('sn',$data['id'])->setField('finance','4');
+						'descr'=>$data['descr'],
+						
+						'serial_num'=>$data['serial_num'],
+						
+						'actual_amount'=>$data['actual_amount'],
+						
+						'platform_account'=>$data['platform_account'],
 
-					$resp['code'] = 1;
+						);
 
-					$resp['msg'] = '提现审核成功!';
+					if ($status['status'] == '-1') {
 
+						db('carry')->where('sn',$data['id'])->update($data);
+
+						db('order')->where('sn',$data['id'])->setField('finance','4');
+
+						$resp['code'] = 1;
+
+						$resp['msg'] = '提现审核成功!';
+
+					}else{
+
+						$resp['code'] = 2;
+
+						$resp['msg'] = '提现已提交!';
+					}
+					
 				}else{
+
+					$datas = array(
+
+						'status'=>'0',
+
+						'descr' => $data['descr']
+
+						);
 
 					db('carry')-> where('sn',$data['id'])->update($datas);
 
 					$resp['code'] = 0;
 
-					$resp['msg'] = '提现审核失败!';
+					$resp['msg'] = '提现审核不通过';
 				}
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 
