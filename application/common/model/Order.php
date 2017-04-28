@@ -77,7 +77,7 @@ class Order extends \app\common\model\Base {
 			}
 		}
 		$sort = "id desc";
-		$list = db('Order')->where($filter)->select();
+		$list = db('Order')->where($filter)->order($sort)->paginate(15);
 		// $list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
 		return $list;
 	}
@@ -99,7 +99,7 @@ class Order extends \app\common\model\Base {
 		//$filter['status'] = ['>',-1];
 		$sort = "id desc";
 		// $list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
-		$list = db('Order')->where($filter)->select();
+		$list = db('Order')->where($filter)->order($sort)->paginate(15);
 		return $list;
 	}
 	
@@ -153,7 +153,7 @@ class Order extends \app\common\model\Base {
 			$data =array(
 				'uid'=>$uid,
 				'mid'=>$mid['uid'],
-				'did'=>$dealer_mobile['id'],
+				'dealer_id'=>$dealer_mobile['id'],
 				'mobile'=>$data['mobile'],
 				'car_price'=>$data['price'],
 				'sn' =>$order_sn,
