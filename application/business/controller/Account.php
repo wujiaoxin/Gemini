@@ -114,7 +114,7 @@ class Account extends Baseness {
 					$resp['data']= $carrys;
 				}else{
 					$resp['code'] = '0';
-					$resp['msg'] = '未查到数据';
+					// $resp['msg'] = '未查到数据';
 				}
 	    	}
 	    	
@@ -134,7 +134,7 @@ class Account extends Baseness {
 					$resp['data']= $recharge;
 				}else{
 					$resp['code'] = '0';
-					$resp['msg'] = '未查到数据';
+					// $resp['msg'] = '未查到数据';
 				}
 	    	}
 			return json($resp);
@@ -187,6 +187,11 @@ class Account extends Baseness {
 			// var_dump($data);die;
 			$paypassword = $data['paypassword'];
 			$pay = db('member')->field('paypassword')->where('mobile',$mobile)->find();
+			if (empty($pay['paypassword'])) {
+				$resp['code'] = '2';
+				$resp['msg'] = '未设置交易密码';
+				return json($resp);
+			}
 			if(md5($paypassword.$mobile) == $pay['paypassword']){
 				foreach ($data['withdrawOrders'] as $k => $v) {
 					$resp1=  cl_order($v,$data['bank_card']);
