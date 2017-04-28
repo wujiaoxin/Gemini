@@ -153,7 +153,7 @@ class Order extends \app\common\model\Base {
 			$data =array(
 				'uid'=>$uid,
 				'mid'=>$mid['uid'],
-				'did'=>$dealer_mobile['id'],
+				'dealer_id'=>$dealer_mobile['id'],
 				'mobile'=>$data['mobile'],
 				'car_price'=>$data['price'],
 				'sn' =>$order_sn,
