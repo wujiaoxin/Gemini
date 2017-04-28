@@ -31,7 +31,7 @@ class Index extends Baseness {
 		$mobile = session('mobile');
 		$uid = session('user_auth.uid');
 		$order_loan = get_orders($uid,'0','order');//借款项目
-		$order_repay = get_orders($uid,'0','order_repay');//还款项目
+		$order_repay = get_orders($mobile,'0','order_repay');//还款项目
 		// var_dump($order_repay);die;
 		$order_pay = db('dealer_money')->where('uid',$uid)->order('id DESC')->limit(5)->select();;//交易记录
 		// var_dump($order_pay);die;

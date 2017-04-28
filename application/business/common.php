@@ -186,10 +186,12 @@
           );
         $name = '3,4,5';
         $where['status'] = array('IN',$name);
+        // var_dump($where);die;
         $money_jk = db('order')->where($where)->sum('loan_limit');
       //待还资金
+         $uids = db('dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->where('m.uid',$uid)->find();
         $where_repay = array(
-          'mid'=>$uid,
+          'dealer_id'=>$uids['id'],
           'status'=>'-1'
           );
         $repay_money = db('order_repay')->where($where_repay)->sum('repay_money');
@@ -197,7 +199,8 @@
 
         $order_loan = db('order')->where($where)->count('id');
         //还款中的订单
-        $order_repay = db('order_repay')->where('mid',$uid)->where('status','-1')->count('id');
+       
+        $order_repay = db('order_repay')->where('dealer_id',$uids['id'])->where('status','-1')->count('id');
         $data = array(
           'available_money'=>$money,
           'loan_money'=>$money_jk,
@@ -212,9 +215,9 @@
   ** status 订单状态
   ** type 业务类型
   */ 
-  function get_orders($mid,$status=0,$type){
+  function get_orders($uid,$status=0,$type){
     if ($type == 'order') {
-       $data = db('order')->where('mid',$mid)->where('status','>','-1')->limit(5)->order('status ASC,id DESC')->select();
+       $data = db('order')->where('mid',$uid)->where('status','>','-1')->limit(5)->order('status ASC,id DESC')->select();
        foreach ($data as $k => $v) {
          if ($v['status'] == '-1') {
             $data[$k]['progress'] = '1';
@@ -234,14 +237,15 @@
        }
     }
     if ($type == 'order_repay') {
-        $data = db('order_repay')->where('mid',$mid)->select();
+        $ids = db('dealer')->field('id')->where('mobile',$uid)->find();
+        $data = db('order_repay')->where('dealer_id',$ids['id'])->select();
         foreach ($data as $k => $v) {
           $type = db('order')->field('type')->where('id',$v['order_id'])->find();
           $data[$k]['type'] = $type['type'];
         }
     }
     if ($type == 'dealer_money') {
-      $data = db('order_repay')->where('status ','>',3)->where('mid',$mid)->limit(5)->select();
+      $data = db('order_repay')->where('status ','>',3)->where('mid',$uid)->limit(5)->select();
     }
     return $data;
   }

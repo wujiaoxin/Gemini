@@ -183,17 +183,14 @@ class Finance extends Admin {
 				if ($data['status'] == '1') {
 
 					$result = db('recharge')->field('uid')->where('sn',$data['id'])->find();
-					// var_dump($result);die;
 
-					$name = serch_name($result['uid']);
+					$name = serch_name_dealer($result['uid']);
 
 					$deal_money = db('dealer')->field('money')->where('mobile',$name['mobile'])->find();
 
 					$total_money = $deal_money['money'] + $data['actual_amount'];
-					// echo $total_money;die;
 
 					db('dealer')->where('mobile',$name['mobile'])->setField('money',$total_money);
-					// var_dump($data);die;
 					db('recharge')->where('sn',$data['id'])->update($data);
 
 					$resp['code'] = 1;
@@ -212,12 +209,10 @@ class Finance extends Admin {
 			}else{
 
 				$result = db('recharge')->where('sn',$data['id'])->find();
-				// var_dump($result);die;
-				$sercher =  serch_name($result['uid']);
-				// var_dump($sercher);die;
+
+				$sercher =  serch_name_dealer($result['uid']);
 
 				$result['dealer_name'] = $sercher['dealer_name'];//渠道名称
-				// var_dump($result);die;
 
 				$resp['code'] = 1;
 
@@ -229,15 +224,13 @@ class Finance extends Admin {
 			return json($resp);
 		}else{
 			$result = db('recharge')->order('create_time DESC,status ASC')->select();
-			// var_dump($result);die;
+			
 			foreach ($result as $k => $v) {
 
-				$sercher = serch_name($v['uid']);
-				// var_dump($sercher);die;
+				$sercher = serch_name_dealer($v['uid']);
 
 				$result[$k]['dealer_name'] = $sercher['dealer_name'];
 			}
-			// var_dump($result);die;
 
 			$data = array(
 				'infoStr' => json_encode($result)
@@ -286,7 +279,7 @@ class Finance extends Admin {
 
 				$result = db('carry')->where('sn',$data['id'])->find();
 
-				$sercher = serch_name($result['uid']);
+				$sercher = serch_name_dealer($result['uid']);
 
 				$result['dealer_name'] = $sercher['dealer_name'];
 
@@ -306,7 +299,7 @@ class Finance extends Admin {
 
 			foreach ($result as $k => $v) {
 
-				$sercher = serch_name($v['uid']);
+				$sercher = serch_name_dealer($v['uid']);
 
 				$result[$k]['dealer_name'] = $sercher['dealer_name'];
 
@@ -371,11 +364,9 @@ class Finance extends Admin {
 				$result = db('order_repay')->where('id',$data['id'])->find();
 
 				$sercher = serch_name($result['dealer_id']);
-				// var_dump($result);die;
 
 				$result['dealer_name'] = $sercher['dealer_name'];
 
-				// var_dump($result);die;
 
 				$resp['code'] = 1;
 
@@ -393,12 +384,10 @@ class Finance extends Admin {
 			foreach ($result as $k => $v) {
 
 				$sercher = serch_name($v['dealer_id']);
-				// var_dump($sercher);die;
 
 				$result[$k]['dealer_name'] = $sercher['dealer_name'];
 
 			}
-			// var_dump($result);die;
 
 			$data = array(
 				'infoStr' => json_encode($result)
@@ -424,7 +413,6 @@ class Finance extends Admin {
 		$data = array(
 				'infoStr' => json_encode($result)
 			);
-		// var_dump($result);die;
 		$this->assign($data);
 		$this->setMeta('平台资金记录');
 		return $this->fetch();
