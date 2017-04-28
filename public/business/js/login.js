@@ -237,6 +237,7 @@ var Login = function () {
 	            success: function (resp) {
 	                if (resp.code == "1") {
 	                    ui_alert("验证码发送成功,请注意查收","success");
+	                    settime();
 	                } else {
 	                    if(resp.code == "-2" || resp.code == "1001"){
 	                        isimgverify = 1;
@@ -283,3 +284,30 @@ var Login = function () {
 	if(rememberUsername){
 		$("#username").val('rememberUsername');
 	}
+
+	var countdown = 30;
+	var isCounting = false;
+	function settime() {
+	    if(!isCounting){
+	    	countTime();
+	    }
+    }
+    function countTime(){
+    	isCounting = true;
+    	if (countdown == 0) {
+	        $(".getcode").removeAttr("disabled");
+	        $(".getcode").val("发送验证码");
+	        $(".getcode").html("发送验证码");
+	        countdown = 30;
+	        isCounting = false;
+	        return;
+	    } else {
+	        $(".getcode").attr("disabled", true);
+	        $(".getcode").val("重新发送(" + countdown + ")");
+	        $(".getcode").html("重新发送(" + countdown + ")");
+	        countdown--;
+	    }
+	    	setTimeout(function () {
+			    countTime();
+			}, 1000);
+    }

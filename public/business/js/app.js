@@ -985,6 +985,7 @@ function logout() {
         url: apiUrl +'/business/login/logout',
         success:function(resp){
             if (resp.code == "1" ) {
+                    localStorage.clear();
                     window.location.href = "/business/login/login";
             } else {
                 if (typeof(resp.msg) == 'string') {
