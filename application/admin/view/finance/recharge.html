@@ -116,7 +116,7 @@
           	<div class="form-group">
             	<label class="col-sm-2 control-label">审核备注</label>
             	<div class="col-sm-4 pt5">
-            		<textarea class="form-control" id="descr"></textarea>
+            		<textarea class="form-control item-info" id="descr"></textarea>
             	</div>
           	</div>
       </div>
@@ -174,10 +174,10 @@
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
 							var name = $(this).attr('id');
-						    if(resp.data[name] !=''&&this.tagName == 'P'){
+						    if(typeof(resp.data[name])!='object' && this.tagName == 'P'){
 						        $(this).text(resp.data[name]);
-						    }else if(resp.data[name] !=''&&this.tagName == 'Input'){
-						    	$(this).value(resp.data[name]);
+						    }else if(typeof(resp.data[name])!='' && (this.tagName == 'INPUT' || this.tagName == 'TEXTAREA')){
+						    	$(this).val(resp.data[name]);
 						    }
 						    if(name == 'create_time'){
 						    	$(this).text(formatDate(resp.data[name]));
