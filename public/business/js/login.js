@@ -276,10 +276,10 @@ var Login = function () {
 		if (r != null) return unescape(r[2]); return null;
 	}
 
-	var t = getUrlParam('t');
-	if(t == 1){
-		$('#register-btn').click();
-	}
+	// var t = getUrlParam('t');
+	// if(t == 1){
+	// 	$('#register-btn').click();
+	// }
 	var rememberUsername = localStorage.getItem('rememberUsername');
 	if(rememberUsername){
 		$("#username").val('rememberUsername');
