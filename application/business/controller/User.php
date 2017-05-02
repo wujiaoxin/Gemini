@@ -86,7 +86,6 @@ use app\business\controller\Baseness;
 	public function addStaff(){
 		if (IS_POST){
 			$data = input('post.');
-			// var_dump($data);die;
 			if ($data) {
 				$uid = session('user_auth.uid');
 				$invit = db('Dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->where('m.uid',$uid)->find();
@@ -139,21 +138,37 @@ use app\business\controller\Baseness;
 		foreach ($num as $k => $v) {
 			$avg[$k]['realname'] = serch_real($v['uid']);
 		}
-
+		
 		//一个月内每天的订单数量
-		$times = time()-24*3600*30;
-		$time =db('order')->field("FROM_UNIXTIME(create_time,'%Y-%m-%d') as time,create_time,count(id) as num,sum(loan_limit) as total_money")->where('mid',$uid)->group('time')->wheretime('create_time','>',$times)->order('time')->select();
-		$temp['time'] ='0';
-		$temp['num'] ='0';
-		$temp['total_money'] ='0';
-		for ($i=count($time); $i < 30; $i++) {
-			array_unshift($time,$temp);
-		}
+		$begin = date('Y-m-d',strtotime("-1 month"));//30天前
+        $begin =strtotime($begin);
+        $end =strtotime(date('Y-m-d'))+86399;
+        $map['create_time'] = array(array('gt',$begin),array('lt',$end));
+        $map['mid'] =$uid;
+        $res =db('order')->field("COUNT(*) as tnum,sum(loan_limit) as total_money, FROM_UNIXTIME(create_time,'%Y-%m-%d') as time")->where($map)->group('time')->select();
+        $tnum =0;
+        $tamount=0;
+        foreach ($res as $val){
+            $arr[$val['time']] = $val['tnum'];
+            $brr[$val['time']] = $val['total_money'];
+            $tnum += $val['tnum'];
+            $tamount += $val['total_money'];
+        }
+        
+        for($i=$begin;$i<=$end;$i=$i+24*3600){
+            $tmp_num = empty($arr[date('Y-m-d',$i)]) ? 0 : $arr[date('Y-m-d',$i)];
+            $tmp_amount = empty($brr[date('Y-m-d',$i)]) ? 0 : $brr[date('Y-m-d',$i)];                 
+            $order_arr[] = $tmp_num;
+            $amount_arr[] = $tmp_amount;            
+            $date = date('Y-m-d',$i);
+            $list[] = array('time'=>$date,'num'=>$tmp_num,'total_money'=>$tmp_amount);
+            $day[] = $date;
+        }
 		$info = array(
 				'money'=>$result,
 				'num'=>$num,
 				'avg'=>$avg,
-				'time'=>$time
+				'time'=>$list
 			);
 		$data = array(
 				'info'=>$info,
@@ -206,12 +221,21 @@ use app\business\controller\Baseness;
 	public function repayItem() {
 		$uid =session('user_auth.uid');
 		$mobile = session('mobile');
+
 		if (IS_POST) {
-			$data = input('post.');
 			
+			$data = input('post.');
+			$dealer_id = db('Dealer')->field('id')->where('mobile',$mobile)->find();
+
 			if (isset($data['payPwd']) && isset($data['orderId'])){
 				
 				$user = db('member')->field('paypassword')->where('mobile',$mobile)->find();
+
+				if (empty($user['paypassword'])) {
+					$resp['code'] = '2';
+					$resp['msg'] = '未设置交易密码';
+					return json($resp);
+				}
 
 				$ids = db('order_repay')->field('repay_money')->where('order_id',$data['orderId'])->find();
 				
@@ -241,7 +265,7 @@ use app\business\controller\Baseness;
 				}
 				return json($resp);
 			}else{
-				$map['o.mid'] =$uid;
+				$map['o.dealer'] =$dealer_id['id'];
 				if ($data['type']) {
 					$map['d.type'] = $data['type'];
 				}

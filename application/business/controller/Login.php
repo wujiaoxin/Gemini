@@ -33,7 +33,6 @@ class Login extends Base {
 				$resp["code"] = 1;
 				$resp["msg"] = '登录成功！';
 				session("mobile", $mobile);
-				// session("uid", $uid);
 				return json($resp);
 			} else {
 				switch ($uid) {
