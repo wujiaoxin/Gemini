@@ -485,7 +485,8 @@ use app\business\controller\Baseness;
 		$smsCode = rand(100000,999999);
 		$smsMsg = '您的验证码为:' . $smsCode;
 		//if(1){
-		if(sendSms($mobile,$smsMsg)){
+		//if(sendSms($mobile,$smsMsg)){
+		if(sendSmsCode($mobile,$smsCode)){
 			session('smsCode',$smsCode);
 			session('mobile',$mobile);
 			session('lastSmsSendTime',time());
