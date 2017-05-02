@@ -237,6 +237,7 @@ var Login = function () {
 	            success: function (resp) {
 	                if (resp.code == "1") {
 	                    ui_alert("验证码发送成功,请注意查收","success");
+	                    settime();
 	                } else {
 	                    if(resp.code == "-2" || resp.code == "1001"){
 	                        isimgverify = 1;

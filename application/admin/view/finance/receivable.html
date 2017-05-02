@@ -143,7 +143,7 @@
 		  		+'<td>' + data[index].id + '</td>'
 		  		+'<td>' + data[index].serial_num + '</td>'
 		  		+'<td>'+ data[index].dealer_name +'</td>'
-		  		+'<td>'+ data[index].id +'</td>'
+		  		+'<td>'+ data[index].order_id +'</td>'
 		  		+'<td>￥'+ data[index].repay_money +'</td>'
 		  		+'<td>￥'+ data[index].true_repay_money +'</td>'
 		  		+'<td>￥'+ data[index].manage_money +'</td>'
@@ -174,15 +174,15 @@
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
 							var name = $(this).attr('id');
-						    if(resp.data[name] !='' && this.tagName == 'P'){
+						    if(typeof(resp.data[name])!='object' && this.tagName == 'P'){
 						        $(this).text(resp.data[name]);
-						        console.log(this)
-						    }else if(resp.data[name] !='' && this.tagName == 'Input'){
-						    	$(this).value(resp.data[name]);
+						    }else if(typeof(resp.data[name])!='object' &&  (this.tagName == 'INPUT' || this.tagName == 'TEXTAREA')){
+						    	$(this).val(resp.data[name]);
 						    }
-						    if(name == 'create_time'){
+						    if(name == 'repay_time'){
 						    	$(this).text(formatDate(resp.data[name]));
 						    }
+						    console.log(typeof resp.data.descr)
 						});
 				   		$('#myModal').modal();
 		            } else {
