@@ -1184,3 +1184,36 @@ function PyFirst($zh) {
 	}
 	return $ret;
 }
+
+
+
+
+function sendSmsCode($mobile, $code){
+    $host = "http://sms.market.alicloudapi.com";
+    $path = "/singleSendSms";
+    $method = "GET";
+    $appcode = "37df0a7ab8e242279e1cb8289f8a5988";
+    $headers = array();
+    array_push($headers, "Authorization:APPCODE " . $appcode);
+    $querys = "ParamString={\"code\":\"".$code."\"}&RecNum=".$mobile."&SignName=互纳科技&TemplateCode=SMS_63855615";
+    $bodys = "";
+    $url = $host . $path . "?" . $querys;
+
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_FAILONERROR, false);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_HEADER, true);
+    if (1 == strpos("$".$host, "https://"))
+    {
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    }
+	curl_exec($curl);
+    //var_dump(curl_exec($curl));
+	//TODO: 判断RC;	 METHOD POST ; QUERYS ENCODE;
+	return true;
+
+}
