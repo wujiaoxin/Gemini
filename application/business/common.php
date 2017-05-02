@@ -46,7 +46,6 @@
             }
         }
         if ($type == 'withdraw') {
-          // var_dump($data);die;
           $data_moneys = array(
                 'uid'=>$uid,
                 'sn'=>$data['sn'],
@@ -80,7 +79,6 @@
           'deal_other'=>'0',
           'create_time'=>time()
       );
-      // var_dump($fee_money);die;
 
       $result = db('dealer_money')->insert($fee_money);
       return $result;
@@ -115,15 +113,12 @@
          $datas['dealer_bank'] = $bank_account_id['bank_name'];
          $datas['dealer_bank_branch'] = $bank_account_id['bank_branch'];
       }
-      // echo $uid;
-      // var_dump($datas);die;
       modify_account($datas,$uid,'4','1','withdraw','INSERT');
 
       //提现资金记录
 
       money_record($datas, $uid, 4, 1);
 
-      // $result = set_order_repay($o_id);
       $result = db('order')->where('sn',$o_id)->setField('finance', '4');
     }
     return $result;
@@ -173,34 +168,40 @@
     $mobile = session('mobile');
     if($type == 'money'){
       //可用资金(记录为可提订单金额)
+        $types = '2,4';
         $map = array(
           'mid'=>$uid,
-          'finance'=>'3'
+          'finance'=>'3',
+          'type'=>array('IN',$types)
           );
-        // var_dump($map);die;
-        $money = db('order')->where($map)->sum('loan_limit');
-        // var_dump($money);die;
+        $money = db('order')->where($map)->sum('examine_limit');
       //借款金额（记录为状态未审核通过）
         $where = array(
             'mid'=>$uid,
           );
         $name = '3,4,5';
+        $type_lx = '2,4';
         $where['status'] = array('IN',$name);
-        // var_dump($where);die;
-        $money_jk = db('order')->where($where)->sum('loan_limit');
+        $where['type'] = array('IN',$type_lx);
+        $money_jk = db('order')->where($where)->sum('examine_limit');
       //待还资金
          $uids = db('dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->where('m.uid',$uid)->find();
         $where_repay = array(
           'dealer_id'=>$uids['id'],
-          'status'=>'-1'
+          'status'=>'-1',
           );
-        $repay_money = db('order_repay')->where($where_repay)->sum('repay_money');
+        $wheres = 'loantime < 50';
+        $repay_money = db('order_repay')->where($where_repay)->where($wheres)->sum('repay_money');
         // 借款中的订单
 
         $order_loan = db('order')->where($where)->count('id');
         //还款中的订单
-       
-        $order_repay = db('order_repay')->where('dealer_id',$uids['id'])->where('status','-1')->count('id');
+        $map_where = array(
+
+          'dealer_id'=>$uids['id'],
+          'status' => '-1',
+          );
+        $order_repay = db('order_repay')->where($map_where)->where($wheres)->count('id');
         $data = array(
           'available_money'=>$money,
           'loan_money'=>$money_jk,
@@ -217,7 +218,8 @@
   */ 
   function get_orders($uid,$status=0,$type){
     if ($type == 'order') {
-       $data = db('order')->where('mid',$uid)->where('status','>','-1')->limit(5)->order('status ASC,id DESC')->select();
+      $map = 'status in(0,1,3,4,5)';
+       $data = db('order')->where('mid',$uid)->where($map)->limit(5)->order('status ASC,id DESC')->select();
        foreach ($data as $k => $v) {
          if ($v['status'] == '-1') {
             $data[$k]['progress'] = '1';
@@ -238,7 +240,8 @@
     }
     if ($type == 'order_repay') {
         $ids = db('dealer')->field('id')->where('mobile',$uid)->find();
-        $data = db('order_repay')->where('dealer_id',$ids['id'])->select();
+        $map = 'loantime <30';
+        $data = db('order_repay')->where('dealer_id',$ids['id'])->where($map)->select();
         foreach ($data as $k => $v) {
           $type = db('order')->field('type')->where('id',$v['order_id'])->find();
           $data[$k]['type'] = $type['type'];
@@ -298,7 +301,6 @@
   */
   function money_record($data, $uid, $type = 0, $name){
 
-    // var_dump($data);die;
     //冻结资金
     
     $dealer_money = db('dealer')->alias('d')->field('money,lock_money')->join('__MEMBER__ m','d.mobile = m.mobile')->where('uid', $uid)->find();
@@ -313,7 +315,6 @@
 
       );
     $repay_moneys = db('order')->where($map)->sum('loan_limit');
-    // var_dump($repay_moneys);die;
     //总金额
     $total_money = $dealer_money['money'] + $dealer_money['lock_money'] + $repay_moneys ;
 
@@ -330,7 +331,6 @@
       'repay_money'=>$repay_moneys,
       'descr'=>$data['descr'],
       );
-    // var_dump($info);die;
     $result = db('dealer_money')->insert($info);
     return $result;
 
