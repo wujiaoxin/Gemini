@@ -25,11 +25,11 @@
 					<tr>
 						<th>项目编号</th>
 						<th>渠道名称</th>
+						<th>客户姓名</th>
 						<th>申请金额</th>
 						<th>审批额度</th>
 						<th>借款期限</th>
 						<th>借款费用状态</th>
-						<th>项目状态</th>
 						<th>提交时间</th>
 						<th>操作</th>
 					</tr>
@@ -56,7 +56,7 @@
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		    	<label class="col-sm-4 control-label">客户名称</label>
+		    	<label class="col-sm-4 control-label">渠道名称</label>
 			    <div class="col-sm-6">
 			      	<p class="form-control-static item-info" id="dealer_name"></p>
 			    </div>
@@ -116,11 +116,11 @@
 		  	html += '<tr class="odd gradex">'
 		  		+'<td>'+ data[index].sn + '</td>'
 		  		+'<td>'+ data[index].dealer_name +'</td>'
+		  		+'<td>'+ data[index].name +'</td>'
 		  		+'<td>￥'+ data[index].loan_limit +'</td>'
 		  		+'<td>￥'+ data[index].examine_limit +'</td>'
 		  		+'<td>'+ data[index].endtime +'天</td>'
 		  		+'<td>'+ g_financeStatus[data[index].finance] +'</td>'
-		  		+'<td>'+ '正常' +'</td>'
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].id+'">审核</a></td>'
 		  		 +'</tr>'
@@ -145,8 +145,10 @@
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
 							var name = $(this).attr('id');
-						    if(resp.data[name] !=''){
+						    if(typeof(resp.data[name])!='object' && this.tagName == 'P'){
 						        $(this).text(resp.data[name]);
+						    }else if(typeof(resp.data[name])!='' && (this.tagName == 'INPUT' || this.tagName == 'TEXTAREA')){
+						    	$(this).val(resp.data[name]);
 						    }
 						});
 						$('#create_time').text(formatDate(resp.data['create_time']));

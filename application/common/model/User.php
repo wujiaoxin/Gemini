@@ -152,13 +152,14 @@ class User extends Base{
 	 * 车商用户添加
 	 * @param  integer $user 用户信息数组
 	 */
-	function registeraddStaff($mobile, $password, $repassword, $email, $isautologin = true){
+	function registeraddStaff($mobile, $password, $repassword, $isautologin = true,$role_id = 1){
 		$data['mobile'] = $mobile;
 		$data['salt'] = rand_string(6);
 		$data['password'] = $password;
 		$data['repassword'] = $repassword;
-		$data['username'] = '1';
-		$data['email'] = $email;
+		$data['username'] = $mobile;
+		// $data['email'] = $email;
+		$data['access_group_id'] = $role_id;
 		$result = $this->validate(true)->save($data);
 		if ($result) {
 			$data['uid'] = $this->data['uid'];

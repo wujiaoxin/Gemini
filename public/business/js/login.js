@@ -111,7 +111,7 @@ var Login = function () {
 		            success:function(resp){
 		                if (resp.code == "1" ) {
 		                		ui_alert("密码重置成功","success");
-		                        setTimeout('window.location.href = "/business/user/login";',3000);
+		                        setTimeout('window.location.href = "/business/login/login";',2000);
 		                } else {
 		                    if (typeof(resp.msg) == 'string') {
 		                        ui_alert(resp.msg);
@@ -157,7 +157,7 @@ var Login = function () {
 		            success:function(resp){
 		                if (resp.code == "1" ) {
 		                		ui_alert("注册成功，请登录","success");
-		                        setTimeout('window.location.href = "/business/login/login"',3000);
+		                        setTimeout('window.location.href = "/business/login/login"',2000);
 		                } else {
 		                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 		                        ui_alert(resp.msg);
@@ -237,6 +237,7 @@ var Login = function () {
 	            success: function (resp) {
 	                if (resp.code == "1") {
 	                    ui_alert("验证码发送成功,请注意查收","success");
+	                    settime();
 	                } else {
 	                    if(resp.code == "-2" || resp.code == "1001"){
 	                        isimgverify = 1;

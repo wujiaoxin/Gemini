@@ -49,9 +49,6 @@ class assetchannel extends Admin {
 			$data = input('post.');
 			// var_dump($data);die;
 			$uid = session('user_auth.uid');
-			if($uid > 0){
-				$data['uid'] = $uid;
-			}
 			if ($data['status'] == '1') {
 				$data['lines'] = '1000000';
 				$data['b_money'] = '1';
@@ -61,9 +58,11 @@ class assetchannel extends Admin {
 			if ($data) {
 				unset($data['id']);
 				$data['invite_code'] = $link->buildInviteCode();
+				$passwords = 'vpdai'.substr($data['idno'],12,6);
+				model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
 				$result = $link->save($data);
 				if ($result) {
-					return $this->success("新建成功！", url('Dealer/index'));
+					return $this->success("新建成功！", url('assetchannel/index'));
 				} else {
 					return $this->error($link->getError());
 				}

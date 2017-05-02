@@ -127,22 +127,22 @@ use app\business\controller\Baseness;
 		$uid =session('user_auth.uid');
 		$mobile = session('mobile');
 		//分组统计
-		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->order('result DESC')->group('uid')->limit(5)->select();
+		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->where('mid',$uid)->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($result as $k => $v) {
 			$result[$k]['realname'] = serch_real($v['uid']);
 		}
-		$num = db('order')->field('mid,uid,count(id) as result')->order('result DESC')->group('uid')->limit(5)->select();
+		$num = db('order')->field('mid,uid,count(id) as result')->where('mid',$uid)->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($num as $k => $v) {
 			$num[$k]['realname'] = serch_real($v['uid']);
 		}
-		$avg = db('order')->field('mid,uid,avg(loan_limit) as result')->order('result DESC')->group('uid')->limit(5)->select();
+		$avg = db('order')->field('mid,uid,avg(loan_limit) as result')->where('mid',$uid)->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($num as $k => $v) {
 			$avg[$k]['realname'] = serch_real($v['uid']);
 		}
 
 		//一个月内每天的订单数量
 		$times = time()-24*3600*30;
-		$time =db('order')->field("FROM_UNIXTIME(create_time,'%Y-%m-%d') as time,create_time,count(id) as num,sum(loan_limit) as total_money")->group('time')->wheretime('create_time','>',$times)->order('time')->select();
+		$time =db('order')->field("FROM_UNIXTIME(create_time,'%Y-%m-%d') as time,create_time,count(id) as num,sum(loan_limit) as total_money")->where('mid',$uid)->group('time')->wheretime('create_time','>',$times)->order('time')->select();
 		$temp['time'] ='0';
 		$temp['num'] ='0';
 		$temp['total_money'] ='0';

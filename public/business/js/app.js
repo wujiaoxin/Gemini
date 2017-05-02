@@ -3,7 +3,7 @@ Core script to handle the entire layout and base functions
 **/
 var g_orderType = {'1':'二手车按揭贷款','2':'二手车按揭垫资','3':'新车按揭贷款','4':'新车按揭垫资'};
 var g_orderStatus = {'-2':'编辑中','-1':'已撤回','0':'待提交','1':'审核通过','2':'审核拒绝','3':'资料审核','4':'额度审核','5':'补充资料'};
-var g_financeStatus ={'1':'待支付','2':'已支付','3':'放款中','4':'放款完成'};
+var g_financeStatus ={'1':'待支付','2':'已支付','3':'已放款','4':'已提现'};
 var g_repayStatus = {'-2':'审核中','-1':'未还','1':'已还','2':'逾期'};
 var g_transactionType = {'5':'支付款项','1':'垫资到账','2':'垫资还款','3':'充值','4':'提现'};
 var g_dealObj = {'0':'系统','1':'商户'};
@@ -985,6 +985,7 @@ function logout() {
         url: apiUrl +'/business/login/logout',
         success:function(resp){
             if (resp.code == "1" ) {
+                    localStorage.clear();
                     window.location.href = "/business/login/login";
             } else {
                 if (typeof(resp.msg) == 'string') {
@@ -1087,8 +1088,10 @@ function sendSms(id) {
     var imgverify = $('#'+formName+'-rvalicode').val();
     if (mobile == "") {
         ui_alert("请输入手机号!");
+        return false;
     }else if (!validatePhoneNumber(mobile)) {
         ui_alert("请输入正确的手机号!");
+        return false;
     }
     ajax_jquery({
         url: apiUrl + '/business/user/sendSmsVerify',
@@ -1098,6 +1101,7 @@ function sendSms(id) {
         success: function (resp) {
             if (resp.code == "1") {
                 ui_alert("验证码发送成功,请注意查收","success");
+                settime();
             } else {
                 if (typeof(resp.msg) == 'string' && resp.msg != '') {
                     ui_alert(resp.msg);
@@ -1109,6 +1113,33 @@ function sendSms(id) {
         }
     });
 }
+
+var countdown = 30;
+    var isCounting = false;
+    function settime() {
+        if(!isCounting){
+            countTime();
+        }
+    }
+    function countTime(){
+        isCounting = true;
+        if (countdown == 0) {
+            $(".getcode").removeAttr("disabled");
+            $(".getcode").val("发送验证码");
+            $(".getcode").html("发送验证码");
+            countdown = 30;
+            isCounting = false;
+            return;
+        } else {
+            $(".getcode").attr("disabled", true);
+            $(".getcode").val("重新发送(" + countdown + ")");
+            $(".getcode").html("重新发送(" + countdown + ")");
+            countdown--;
+        }
+            setTimeout(function () {
+                countTime();
+            }, 1000);
+    }
 
 
 
