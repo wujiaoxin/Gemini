@@ -228,13 +228,15 @@ class User extends Api {
 		$smsMsg = '您的验证码为:' . $smsCode;
 		
 		//if(1){
-		if(sendSms($mobile,$smsMsg)){
+		//if(sendSms($mobile,$smsMsg)){
+		if(sendSmsCode($mobile,$smsCode)){
 			session('smsCode',$smsCode);
 			session('mobile',$mobile);
 			session('needImgVerify', 0);
 			session('lastSmsSendTime',time());
 			$resp["code"] = 1;
 			$resp["msg"] = "发送成功！";
+			//$resp["data"] = $smsCode;
 			
 		}else{
 			//session('errorTimes',$errorTimes++);

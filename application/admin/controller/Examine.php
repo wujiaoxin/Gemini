@@ -166,11 +166,11 @@ class examine extends Admin {
 
 					if ($result) {
 
-						$info = db('order')->field('loan_limit,endtime,type')->where('id',$data['id'])->find();
+						$info = db('order')->field('examine_limit,endtime,type')->where('id',$data['id'])->find();
 
 						if ($info['type'] == '2' || $info['type'] == '4') {
 
-							$fee = fee_money($info['endtime'],$info['loan_limit']);
+							$fee = fee_money($info['endtime'],$info['examine_limit']);
 
 							$fee1['fee'] = $fee;
 							$fee1['finance'] = '1';
@@ -275,11 +275,11 @@ class examine extends Admin {
 
 		$channel_info['salesmobile'] = $yewu['mobile'];
 
-		$member_info = db('member')->where('uid', $order_info['mid'])->find();
+		$member_info = db('member')->where('mobile', $order_info['mobile'])->find();
 
 		$credit_info = db('credit')->where('mobile', $order_info['mobile'])->order('id desc')->find();
 
-		$repay_info = db('order_repay')->where('order_id', $order_info['sn'])->find();
+		$repay_info = db('order_repay')->where('order_id', $order_info['id'])->find();
 
 		$examine_log  =db('examine_log')->where('record_id',$id)->select();
 

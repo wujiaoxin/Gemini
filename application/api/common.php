@@ -1,6 +1,9 @@
 <?php
 //use Firebase\JWT\JWT;
 
+
+
+
 function sendSms($mobile, $content){
 	//TODO: move to config module;
 	$uid = '161110_hwj_hnkj';
