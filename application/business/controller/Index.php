@@ -34,6 +34,7 @@ class Index extends Baseness {
 		$order_repay = get_orders($mobile,'0','order_repay');//还款项目
 		$order_pay = db('dealer_money')->where('uid',$uid)->order('id DESC')->limit(5)->select();;//交易记录
 		$money = get_money($uid,'money');//资金
+		$lines = db('dealer')->field('lines,lines_ky,name')->where('mobile',$mobile)->find();
 		$info = array(
 			'order_loan'=>$order_loan,
 			'money'=>$money,

@@ -157,12 +157,10 @@ use app\business\controller\Baseness;
         
         for($i=$begin;$i<=$end;$i=$i+24*3600){
             $tmp_num = empty($arr[date('Y-m-d',$i)]) ? 0 : $arr[date('Y-m-d',$i)];
-            $tmp_amount = empty($brr[date('Y-m-d',$i)]) ? 0 : $brr[date('Y-m-d',$i)];                 
-            $order_arr[] = $tmp_num;
-            $amount_arr[] = $tmp_amount;            
+            $tmp_amount = empty($brr[date('Y-m-d',$i)]) ? 0 : $brr[date('Y-m-d',$i)];               
             $date = date('Y-m-d',$i);
             $list[] = array('time'=>$date,'num'=>$tmp_num,'total_money'=>$tmp_amount);
-            $day[] = $date;
+
         }
 		$info = array(
 				'money'=>$result,
