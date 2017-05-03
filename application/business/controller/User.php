@@ -255,13 +255,17 @@ use app\business\controller\Baseness;
 
 					money_record($data,$uid,2,1);
 
+					$bank_info = model('Bank')->get_bank($data['bankcard']);
+
 					$info = array(
 						'true_repay_money' =>$ids['repay_money'],
 						'true_repay_time' =>time(),
 						'status' =>'-2',
 						'has_repay' =>'-2',
 						'descr' => '还款时间为：'.date('Y-m-d H:i:s',time()).'还id为'.$data['orderId'].'的订单',
-						'platform_account'=>$data['bankcard']
+						'dealer_bank_account'=>$data['bankcard'],
+						'dealer_bank'=>$bank_info['dealer_bank'],
+						'dealer_bank_branch'=>$bank_info['dealer_bank_branch']
 						);
 					db('order_repay')->where('order_id',$data['orderId'])->update($info);
 					$resp['code'] = '1';
