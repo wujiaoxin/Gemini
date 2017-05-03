@@ -245,8 +245,17 @@ use app\business\controller\Baseness;
 					return json($resp);
 				}
 
-				$ids = db('order_repay')->field('repay_money')->where('order_id',$data['orderId'])->find();
-				
+				$ids = db('order_repay')->field('repay_money,status')->where('order_id',$data['orderId'])->find();
+
+				if ($ids['status'] == '-2') {
+
+					$resp['code'] = '2';
+
+					$resp['msg'] = '还款申请已提交！';
+
+					return json($resp);
+
+				}
 				if(md5($data['payPwd'].$mobile) == $user['paypassword']){
 
 					$data['money'] = $ids['repay_money'];
