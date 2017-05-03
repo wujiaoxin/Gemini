@@ -232,7 +232,7 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			
 			$data = input('post.');
-
+			// var_dump($data);die;
 			$dealer_id = db('Dealer')->field('id,forms')->where('mobile',$mobile)->find();
 
 			if (isset($data['payPwd']) && isset($data['orderId'])){
@@ -251,7 +251,7 @@ use app\business\controller\Baseness;
 
 					$data['money'] = $ids['repay_money'];
 
-					$data['descr'] = $data['bankcard'];
+					$data['descr'] = '';
 
 					money_record($data,$uid,2,1);
 
