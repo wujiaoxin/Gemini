@@ -94,13 +94,11 @@ class Repay extends \app\common\model\Base {
 
 	          'has_repay'=>'-1',
 
-	          'loadtime'=>$order['endtime'],
+	          'loantime'=>$order['endtime'],
 
 	          'repay_period'=>'1',
 
 	          'totalperiod'=>'1',
-
-	          'loadtime'=>$order['endtime'],
 
 	          'true_repay_money'=>'0',
 
