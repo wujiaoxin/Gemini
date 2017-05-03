@@ -262,7 +262,6 @@ use app\business\controller\Baseness;
 						'true_repay_time' =>time(),
 						'status' =>'-2',
 						'has_repay' =>'-2',
-						'descr' => '还款时间为：'.date('Y-m-d H:i:s',time()).'还id为'.$data['orderId'].'的订单',
 						'dealer_bank_account'=>$data['bankcard'],
 						'dealer_bank'=>$bank_info['dealer_bank'],
 						'dealer_bank_branch'=>$bank_info['dealer_bank_branch']
