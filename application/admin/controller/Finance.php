@@ -294,7 +294,7 @@ class Finance extends Admin {
 
 				if ($data['status']) {
 
-					$status = db('carry')->field('status')->where('sn',$data['id'])->find();
+					$carry_info = db('carry')->where('sn',$data['id'])->find();
 
 					$datas = array(
 
@@ -304,13 +304,13 @@ class Finance extends Admin {
 						
 						'serial_num'=>$data['serial_num'],
 						
-						'actual_amount'=>$data['actual_amount'],
+						'actual_amount'=>$carry_info['money'],
 						
 						'platform_account'=>$data['platform_account'],
 
 						);
 
-					if ($status['status'] == '-1') {
+					if ($carry_info['status'] == '-1') {
 
 						db('carry')->where('sn',$data['id'])->update($data);
 

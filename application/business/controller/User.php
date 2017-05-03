@@ -135,7 +135,7 @@ use app\business\controller\Baseness;
 			);
 
 		//分组统计
-		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
+		$result = db('order')->field('mid,uid,sum(examine_limit) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($result as $k => $v) {
 			$result[$k]['realname'] = serch_real($v['uid']);
 		}
@@ -143,7 +143,7 @@ use app\business\controller\Baseness;
 		foreach ($num as $k => $v) {
 			$num[$k]['realname'] = serch_real($v['uid']);
 		}
-		$avg = db('order')->field('mid,uid,avg(loan_limit) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
+		$avg = db('order')->field('mid,uid,avg(examine_limit) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($num as $k => $v) {
 			$avg[$k]['realname'] = serch_real($v['uid']);
 		}
@@ -154,7 +154,8 @@ use app\business\controller\Baseness;
         $end =strtotime(date('Y-m-d'))+86399;
         $map['create_time'] = array(array('gt',$begin),array('lt',$end));
         $map['mid'] =$uid;
-        $res =db('order')->field("COUNT(*) as tnum,sum(loan_limit) as total_money, FROM_UNIXTIME(create_time,'%Y-%m-%d') as time")->where($map)->group('time')->select();
+        $map['status'] = '1';
+        $res =db('order')->field("COUNT(*) as tnum,sum(examine_limit) as total_money, FROM_UNIXTIME(create_time,'%Y-%m-%d') as time")->where($map)->group('time')->select();
         $tnum =0;
         $tamount=0;
         foreach ($res as $val){
@@ -271,7 +272,7 @@ use app\business\controller\Baseness;
 				}
 				return json($resp);
 			}else{
-				$map['o.dealer'] =$dealer_id['id'];
+				$map['o.dealer_id'] =$dealer_id['id'];
 				if ($data['type']) {
 					$map['d.type'] = $data['type'];
 				}
