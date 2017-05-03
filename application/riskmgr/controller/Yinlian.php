@@ -19,15 +19,15 @@ class Yinlian extends Base {
 		if($password != "yinlian"){
 			return $this->error("查询密码错误", 'index');
 		}		
-		$status = 0;//正式服务器 1
+		$status = 1;//正式服务器 1
 
 		$accout = 'T99999';
 		$pk = "dbf9b1be199abd09a4a75f1bb08a37a8";
 		$server = 'https://222.72.248.198:44443/tal-server/quota/usernature';
 
 		if($status){
-			$accout = '102006';
-			$pk = "a6910dfbdf4d46c38746b9c4e5a31ae3";
+			$accout = '102007';
+			$pk = "46876f41f59b4e949a5d61ccfb1faff4";
 			$server = 'https://profile.unionpaysmart.com/quota/usernature';
 		}
 
