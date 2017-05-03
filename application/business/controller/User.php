@@ -232,7 +232,7 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			
 			$data = input('post.');
-
+			// var_dump($data);die;
 			$dealer_id = db('Dealer')->field('id,forms')->where('mobile',$mobile)->find();
 
 			if (isset($data['payPwd']) && isset($data['orderId'])){
@@ -251,7 +251,7 @@ use app\business\controller\Baseness;
 
 					$data['money'] = $ids['repay_money'];
 
-					$data['descr'] = $data['bankcard'];
+					$data['descr'] = '';
 
 					money_record($data,$uid,2,1);
 
@@ -262,7 +262,6 @@ use app\business\controller\Baseness;
 						'true_repay_time' =>time(),
 						'status' =>'-2',
 						'has_repay' =>'-2',
-						'descr' => '还款时间为：'.date('Y-m-d H:i:s',time()).'还id为'.$data['orderId'].'的订单',
 						'dealer_bank_account'=>$data['bankcard'],
 						'dealer_bank'=>$bank_info['dealer_bank'],
 						'dealer_bank_branch'=>$bank_info['dealer_bank_branch']

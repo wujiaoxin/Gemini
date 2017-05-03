@@ -31,12 +31,23 @@ class Bank extends \think\Model{
 
 			$datas['dealer_bank_branch'] = $priv_bank_account_id['priv_bank_branch'];
 
+		}else{
+
+			$datas['dealer_bank'] = '';
+
+			$datas['dealer_bank_branch'] = '';
+
 		}
 		if ($bank_account_id) {
 
 			$datas['dealer_bank'] = $bank_account_id['bank_name'];
 
 			$datas['dealer_bank_branch'] = $bank_account_id['bank_branch'];
+		}else{
+
+			$datas['dealer_bank'] = '';
+
+			$datas['dealer_bank_branch'] = '';
 		}
 		return $datas;
 	}
