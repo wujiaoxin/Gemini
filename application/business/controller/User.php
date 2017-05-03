@@ -232,7 +232,8 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			
 			$data = input('post.');
-			$dealer_id = db('Dealer')->field('id')->where('mobile',$mobile)->find();
+
+			$dealer_id = db('Dealer')->field('id,forms')->where('mobile',$mobile)->find();
 
 			if (isset($data['payPwd']) && isset($data['orderId'])){
 				
@@ -275,6 +276,9 @@ use app\business\controller\Baseness;
 				$map['o.dealer_id'] =$dealer_id['id'];
 				if ($data['type']) {
 					$map['d.type'] = $data['type'];
+				}
+				if ($dealer_id['forms'] == '1' || $dealer_id['forms'] == '3') {
+					$map['d.type'] = '';
 				}
 				if (isset($data['status'])) {
 					if ($data['status'] != '') {
@@ -385,7 +389,7 @@ use app\business\controller\Baseness;
 				}
 			}else{
 
-				$map['mid'] =$uid;
+				$map['mid'] = $uid;
 				$map['status'] = '1';
 				if ($data['type']) {
 					$map['type'] = $data['type'];

@@ -210,10 +210,13 @@ class Account extends Baseness {
 			return json($resp);
 		}else{
 			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+			$types = '2,4';
 			$map = array(
 			    'mid'=>$uid,
-			    'finance'=>'3'
+			    'finance'=>'3',
+			    'type'=> array('IN',$types)
 			  );
+
 			$orders =db('order')->where($map)->select();
 			foreach ($orders as $k => $v) {
 			    $orders[$k]['realname'] = serch_real($v['uid']);
