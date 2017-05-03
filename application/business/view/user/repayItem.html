@@ -101,17 +101,17 @@
 					<label class="radio">
 						<div class="radio">
 							<span><input type="radio" name="bankcard" value="bankcard"></span>
-						</div><input type="number" id="bankcard" disabled="disabled">
+						</div><span id="bankcardText"></span><input type="hidden" id="bankcard">
 					</label>
 					<label class="radio line">
 						<div class="radio">
 							<span><input type="radio" name="bankcard" value="priv_bankcard"></span>
-						</div><input type="number" id="priv_bankcard" disabled="disabled">
+						</div><span id="priv_bankcardText"></span><input type="hidden" id="priv_bankcard">
 					</label>
 					<label class="radio">
 						<div class="radio">
 							<span><input type="radio" name="bankcard" value="otherBankcard"></span>
-						</div><input type="number" id="otherBankcard" placeholder="其他银行卡">
+						</div>其他账号<input type="number" id="otherBankcard" placeholder="请输入银行卡号" style="display: none;">
 					</label>
 				</div>
 			</div>
@@ -169,6 +169,7 @@
 	            'status': status
 	        },
 	        success:function(resp){
+	        	console.log(resp)
 	            if (resp.code == "1" ) {
 	            	$('#table-repayItem tbody').html(tpl(resp.data));
 	            	$('#table-repayItem').dataTable({"bDestroy":true});
@@ -182,8 +183,17 @@
 		});
 	}
 
+	$('#bankcardText').text(info.bank_account_id);
+	$('#priv_bankcardText').text(info.priv_bank_account_id);
 	$('#bankcard').val(info.bank_account_id);
 	$('#priv_bankcard').val(info.priv_bank_account_id);
+	$('input[name="bankcard"]').change(function(){
+		if($(this).val() == 'otherBankcard'){
+			$('#otherBankcard').slideDown();
+		}else{
+			$('#otherBankcard').slideUp();
+		}
+	});
 
 	jQuery(document).ready(function() {
 	   // App.init();
@@ -232,7 +242,7 @@
 		        success:function(resp){
 		            if (resp.code == "1" ) {
 		            	ui_alert("还款成功","success");
-		            	ajaxRepayItem('','','');
+		            	setTimeout('window.location.reload()',2000);
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert(resp.msg);

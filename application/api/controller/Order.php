@@ -215,12 +215,27 @@ class Order extends Api {
 		return $controller->$action();
 	}
 	
-	//更新银行卡信息 TODO
+	//更新还款银行卡信息 TODO
 	public function updateBankInfo($type = null, $bank_name = null, $bank_branch = null, $bank_account_name = null, $bank_account_id = null){
+		
+		
+		$uid = session('user_auth.uid');
+		$creditResult = db('credit')->field('uid,mobile,order_id,credit_status,credit_result')->where("uid",$uid)->order('id desc')->find();
+		
+		
+		if($creditResult['credit_result'] == 1){//授信审核通过
+			//$orderData = $creditResult['order_id'];
+			$orderData['status'] = 0;
+			db('order')->where("id", $creditResult['order_id'])->where("status",-2)->update($orderData);
+		}
+		
+		
 		$resp = '{
 			"code": 1,
 			"msg": "保存成功"
 		}';
+		
+		
 		$resp = json_decode($resp);
 		return $resp;
 	}
