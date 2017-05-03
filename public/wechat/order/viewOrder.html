@@ -179,8 +179,14 @@
                                                 </li>
                                                 <li class="order-item">
                                                     <div class="order-info-amount">
-                                                        <span>借贷金额</span>
-                                                        <span class="pull-right order-amount"></span>
+                                                        <span>申请金额</span>
+                                                        <span class="pull-right order-loan_limit"></span>
+                                                    </div>
+                                                </li>
+                                                <li class="order-item">
+                                                    <div class="order-info-amount">
+                                                        <span>审批金额</span>
+                                                        <span class="pull-right order-examine_limit"></span>
                                                     </div>
                                                 </li>
                                                 <li class="order-item">
@@ -323,7 +329,8 @@
                 if (resp.code == "1") {
                     $(".order-sn").text(resp.data.info.sn);
                     $(".order-type").text(g_orderType[resp.data.info.type]);
-                    $(".order-amount").text(resp.data.info.loan_limit);
+                    $(".order-loan_limit").text(resp.data.info.loan_limit.toFixed(2));
+                    $(".order-examine_limit").text(resp.data.info.examine_limit);
                     $(".order-term").text(resp.data.info.endtime);
                     $(".order-date").text(formatDate(resp.data.info.create_time));
 

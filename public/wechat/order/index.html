@@ -155,7 +155,7 @@
                     </div>
 	            </div>
 	        </div>
-            <div class="pages navbar-fixed toolbar-fixed">
+            <div class="pages navbar-through">
                 <div class="page">
                     <div class="page-content infinite-scroll pull-to-refresh-content">
 	                    <div class="pull-to-refresh-layer">
@@ -279,7 +279,7 @@
 							current_page++;
 							liHtml = tpl(resp.data.data);
 						};
-						$("ul.orderList").append(liHtml);
+						$("ul.orderList").append(liHtml).height(function(n,c){return c+10;});
 						if(resp.data.total <= (resp.data.per_page * resp.data.current_page)){
 						    myApp.detachInfiniteScroll($$('.infinite-scroll')); // 加载完毕，则注销无限加载事件，以防不必要的加载
 							// $$('.infinite-scroll-preloader').remove(); // 删除加载提示符
@@ -301,11 +301,11 @@
 
 		//分类切换事件
 		$('div.subnavbar').on('click','a',function(){
-			$("ul.orderList").empty();
 			$(this).addClass('tab_active')
 				.siblings('a').removeClass('tab_active');
 			current_page = 1
 			status = $(this).attr('data_status');
+			$("ul.orderList").empty();
 			getOrderList(current_page,status);
 			myApp.attachInfiniteScroll($$('.infinite-scroll'));
 		});
