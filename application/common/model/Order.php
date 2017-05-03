@@ -238,4 +238,34 @@ class Order extends \app\common\model\Base {
 		return $result;
 	}
 
+	//客户详情查询
+
+	public function search_detail($id){
+
+		$info = db('order')->where('id',$id)->find();
+
+		$result = db('member')->field('realname,mobile as sales_mobile')->where('uid',$info['uid'])->find();
+
+		$result_one = db('dealer')->alias('d')->join('__MEMBER__ m','m.mobile = d.mobile')->field('name')->where('m.uid',$info['mid'])->find();
+		
+		//TODO :空判断
+		if ($result) {
+
+			$info['sales_mobile'] = $result['sales_mobile'];//业务员手机号
+
+			$info['sales_realname'] = $result['realname'];//业务员真实姓名
+
+		}else{
+
+			$info['sales_mobile'] = '';//业务员手机号
+
+			$info['sales_realname'] = '';//业务员真实姓名
+
+		}
+		
+		$info['dealer_name'] = $result_one['name'];//车商名称
+
+		return $info;
+	}
+
 }
