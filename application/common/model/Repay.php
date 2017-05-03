@@ -127,26 +127,6 @@ class Repay extends \app\common\model\Base {
 
 		$deal = db('order')->where('id',$order_id)->find();
 
-		if ($deal['type'] == '1') {
-
-			$deal['product_name'] = '二手车按揭贷款';
-			
-		}elseif ($deal['type'] == '2') {
-
-			$deal['product_name'] = '二手车按揭垫资';
-
-			
-		}elseif ($deal['type'] == '3') {
-
-			$deal['product_name'] = '新车按揭贷款';
-
-			
-		}elseif ($deal['type'] == '4') {
-
-			$deal['product_name'] = '新车按揭垫资';
-
-		}
-
 		$deal['product_name'] = repay_type($deal['type']);
 
 		$totalperiod = floor($deal['endtime']/30);

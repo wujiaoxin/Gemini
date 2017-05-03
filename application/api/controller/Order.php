@@ -171,35 +171,31 @@ class Order extends Api {
 		$role = session('user_auth.role');
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-		$list = db('order')->where('id',$id)->find();
-		$link = model('Order');
-		if($role==1){
-			$info = db('Order')->where('id',$id)->find();
-		}else{
-			$authfilter['order_id'] = $id;
-			$authfilter['auth_uid'] = $uid;
-			$authfilter['auth_role'] = $role;			
-			$auth = db('OrderAuth')->where($authfilter)->find();
-			if($auth != null){
-				$info = db('Order')->where("id",$id)->find();
-			}
+
+		$orderModel = model('Order');
+
+		$info = $orderModel->search_detail($id);
+		
+		if($role==0){
+
+			$resp['code'] = 1;
+
+			$resp['msg'] = '获取成功!';
+
+			$resp['data'] = $info ;
+	 
+			return json($resp);
+
 		}
 		//$filter['uid'] = $uid;
 		$filter['order_id'] = $info['id'];
 		$filter['status'] = 1;//有效文件
-		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->limit(100)->select();
+		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->order('create_time DESC')->limit(16)->select();
 
-		$result = db('member')->field('realname,mobile as sales_mobile')->where('uid',$info['uid'])->find();
-		$result_one = db('dealer')->alias('d')->join('__MEMBER__ m','m.mobile = d.mobile')->field('name')->where('m.uid',$info['mid'])->find();
-		//TODO :空判断
-		$info['sales_mobile'] = $result['sales_mobile'];//业务员手机号
-		$info['sales_realname'] = $result['realname'];//业务员真实姓名
-		$info['dealer_name'] = $result_one['name'];//车商名称
 		$data = array(
-				'info'    => $info,
-				'files'   => $files,
+			'info'    => $info,
+			'files'   => $files,
 		);
-
 		if ($data) {
 			$resp['code'] = 1;
 			$resp['msg'] = '获取成功!';
