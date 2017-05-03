@@ -180,9 +180,8 @@
             'mid'=>$uid,
           );
         $name = '3,4,5';
-        $type_lx = '2,4';
         $where['status'] = array('IN',$name);
-        $where['type'] = array('IN',$type_lx);
+        $where['type'] = array('IN',$types);
         $money_jk = db('order')->where($where)->sum('examine_limit');
       //待还资金
          $uids = db('dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->where('m.uid',$uid)->find();
