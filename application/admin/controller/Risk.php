@@ -29,12 +29,12 @@ class risk extends Admin {
 			$data = input('post.');			
 			$result = db('credit')->where('id', $data['id'])->fetchSQL(false)->update($data);			
 			//var_dump($result);
-			if($data['credit_result'] == 1){//授信审核通过
+			/*if($data['credit_result'] == 1){//授信审核通过
 				$mobile = $data['mobile'];//TODO 手机号查库
 				$orderData['status'] = 0;
 				db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);//TODO result判断 事务操作 保证数据完整性
 			}
-			
+			*/
 			if ($result) {
 				return $this->success("提交成功！", url('rating'));
 			} else {
