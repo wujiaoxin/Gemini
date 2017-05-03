@@ -99,7 +99,7 @@
       $datas =array(
           'sn'=>$o_id,
           'status'=>'0',
-          'money'=>$order['0']['loan_limit'],
+          'money'=>$order['0']['examine_limit'],
           'bank_name'=>$bank_name,
           'create_time'=>time(),
           'update_time'=>'0',
@@ -314,7 +314,7 @@
       'mid'=>$uid
 
       );
-    $repay_moneys = db('order')->where($map)->sum('loan_limit');
+    $repay_moneys = db('order')->where($map)->sum('examine_limit');
     //总金额
     $total_money = $dealer_money['money'] + $dealer_money['lock_money'] + $repay_moneys ;
 

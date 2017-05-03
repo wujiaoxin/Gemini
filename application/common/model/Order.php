@@ -128,23 +128,45 @@ class Order extends \app\common\model\Base {
 
 			$filter['uid'] = $uid;
 		}
-		
-		if($status == null){
-			$filter['status'] = ['>',-1];
-		}else{
-			if ($status == 3) {
-				$name = '3,4';
-				$filter['status'] = array('IN',$name);
-			}else{
-				$filter['status'] = $status;
-			}
-		}
 		$total = '';
 		$filter['credit_status'] = '3';
 
+		if($status == null){
+
+			$filter['status'] = ['>',-1];
+			$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+
+		}else{
+
+			if ($status == 3) {
+
+				$name = '3,4';
+
+				$filter['status'] = array('IN',$name);
+
+				$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+			
+			}else{
+
+				$filter['status'] = $status;
+				$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+
+			}
+		}
+		
+		if ($filter['status'] == '2') {
+
+			$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+		}
+
+		if ($filter['status'] == '1') {
+
+			$ord = db('Order')->field('sum(examine_limit) as loan_limit')->where($filter)->find();
+		}
 		$total['order_num'] = db('Order')->where($filter)->count();
-		$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+
 		$total['loan_limit'] = $ord['loan_limit'];
+		
 		return $total;
 	}
 
