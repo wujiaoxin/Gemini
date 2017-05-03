@@ -279,7 +279,7 @@ class examine extends Admin {
 
 		$credit_info = db('credit')->where('mobile', $order_info['mobile'])->order('id desc')->find();
 
-		$repay_info = db('order_repay')->where('order_id', $order_info['id'])->find();
+		$repay_info = db('order_repay')->where('order_id', $order_info['id'])->select();
 
 		$examine_log  =db('examine_log')->where('record_id',$id)->select();
 

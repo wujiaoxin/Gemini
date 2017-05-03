@@ -89,10 +89,22 @@ class Finance extends Admin {
 							db('order')->where('id',$data['id'])->update($datas);//更新订单状态
 
 							//生成还款计划表
-							set_order_repay($data['id']);//垫资还款
-							$resp['code'] = 1;
+							
+							$res = model('Repay')->set_repay($data['id']);
 
-							$resp['msg'] = '放款审核成功!';
+							if ($res) {
+
+								$resp['code'] = 1;
+
+								$resp['msg'] = '放款审核成功!';
+
+							}else{
+
+								$resp['code'] = 0;
+
+								$resp['msg'] = '还款计划异常';
+							}
+							
 
 						}else{
 							$resp['code'] = 0;
@@ -109,15 +121,21 @@ class Finance extends Admin {
 						db('order')->where('id',$data['id'])->update($datas);//更新订单状态
 
 						//等额本息
-						$result1 = make_repay_plan($data['id']);
 
-						foreach ($result1 as $k => $v) {
-							
-							db('order_repay')->insert($v);
+						$res = model('Repay')->make_plan($data['id']);
+
+						if ($res) {
+
+							$resp['code'] = 1;
+
+							$resp['msg'] = '放款审核成功!';
+
+						}else{
+
+							$resp['code'] = 0;
+
+							$resp['msg'] = '还款计划异常';
 						}
-						$resp['code'] = 1;
-
-						$resp['msg'] = '放款审核成功!';
 					}
 					
 				}else{
@@ -181,7 +199,6 @@ class Finance extends Admin {
 
 			if (isset($data['status'])) {
 
-
 				$result = db('recharge')->field('uid,status')->where('sn',$data['id'])->find();
 
 				if ($result['status'] == '-1') {
@@ -204,7 +221,7 @@ class Finance extends Admin {
 
 					}else{
 
-						$datas['status'] = array(
+						$datas = array(
 
 							'status' => $data['status'],
 
@@ -216,7 +233,7 @@ class Finance extends Admin {
 
 						$resp['code'] = 0;
 
-						$resp['msg'] = '充值审核失败!';
+						$resp['msg'] = '充值审核不通过';
 					}
 					
 
@@ -227,17 +244,6 @@ class Finance extends Admin {
 					$resp['msg'] = '已审核!';
 
 				}
-
-				
-
-				/*}else{
-
-					db('recharge')->where('sn',$data['id'])->update($datas);
-
-					$resp['code'] = 0;
-
-					$resp['msg'] = '充值审核失败!';
-				}*/
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			}else{
 
@@ -288,7 +294,7 @@ class Finance extends Admin {
 
 				if ($data['status']) {
 
-					$status = db('carry')->field('status')->where('sn',$data['id'])->find();
+					$carry_info = db('carry')->where('sn',$data['id'])->find();
 
 					$datas = array(
 
@@ -298,13 +304,13 @@ class Finance extends Admin {
 						
 						'serial_num'=>$data['serial_num'],
 						
-						'actual_amount'=>$data['actual_amount'],
+						'actual_amount'=>$carry_info['money'],
 						
 						'platform_account'=>$data['platform_account'],
 
 						);
 
-					if ($status['status'] == '-1') {
+					if ($carry_info['status'] == '-1') {
 
 						db('carry')->where('sn',$data['id'])->update($data);
 
@@ -386,54 +392,69 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-
+			
 			if (isset($data['status'])) {
+
 				
-				if ($data['status']) {
+				if ($data['status'] == '1') {
 
-					$money = db('dealer')->alias('d')->field('d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('order_repay o','m.uid = o.mid')->where('o.id',$data['id'])->find();
 
-					if ($data['status'] == '1') {
+					$ids = db('order_repay')->field('status')->where('id',$data['id'])->order('status ASC, true_repay_time DESC')->find();
 
-						$ids = db('order_repay')->field('order_id,status')->where('id',$data['id'])->find();
+					if ($ids['status'] == '-2') {
+						
+						$result = model('repay')->receivable($data);
 
-						if ($ids['status'] == '-2') {
+						if ($result) {
 
-							$result = db('order')->field('loan_limit')->where('id',$ids['order_id'])->find();
 
-							$lines_result = $money['lines_ky'] + $result['loan_limit'];//最终可用额度
+							$resp['code'] = 1;
 
-							$moeny_result = array(
+							$resp['msg'] = 'OK';
+							
+							$resp['code'] = 1;
 
-								'lines_ky' =>$lines_result
+							$resp['msg'] = '回款审核成功！';
 
-							);
-
-							db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变可用额度
 						}else{
 
-							$resp['code'] = 2;
+							$resp['code'] = 0;
 
-							$resp['msg'] = '回款审核已提交！';
+							$resp['msg'] = '回款审核异常！';
 
 						}
-						
+
+					}elseif($ids['status'] == '-1'){
+
+						$resp['code'] = 0;
+
+						$resp['msg'] = '操作错误,未到还款日！';
+
+					}else{
+
+						$resp['code'] = 1;
+
+						$resp['msg'] = '回款审核已提交！';
 					}
-					$data['has_repay'] = '1';
-					db('order_repay')->where('id',$data['id'])->update($data);//更新订单状态
-
-					$resp['code'] = 1;
-
-					$resp['msg'] = 'OK';
-
 				}else{
 
-					$resp['code'] = 0;
+					$datas['status'] = '-1';
 
-					$resp['msg'] = '还款审核失败!';
+					$datas['has_repay'] = '-1';
+
+					$datas['descr'] = $data['descr'];
+
+					db('order_repay')->where('id',$data['id'])->update($datas);//更新订单状态
+
+					$resp['code'] = '1';
+
+					$resp['msg'] = '还款不通过';
 
 				}
+
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
+
+				return json($resp);
 			}else{
 
 				$result = db('order_repay')->where('id',$data['id'])->find();
@@ -454,7 +475,8 @@ class Finance extends Admin {
 			return json($resp);
 
 		}else{
-			$result = db('order_repay')->where('status','>',-3)->order('status')->select();
+
+			$result = db('order_repay')->where('status','>',-3)->order('status ASC,repay_time ASC')->select();
 
 			foreach ($result as $k => $v) {
 
@@ -465,6 +487,7 @@ class Finance extends Admin {
 			}
 
 			$data = array(
+
 				'infoStr' => json_encode($result)
 			);
 
@@ -472,6 +495,7 @@ class Finance extends Admin {
 
 		}
 		$this->setMeta('还款审核');
+
 		return $this->fetch();
 	}
 
@@ -481,15 +505,20 @@ class Finance extends Admin {
 		$result = db('dealer_money')->order('create_time DESC')->select();
 
 		foreach ($result as $k => $v) {
+
 			$serch_name = serch_name_dealer($v['uid']);
+
 			$result[$k]['dealer_name'] = $serch_name['dealer_name'];
 		}
 
 		$data = array(
 				'infoStr' => json_encode($result)
 			);
+
 		$this->assign($data);
+
 		$this->setMeta('平台资金记录');
+
 		return $this->fetch();
 	}
 

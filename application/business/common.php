@@ -99,7 +99,7 @@
       $datas =array(
           'sn'=>$o_id,
           'status'=>'0',
-          'money'=>$order['0']['loan_limit'],
+          'money'=>$order['0']['examine_limit'],
           'bank_name'=>$bank_name,
           'create_time'=>time(),
           'update_time'=>'0',
@@ -180,9 +180,8 @@
             'mid'=>$uid,
           );
         $name = '3,4,5';
-        $type_lx = '2,4';
         $where['status'] = array('IN',$name);
-        $where['type'] = array('IN',$type_lx);
+        $where['type'] = array('IN',$types);
         $money_jk = db('order')->where($where)->sum('examine_limit');
       //待还资金
          $uids = db('dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->where('m.uid',$uid)->find();
@@ -314,7 +313,7 @@
       'mid'=>$uid
 
       );
-    $repay_moneys = db('order')->where($map)->sum('loan_limit');
+    $repay_moneys = db('order')->where($map)->sum('examine_limit');
     //总金额
     $total_money = $dealer_money['money'] + $dealer_money['lock_money'] + $repay_moneys ;
 

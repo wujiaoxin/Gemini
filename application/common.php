@@ -1217,3 +1217,88 @@ function sendSmsCode($mobile, $code){
 	return true;
 
 }
+
+
+function repay_type($type){
+
+	if ($type == '1') {
+
+		$result = '二手车按揭贷款';
+		
+	}elseif ($type == '2') {
+
+		$result = '二手车按揭垫资';
+
+		
+	}elseif ($type == '3') {
+
+		$result = '新车按揭贷款';
+
+		
+	}elseif ($type == '4') {
+
+		$result = '新车按揭垫资';
+
+	}
+	return $result;
+}
+function next_replay_month($time,$m=1){
+	$str_t = to_timespan(to_date($time)." ".$m." month ");
+	return $str_t;
+}
+function to_date($utc_time, $format = 'Y-m-d H:i:s') {
+	if (empty ( $utc_time )) {
+		return '';
+	}
+	$timezone = time();
+	$time = $utc_time + 8 * 3600; 
+	return date ($format, $time );
+}
+function to_timespan($str, $format = 'Y-m-d H:i:s'){
+	$timezone = 8; 
+	$time = intval(strtotime($str));
+	if($time!=0)
+		$time = $time - $timezone * 3600;
+    return $time;
+}
+/**
+ * 等额本息还款计算方式
+ * $money 贷款金额
+ * $rate 月利率
+ * $remoth 还几个月
+ * 返回  每月还款额
+*/
+function pl_it_formula($money,$rate,$remoth){
+	if((pow(1+$rate,$remoth)-1) > 0)
+		return round($money * ($rate*pow(1+$rate,$remoth)/(pow(1+$rate,$remoth)-1)),2);
+
+	else
+		return 0;
+}
+/**
+ * 获取该期本金
+ * int $Idx  第几期
+ * floatval $amount_money 总的借款多少
+ * floatval $month_repay_money 月还本息
+ * floatval $rate 费率
+ */
+function get_self_money($idx,$amount_money,$month_repay_money,$rate){
+	return $month_repay_money - get_benjin($idx,$idx,$amount_money,$month_repay_money,$rate)*$rate/$idx/100;
+
+}
+/**
+ * 获取该期剩余本金
+ * int $Idx  第几期
+ * int $all_idx 总的是几期
+ * floatval $amount_money 总的借款多少
+ * floatval $month_repay_money 月还本息
+ * floatval $rate 费率
+ */
+function get_benjin($idx,$all_idx,$amount_money,$month_repay_money,$rate){
+	//计算剩多少本金
+	$benjin = $amount_money;
+	for($i=1;$i<$idx+1;$i++){
+		$benjin = $benjin - ($month_repay_money - $benjin*$rate/$idx/100);
+	}
+	return $benjin;
+}

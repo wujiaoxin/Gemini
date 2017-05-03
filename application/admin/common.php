@@ -183,263 +183,65 @@ function serch_realname($uid){
 	// var_dump($result);die;
 	return $result['realname'];
 }
-
- /*
-  **生成还款列表（垫资还款）
-  */
-  function set_order_repay($order_id){
-
-    $order = db('order')->where('id',$order_id)->find();
-
-    if ($order) {
-
-      $repay_time = time()+$order['endtime']*24*60*60;
-
-      $order_repay = array(
-
-          'order_id'=>$order_id,
-
-          'uid'=>$mobile['uid'],
-
-          'dealer_id'=> $order['dealer_id'],
-
-          'repay_money'=>$order['examine_limit'],
-
-          'manage_money'=>'0',
-
-          'repay_time'=>$repay_time,
-
-          'status'=>'-1',
-
-          'has_repay'=>'0',
-
-          'loadtime'=>$order['endtime'],
-
-          'true_repay_money'=>'0',
-
-          'true_repay_time'=>'0',
-
-        );
-
-      $result = db('order_repay')->insert($order_repay);
-
-      return $result;
-
-    }
-  }
-  	/*
-	** 计算支付费用
-	** time 借款时间
-	** money 借款金额
-	** 利率为日利率
-  	*/
-  	function fee_money($time, $money){
-
-  		if ($time <= 5 && $time >=1 ) {
-
-  			$interest_rate = 0.8/1000;
-  			
-  		}elseif ($time >5 && $time <=9) {
-
-  			$interest_rate = 1/1000;
-
-  		}elseif ($time >9 && $time <=12) {
-
-  			$interest_rate = 1.2/1000;
-
-  		}elseif ($time >12 && $time <=15) {
-
-  			$interest_rate = 1.5/1000;
-
-  		}else {
-
-  			$interest_rate = '';
-
-  		}
-
-  		$result = $money * $interest_rate * $time;
-
-  		return $result;
-  	}
-
-  	/**
-	 * 记录行为日志，并执行该行为的规则
-	 * @param string $action 行为标识
-	 * @param string $model 触发行为的模型名
-	 * @param int $param 参数
-	 * @param int $record_id 触发行为的记录id
-	 * @param int $user_id 执行行为的用户id
-	 */
-	function examine_log($action = null,$controller = null,$param = null , $record_id = null,$status = null , $type, $descr =null) {
-
-		if (empty($user_id)) {
-			$user_id = is_login();
-		}
-		//插入行为日志
-		$data['uid']     = $user_id;
-		$data['ip']   = ip2long(get_client_ip());
-		$data['controller'] = $controller;
-		$data['action'] = $action;
-		$data['param'] = $param;
-		$data['record_id'] = $record_id;
-		$data['status'] = $status;
-		$data['type'] = $type;
-		$data['create_time'] = time();
-		$data['descr'] = $descr;
-		
-		db('examine_log')->insert($data);
-	}
-
 	/*
-	**还款计划（等额本息）
+** 计算支付费用
+** time 借款时间
+** money 借款金额
+** 利率为日利率
 	*/
-	function make_repay_plan($data){
+	function fee_money($time, $money){
 
-		$deal = db('order')->where('id',$data)->find();
+		if ($time <= 5 && $time >=1 ) {
 
-		if ($deal['type'] == '1') {
-
-			$deal['product_name'] = '二手车按揭贷款';
+			$interest_rate = 0.8/1000;
 			
-		}elseif ($deal['type'] == '2') {
+		}elseif ($time >5 && $time <=9) {
 
-			$deal['product_name'] = '二手车按揭垫资';
+			$interest_rate = 1/1000;
 
-			
-		}elseif ($deal['type'] == '3') {
+		}elseif ($time >9 && $time <=12) {
 
-			$deal['product_name'] = '新车按揭贷款';
+			$interest_rate = 1.2/1000;
 
-			
-		}elseif ($deal['type'] == '4') {
+		}elseif ($time >12 && $time <=15) {
 
-			$deal['product_name'] = '新车按揭垫资';
+			$interest_rate = 1.5/1000;
+
+		}else {
+
+			$interest_rate = '';
 
 		}
 
+		$result = $money * $interest_rate * $time;
 
-		$totalperiod = floor($deal['endtime']/30);
-
-		if ($totalperiod == '12') {
-			
-			$deal['rate'] = 1.1/100;
-
-
-		}elseif ($totalperiod == '24') {
-			
-			$deal['rate'] = 1.3/100;
-
-		}elseif ($totalperiod == '36') {
-			
-			$deal['rate'] = 1.5/100;
-		}
-		$list = array();
-		
-		$has_use_self_money = 0;
-		
-		$repay_day = time();
-
-		$uids = db('member')->field('uid')->where('mobile',$deal['mobile'])->find();
-		for($i=1; $i <= $totalperiod; $i++){
-
-			$load_repay = array();
-
-			// $load_repay['repay_time'] = time()+30*24*60*60*$i;
-			$load_repay['repay_time']  = $repay_day = next_replay_month ($repay_day);
-			// $load_repay['repay_money11'] = date('Y-m-d H:i:s',$load_repay['repay_time']);
-			$load_repay['repay_period'] = $i;
-
-			$load_repay['totalperiod'] = intval($totalperiod);
-
-			$load_repay['rate'] = $deal['rate']*100;
-
-			$load_repay['repay_money'] = pl_it_formula($deal['examine_limit'],$deal['rate'],$totalperiod);
-
-			$deal['month_repay_money'] = $load_repay['repay_money'];
-
-			$load_repay['self_money'] = round($deal['examine_limit'] *$deal['rate']*pow((1+$deal['rate']),$i-1)/(pow(($deal['rate']+1),$totalperiod)-1),2);
-
-
-			$has_use_self_money += $load_repay['self_money'];
-
-			$load_repay['interest_money'] = $load_repay['repay_money'] - $load_repay['self_money'];
-			
-			$load_repay['order_id'] = $deal['id'];
-
-			$load_repay['uid'] = $uids['uid'];
-
-			$load_repay['dealer_id'] = $deal['dealer_id'];
-
-			$load_repay['status'] = -1;
-
-			$load_repay['has_repay'] = -1;
-
-			$load_repay['loantime'] = $deal['endtime'];
-
-			$load_repay['product_name'] = $deal['product_name'];
-
-			$list[] = $load_repay;
-		}
-		return $list;
-	}
-	function next_replay_month($time,$m=1){
-		$str_t = to_timespan(to_date($time)." ".$m." month ");
-		return $str_t;
-	}
-	function to_date($utc_time, $format = 'Y-m-d H:i:s') {
-		if (empty ( $utc_time )) {
-			return '';
-		}
-		$timezone = time();
-		$time = $utc_time + 8 * 3600; 
-		return date ($format, $time );
-	}
-	function to_timespan($str, $format = 'Y-m-d H:i:s'){
-		$timezone = 8; 
-		$time = intval(strtotime($str));
-		if($time!=0)
-			$time = $time - $timezone * 3600;
-	    return $time;
-	}
-	/**
-	 * 等额本息还款计算方式
-	 * $money 贷款金额
-	 * $rate 月利率
-	 * $remoth 还几个月
-	 * 返回  每月还款额
-	*/
-	function pl_it_formula($money,$rate,$remoth){
-		if((pow(1+$rate,$remoth)-1) > 0)
-			return round($money * ($rate*pow(1+$rate,$remoth)/(pow(1+$rate,$remoth)-1)),2);
-
-		else
-			return 0;
+		return $result;
 	}
 
 	/**
-	 * 获取该期本金
-	 * int $Idx  第几期
-	 * floatval $amount_money 总的借款多少
-	 * floatval $month_repay_money 月还本息
-	 * floatval $rate 费率
-	 */
-	function get_self_money($idx,$amount_money,$month_repay_money,$rate){
-		return $month_repay_money - get_benjin($idx,$idx,$amount_money,$month_repay_money,$rate)*$rate/$idx/100;
+ * 记录行为日志，并执行该行为的规则
+ * @param string $action 行为标识
+ * @param string $model 触发行为的模型名
+ * @param int $param 参数
+ * @param int $record_id 触发行为的记录id
+ * @param int $user_id 执行行为的用户id
+ */
+function examine_log($action = null,$controller = null,$param = null , $record_id = null,$status = null , $type, $descr =null) {
 
+	if (empty($user_id)) {
+		$user_id = is_login();
 	}
-	/**
-	 * 获取该期剩余本金
-	 * int $Idx  第几期
-	 * int $all_idx 总的是几期
-	 * floatval $amount_money 总的借款多少
-	 * floatval $month_repay_money 月还本息
-	 * floatval $rate 费率
-	 */
-	function get_benjin($idx,$all_idx,$amount_money,$month_repay_money,$rate){
-		//计算剩多少本金
-		$benjin = $amount_money;
-		for($i=1;$i<$idx+1;$i++){
-			$benjin = $benjin - ($month_repay_money - $benjin*$rate/$idx/100);
-		}
-		return $benjin;
-	}
+	//插入行为日志
+	$data['uid']     = $user_id;
+	$data['ip']   = ip2long(get_client_ip());
+	$data['controller'] = $controller;
+	$data['action'] = $action;
+	$data['param'] = $param;
+	$data['record_id'] = $record_id;
+	$data['status'] = $status;
+	$data['type'] = $type;
+	$data['create_time'] = time();
+	$data['descr'] = $descr;
+	
+	db('examine_log')->insert($data);
+}

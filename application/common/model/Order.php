@@ -128,23 +128,45 @@ class Order extends \app\common\model\Base {
 
 			$filter['uid'] = $uid;
 		}
-		
-		if($status == null){
-			$filter['status'] = ['>',-1];
-		}else{
-			if ($status == 3) {
-				$name = '3,4';
-				$filter['status'] = array('IN',$name);
-			}else{
-				$filter['status'] = $status;
-			}
-		}
 		$total = '';
 		$filter['credit_status'] = '3';
 
+		if($status == null){
+
+			$filter['status'] = ['>',-1];
+			$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+
+		}else{
+
+			if ($status == 3) {
+
+				$name = '3,4';
+
+				$filter['status'] = array('IN',$name);
+
+				$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+			
+			}else{
+
+				$filter['status'] = $status;
+				$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+
+			}
+		}
+		
+		if ($filter['status'] == '2') {
+
+			$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+		}
+
+		if ($filter['status'] == '1') {
+
+			$ord = db('Order')->field('sum(examine_limit) as loan_limit')->where($filter)->find();
+		}
 		$total['order_num'] = db('Order')->where($filter)->count();
-		$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+
 		$total['loan_limit'] = $ord['loan_limit'];
+		
 		return $total;
 	}
 
@@ -236,6 +258,36 @@ class Order extends \app\common\model\Base {
 				'nums' =>$num_repay
 			);
 		return $result;
+	}
+
+	//客户详情查询
+
+	public function search_detail($id){
+
+		$info = db('order')->where('id',$id)->find();
+
+		$result = db('member')->field('realname,mobile as sales_mobile')->where('uid',$info['uid'])->find();
+
+		$result_one = db('dealer')->alias('d')->join('__MEMBER__ m','m.mobile = d.mobile')->field('name')->where('m.uid',$info['mid'])->find();
+		
+		//TODO :空判断
+		if ($result) {
+
+			$info['sales_mobile'] = $result['sales_mobile'];//业务员手机号
+
+			$info['sales_realname'] = $result['realname'];//业务员真实姓名
+
+		}else{
+
+			$info['sales_mobile'] = '';//业务员手机号
+
+			$info['sales_realname'] = '';//业务员真实姓名
+
+		}
+		
+		$info['dealer_name'] = $result_one['name'];//车商名称
+
+		return $info;
 	}
 
 }
