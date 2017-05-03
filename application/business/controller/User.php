@@ -125,16 +125,25 @@ use app\business\controller\Baseness;
 	public function myShop() {
 		$uid =session('user_auth.uid');
 		$mobile = session('mobile');
+
+		$where = array(
+
+			'mid' => $uid,
+
+			'status'=>1
+
+			);
+
 		//分组统计
-		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->where('mid',$uid)->order('result DESC')->group('uid')->limit(5)->select();
+		$result = db('order')->field('mid,uid,sum(loan_limit) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($result as $k => $v) {
 			$result[$k]['realname'] = serch_real($v['uid']);
 		}
-		$num = db('order')->field('mid,uid,count(id) as result')->where('mid',$uid)->order('result DESC')->group('uid')->limit(5)->select();
+		$num = db('order')->field('mid,uid,count(id) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($num as $k => $v) {
 			$num[$k]['realname'] = serch_real($v['uid']);
 		}
-		$avg = db('order')->field('mid,uid,avg(loan_limit) as result')->where('mid',$uid)->order('result DESC')->group('uid')->limit(5)->select();
+		$avg = db('order')->field('mid,uid,avg(loan_limit) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
 		foreach ($num as $k => $v) {
 			$avg[$k]['realname'] = serch_real($v['uid']);
 		}
@@ -199,7 +208,6 @@ use app\business\controller\Baseness;
 			}else{
 				$result = db('order')->where($map)->select();
 			}
-			
 			foreach ($result as $k => $v) {
 				$result[$k]['realname'] = serch_real($v['uid']);
 			}

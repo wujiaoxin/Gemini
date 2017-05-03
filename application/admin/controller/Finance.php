@@ -89,10 +89,22 @@ class Finance extends Admin {
 							db('order')->where('id',$data['id'])->update($datas);//更新订单状态
 
 							//生成还款计划表
-							set_order_repay($data['id']);//垫资还款
-							$resp['code'] = 1;
+							
+							$res = model('Repay')->set_repay($data['id']);
 
-							$resp['msg'] = '放款审核成功!';
+							if ($res) {
+
+								$resp['code'] = 1;
+
+								$resp['msg'] = '放款审核成功!';
+
+							}else{
+
+								$resp['code'] = 0;
+
+								$resp['msg'] = '还款计划异常';
+							}
+							
 
 						}else{
 							$resp['code'] = 0;
@@ -109,15 +121,21 @@ class Finance extends Admin {
 						db('order')->where('id',$data['id'])->update($datas);//更新订单状态
 
 						//等额本息
-						$result1 = make_repay_plan($data['id']);
 
-						foreach ($result1 as $k => $v) {
-							
-							db('order_repay')->insert($v);
+						$res = model('Repay')->make_plan($data['id']);
+
+						if ($res) {
+
+							$resp['code'] = 1;
+
+							$resp['msg'] = '放款审核成功!';
+
+						}else{
+
+							$resp['code'] = 0;
+
+							$resp['msg'] = '还款计划异常';
 						}
-						$resp['code'] = 1;
-
-						$resp['msg'] = '放款审核成功!';
 					}
 					
 				}else{
@@ -181,7 +199,6 @@ class Finance extends Admin {
 
 			if (isset($data['status'])) {
 
-
 				$result = db('recharge')->field('uid,status')->where('sn',$data['id'])->find();
 
 				if ($result['status'] == '-1') {
@@ -204,7 +221,7 @@ class Finance extends Admin {
 
 					}else{
 
-						$datas['status'] = array(
+						$datas = array(
 
 							'status' => $data['status'],
 
@@ -216,7 +233,7 @@ class Finance extends Admin {
 
 						$resp['code'] = 0;
 
-						$resp['msg'] = '充值审核失败!';
+						$resp['msg'] = '充值审核不通过';
 					}
 					
 
@@ -227,17 +244,6 @@ class Finance extends Admin {
 					$resp['msg'] = '已审核!';
 
 				}
-
-				
-
-				/*}else{
-
-					db('recharge')->where('sn',$data['id'])->update($datas);
-
-					$resp['code'] = 0;
-
-					$resp['msg'] = '充值审核失败!';
-				}*/
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			}else{
 
