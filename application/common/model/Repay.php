@@ -63,6 +63,158 @@ class Repay extends \app\common\model\Base {
 	}
 
 
+	/*
+	**还款计划（垫资还款）
+	*/
+	public function set_repay($order_id){
+
+	    $order = db('order')->where('id',$order_id)->find();
+
+	    $customer = db('member')->where('mobile',$order['mobile'])->find();
+
+	    if ($order) {
+
+	      $repay_time = time()+$order['endtime']*24*60*60;
+
+	      $order_repay = array(
+
+	          'order_id'=>$order_id,
+
+	          'uid'=>$customer['uid'],
+
+	          'dealer_id'=> $order['dealer_id'],
+
+	          'repay_money'=>$order['examine_limit'],
+
+	          'manage_money'=>'0',
+
+	          'repay_time'=>$repay_time,
+
+	          'status'=>'-1',
+
+	          'has_repay'=>'-1',
+
+	          'loadtime'=>$order['endtime'],
+
+	          'repay_period'=>'1',
+
+	          'totalperiod'=>'1',
+
+	          'loadtime'=>$order['endtime'],
+
+	          'true_repay_money'=>'0',
+
+	          'true_repay_time'=>'0',
+
+	          'product_name'=>repay_type($order['type']),
+
+	          'self_money' =>$order['examine_limit']
+
+	        );
+	      $result = $this->save($order_repay);
+
+	      return $result;
+
+	    }
+	}
 
 
+	/*
+	**还款计划（等额本息）
+	*/
+
+	function make_plan($order_id){
+
+		$deal = db('order')->where('id',$order_id)->find();
+
+		if ($deal['type'] == '1') {
+
+			$deal['product_name'] = '二手车按揭贷款';
+			
+		}elseif ($deal['type'] == '2') {
+
+			$deal['product_name'] = '二手车按揭垫资';
+
+			
+		}elseif ($deal['type'] == '3') {
+
+			$deal['product_name'] = '新车按揭贷款';
+
+			
+		}elseif ($deal['type'] == '4') {
+
+			$deal['product_name'] = '新车按揭垫资';
+
+		}
+
+		$deal['product_name'] = repay_type($deal['type']);
+
+		$totalperiod = floor($deal['endtime']/30);
+
+		if ($totalperiod == '12') {
+			
+			$deal['rate'] = 1.1/100;
+
+
+		}elseif ($totalperiod == '24') {
+			
+			$deal['rate'] = 1.3/100;
+
+		}elseif ($totalperiod == '36') {
+			
+			$deal['rate'] = 1.5/100;
+		}
+		$list = array();
+		
+		$has_use_self_money = 0;
+		
+		$repay_day = time();
+
+		$uids = db('member')->field('uid')->where('mobile',$deal['mobile'])->find();
+
+		for($i=1; $i <= $totalperiod; $i++){
+
+			$load_repay = array();
+
+			// $load_repay['repay_time'] = time()+30*24*60*60*$i;
+			$load_repay['repay_time']  = $repay_day = next_replay_month ($repay_day);
+			// $load_repay['repay_money11'] = date('Y-m-d H:i:s',$load_repay['repay_time']);
+			$load_repay['repay_period'] = $i;
+
+			$load_repay['totalperiod'] = intval($totalperiod);
+
+			$load_repay['rate'] = $deal['rate']*100;
+
+			$load_repay['repay_money'] = pl_it_formula($deal['examine_limit'],$deal['rate'],$totalperiod);
+
+			$deal['month_repay_money'] = $load_repay['repay_money'];
+
+			$load_repay['self_money'] = round($deal['examine_limit'] *$deal['rate']*pow((1+$deal['rate']),$i-1)/(pow(($deal['rate']+1),$totalperiod)-1),2);
+
+
+			$has_use_self_money += $load_repay['self_money'];
+
+			$load_repay['interest_money'] = $load_repay['repay_money'] - $load_repay['self_money'];
+			
+			$load_repay['order_id'] = $deal['id'];
+
+			$load_repay['uid'] = $uids['uid'];
+
+			$load_repay['dealer_id'] = $deal['dealer_id'];
+
+			$load_repay['status'] = -1;
+
+			$load_repay['has_repay'] = -1;
+
+			$load_repay['loantime'] = $deal['endtime'];
+
+			$load_repay['product_name'] = $deal['product_name'];
+
+			$list[] = $load_repay;
+		}
+
+		$this->saveAll($list);
+
+		return 1;
+	}
 }
