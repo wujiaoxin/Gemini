@@ -169,7 +169,6 @@
 	            'status': status
 	        },
 	        success:function(resp){
-	        	console.log(resp)
 	            if (resp.code == "1" ) {
 	            	$('#table-repayItem tbody').html(tpl(resp.data));
 	            	$('#table-repayItem').dataTable({"bDestroy":true});

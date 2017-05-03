@@ -639,7 +639,7 @@
 		$("#realname").text(info.realname);
 		$("#idcard").text(info.idcard);
 		$("#mobile").text(info.mobile);
-		$("#loan_limit").text('贷款金额：' + (info.car_price * 0.9) + '元');
+		$("#loan_limit").text('贷款金额：' + (info.car_price * 0.9).toFixed(2) + '元');
 		$("#credit_score").val(info.credit_score || "");
 		$("#descr").val(info.descr || "");
  

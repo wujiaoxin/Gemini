@@ -197,6 +197,7 @@
 	   	});
 
 	   	$('#examineBtn').click(function(){
+	   	 	var platform_account = $('#platform_account').val();
 	   	 	var dealer_bank_account = $('#dealer_bank_account').val();
 	   		var dealer_bank = $('#dealer_bank').val();
 	   		var dealer_bank_branch = $('#dealer_bank_branch').val();
@@ -218,6 +219,7 @@
 		        url: apiUrl +'/admin/finance/receivable',
 		        data:{
 		        	'id': id,
+		        	'platform_account': platform_account,
 		        	'dealer_bank_account': dealer_bank_account,
 		        	'dealer_bank': dealer_bank,
 		        	'dealer_bank_branch': dealer_bank_branch,
