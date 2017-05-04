@@ -376,7 +376,7 @@ class Credit extends Api {
 		}
 		
 		$orderData['credit_status'] = $credit_status;
-		db('order')->where("mobile",$mobile)->update($orderData);
+		db('order')->where("id",$orderData['id'])->update($orderData);
 		
 		return $result;
 

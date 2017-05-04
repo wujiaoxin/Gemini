@@ -245,8 +245,17 @@ use app\business\controller\Baseness;
 					return json($resp);
 				}
 
-				$ids = db('order_repay')->field('repay_money')->where('order_id',$data['orderId'])->find();
-				
+				$ids = db('order_repay')->field('repay_money,status')->where('order_id',$data['orderId'])->find();
+
+				if ($ids['status'] == '-2') {
+
+					$resp['code'] = '2';
+
+					$resp['msg'] = '还款申请已提交！';
+
+					return json($resp);
+
+				}
 				if(md5($data['payPwd'].$mobile) == $user['paypassword']){
 
 					$data['money'] = $ids['repay_money'];
@@ -292,9 +301,9 @@ use app\business\controller\Baseness;
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
+					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
 				}else{
-					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
+					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
 				}
 				foreach ($order_repay as $k => $v) {
 					$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
