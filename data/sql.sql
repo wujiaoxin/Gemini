@@ -1756,18 +1756,19 @@ CREATE TABLE `gemini_recharge` (
   `money` int(11) NOT NULL COMMENT '充值金额',
   `pay_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付方式',
   `create_time` int(11) NOT NULL COMMENT '充值创建时间',
-  `dealer_bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户（车商）',
+  `dealer_bank_account` varchar(255) DEFAULT NULL COMMENT '银行卡账户（车商）',
   `descr` varchar(255) NOT NULL COMMENT '充值备注',
   `recharge_type` tinyint(3) NOT NULL DEFAULT '1' COMMENT '充值方式:1线下充值',
-  `platform_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '平台账户',
-  `serial_num` varchar(255) NOT NULL DEFAULT '0' COMMENT '充值流水号',
-  `actual_amount` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '到账金额',
+  `platform_account` varchar(255) DEFAULT NULL COMMENT '平台账户',
+  `serial_num` varchar(255) DEFAULT NULL COMMENT '充值流水号',
+  `actual_amount` decimal(20,2) DEFAULT NULL COMMENT '到账金额',
   `fee` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '手续费',
   `fee_bear` varchar(255) NOT NULL DEFAULT '0' COMMENT '手续费承担方',
-  `dealer_bank` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户银行（车商）',
-  `dealer_bank_branch` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户网点（车商）',
+  `dealer_bank` varchar(255) DEFAULT NULL COMMENT '开户银行（车商）',
+  `dealer_bank_branch` varchar(255) DEFAULT NULL COMMENT '开户网点（车商）',
   PRIMARY KEY (`sn`),
-  KEY `status` (`status`)
+  KEY `status` (`status`),
+  KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='充值记录表';
 
 
@@ -1780,14 +1781,14 @@ CREATE TABLE `gemini_carry` (
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '提现方式',
   `create_time` int(11) NOT NULL COMMENT '提现创建时间',
   `update_time` int(11) NOT NULL COMMENT '更新提现时间',
-  `bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户(车商)',
+  `bank_account` varchar(255) DEFAULT NULL COMMENT '银行卡账户(车商)',
   `fee` int(11) DEFAULT '0' COMMENT '提现费用',
-  `serial_num` varchar(255) DEFAULT '0' COMMENT '提现银行流水',
-  `descr` varchar(255) NOT NULL DEFAULT '0' COMMENT '提现备注',
-  `actual_amount` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '提现到账金额',
-  `platform_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '平台账户',
-  `dealer_bank` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户银行（车商）',
-  `dealer_bank_branch` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户网点（车商）',
+  `serial_num` varchar(255) DEFAULT NULL COMMENT '提现银行流水',
+  `descr` varchar(255) DEFAULT NULL COMMENT '提现备注',
+  `actual_amount` decimal(20,2) DEFAULT NULL COMMENT '提现到账金额',
+  `platform_account` varchar(255) DEFAULT NULL COMMENT '平台账户',
+  `dealer_bank` varchar(255) DEFAULT NULL COMMENT '开户银行（车商）',
+  `dealer_bank_branch` varchar(255) DEFAULT NULL COMMENT '开户网点（车商）',
   PRIMARY KEY (`sn`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='提现表';
@@ -1823,11 +1824,11 @@ CREATE TABLE `gemini_order_repay` (
   `loantime` int(11) NOT NULL COMMENT '还款期限',
   `repay_period` tinyint(2) DEFAULT '0' COMMENT '还款期数',
   `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '还款备注',
-  `dealer_bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方账户',
-  `dealer_bank` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方开户银行',
-  `dealer_bank_branch` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方开户网点',
-  `serial_num` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方流水号',
-  `platform_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '平台账户',
+  `dealer_bank_account` varchar(255) DEFAULT NULL COMMENT '对方账户',
+  `dealer_bank` varchar(255) DEFAULT NULL COMMENT '对方开户银行',
+  `dealer_bank_branch` varchar(255) DEFAULT NULL COMMENT '对方开户网点',
+  `serial_num` varchar(255) DEFAULT NULL COMMENT '对方流水号',
+  `platform_account` varchar(255) DEFAULT NULL COMMENT '平台账户',
   `totalperiod` int(11) NOT NULL DEFAULT '0' COMMENT '总期数',
   `product_name` varchar(255) DEFAULT NULL COMMENT '产品名称',
   `interest_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '预计还款利息',
@@ -1835,8 +1836,10 @@ CREATE TABLE `gemini_order_repay` (
   `self_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '需还本金',
   `rate` decimal(10,0) NOT NULL DEFAULT '0' COMMENT '月利率',
   `dealer_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '车商ID',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='还款记录表';
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COMMENT='还款记录表';
 
 DROP TABLE IF EXISTS `gemini_dealer_credit`;
 CREATE TABLE `gemini_dealer_credit` (
