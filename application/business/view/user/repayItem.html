@@ -144,7 +144,7 @@
 				orderOpera = '<a class="orderOpera" data-toggle="modal">还款</a>'
 			}
 		  	html += '<tr class="odd gradex">'
-		  		+'<td class="order_id">' + data[index].sn + '</td>'
+		  		+'<td class="order_id" data="'+ data[index].order_id +'">' + data[index].sn + '</td>'
 		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>'+ formatDate(data[index].repay_time) +'</td>'
 		  		+'<td>'+ data[index].yewu_realname +'</td>'
@@ -195,7 +195,6 @@
 	});
 
 	jQuery(document).ready(function() {
-	   // App.init();
 	   TableManaged.init();
 	   ajaxRepayItem('','','');
 	   $('.selectParm').on('click','li',function(){
@@ -207,7 +206,7 @@
 	   });
 
 	   $('#table-repayItem').on('click','.orderOpera',function(){
-	   		var repay_orderId = $(this).parent('td').siblings('.order_id').text();
+	   		var repay_orderId = $(this).parent('td').siblings('.order_id').attr('data');
 	   		var repay_amount = $(this).parent('td').siblings('.order_loanLimit').attr('data');
 	   		$('#repay_orderId').val(repay_orderId);
 	   		$('#repay_amount').val(repay_amount);
@@ -221,7 +220,7 @@
 	   		var payPwd = $('#payPassword').val();
 	   		var bankcardChecked = $('input[name="bankcard"]:checked').val();
 	   		var bankcard = $('#'+bankcardChecked).val();
-	   		if(bankcard == ''){
+	   		if(typeof bankcard == 'undefined' || bankcard ==''){
 				ui_alert("请选择还款银行卡");
 	            return false;
 	   	 	}else if(payPwd == ''){
