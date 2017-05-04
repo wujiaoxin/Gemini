@@ -202,7 +202,7 @@
 				</div>
 				<div class="tab-pane" id="tab_1_4">
 				<!-- todo -->
-					<table class="table table-hover" id="repay">
+					<table class="table table-hover" id="repay-table">
 						<caption>还款计划</caption>
 						<thead>
 							<tr>
@@ -213,12 +213,6 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -365,6 +359,24 @@
 	$('span[name="bankcard"]').text(info['member_info']['bankcard']);
 	$('span[name="score"]').text(info['member_info']['score']);
 
+	// 还款计划
+	function repayTpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html +='<tr>'
+		  		+'<td>'+ data[index].repay_period +'</td>'
+		  		+'<td>'+ formatDate(data[index].repay_time) +'</td>'
+		  		+'<td>'+ formatAmount(data[index].repay_money) +'</td>'
+		  		+'<td>'+ g_repayStatus[data[index].status] +'</td>'
+		  		 +'</tr>';
+			}
+		}
+		return html;
+	}
+	$('#repay-table tbody').html(repayTpl(info.repay_info));
+
+	// 审批历史
 	function historyTpl(data){
 		var html = '';
 		var operate = {'view':'查看','loan':'放款审核','recharge':'充值','withdraw':'提现','receivable':'回款','datareview':'资料审核','loanlimit':'额度审核'};
