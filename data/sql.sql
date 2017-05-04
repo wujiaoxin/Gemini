@@ -1357,7 +1357,7 @@ INSERT INTO `gemini_menu` VALUES ('4', '会员', 'admin', 'user', '0', '33', 'ad
 INSERT INTO `gemini_menu` VALUES ('5', '运营', 'admin', 'th', '0', '44', 'admin/link/index', '0', '', '', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('6', '扩展', 'admin', 'tags', '0', '55', 'admin/addons/index', '0', '', '', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('21', '友链管理', 'admin', 'link', '5', '0', 'admin/link/index', '0', '', '运营管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('7', '更新缓存', 'admin', 'refresh', '1', '0', 'admin/index/clear', '0', '', '', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('7', '更新缓存', 'admin', 'refresh', '1', '0', 'admin/index/clear', '0', '', '首页', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('8', '配置管理', 'admin', 'cog', '2', '0', 'admin/config/group', '0', '', '系统配置', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('9', '菜单管理', 'admin', 'book', '2', '0', 'admin/menu/index', '0', '', '系统配置', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('10', '导航管理', 'admin', 'map-marker', '2', '0', 'admin/channel/index', '0', '', '系统配置', '0', '0');
@@ -1376,21 +1376,19 @@ INSERT INTO `gemini_menu` VALUES ('23', '插件列表', 'admin', 'usb', '6', '0'
 INSERT INTO `gemini_menu` VALUES ('24', '钩子列表', 'admin', 'code', '6', '0', 'admin/addons/hooks', '0', '', '插件管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('25', '自定义表单', 'admin', '', '5', '0', 'admin/form/index', '0', '', '运营管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('26', '伪静态规则', 'admin', '', '2', '0', 'admin/seo/rewrite', '0', '', '优化设置', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('28', '订单管理', 'admin', '', '1', '1', 'admin/order/index', '0', '', '', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('29', '车商管理', 'admin', 'cab', '1', '0', 'admin/dealer/index', '0', '', '', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('30', '客户管理', 'admin', '', '1', '0', '/admin/customer/index', '0', '', '', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('31', '资产渠道', 'admin', '', '1', '0', '/admin/assetchannel/index', '0', '', '渠道管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('33', '贷款申请', 'admin', '', '1', '0', '/admin/examine/application', '0', '', '审核管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('34', '资料复核', 'admin', '', '1', '0', '/admin/examine/dataReview', '0', '', '审核管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('35', '借款额度审批', 'admin', '', '1', '0', '/admin/examine/loanLimit', '0', '', '审核管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('37', '客户评级', 'admin', '', '1', '0', '/admin/risk/rating', '0', '', '风控策略', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('38', '黑名单', 'admin', '', '1', '0', '/admin/risk/blacklist', '0', '', '风控策略', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('39', '放款审核', 'admin', '', '1', '0', '/admin/finance/loan', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('40', '充值审核', 'admin', '', '1', '0', '/admin/finance/recharge', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('41', '提现审核', 'admin', '', '1', '0', '/admin/finance/withdraw', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('42', '还款审核', 'admin', '', '1', '0', '/admin/finance/receivable', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('43', '平台资金记录', 'admin', '', '1', '0', '/admin/finance/transaction', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('44', '回款管理', 'admin', '', '1', '0', '/admin/postloan/repayment', '0', '', '贷后管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('30', '客户管理', 'admin', 'user', '1', '0', '/admin/customer/index', '0', '', '首页', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('31', '资产渠道', 'admin', 'road', '1', '0', '/admin/assetchannel/index', '0', '', '渠道管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('33', '贷款申请', 'admin', 'align-justify', '1', '0', '/admin/examine/application', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('34', '资料复核', 'admin', 'align-center', '1', '0', '/admin/examine/dataReview', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('35', '借款额度审批', 'admin', 'align-right', '1', '0', '/admin/examine/loanLimit', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('37', '客户评级', 'admin', 'credit-card', '1', '0', '/admin/risk/rating', '0', '', '风控策略', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('38', '黑名单', 'admin', 'table', '1', '0', '/admin/risk/blacklist', '0', '', '风控策略', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('39', '放款审核', 'admin', 'file-text', '1', '0', '/admin/finance/loan', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('40', '充值审核', 'admin', 'th', '1', '0', '/admin/finance/recharge', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('41', '提现审核', 'admin', 'list', '1', '0', '/admin/finance/withdraw', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('42', '回款审核', 'admin', 'list-alt', '1', '0', '/admin/finance/receivable', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('43', '平台资金记录', 'admin', 'arrows-alt', '1', '0', '/admin/finance/transaction', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('44', '回款管理', 'admin', 'money', '1', '0', '/admin/postloan/repayment', '0', '', '贷后管理', '0', '0');
 
 -- ----------------------------
 -- Table structure for `gemini_model`
