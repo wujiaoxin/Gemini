@@ -290,4 +290,11 @@ class Order extends \app\common\model\Base {
 		return $info;
 	}
 
+	//获取订单编号
+	public function get_sn($id){
+
+		return $this->field('sn')->find($id);
+
+	}
+
 }

@@ -476,7 +476,7 @@ class Finance extends Admin {
 
 		}else{
 
-			$result = db('order_repay')->where('status','>',-3)->order('status')->select();
+			$result = db('order_repay')->where('status','-2')->order('status')->select();
 			foreach ($result as $k => $v) {
 
 				$sercher = serch_name($v['dealer_id']);
