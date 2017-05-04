@@ -12,40 +12,33 @@ use app\common\controller\Admin;
 
 class Postloan extends Admin {
 
-	/**
-	 * 用户管理首页
-	 * @author 麦当苗儿 <zuojiazi@vip.qq.com>
-	 */
-	public function index() {
-		$nickname      = input('nickname');
-		$map['status'] = array('egt', 0);
-		if (is_numeric($nickname)) {
-			$map['uid|nickname'] = array(intval($nickname), array('like', '%' . $nickname . '%'), '_multi' => true);
-		} else {
-			$map['nickname'] = array('like', '%' . (string) $nickname . '%');
-		}
-
-		$order = "uid desc";
-		$list  = model('User')->where($map)->order($order)->paginate(15);
-
-		$data = array(
-			'list' => $list,
-			'page' => $list->render(),
-		);
-		$this->assign($data);
-		$this->setMeta('用户信息');
-		return $this->fetch();
-	}
-
 	public function repayment() {
+
+		$repay = model('Repay');
+		$order = model('Order');
+
+		$result = $repay->select();
+
+		foreach ($result as $k => $v) {
+
+			$sercher = serch_name($v['dealer_id']);
+			
+			$order_sn = $order->get_sn($v['order_id']);
+			
+			$result[$k]['dealer_name'] = $sercher['dealer_name'];
+
+			$result[$k]['sn'] = $order_sn['sn'];
+
+		}
+		$data = array(
+
+			'infoStr' => json_encode($result)
+		);
+
+		$this->assign($data);
+
 		$this->setMeta('还款审核');
 		return $this->fetch();
 	}
-	public function view() {
-		$this->setMeta('项目详情');
-		return $this->fetch();
-	}
 
-
-	
 }
