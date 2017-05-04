@@ -4,15 +4,6 @@
     $real = db('member')->where('uid',$uid)->find();
     return $real['realname'];
   }
-  
-  function editmd($mid,$content){
-    $result = db('member')->where('uid',$mid)->update($content);
-    return $result;
-  }
-  function serch_order($order_id){
-    $result =db('order')->field('uid,type')->where('sn',$order_id)->find();
-    return $result;
-  }
   /*
   ** 操作资金
   ** name 操作类型(数字)
