@@ -37,7 +37,7 @@ class Postloan extends Admin {
 
 		$this->assign($data);
 
-		$this->setMeta('还款审核');
+		$this->setMeta('回款审核');
 		return $this->fetch();
 	}
 
