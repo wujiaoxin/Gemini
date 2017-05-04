@@ -262,7 +262,6 @@ var TableManaged = function () {
                     null,
                     null,
                     null,
-                    null,
                     { "bSortable": false }
                 ],
                 configData
