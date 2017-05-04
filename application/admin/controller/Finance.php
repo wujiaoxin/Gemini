@@ -114,7 +114,7 @@ class Finance extends Admin {
 
 					}else{
 
-						$datas['finance'] = '3';
+						$datas['finance'] = '4';
 
 						$datas['descr'] = $data['descr'];
 
