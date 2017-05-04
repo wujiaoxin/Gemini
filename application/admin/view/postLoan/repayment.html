@@ -2,7 +2,13 @@
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
 <link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
-<script type="text/javascript">
+<script>
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
 </script>
 {/block}
 {block name="body"}
@@ -17,18 +23,17 @@
 			<table class="table table-hover" id="table-postloan-Repayment">
 				<thead>
 					<tr>
-						<th>项目编号</th>
-						<th>项目类型</th>
-						<th>流程节点</th>
-						<th>客户姓名</th>
-						<th>客户证件号</th>
-						<th>业务员</th>
+						<th>订单编号</th>
+						<th>流水号</th>
 						<th>渠道名称</th>
-						<th>借款金额</th>
-						<th>借款期限</th>
-						<th>借款费用</th>
-						<th>项目状态</th>
-						<th>申请时间</th>
+						<th>回款期数</th>
+						<th>回款金额</th>
+						<th>到账金额</th>
+						<th>手续费</th>
+						<th>手续费承担方</th>
+						<th>类型</th>
+						<th>状态</th>
+						<th>备注</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -51,18 +56,17 @@
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
 		  		+'<td>' + data[index].sn + '</td>'
-		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
-		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
-		  		+'<td>'+ data[index].name +'</td>'
-		  		+'<td>'+ data[index].idcard_num +'</td>'
-		  		+'<td>'+ data[index].salesman +'</td>'
-		  		+'<td>'+ data[index].dealername +'</td>'
-		  		+'<td>￥'+ data[index].loan_limit +'</td>'
-		  		+'<td>'+ data[index].endtime +'天</td>'
-		  		+'<td>'+ data[index].fee +'</td>'
-		  		+'<td>'+ '正常' +'</td>'
-		  		+'<td>'+ data[index].create_time +'</td>'
-		  		+'<td><a href="/admin/postloan/view?id='+ data[index].id + '">审核</a></td>'
+		  		+'<td>' + data[index].serial_num + '</td>'
+		  		+'<td>'+ data[index].dealer_name +'</td>'
+		  		+'<td>'+ data[index].repay_period +'</td>'
+		  		+'<td>￥'+ data[index].repay_money +'</td>'
+		  		+'<td>￥'+ data[index].true_repay_money +'</td>'
+		  		+'<td>￥'+ data[index].manage_money +'</td>'
+		  		+'<td>'+ '无' +'</td>'
+		  		+'<td>'+ '线下转账' +'</td>'
+		  		+'<td>'+ g_repayStatus[data[index].status] +'</td>'
+		  		+'<td>'+ data[index].descr +'</td>'
+		  		+'<td><a class="opera" data-toggle="modal" data="'+ data[index].id+'">审核</a></td>'
 		  		 +'</tr>'
 			}
 		}
@@ -71,6 +75,7 @@
 	$('#table-postloan-Repayment tbody').html(tpl(info));
 
     $(function(){
+    	var id = '';
     	TableManaged.init();
     });
 </script>
