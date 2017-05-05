@@ -12,8 +12,12 @@
 <!-- <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'> -->
 <link rel="stylesheet" type="text/css" href="__CSS__/style.css"/>
 <style type="text/css" media="screen">
+
 	#sidebar-nav .subnav-block{
 		list-style: none;
+		padding-top: 4px;
+    	padding-bottom: 4px;
+    	background: rgba(0,0,0,.02);
 	}
 	#sidebar-nav a{
 		color: #777;
@@ -286,6 +290,7 @@
 		if(thisHref.indexOf(pathname) != '-1'){
 			$(this).find('a').addClass("active").parents('.subnav-block').show().parent('.subnav').addClass('active');
 			$(this).parent('.subnav-block').prev('.nav-header').find('span').addClass('open');
+			return false;
 	    }
 	});
 	$('.nav').on('click','.subnav',function(){
