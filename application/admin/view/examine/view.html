@@ -1,15 +1,25 @@
 {extend name="public/base"/}
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
+<link rel="stylesheet" type="text/css" href="__CSS__/lightGallery.css"/>
 <link rel="stylesheet" type="text/css" href="/public/business/css/selectArea.css">
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
 <style type="text/css">
-	.pic-block{
-		padding: 5px;
-	}
-	.pic-block img{
-		width: 100%;
-	}
+.pic-container {
+ 	padding: 0;
+}
+.pic-container li div {
+  	line-height: 240px;
+  	margin: 10px 0;
+  	overflow: hidden;
+  	min-width: 100px;
+  	border: 5px solid #dedede;
+  	border-radius: 5px;
+}
+.pic-container li img {
+  	width: 100%;
+  	border-radius: 3px;
+}
 </style>
 <script type="text/javascript">
 	var info = {};
@@ -60,7 +70,7 @@
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">借款金额</label>
+						    <label class="col-sm-2 control-label">申请金额</label>
 						    <div class="col-sm-10 pt5">
 						      	<span name="loan_limit" class="customer-info"></span>
 						    </div>
@@ -249,10 +259,8 @@
 					</table>
 				</div>
 				<div class="tab-pane" id="tab_1_6">
-					<div class="form-horizontal">
-						<div class="form-group pic-container">
-						</div>
-					</div>
+					<ul class="pic-container" id="documentInfo">
+					</ul>
 				</div>
 				<div class="tab-pane" id="tab_1_7">
 					<table class="table table-hover" id="examine-history">
@@ -341,6 +349,7 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/chosen.jquery.min.js"></script>
 <script type="text/javascript" src="/public/business/js/selectArea.js"></script>
 <script type="text/javascript" src="__JS__/manager.js"></script>
+<script type="text/javascript" src="__JS__/lightGallery.js"></script>
 <script>
 	$(".customer-info").each(function(){
 		var name = $(this).attr('name');
@@ -438,9 +447,11 @@
 				var form_key = this.form_key;
 				for(var index = 0; index < data.length; index++){
 					if(form_key == data[index].form_key){
-						html +='<div class="pic-block col-sm-3">'
-					  		+'<img src="' + data[index].path + '">'
-					  		+'</div>';
+						html +=  '<li data-src="' + data[index].path + '" class="col-xs-4 col-md-3">'
+			                      	+'<div>'
+			                        	+ '<a href="#"><img src="' + data[index].path + '"></a>'
+			                      	+'</div>'
+			                    +'</li>';
 					  	break;
 					}
 				}
@@ -451,6 +462,7 @@
 	}
 
 	$('#tab_1_6 .pic-container').html(picTpl(info.files));
+	$("#documentInfo").lightGallery();
 
 	$('#examine_limit').val(info['order_info']['loan_limit']);
 	$('#examineStatus').change(function(){
@@ -502,7 +514,7 @@ $(function(){
 	            }
 	        }
 		});
-	})
+	});
 
 	$('#orderExamineBtn').click(function(){
 		var ajaxUrl = '/admin/examine/dataReview';
