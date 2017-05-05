@@ -277,8 +277,14 @@ class examine extends Admin {
 
 		$member_info = db('member')->where('mobile', $order_info['mobile'])->find();
 
-		$credit_info = db('credit')->where('mobile', $order_info['mobile'])->order('id desc')->find();
-
+		$credit_info = db('credit')->field('credit_result,credit_level,credit_score')->where('mobile', $order_info['mobile'])->order('id desc')->find();
+		
+		$member_info['credit_result'] =$credit_info['credit_result'];
+		
+		$member_info['credit_level'] =$credit_info['credit_level'];
+		
+		$member_info['credit_level'] =$credit_info['credit_level'];
+		
 		$repay_info = db('order_repay')->where('order_id', $order_info['id'])->select();
 
 		$examine_log  =db('examine_log')->where('record_id',$id)->select();

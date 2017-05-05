@@ -114,7 +114,7 @@ class Finance extends Admin {
 
 					}else{
 
-						$datas['finance'] = '3';
+						$datas['finance'] = '4';
 
 						$datas['descr'] = $data['descr'];
 
@@ -476,15 +476,21 @@ class Finance extends Admin {
 
 		}else{
 
+			$order = model('Order');
+
 			$result = db('order_repay')->where('status','-2')->order('status')->select();
+
 			foreach ($result as $k => $v) {
+
+				$order_sn = $order->get_sn($v['order_id']);
 
 				$sercher = serch_name($v['dealer_id']);
 
 				$result[$k]['dealer_name'] = $sercher['dealer_name'];
 
-			}
+				$result[$k]['sn'] = $order_sn['sn'];
 
+			}
 			$data = array(
 
 				'infoStr' => json_encode($result)

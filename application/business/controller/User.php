@@ -406,7 +406,10 @@ use app\business\controller\Baseness;
 				if ($data['type']) {
 					$map['type'] = $data['type'];
 				}
-				
+				$dealer_id = db('Dealer')->field('forms')->where('mobile',$mobile)->find();
+				if ($dealer_id['forms'] == '1' || $dealer_id['forms'] == '3') {
+					$map['d.type'] = '';
+				}
 				if ($data['status']) {
 					if ($data['status'] == '2') {
 						$map['finance'] = ['>','2'];

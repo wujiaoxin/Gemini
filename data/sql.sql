@@ -1357,7 +1357,7 @@ INSERT INTO `gemini_menu` VALUES ('4', '会员', 'admin', 'user', '0', '33', 'ad
 INSERT INTO `gemini_menu` VALUES ('5', '运营', 'admin', 'th', '0', '44', 'admin/link/index', '0', '', '', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('6', '扩展', 'admin', 'tags', '0', '55', 'admin/addons/index', '0', '', '', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('21', '友链管理', 'admin', 'link', '5', '0', 'admin/link/index', '0', '', '运营管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('7', '更新缓存', 'admin', 'refresh', '1', '0', 'admin/index/clear', '0', '', '', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('7', '更新缓存', 'admin', 'refresh', '1', '0', 'admin/index/clear', '0', '', '首页', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('8', '配置管理', 'admin', 'cog', '2', '0', 'admin/config/group', '0', '', '系统配置', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('9', '菜单管理', 'admin', 'book', '2', '0', 'admin/menu/index', '0', '', '系统配置', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('10', '导航管理', 'admin', 'map-marker', '2', '0', 'admin/channel/index', '0', '', '系统配置', '0', '0');
@@ -1376,21 +1376,19 @@ INSERT INTO `gemini_menu` VALUES ('23', '插件列表', 'admin', 'usb', '6', '0'
 INSERT INTO `gemini_menu` VALUES ('24', '钩子列表', 'admin', 'code', '6', '0', 'admin/addons/hooks', '0', '', '插件管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('25', '自定义表单', 'admin', '', '5', '0', 'admin/form/index', '0', '', '运营管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('26', '伪静态规则', 'admin', '', '2', '0', 'admin/seo/rewrite', '0', '', '优化设置', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('28', '订单管理', 'admin', '', '1', '1', 'admin/order/index', '0', '', '', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('29', '车商管理', 'admin', 'cab', '1', '0', 'admin/dealer/index', '0', '', '', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('30', '客户管理', 'admin', '', '1', '0', '/admin/customer/index', '0', '', '', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('31', '资产渠道', 'admin', '', '1', '0', '/admin/assetchannel/index', '0', '', '渠道管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('33', '贷款申请', 'admin', '', '1', '0', '/admin/examine/application', '0', '', '审核管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('34', '资料复核', 'admin', '', '1', '0', '/admin/examine/dataReview', '0', '', '审核管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('35', '借款额度审批', 'admin', '', '1', '0', '/admin/examine/loanLimit', '0', '', '审核管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('37', '客户评级', 'admin', '', '1', '0', '/admin/risk/rating', '0', '', '风控策略', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('38', '黑名单', 'admin', '', '1', '0', '/admin/risk/blacklist', '0', '', '风控策略', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('39', '放款审核', 'admin', '', '1', '0', '/admin/finance/loan', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('40', '充值审核', 'admin', '', '1', '0', '/admin/finance/recharge', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('41', '提现审核', 'admin', '', '1', '0', '/admin/finance/withdraw', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('42', '还款审核', 'admin', '', '1', '0', '/admin/finance/receivable', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('43', '平台资金记录', 'admin', '', '1', '0', '/admin/finance/transaction', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('44', '回款管理', 'admin', '', '1', '0', '/admin/postloan/repayment', '0', '', '贷后管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('30', '客户管理', 'admin', 'user', '1', '0', '/admin/customer/index', '0', '', '首页', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('31', '资产渠道', 'admin', 'road', '1', '0', '/admin/assetchannel/index', '0', '', '渠道管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('33', '贷款申请', 'admin', 'align-justify', '1', '0', '/admin/examine/application', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('34', '资料复核', 'admin', 'align-center', '1', '0', '/admin/examine/dataReview', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('35', '借款额度审批', 'admin', 'align-right', '1', '0', '/admin/examine/loanLimit', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('37', '客户评级', 'admin', 'credit-card', '1', '0', '/admin/risk/rating', '0', '', '风控策略', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('38', '黑名单', 'admin', 'table', '1', '0', '/admin/risk/blacklist', '0', '', '风控策略', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('39', '放款审核', 'admin', 'file-text', '1', '0', '/admin/finance/loan', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('40', '充值审核', 'admin', 'th', '1', '0', '/admin/finance/recharge', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('41', '提现审核', 'admin', 'list', '1', '0', '/admin/finance/withdraw', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('42', '回款审核', 'admin', 'list-alt', '1', '0', '/admin/finance/receivable', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('43', '平台资金记录', 'admin', 'arrows-alt', '1', '0', '/admin/finance/transaction', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('44', '回款管理', 'admin', 'money', '1', '0', '/admin/postloan/repayment', '0', '', '贷后管理', '0', '0');
 
 -- ----------------------------
 -- Table structure for `gemini_model`
@@ -1756,18 +1754,19 @@ CREATE TABLE `gemini_recharge` (
   `money` int(11) NOT NULL COMMENT '充值金额',
   `pay_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付方式',
   `create_time` int(11) NOT NULL COMMENT '充值创建时间',
-  `dealer_bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户（车商）',
+  `dealer_bank_account` varchar(255) DEFAULT NULL COMMENT '银行卡账户（车商）',
   `descr` varchar(255) NOT NULL COMMENT '充值备注',
   `recharge_type` tinyint(3) NOT NULL DEFAULT '1' COMMENT '充值方式:1线下充值',
-  `platform_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '平台账户',
-  `serial_num` varchar(255) NOT NULL DEFAULT '0' COMMENT '充值流水号',
-  `actual_amount` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '到账金额',
+  `platform_account` varchar(255) DEFAULT NULL COMMENT '平台账户',
+  `serial_num` varchar(255) DEFAULT NULL COMMENT '充值流水号',
+  `actual_amount` decimal(20,2) DEFAULT NULL COMMENT '到账金额',
   `fee` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '手续费',
   `fee_bear` varchar(255) NOT NULL DEFAULT '0' COMMENT '手续费承担方',
-  `dealer_bank` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户银行（车商）',
-  `dealer_bank_branch` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户网点（车商）',
+  `dealer_bank` varchar(255) DEFAULT NULL COMMENT '开户银行（车商）',
+  `dealer_bank_branch` varchar(255) DEFAULT NULL COMMENT '开户网点（车商）',
   PRIMARY KEY (`sn`),
-  KEY `status` (`status`)
+  KEY `status` (`status`),
+  KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='充值记录表';
 
 
@@ -1780,14 +1779,14 @@ CREATE TABLE `gemini_carry` (
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '提现方式',
   `create_time` int(11) NOT NULL COMMENT '提现创建时间',
   `update_time` int(11) NOT NULL COMMENT '更新提现时间',
-  `bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '银行卡账户(车商)',
+  `bank_account` varchar(255) DEFAULT NULL COMMENT '银行卡账户(车商)',
   `fee` int(11) DEFAULT '0' COMMENT '提现费用',
-  `serial_num` varchar(255) DEFAULT '0' COMMENT '提现银行流水',
-  `descr` varchar(255) NOT NULL DEFAULT '0' COMMENT '提现备注',
-  `actual_amount` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '提现到账金额',
-  `platform_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '平台账户',
-  `dealer_bank` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户银行（车商）',
-  `dealer_bank_branch` varchar(255) NOT NULL DEFAULT '0' COMMENT '开户网点（车商）',
+  `serial_num` varchar(255) DEFAULT NULL COMMENT '提现银行流水',
+  `descr` varchar(255) DEFAULT NULL COMMENT '提现备注',
+  `actual_amount` decimal(20,2) DEFAULT NULL COMMENT '提现到账金额',
+  `platform_account` varchar(255) DEFAULT NULL COMMENT '平台账户',
+  `dealer_bank` varchar(255) DEFAULT NULL COMMENT '开户银行（车商）',
+  `dealer_bank_branch` varchar(255) DEFAULT NULL COMMENT '开户网点（车商）',
   PRIMARY KEY (`sn`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='提现表';
@@ -1823,11 +1822,11 @@ CREATE TABLE `gemini_order_repay` (
   `loantime` int(11) NOT NULL COMMENT '还款期限',
   `repay_period` tinyint(2) DEFAULT '0' COMMENT '还款期数',
   `descr` varchar(255) NOT NULL DEFAULT '' COMMENT '还款备注',
-  `dealer_bank_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方账户',
-  `dealer_bank` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方开户银行',
-  `dealer_bank_branch` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方开户网点',
-  `serial_num` varchar(255) NOT NULL DEFAULT '0' COMMENT '对方流水号',
-  `platform_account` varchar(255) NOT NULL DEFAULT '0' COMMENT '平台账户',
+  `dealer_bank_account` varchar(255) DEFAULT NULL COMMENT '对方账户',
+  `dealer_bank` varchar(255) DEFAULT NULL COMMENT '对方开户银行',
+  `dealer_bank_branch` varchar(255) DEFAULT NULL COMMENT '对方开户网点',
+  `serial_num` varchar(255) DEFAULT NULL COMMENT '对方流水号',
+  `platform_account` varchar(255) DEFAULT NULL COMMENT '平台账户',
   `totalperiod` int(11) NOT NULL DEFAULT '0' COMMENT '总期数',
   `product_name` varchar(255) DEFAULT NULL COMMENT '产品名称',
   `interest_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '预计还款利息',
@@ -1835,8 +1834,10 @@ CREATE TABLE `gemini_order_repay` (
   `self_money` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '需还本金',
   `rate` decimal(10,0) NOT NULL DEFAULT '0' COMMENT '月利率',
   `dealer_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '车商ID',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='还款记录表';
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COMMENT='还款记录表';
 
 DROP TABLE IF EXISTS `gemini_dealer_credit`;
 CREATE TABLE `gemini_dealer_credit` (
