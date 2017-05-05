@@ -92,6 +92,7 @@ class Order extends Api {
 			}*/
 			
 			$sort = "id desc";
+			$map .= ' and credit_status = 3';
 			$list  = db('Order')->where($map)->order($sort)->paginate(15);
 			
 			$resp['code'] = 1;
