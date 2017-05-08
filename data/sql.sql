@@ -1902,3 +1902,21 @@ CREATE TABLE `gemini_credit` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户授信记录表';
 
 
+DROP TABLE IF EXISTS `gemini_member_blacklist`;
+CREATE TABLE `gemini_member_blacklist` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL COMMENT '用户id',
+  `idcard` varchar(64) NOT NULL COMMENT '身份证号码',
+  `mobile` varchar(20) NOT NULL COMMENT '客户手机号',
+  `name` varchar(255) NOT NULL COMMENT '用户名',
+  `order_id` int(11) NOT NULL DEFAULT '0' COMMENT '订单id',
+  `type` tinyint(1) NOT NULL COMMENT '风险等级 1欺诈黑名单 2不良记录黑名单 3政策禁入黑名单 4第三方黑名单 5其他',
+  `data_sources` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据来源 1系统 2第三方',
+  `risk_grade` varchar(255) NOT NULL COMMENT '风险等级划分原因',
+  `device_number` varchar(255) NOT NULL COMMENT '设备号',
+  `create_time` int(11) NOT NULL,
+  `descr` varchar(255) DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `type` (`type`)
+) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='黑名单记录表';
