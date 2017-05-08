@@ -31,8 +31,9 @@ class risk extends Admin {
 			$res_crd = db('credit')->where('id', $data['id'])->find();
 			if ($data['refuseReason'] == '3' && $res_crd['credit_result'] == '0') {
 				$risks = model('Risk');
-				$res = db('credit')->alias('c')->field('c.uid,c.order_id,m.realname,m.idcard')->join('__MEMBER__ m','c.uid = m.uid')->where('c.id',$data['id'])->find();
+				$res = db('credit')->alias('c')->field('c.uid,c.order_id,m.realname,m.idcard,m.bankcard')->join('__MEMBER__ m','c.uid = m.uid')->where('c.id',$data['id'])->find();
 				$datas['idcard'] = $res['idcard'];
+				$datas['bankcard'] = $res['bankcard'];
 				$datas['uid'] = $res['uid'];
 				$datas['order_id'] = $res['order_id'];
 				$datas['mobile'] = $data['mobile'];
@@ -74,18 +75,12 @@ class risk extends Admin {
 			$data = input('post.');
 			$result = db('Member_blacklist')->where('id', $data['id'])->update($data);
 			if ($result) {
-				return $this->success("提交成功！", url('rating'));
+				return $this->success("提交成功！", url('blacklist'));
 			} else {
 				return $this->error("提交失败！");
 			}
 		}else{
 			$result = $risks->select();
-			if ($result) {
-				foreach ($result as $k => $v) {
-					$res = model('User')->field('bankcard')->where('uid',$v['uid'])->find();
-					$result[$k]['bankcard'] = $res['bankcard'];
-				}
-			}
 			$data = array(
 				'infoStr' =>json_encode($result),
 			);
@@ -98,7 +93,31 @@ class risk extends Admin {
 	}
 
 	public function addBlacklist() {
-		$this->setMeta('黑名单');
-		return $this->fetch('addBlacklist');
+		$risks = model('Risk');
+		if (IS_POST) {
+			$data = input('post.');
+			$res = $risks->where('id',$data['id'])->find();
+			if ($res['status'] == 0) {
+				$data['status'] = '1';
+				$result = $risks->where('id', $data['id'])->update($data);
+			}else{
+				return $this->error('已审核');
+			}
+			
+			if ($result) {
+				return $this->success("提交成功！", url('blacklist'));
+			} else {
+				return $this->error("提交失败！");
+			}
+		}else{
+			$id = input('id');
+			$result = $risks->where('id',input('id'))->find();
+			$data = array(
+				'infoStr' =>json_encode($result),
+			);
+			$this->assign($data);
+			$this->setMeta('黑名单');
+			return $this->fetch('addBlacklist');
+		}
 	}
 }
