@@ -46,20 +46,21 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + '10001' + '</td>'
-		  		+'<td>'+ '张三丰' +'</td>'
-		  		+'<td>'+ '345629291001'+'</td>'
-		  		+'<td>'+ '18934093421' +'</td>'
-		  		+'<td>'+ 'sn121212' +'</td>'
-		  		+'<td>'+ '8342323232323' +'</td>'
-		  		+'<td>'+ '系统' +'</td>'
-		  		+'<td>'+ '2017-02-34' +'</td>'
+		  		+'<td>' + data[index].uid + '</td>'
+		  		+'<td>'+ data[index].name +'</td>'
+		  		+'<td>'+ data[index].idcard+'</td>'
+		  		+'<td>'+ data[index].mobile +'</td>'
+		  		+'<td>'+ data[index].device_number +'</td>'
+		  		+'<td>'+ data[index].bankcard+'</td>'
+		  		+'<td>'+ data[index].data_sources +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		+'<td><a href="/admin/risk/addBlacklist?id='+ data[index].id + '">审核</a></td>'
 		  		 +'</tr>'
 			}
 		}
 		return html;
 	};
+
 	$('#table-blacklist tbody').html(tpl(info));
 
     $(function(){
