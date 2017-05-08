@@ -31,8 +31,9 @@ class risk extends Admin {
 			$res_crd = db('credit')->where('id', $data['id'])->find();
 			if ($data['refuseReason'] == '3' && $res_crd['credit_result'] == '0') {
 				$risks = model('Risk');
-				$res = db('credit')->alias('c')->field('c.uid,c.order_id,m.realname,m.idcard')->join('__MEMBER__ m','c.uid = m.uid')->where('c.id',$data['id'])->find();
+				$res = db('credit')->alias('c')->field('c.uid,c.order_id,m.realname,m.idcard,m.bankcard')->join('__MEMBER__ m','c.uid = m.uid')->where('c.id',$data['id'])->find();
 				$datas['idcard'] = $res['idcard'];
+				$datas['bankcard'] = $res['bankcard'];
 				$datas['uid'] = $res['uid'];
 				$datas['order_id'] = $res['order_id'];
 				$datas['mobile'] = $data['mobile'];
@@ -80,12 +81,6 @@ class risk extends Admin {
 			}
 		}else{
 			$result = $risks->select();
-			if ($result) {
-				foreach ($result as $k => $v) {
-					$res = model('User')->field('bankcard')->where('uid',$v['uid'])->find();
-					$result[$k]['bankcard'] = $res['bankcard'];
-				}
-			}
 			$data = array(
 				'infoStr' =>json_encode($result),
 			);
