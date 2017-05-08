@@ -26,7 +26,20 @@ class risk extends Admin {
 	public function ratingInfo($id = null) {
 		
 		if (IS_POST) {
-			$data = input('post.');			
+			$data = input('post.');	
+			//黑名单
+			$res_crd = db('credit')->where('id', $data['id'])->find();
+			if ($data['refuseReason'] == '3' && $res_crd['credit_result'] == '0') {
+				$risks = model('Risk');
+				$res = db('credit')->alias('c')->field('c.uid,c.order_id,m.realname,m.idcard')->join('__MEMBER__ m','c.uid = m.uid')->where('c.id',$data['id'])->find();
+				$datas['idcard'] = $res['idcard'];
+				$datas['uid'] = $res['uid'];
+				$datas['order_id'] = $res['order_id'];
+				$datas['mobile'] = $data['mobile'];
+				$datas['name'] = $res['realname'];
+				$datas['data_sources'] = '1';
+				$risks->save($datas);
+			}
 			$result = db('credit')->where('id', $data['id'])->fetchSQL(false)->update($data);			
 			//var_dump($result);
 			/*if($data['credit_result'] == 1){//授信审核通过
@@ -35,6 +48,9 @@ class risk extends Admin {
 				db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);//TODO result判断 事务操作 保证数据完整性
 			}
 			*/
+
+			
+
 			if ($result) {
 				return $this->success("提交成功！", url('rating'));
 			} else {
@@ -53,8 +69,32 @@ class risk extends Admin {
 	}
 
 	public function blacklist() {
-		$this->setMeta('黑名单');
-		return $this->fetch();
+		$risks = model('Risk');
+		if (IS_POST) {
+			$data = input('post.');
+			$result = db('Member_blacklist')->where('id', $data['id'])->update($data);
+			if ($result) {
+				return $this->success("提交成功！", url('rating'));
+			} else {
+				return $this->error("提交失败！");
+			}
+		}else{
+			$result = $risks->select();
+			if ($result) {
+				foreach ($result as $k => $v) {
+					$res = model('User')->field('bankcard')->where('uid',$v['uid'])->find();
+					$result[$k]['bankcard'] = $res['bankcard'];
+				}
+			}
+			$data = array(
+				'infoStr' =>json_encode($result),
+			);
+			$this->assign($data);
+			$this->setMeta('黑名单');
+			return $this->fetch();
+		}
+
+	
 	}
 
 	public function addBlacklist() {
