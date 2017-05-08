@@ -1907,7 +1907,7 @@ CREATE TABLE `gemini_member_blacklist` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL COMMENT '用户id',
   `idcard` varchar(64) NOT NULL COMMENT '身份证号码',
-  `backcard` varchar(64) DEFAULT '' COMMENT '银行卡号',
+  `bankcard` varchar(64) DEFAULT '' COMMENT '银行卡号',
   `mobile` varchar(20) NOT NULL COMMENT '客户手机号',
   `name` varchar(255) NOT NULL COMMENT '用户名',
   `order_id` int(11) NOT NULL DEFAULT '0' COMMENT '订单id',

@@ -93,7 +93,17 @@ class risk extends Admin {
 	}
 
 	public function addBlacklist() {
-		$this->setMeta('黑名单');
-		return $this->fetch('addBlacklist');
+		$risks = model('Risk');
+		if (IS_POST) {
+			# code...
+		}else{
+			$result = $risks->select();
+			$data = array(
+				'infoStr' =>json_encode($result),
+			);
+			$this->assign($data);
+			$this->setMeta('黑名单');
+			return $this->fetch('addBlacklist');
+		}
 	}
 }
