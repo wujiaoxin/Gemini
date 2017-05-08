@@ -26,10 +26,10 @@ class risk extends Admin {
 	public function ratingInfo($id = null) {
 		
 		if (IS_POST) {
-			$data = input('post.');	
+			$data = input('post.');
 			//黑名单
 			$res_crd = db('credit')->where('id', $data['id'])->find();
-			if ($data['refuseReason'] == '3' && $res_crd['credit_result'] == '0') {
+			if ($data['refuse_reason'] == '3' && $res_crd['credit_result'] == '0') {
 				$risks = model('Risk');
 				$res = db('credit')->alias('c')->field('c.uid,c.order_id,m.realname,m.idcard,m.bankcard')->join('__MEMBER__ m','c.uid = m.uid')->where('c.id',$data['id'])->find();
 				$datas['idcard'] = $res['idcard'];
@@ -40,6 +40,15 @@ class risk extends Admin {
 				$datas['name'] = $res['realname'];
 				$datas['data_sources'] = '1';
 				$risks->save($datas);
+			}
+			if ($data['credit_result'] == '-1') {
+				if ($data['refuse_reason'] == '1'  && $res_crd['credit_result'] == '0') {
+					$data['credit_result'] = $data['treatment'];
+					$data['refuse_reason'] = '1';
+				}
+			}
+			if ($res_crd['credit_result'] != '0') {
+				return $this->error("已审核！");
 			}
 			$result = db('credit')->where('id', $data['id'])->fetchSQL(false)->update($data);			
 			//var_dump($result);
