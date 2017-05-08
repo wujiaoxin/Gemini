@@ -75,7 +75,7 @@ class risk extends Admin {
 			$data = input('post.');
 			$result = db('Member_blacklist')->where('id', $data['id'])->update($data);
 			if ($result) {
-				return $this->success("提交成功！", url('rating'));
+				return $this->success("提交成功！", url('blacklist'));
 			} else {
 				return $this->error("提交失败！");
 			}
@@ -95,9 +95,23 @@ class risk extends Admin {
 	public function addBlacklist() {
 		$risks = model('Risk');
 		if (IS_POST) {
-			# code...
+			$data = input('post.');
+			$res = $risks->where('id',$data['id'])->find();
+			if ($res['status'] == 0) {
+				$data['status'] = '1';
+				$result = $risks->where('id', $data['id'])->update($data);
+			}else{
+				return $this->error('已审核');
+			}
+			
+			if ($result) {
+				return $this->success("提交成功！", url('blacklist'));
+			} else {
+				return $this->error("提交失败！");
+			}
 		}else{
-			$result = $risks->select();
+			$id = input('id');
+			$result = $risks->where('id',input('id'))->find();
 			$data = array(
 				'infoStr' =>json_encode($result),
 			);
