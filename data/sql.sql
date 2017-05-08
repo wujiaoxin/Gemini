@@ -1898,6 +1898,7 @@ CREATE TABLE `gemini_credit` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `descr` varchar(255) NOT NULL DEFAULT 'NULL' COMMENT '备注',
+  `refuse_reason` tinyint(1) NOT NULL DEFAULT '0' COMMENT '拒绝原因 0通过 1更换资料 2欺诈 3黑名单',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户授信记录表';
 
