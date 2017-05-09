@@ -349,6 +349,7 @@
                 $info = $('<p class="error"></p>'),
 
                 showError = function( code ) {
+                	var text = '';
                     switch( code ) {
                         case 'exceed_size':
                             text = '文件大小超出';
