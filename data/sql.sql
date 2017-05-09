@@ -1898,7 +1898,29 @@ CREATE TABLE `gemini_credit` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `descr` varchar(255) NOT NULL DEFAULT 'NULL' COMMENT '备注',
+  `refuse_reason` tinyint(1) NOT NULL DEFAULT '0' COMMENT '拒绝原因 0通过 1更换资料 2欺诈 3黑名单',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户授信记录表';
 
 
+DROP TABLE IF EXISTS `gemini_member_blacklist`;
+CREATE TABLE `gemini_member_blacklist` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL COMMENT '用户id',
+  `idcard` varchar(64) NOT NULL COMMENT '身份证号码',
+  `bankcard` varchar(64) DEFAULT '' COMMENT '银行卡号',
+  `mobile` varchar(20) NOT NULL COMMENT '客户手机号',
+  `name` varchar(255) NOT NULL COMMENT '用户名',
+  `order_id` int(11) NOT NULL DEFAULT '0' COMMENT '订单id',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态 1通过 2拒绝 0未审核',
+  `type` tinyint(1) NOT NULL COMMENT '黑名单类型 1欺诈黑名单 2不良记录黑名单 3政策禁入黑名单 4第三方黑名单 5其他',
+  `data_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '黑名单类型(数据) 1.设备信息黑名单 2.客户信息黑名单 3.区域及渠道黑名单 4.公检法黑名单 5.银行及小贷黑名单 6.其他',
+  `data_sources` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据来源 1系统 2第三方',
+  `risk_grade` varchar(255) NOT NULL COMMENT '风险等级划分原因',
+  `device_number` varchar(255) NOT NULL COMMENT '设备号',
+  `create_time` int(11) NOT NULL,
+  `descr` varchar(255) DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `type` (`type`)
+) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='黑名单记录表';
