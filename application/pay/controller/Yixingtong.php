@@ -36,7 +36,7 @@ class Yixingtong extends Base {
 		$imageUrl2 = "";
 
 		
-		$service = "installmentSign";
+		$service = "installmentBankCardVerify";
 
 		/*$data  = array( 'service' => $service,
 						'partnerId' => $partnerId,
@@ -100,8 +100,19 @@ class Yixingtong extends Base {
 						'eachOtherAmount' => '[0,0,0,0,0,0,0,0,0]',						
 					   //'sign' => 'BE11C991DE06605162B3B8A98F84E480'
 					   );			   
-					   
-					   
+					 
+			/*$data = array(
+				'service'=>$service,
+				'partnerId'=>$partnerId,
+				'orderNo'=>'2007050512345678912345678' . rand(100000,999999),
+				'signType'=>'MD5',
+				'realName'=>'张三',
+				'certNo'=>'450225198808149288',
+				'bankCardNo'=>'6228480402637874213',
+				'mobileNo'=>'15658099685',
+				'outOrderNo'=>'42587-20160808135848315',
+				'notifyUrl'=>'http://lo.vpdai.com'
+			);	*/	   
 		ksort($data);
 
 		//$dataStr = http_build_query($data);
@@ -149,5 +160,70 @@ class Yixingtong extends Base {
 		//$this->assign('url', $url);
 		$this->assign('results', $results);
 		return $this->fetch();
+	}
+	//签约分期收款同步步 TODO
+	public function returnurl(){
+		$data = json_decode($_REQUEST,true);
+		$resultCode = $data['resultCode'];
+		$success = $data['success'];
+
+		if (!$success) {
+			$resp['code'] == '0';
+			$resp['msg'] = '接口调用异常';
+			return $resp;
+		}
+
+		if ($data['resultMessage']) {
+			$resp['msg'] = $data['resultMessage'];
+		}
+
+		switch ($resultCode) {
+			case 'EXECUTE_SUCCESS':
+				$resp['code'] = '1';
+				return $resp;
+				break;
+			case 'EXECUTE_PROCESSING':
+				$resp['code'] = '2';
+				return $resp;
+				break;
+			default:
+				$resp['code'] = '0';
+				return $resp;
+				break;
+		}
+	}
+	//签约分期收款异步 TODO
+	public function signstage(){
+
+		$data = json_decode($_REQUEST,true);
+		$resultCode = $data['resultCode'];
+		$success = $data['success'];
+
+		if (!$success) {
+			$resp['code'] == '0';
+			$resp['msg'] = '接口调用异常';
+			return $resp;
+		}
+
+		if ($resultCode == 'EXECUTE_SUCCESS') {//处理成功
+
+			/*$info = array(
+				'contractNo'=>$data['contractNo'],
+				'paperContractNo'=>$data['paperContractNo'],
+				'status'=>$data['status'],
+				'bankCode'=>$data['bankCode'],
+				'bankName'=>$data['bankName'],
+				'bankCardType'=>$data['bankCardType'],
+				);
+
+			$resp['code'] = '1';
+			$resp['msg'] = '银行卡签约成功';*/
+			echo "success";exit();
+		}elseif ($resultCode == 'EXECUTE_PROCESSING') {//处理中
+			
+		}else{//处理失败
+			$resp['code'] = '0';
+			$resp['msg'] = $data['description'];
+		}
 	}
 }
