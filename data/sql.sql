@@ -1920,7 +1920,5 @@ CREATE TABLE `gemini_member_blacklist` (
   `device_number` varchar(255) NOT NULL COMMENT '设备号',
   `create_time` int(11) NOT NULL,
   `descr` varchar(255) DEFAULT NULL COMMENT '描述',
-  PRIMARY KEY (`id`),
-  KEY `uid` (`uid`),
-  KEY `type` (`type`)
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='黑名单记录表';
