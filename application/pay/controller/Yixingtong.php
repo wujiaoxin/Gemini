@@ -166,90 +166,133 @@ class Yixingtong extends Base {
 		$this->assign('results', $results);
 		return $this->fetch();
 	}
-	//签约分期收款同步步 TODO
-	public function returnurl(){
-		$data = json_decode($_REQUEST,true);
-		$resultCode = $data['resultCode'];
-		$success = $data['success'];
 
-		if (!$success) {
-			$resp['code'] = '0';
-			$resp['msg'] = '接口调用异常';
-			return $resp;
-		}
+	//签约分期收款TODO
+	public function installment($idcard = '', $name = '', $bankcard='', $mobile='', $password = ""){
+		$service = "installmentSign";
 
-		$info = array(
-				'descr'=>$data['resultMessage'],
-				'contractno'=>$data['contractNo'],
-				'update_time'=>time()
+		//可变数据(需要传参)
+		$data  = array( 
+			'service' => $service,
+			'orderNo' => '2007050512345678912345678' . rand(100000,999999),
+			'signType' =>'MD5',
+			'notifyUrl' => 'http://mengxd.com/index.php/index/index/signstage.html',
+			'realName' => '小花',
+			'certNo' => '130204199801014813',
+			'certValidTime' => '20350918',
+			'imageUrl2' => 'https://v1.vpdai.com/uploads/order_files/20170113/ab58b08d3e8f33235c02e620fd0c439a.jpg',
+			'certBackImageUrl' => 'https://v1.vpdai.com/uploads/order_files/20170113/90ba50c70dd55a670602ccee32038109.jpg',
+			'mobileNo' => '15658099685',
+			'bankCardNo' => '6228480438657589174',
+			'imageUrl3' => 'https://v1.vpdai.com/uploads/order_files/20170113/ab58b08d3e8f33235c02e620fd0c439a.jpg',
+			'profession' => '工程师',
+			'address' => '浙江省杭州市滨江区潮人汇',
+			'paperContractNo' => '20170505' . rand(100000,999999),
+			'imageUrl1' => 'https://v1.vpdai.com/uploads/order_files/20170113/ab58b08d3e8f33235c02e620fd0c439a.jpg',
+			'productName' => '90贷',
+			'productPrice' => '10',
+			'totalCapitalAmount' => '9',
+			'installmentPolicy' => 'CUSTOMIZE',
+			'firstRepayDate' => '2017-05-20',
+			'interestRate' => 100,
+			'otherRate' => 0,
+			'totalTimes' => 9,
+			'repayType' => 'SELF_REPAY',
+			'eachTotalAmount' => '[2,2,2,2,2,2,2,2,2]',
+			'eachCapitalAmount' => '[1,1,1,1,1,1,1,1,1]',
+			'eachInterestAmount' => '[1,1,1,1,1,1,1,1,1]',
+			'eachOtherAmount' => '[0,0,0,0,0,0,0,0,0]',
+		   );
+		$res = array(
+			'orderno'=>$data['orderNo'],
+			'papercontract'=>$data['paperContractNo'],
 			);
+		db('member_withhold')->insert($res);
 
-		if ($data['resultMessage']) {
-			$info['descr'] = $data['resultMessage'];
+		$result = \com\Withhold::installSign($data);
+
+		if ($result['resultCode'] == 'EXECUTE_SUCCESS') {
+			$resp['code'] = '1';
+			$resp['data'] = $result;
+
+		}elseif ($result['resultCode'] == 'EXECUTE_PROCESSING') {
+			$resp['code'] = '1';
+			$resp['data'] = $result;
+		}else{
+			$resp['code'] = '0';
+			$resp['msg'] = '银行卡验证失败';
 		}
-		switch ($resultCode) {
-			case 'EXECUTE_SUCCESS'://处理成功
-				$info['status'] = '1';
-				db('member_withhold')->where('orderno',$data['orderNo'])->update($info);
-				break;
-			case 'EXECUTE_PROCESSING'://处理中
-				$info['status'] = '2';
-				db('member_withhold')->where('orderno',$data['orderNo'])->update($info);
-				break;
-			default://处理失败
-				$info['status'] = '-1';
-				db('member_withhold')->where('orderno',$data['orderNo'])->update($info);
-				break;
-		}
+		return json($resp);
 	}
+
 
 	//签约分期收款异步 TODO
 	public function signstage(){
-		// $aa = '{"sign": "944c93e95308de0e82e5c2b4272bb419", "protocol": "httpJson", "orderNo": "2007050512345678912345678432501", "signType": "MD5", "service": "installmentSign", "resultCode": "EXECUTE_SUCCESS", "contractNo": "000g02k01gyzk3bkfk00", "partnerId": "20160831020000752643", "resultMessage": "成功", "success": true, "version": "1.0", "status" : "DEALING", "signStatus" : "SUCCESS","notifyTime" : "2016-11-18 15:22:12"}';
-		// $data = json_decode($aa,true);
-
-		$data = json_decode($_REQUEST,true);
-		$resultCode = $data['resultCode'];
+		/*异步处理结果
+		{
+		    "bankCode": "ABC",
+		    "orderNo": "2007050512345678912345678676572",
+		    "contractNo": "000g03001gz36sapyw00",
+		    "notifyTime": "2017-05-11 11:40:07",
+		    "signStatus": "SUCCESS",
+		    "bankCardType": "DEBIT_CARD",
+		    "resultCode": "comn_04_0001",
+		    "sign": "6e8e9f84f303d37ab4821ecb9374e147",
+		    "description": "签约成功",
+		    "errorCode": "comn_04_0001",
+		    "standByBankCardType": "",
+		    "bankName": "农业银行",
+		    "overdueFineDay": "0",
+		    "resultMessage": "签约成功",
+		    "version": "1.0",//
+		    "paperContractNo": "20170505584263",//
+		    "protocol": "httpPost",
+		    "overdueRemitDay": "0",
+		    "service": "installmentSign",
+		    "success": "true",
+		    "signType": "MD5",//
+		    "partnerId": "20160831020000752643",//
+		    "time": "0",//
+		    "status": "INIT"
+		}
+		*/
+		$data = input('post.');
 		$success = $data['success'];
-
 		if (!$success) {
 			$resp['code'] = '0';
 			$resp['msg'] = '接口调用异常';
-			return $resp;
+			return ;
 		}
-
-		switch ($data['status']) {
-			case 'CHECK_NEEDED':
-				$info['status'] = '1';
-			case 'CHECK_REJECT':
-				$info['status'] = '2';
-			case 'INIT':
-				$info['status'] = '3';
-			case 'DEALING':
-				$info['status'] = '4';
-			case 'SIGN_FAIL':
-				$info['status'] = '-1';
+		if ($data['status'] == 'CHECK_NEEDED') {
+			$info['status'] = '1';
+		}elseif ($data['status'] == 'CHECK_REJECT') {
+			$info['status'] = '2';
+		}elseif ($data['status'] == 'INIT') {
+			$info['status'] = '3';
+		}elseif ($data['status'] == 'DEALING') {
+			$info['status'] = '4';
+		}elseif ($data['status'] == 'SIGN_FAIL') {
+			$info['status'] = '-1';
 		}
-		$info['update_time'] = strtotime($data['notifyTime']);
-		$info['contractno']=$data['contractNo'];
+		$time = strtotime($data['notifyTime']);
+		
+		if ($data['signStatus'] == 'SUCCESS') {
 
-
-		if ($data['signStatus'] == 'SUCCESS') {//处理成功
-			$info['signStatus']='1';
-			$info['bankcode']=$data['bankCode'];
-			$info['bankname']=$data['bankName'];
-			$info['bankcard_type']=$data['bankCardType'];
-			$info['descr']=$data['resultMessage'];
-			db('member_withhold')->where('orderno',$data['orderNo'])->update($info);
+			$info['bankcode'] =$data['bankCode'];
+			$info['contractno'] =$data['contractNo'];
+			$info['bankcard_type'] =$data['bankCardType'];
+			$info['bankname'] =$data['bankName'];
+			$info['update_time'] =$time;
+			$info['descr'] =$data['resultMessage'];
+			$info['signstatus'] = '1';
 			
+			db('member_withhold')->where('orderNo',$data['orderNo'])->update($info);
 		}
-
 		if ($data['signStatus'] == 'UPAYSIGN_FAIL') {
 			$info['signStatus']='3';
 			$info['descr'] = $data['description'].$data['errorCode'];
 			db('member_withhold')->where('orderno',$data['orderNo'])->update($info);
 		}
-
 		echo "success";exit();
 	}
 }
