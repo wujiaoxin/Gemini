@@ -16,7 +16,7 @@ class Account extends Baseness {
 		// var_dump($_SESSION);die;
 		if (IS_POST) {
 			$data = input('post.');
-	      	$mobile = session("mobile");
+	      	$mobile = session("business_mobile");
 			if (isset($data['smsVerify'])) {
 				$storeSmsCode = session('smsCode');
 				if($data['smsVerify'] != $storeSmsCode){
@@ -69,7 +69,7 @@ class Account extends Baseness {
 				}
   			}
 		}else{
-			$mobile = session("mobile");
+			$mobile = session("business_mobile");
       		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code')->where('m.mobile',$mobile)->find();
       		// var_dump($account);die;
 	      	if ($account){
@@ -89,7 +89,7 @@ class Account extends Baseness {
 	}
 	
 	public function balance() {
-	    $mobile = session('mobile');
+	    $mobile = session('business_mobile');
 	    $uid = session('user_auth.uid');
 	    if (IS_POST) {
 	    	$data = input('post.');
@@ -166,7 +166,6 @@ class Account extends Baseness {
 			$uid = session('user_auth.uid');
 			// var_dump($data);die;
 			if (is_numeric($data['money'])){
-
 				//加入资金记录
 				money_record($data, $uid, 3, 0);
 			    $resp = modify_account($data,$uid,'recharge','INSERT');
@@ -180,7 +179,7 @@ class Account extends Baseness {
      * 提现
      * */
   	public function withdraw() {
-		$mobile = session('mobile');
+		$mobile = session('business_mobile');
 		$uid = session('user_auth.uid');
 		if(IS_POST){
 			$data = input('post.');
@@ -235,7 +234,7 @@ class Account extends Baseness {
     }
 
 	public function bankcard() {
-		$mobile = session('mobile');
+		$mobile = session('business_mobile');
 		$uid = session('user_auth.uid');
 		$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 		$data = array(
@@ -274,7 +273,7 @@ class Account extends Baseness {
 		return $this->fetch();
 	}
 	public function lineOfCredit() {
-		$mobile = session('mobile');
+		$mobile = session('business_mobile');
 		$credit_code = db('dealer')->field('lines_ky')->where('mobile',$mobile)->find();
 		if (IS_POST) {
 			$data = input('post.');
@@ -304,7 +303,7 @@ class Account extends Baseness {
 		return $this->fetch('creditRecord');
 	}
   	public function info() {
-		$mobile = session('mobile');
+		$mobile = session('business_mobile');
 		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic,dealer_lic_pic,invite_code')->where('mobile',$mobile)->find();
 		if($deals){
 			$deals['qrcode_url'] = 'https://pan.baidu.com/share/qrcode?w=512&h=512&url='.url("/public/wechat/user/register").'?authcode='.$deals['invite_code'];

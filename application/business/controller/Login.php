@@ -32,7 +32,7 @@ class Login extends Base {
 			if ($uid > 0) {
 				$resp["code"] = 1;
 				$resp["msg"] = '登录成功！';
-				session("mobile", $mobile);
+				session("business_mobile", $mobile);
 				return json($resp);
 			} else {
 				switch ($uid) {
@@ -59,7 +59,7 @@ class Login extends Base {
 		return $resp;
 	}
 	public function waiting(){
-		$mobile = session('mobile');
+		$mobile = session('business_mobile');
 		$status = db('dealer')->field('status')->where('mobile',$mobile)->find();
 		if ($status['status'] == '1') {
 			$this->redirect(url('index/index'));
