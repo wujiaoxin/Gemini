@@ -63,10 +63,12 @@ class Index extends \think\Controller{
 	}
 	public function menu() {
 		$menu = & load_wechat('menu');
-		$indexUrl = URL('wechat/index/getOauthRedirect','state=1');
+		//$indexUrl = URL('wechat/index/getOauthRedirect','state=1');
+		$indexUrl = "https://www.vpdai.com/public/wechat/index/index.html";
 		$dealerUrl = URL('mobile/open/dealer');
 		$aboutUrl = URL('mobile/open/aboutus');
-		$userUrl = URL('wechat/index/getOauthRedirect','state=2');
+		//$userUrl = URL('wechat/index/getOauthRedirect','state=2');
+		$userUrl = "https://www.vpdai.com/public/wechat/user/personalCenter.html";
 		$helpUrl = URL('mobile/open/help');
 		$data = json_decode('{
 			"button":[
