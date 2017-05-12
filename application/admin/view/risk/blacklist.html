@@ -48,6 +48,7 @@
 <script type="text/javascript" src="__JS__/manager.js"></script>
 <script type="text/javascript">
 	function tpl(data){
+		var g_dataSources = {'1':'系统','2':'第三方'};
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
@@ -58,7 +59,7 @@
 		  		+'<td>'+ data[index].mobile +'</td>'
 		  		+'<td>'+ data[index].device_number +'</td>'
 		  		+'<td>'+ data[index].bankcard+'</td>'
-		  		+'<td>'+ data[index].data_sources +'</td>'
+		  		+'<td>'+ g_dataSources[data[index].data_sources] +'</td>'
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		+'<td><a href="/admin/risk/addBlacklist?id='+ data[index].id + '">审核</a></td>'
 		  		 +'</tr>'
