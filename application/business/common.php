@@ -156,7 +156,7 @@
   ** type 资金类型
   */
   function get_money($uid,$type){
-    $mobile = session('mobile');
+    $mobile = session('business_mobile');
     if($type == 'money'){
       //可用资金(记录为可提订单金额)
         $types = '2,4';
@@ -207,38 +207,14 @@
   ** type 业务类型
   */ 
   function get_orders($uid,$status=0,$type){
-    if ($type == 'order') {
-      $map = 'status in(0,1,3,4,5)';
-       $data = db('order')->where('mid',$uid)->where($map)->limit(5)->order('status ASC,id DESC')->select();
-       foreach ($data as $k => $v) {
-         if ($v['status'] == '-1') {
-            $data[$k]['progress'] = '1';
-         }elseif ($v['status'] >='0' && $v['status']<'3') {
-           $data[$k]['progress'] = '30';
-         }elseif ($v['status'] == '3') {
-           $data[$k]['progress'] = '40';
-         }elseif ($v['status'] == '4') {
-           $data[$k]['progress'] = '45';
-         }elseif ($v['status'] == '5') {
-           $data[$k]['progress'] = '50';
-         }elseif ($v['status'] == '6') {
-           $data[$k]['progress'] = '80';
-         }elseif ($v['status'] >= '10') {
-           $data[$k]['progress'] = '90';
-         }
-       }
-    }
     if ($type == 'order_repay') {
         $ids = db('dealer')->field('id')->where('mobile',$uid)->find();
-        $map = 'loantime <30';
+        $map = 'loantime <20';
         $data = db('order_repay')->where('dealer_id',$ids['id'])->where($map)->select();
         foreach ($data as $k => $v) {
           $type = db('order')->field('type')->where('id',$v['order_id'])->find();
           $data[$k]['type'] = $type['type'];
         }
-    }
-    if ($type == 'dealer_money') {
-      $data = db('order_repay')->where('status ','>',3)->where('mid',$uid)->limit(5)->select();
     }
     return $data;
   }
@@ -254,19 +230,19 @@
         break;
       case '2':
       //7
-        $endtime = strtotime(date('Y-m-d 00:00:00',time()-3600*24*7));//结束时间
+        $endtime = strtotime('-7 day');//结束时间
         break;
       case '3':
       //one month
-        $endtime = strtotime(date('Y-m-d 00:00:00',time()-3600*24*30));//结束时间
+        $endtime = strtotime("-1 month");//结束时间
         break;
       case '4':
       // two moneth
-        $endtime = strtotime(date('Y-m-d 00:00:00',time()-3600*24*60));//结束时间
+        $endtime = strtotime('-2 month');//结束时间
         break;
       case '5':
         // three month
-        $endtime = strtotime(date('Y-m-d 00:00:00',time()-3600*24*90));//结束时间
+        $endtime = strtotime('-3 month');//结束时间
         break;
       default:
         break;

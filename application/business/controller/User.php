@@ -11,7 +11,7 @@ namespace app\business\controller;
 use app\business\controller\Baseness;
  class User extends Baseness {
 	public function guide() {
-		$mobile = session("mobile");
+		$mobile = session("business_mobile");
 		$modelDealer = model('Dealer');
 		// 检测商户是否已经录入信息
 		if (IS_POST) {
@@ -124,8 +124,7 @@ use app\business\controller\Baseness;
 
 	public function myShop() {
 		$uid =session('user_auth.uid');
-		$mobile = session('mobile');
-
+		$mobile = session('business_mobile');
 		$where = array(
 
 			'mid' => $uid,
@@ -204,7 +203,6 @@ use app\business\controller\Baseness;
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
-
 				$result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
 			}else{
 				$result = db('order')->where($map)->select();
@@ -227,12 +225,12 @@ use app\business\controller\Baseness;
 
 	public function repayItem() {
 		$uid =session('user_auth.uid');
-		$mobile = session('mobile');
+		$mobile = session('business_mobile');
 
 		if (IS_POST) {
 			
 			$data = input('post.');
-			// var_dump($data);die;
+
 			$dealer_id = db('Dealer')->field('id,forms')->where('mobile',$mobile)->find();
 
 			if (isset($data['payPwd']) && isset($data['orderId'])){
@@ -262,7 +260,7 @@ use app\business\controller\Baseness;
 
 					$data['descr'] = '';
 
-					money_record($data,$uid,2,1);
+					money_record($data,$uid,2,0);
 
 					$bank_info = model('Bank')->get_bank($data['bankcard']);
 
@@ -333,7 +331,7 @@ use app\business\controller\Baseness;
 
 		$uid =session('user_auth.uid');
 
-		$mobile = session('mobile');
+		$mobile = session('business_mobile');
 
 		if (IS_POST) {
 
@@ -453,7 +451,7 @@ use app\business\controller\Baseness;
 	
 	//设置交易密码
 	public function setpay(){
-		$mobile = session("mobile");
+		$mobile = session("business_mobile");
 		$user = model('User');
 		if (IS_POST) {
 			$data = input('post.');
