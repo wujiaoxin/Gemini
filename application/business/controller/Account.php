@@ -13,7 +13,6 @@ use app\common\model;
 
 class Account extends Baseness {
 	public function index() {
-		// var_dump($_SESSION);die;
 		if (IS_POST) {
 			$data = input('post.');
 	      	$mobile = session("business_mobile");
@@ -57,7 +56,6 @@ class Account extends Baseness {
 			//修改邮箱
 			if (isset($data['email'])) {
 				$result = db('member')->where('mobile',$mobile)->setField('email', $data['email']);
-				// var_dump($result);die;
 				if ($result) {
 					$resp['code'] = '1';
 					$resp['msg'] = '邮箱添加成功';
@@ -71,7 +69,6 @@ class Account extends Baseness {
 		}else{
 			$mobile = session("business_mobile");
       		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code')->where('m.mobile',$mobile)->find();
-      		// var_dump($account);die;
 	      	if ($account){
 	            $data['infoStr'] = json_encode($account);
 	            $data = array(
@@ -148,7 +145,6 @@ class Account extends Baseness {
 	      
 	      $info['money'] = $dealer_money['total_money'] + $info['available_money'];
 	      
-	      // var_dump($info);die;
 	      $data = array(
 	          'info' => $info,
 	          'infoStr'=>json_encode($info)
@@ -164,7 +160,6 @@ class Account extends Baseness {
 		if(IS_POST){
 			$data = input('post.');
 			$uid = session('user_auth.uid');
-			// var_dump($data);die;
 			if (is_numeric($data['money'])){
 				//加入资金记录
 				money_record($data, $uid, 3, 0);
@@ -183,7 +178,6 @@ class Account extends Baseness {
 		$uid = session('user_auth.uid');
 		if(IS_POST){
 			$data = input('post.');
-			// var_dump($data);die;
 			$paypassword = $data['paypassword'];
 			$pay = db('member')->field('paypassword')->where('mobile',$mobile)->find();
 			if (empty($pay['paypassword'])) {
@@ -307,11 +301,9 @@ class Account extends Baseness {
 		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic,dealer_lic_pic,invite_code')->where('mobile',$mobile)->find();
 		if($deals){
 			$deals['qrcode_url'] = 'https://pan.baidu.com/share/qrcode?w=512&h=512&url='.url("/public/wechat/user/register").'?authcode='.$deals['invite_code'];
-			// var_dump($deals);die;
 			$data['code'] = '1';
 			$data['info']=$deals;
 			$data['infoStr'] = json_encode($deals);
-			// var_dump($data);die;
 			$this->assign($data);
 		}
 		return $this->fetch();

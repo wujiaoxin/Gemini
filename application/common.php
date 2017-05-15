@@ -1302,3 +1302,22 @@ function get_benjin($idx,$all_idx,$amount_money,$month_repay_money,$rate){
 	}
 	return $benjin;
 }
+
+
+/*身份证信息*/
+function getIDCardInfo($IDCard) {
+	if (strlen($IDCard) == 18) {
+		$tyear = intval(substr($IDCard, 6, 4));
+		$tmonth = intval(substr($IDCard, 10, 2));
+		$tday = intval(substr($IDCard, 12, 2));
+
+		$res = date('Y')-$tyear;
+		
+	}elseif (strlen($IDCard) == 15) {
+		$tyear = intval("19" . substr($IDCard, 6, 2));
+		$tmonth = intval(substr($IDCard, 8, 2));
+		$tday = intval(substr($IDCard, 10, 2));
+		$res = date('Y')-$tyear;
+	}
+	return $res;
+}

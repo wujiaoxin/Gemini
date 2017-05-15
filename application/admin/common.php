@@ -245,3 +245,13 @@ function examine_log($action = null,$controller = null,$param = null , $record_i
 	
 	db('examine_log')->insert($data);
 }
+/*设备信息*/
+function get_collect($id,$key,$group){
+	$map = array(
+		'uid'=>$id,
+		'key'=>$key,
+		'group'=>$group
+		);
+	$res = db('Collect_data')->where($map)->order('create_time DESC')->find();
+	return $res['value'];
+}
