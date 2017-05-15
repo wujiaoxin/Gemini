@@ -195,4 +195,79 @@ class Repay extends \app\common\model\Base {
 
 		return 1;
 	}
+
+
+	/*
+	**还款计划 (等本等息)
+	*/
+	function  make_interest($order_id){
+
+		$deal = db('order')->where('id',$order_id)->find();
+
+		$deal['product_name'] = repay_type($deal['type']);
+
+		$totalperiod = floor($deal['endtime']/30);
+
+		//利率
+		if ($totalperiod == '12') {
+			
+			$deal['rate'] = 1.1/100;
+
+		}elseif ($totalperiod == '24') {
+			
+			$deal['rate'] = 1.3/100;
+
+		}elseif ($totalperiod == '36') {
+			
+			$deal['rate'] = 1.5/100;
+		}
+		$list = array();
+		
+		$has_use_self_money = 0;
+		
+		$repay_day = time();
+
+		$uids = db('member')->field('uid')->where('mobile',$deal['mobile'])->find();
+
+		for($i=1; $i <= $totalperiod; $i++){
+
+			$load_repay = array();
+
+			$load_repay['repay_time']  = $repay_day = next_replay_month ($repay_day);
+			
+			$load_repay['repay_period'] = $i;
+
+			$load_repay['totalperiod'] = intval($totalperiod);
+
+			$load_repay['rate'] = $deal['rate'];
+
+			$load_repay['repay_money'] = round(($deal['examine_limit']*(1+$deal['rate']*$totalperiod)/$totalperiod),2);
+
+			$deal['month_repay_money'] = $load_repay['repay_money'];
+
+			$load_repay['self_money'] = round($deal['examine_limit']/$totalperiod,2);
+
+			$load_repay['interest_money'] = $load_repay['repay_money'] - $load_repay['self_money'];
+			
+			$load_repay['order_id'] = $deal['id'];
+
+			$load_repay['uid'] = $uids['uid'];
+
+			$load_repay['dealer_id'] = $deal['dealer_id'];
+
+			$load_repay['status'] = -1;
+
+			$load_repay['has_repay'] = -1;
+
+			$load_repay['loantime'] = $deal['endtime'];
+
+			$load_repay['product_name'] = $deal['product_name'];
+
+			$list[] = $load_repay;
+		}
+
+		$this->saveAll($list);
+
+		return 1;
+	}
 }

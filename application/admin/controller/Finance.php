@@ -122,7 +122,8 @@ class Finance extends Admin {
 
 						//等额本息
 
-						$res = model('Repay')->make_plan($data['id']);
+						// $res = model('Repay')->make_plan($data['id']);//
+						$res = model('Repay')->make_interest($data['id']);
 
 						if ($res) {
 
