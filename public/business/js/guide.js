@@ -106,12 +106,16 @@ var guide = function () {
                     }else if(index == 3){
                         var property = encodeCheckbox('property');
                         var forms = encodeCheckbox('forms');
+                        var formsLen = $("input[name='forms']:checked").length;
                         // if(property == ""){
                         //     ui_alert("请选择门店属性");
                         //     return false;
                         // }else
                         if(forms == ""){
                             ui_alert("请选择合作形式");
+                            return false;
+                        }else if(formsLen != "1"){
+                            ui_alert("请选择唯一合作形式");
                             return false;
                         }
                         ajax_jquery({
