@@ -11,14 +11,15 @@ class risk extends Admin {
 
 	public function rating() {
 		
-		$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard')->join('__MEMBER__ m','c.uid = m.uid')->where("credit_status",3)->order('id desc')->fetchSQL(false)->select();
-		
+		$creditList = db('credit')->alias('c')->field('c.*,o.name as realname,o.idcard_num as idcard,o.dealer_id')->join('__ORDER__ o','c.order_id = o.id')->where("c.credit_status",3)->order('id desc')->fetchSQL(false)->select();
+		foreach ($creditList as $k => $v) {
+			$name = model('Dealer')->field('name')->where('id',$v['dealer_id'])->find();
+			$creditList[$k]['dealer_name'] = $name['name'];
+		}
 		$data = array(
 			'infoStr' =>json_encode($creditList),
 		);
-		//var_dump($data);die;
 		$this->assign($data);
-		
 		$this->setMeta('客户评级');
 		return $this->fetch();
 	}
