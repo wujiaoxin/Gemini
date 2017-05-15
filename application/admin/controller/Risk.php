@@ -11,10 +11,12 @@ class risk extends Admin {
 
 	public function rating() {
 		
-		$creditList = db('credit')->alias('c')->field('c.*,o.name as realname,o.idcard_num as idcard,o.dealer_id')->join('__ORDER__ o','c.order_id = o.id')->where("c.credit_status",3)->order('id desc')->fetchSQL(false)->select();
+		$creditList = db('credit')->alias('c')->field('c.*,o.name as realname,o.idcard_num as idcard,o.dealer_id,o.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.credit_status",3)->order('id desc')->fetchSQL(false)->select();
 		foreach ($creditList as $k => $v) {
 			$name = model('Dealer')->field('name')->where('id',$v['dealer_id'])->find();
+			$salesname = model('User')->field('realname as u_realname')->where('uid',$v['uid'])->find();
 			$creditList[$k]['dealer_name'] = $name['name'];
+			$creditList[$k]['u_realname'] = $salesname['u_realname'];
 		}
 		$data = array(
 			'infoStr' =>json_encode($creditList),
@@ -94,7 +96,9 @@ class risk extends Admin {
 				'group'=>'message'
 				);
 			$message_info = db('Collect_data')->field('value')->where($where)->select();
-			$message_info = json_decode($message_info['0']['value'],true);//短信列表
+			if ($message_info) {
+				$message_info = json_decode($message_info['0']['value'],true);//短信列表
+			}
 			$creditList = array_merge($creditList,$basic_info);
 			$data = array(
 				'infoStr' =>json_encode($creditList),

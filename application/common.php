@@ -1318,6 +1318,9 @@ function getIDCardInfo($IDCard) {
 		$tmonth = intval(substr($IDCard, 8, 2));
 		$tday = intval(substr($IDCard, 10, 2));
 		$res = date('Y')-$tyear;
+	}else{
+		$res = '';
 	}
+
 	return $res;
 }
