@@ -72,11 +72,34 @@ class risk extends Admin {
 			}
 			
 		}else{
-			$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard,o.car_price')->join('__MEMBER__ m','c.uid = m.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.id",$id)->order('id desc')->fetchSQL(false)->find();			
+			$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard,o.car_price')->join('__MEMBER__ m','c.uid = m.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.id",$id)->order('id desc')->fetchSQL(false)->find();
+
+			$collect = model('Collect');
+			$basic_info = array(
+				'realname'=>$creditList['realname'],
+				'idcard'=>$creditList['idcard'],
+				'mobile'=>$creditList['mobile'],
+				'realname'=>$creditList['realname'],
+				'year'=>getIDCardInfo($creditList['idcard']),
+				'platform'=>get_collect($id,'platform','device'),
+				'addr'=>get_collect($id,'addr','location'),
+				'wanip'=>get_collect($id,'wanip','network'),
+				'platform'=>get_collect($id,'platform','device'),
+
+				);//基本信息
+			$where = array(
+				'uid'=>$id,
+				'key'=>'message',
+				'group'=>'message'
+				);
+			$message_info = db('Collect_data')->field('value')->where($where)->select();
+			$message_info = json_decode($message_info['0']['value'],true);//短信列表
+			$creditList = array_merge($creditList,$basic_info);
 			$data = array(
 				'infoStr' =>json_encode($creditList),
-			);			
+			);
 			$this->assign($data);
+			$this->assign('message',$message_info);
 			$this->setMeta('评级详情');
 			return $this->fetch('ratingInfo');
 		}
