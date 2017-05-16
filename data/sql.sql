@@ -1973,3 +1973,21 @@ CREATE TABLE `gemini_member_withhold` (
   `update_time` int(11) DEFAULT NULL COMMENT '成功通知时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户代扣表';
+
+DROP TABLE IF EXISTS `gemini_bankcard`;
+CREATE TABLE `gemini_bankcard` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL COMMENT '客户uid',
+  `order_id` int(11) NOT NULL DEFAULT '0' COMMENT '订单id',
+  `bank_img` int(11) DEFAULT NULL COMMENT '银行卡照片地址',
+  `type` tinyint(1) NOT NULL COMMENT '银行卡类型 1放款 2还款 5放款/还款',
+  `bank_account_id` varchar(64) NOT NULL COMMENT '开户账号',
+  `bank_account_name` varchar(255) NOT NULL COMMENT '开户名',
+  `bank_name` varchar(255) NOT NULL COMMENT '开户银行',
+  `bank_branch` varchar(255) NOT NULL COMMENT '开户网点',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) DEFAULT '0' COMMENT '更新时间',
+  `descr` varchar(255) DEFAULT '' COMMENT '描述',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='更新银行卡信息';
