@@ -74,7 +74,7 @@ class Index extends \think\Controller{
 			"button":[
 				{	
 					"type":"view",
-					"name":"进入VP贷",
+					"name":"进入享贷车",
 					"url":"'.$indexUrl.'"
 				},
 				{	
@@ -102,7 +102,7 @@ class Index extends \think\Controller{
 					},					
 					{
 						"type":"view",
-						"name":"关于VP贷",
+						"name":"关于互纳",
 						"url":"'.$aboutUrl.'"
 					}]
 				}]
