@@ -43,11 +43,36 @@ class Postloan extends Admin {
 
 
 	public function withhold() {
+
+		if (IS_POST) {
+			
+		}
+		$result = db('member_withhold')->select();
+		foreach ($result as $k => $v) {
+			$name = serch_realname($v['uid']);
+			$result[$k]['realname'] = $name;
+		}
+		$data = array(
+			'infoStr' =>json_encode($result),
+		);
+		$this->assign($data);
 		$this->setMeta('代扣审核');
 		return $this->fetch();
 	}
 
 	public function view() {
+		$result = db('member_withhold')->find(input('id'));
+		$files = db('order_files')->where('order_id',$result['order_id'])->limit(9)->order('create_time DESC')->select();
+		$name = serch_realname($result['uid']);
+		$result['realname'] = $name;
+		$res =array(
+			'data'=>$result,
+			'files'=>$files
+			);
+		$data = array(
+			'infoStr' =>json_encode($res),
+		);
+		$this->assign($data);
 		$this->setMeta('审核查看');
 		return $this->fetch();
 	}
