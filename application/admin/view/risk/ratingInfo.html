@@ -108,6 +108,10 @@
 						    <div class="col-sm-2 pt5">
 						     	<span id="" class="customer-info">-</span>
 						    </div>
+						    <label class="col-sm-2 control-label">银行卡号</label>
+						    <div class="col-sm-2 pt5">
+						      	<span id="bankcard" class="customer-info">-</span>
+						    </div>
 						</div>
 					</div>
 				</div>
@@ -646,6 +650,7 @@
 		$("#platform").text(info.platform);
 		$("#addr").text(info.addr);
 		$("#wanip").text(info.wanip);
+		$('#bankcard').text(info.bankcard);
 	}else{
 		ui_alert("获取数据失败");
 	}
