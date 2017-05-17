@@ -129,12 +129,13 @@ class Finance extends Admin {
 
 							//放款成功加入客户签约
 							$customer_info = db('member')->where('mobile',$result['mobile'])->find();
-
+							$bank_name = db('bankcard')->where('uid',$customer_info['uid'])->find();
 							$cus_data = array(
 									'uid'=>$customer_info['uid'],
 									'mobile'=>$result['mobile'],
 									'order_id'=>$data['id'],
 									'idcard_num'=>$customer_info['idcard'],
+									'bankcard'=>$bank_name['bank_account_id'],
 									'signstatus'=>'0',
 									'papercontract'=>$result['sn'],
 									'product_name'=>'90贷',
