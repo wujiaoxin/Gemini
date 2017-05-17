@@ -158,10 +158,12 @@
 	    if(typeof(info.data[name]) != 'object'){
 	        $(this).val(info.data[name]);
 			if(name == "type"){
-	        	// $(this).text(g_orderType[info.data[name]]);
-	        	$(this).text('按揭贷款');
+	        	$(this).val(g_orderType[info.data[name]]);
+	        	// $(this).val('按揭贷款');
 	        }else if(name == "signstatus"){
-	        	$(this).text(g_signStatus[info.data[name]]);
+	        	$(this).val(g_signStatus[info.data[name]]);
+	        }else if(name == "first_repaydate"){
+	        	$(this).val(formatDate([info.data[name]]));
 	        }
 	    }
 	});
@@ -276,7 +278,7 @@ $(function(){
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	ui_alert("提交成功","success");
-	            	window.location.href = apiUrl + "/admin/post/withhold";
+	            	window.location.href = apiUrl + "/admin/postloan/withhold";
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);
