@@ -1817,6 +1817,7 @@ CREATE TABLE `gemini_order_repay` (
   `manage_money` decimal(20,2) NOT NULL COMMENT '管理费',
   `repay_time` int(11) NOT NULL DEFAULT '0' COMMENT '预计还款时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-2,还款申请中-1还款中,0提前,1准时还款,2逾期还款',
+  `type` tinyint(3) DEFAULT '1' COMMENT '还款类型 1手动扣款 2代扣',
   `has_repay` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-2还款申请-1未还,1已还,2逾期',
   `true_repay_time` int(11) NOT NULL COMMENT '真实还款时间',
   `loantime` int(11) NOT NULL COMMENT '还款期限',
@@ -1837,7 +1838,7 @@ CREATE TABLE `gemini_order_repay` (
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`),
   KEY `status` (`status`)
-) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COMMENT='还款记录表';
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='还款记录表';
 
 DROP TABLE IF EXISTS `gemini_dealer_credit`;
 CREATE TABLE `gemini_dealer_credit` (

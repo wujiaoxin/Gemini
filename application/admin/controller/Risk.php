@@ -75,12 +75,13 @@ class risk extends Admin {
 			}
 			
 		}else{
-			$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard,o.car_price')->join('__MEMBER__ m','c.uid = m.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.id",$id)->order('id desc')->fetchSQL(false)->find();
+			$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard,o.car_price,m.bankcard')->join('__MEMBER__ m','c.uid = m.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.id",$id)->order('id desc')->fetchSQL(false)->find();
 
 			$collect = model('Collect');
 			$basic_info = array(
 				'realname'=>$creditList['realname'],
 				'idcard'=>$creditList['idcard'],
+				'bankcard'=>$creditList['bankcard'],
 				'mobile'=>$creditList['mobile'],
 				'realname'=>$creditList['realname'],
 				'year'=>getIDCardInfo($creditList['idcard']),
