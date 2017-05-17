@@ -53,6 +53,13 @@
 		var g_signStatus = {'-1':'签约失败','0':'待签约','1':'签约成功','2':'签约中','3':'银行卡异步签约失败'};
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
+			var opera = '';
+			if(data[index].signstatus == '0'){
+				opera ='<a href="/admin/postloan/view?id='+ data[index].uid + '">审核</a>';
+			}else{
+				opera = '';
+			}
+
 		  	html += '<tr class="odd gradex">'
 		  		+'<td>' + data[index].uid + '</td>'
 		  		+'<td>' + data[index].papercontract + '</td>'
@@ -61,13 +68,13 @@
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		+'<td>'+ formatDate(data[index].update_time) +'</td>'
 		  		+'<td>'+ g_signStatus[data[index].signstatus] +'</td>'
-		  		+'<td><a href="/admin/postloan/view?id='+ data[index].uid + '">审核</a></td>'
+		  		+'<td>'+ opera +'</td>'
 		  		 +'</tr>'
 			}
 		}
 		return html;
 	};
-	$('#table-postloan-withhold tbody').html(tpl(info.data));
+	$('#table-postloan-withhold tbody').html(tpl(info));
 
     $(function(){
     	TableManaged.init();
