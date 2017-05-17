@@ -9,7 +9,7 @@
  	padding: 0;
 }
 .pic-container li div {
-  	line-height: 240px;
+  	line-height: 120px;
   	margin: 10px 0;
   	overflow: hidden;
   	min-width: 100px;
@@ -135,13 +135,13 @@
 			      	<input type="text" id="image_contract" class="item-info">
 			    </div>
 		  	</div>
-		  	<ul class="pic-container" id="documentInfo">
-			</ul>
 		  	<div class="form-group">
 			    <div class="text-center col-sm-4">
 					<a class="btn btn-primary" id="withholdExamineBtn">提交</a>
 				</div>
 			</div>
+			<ul class="pic-container" id="documentInfo">
+			</ul>
 		</div>
 	</div>
 {/block}
@@ -153,12 +153,13 @@
 <script type="text/javascript" src="__JS__/lightGallery.js"></script>
 <script>
 	var g_signStatus = {'-1':'签约失败','0':'待签约','1':'签约成功','2':'签约中','3':'银行卡异步签约失败'};
-	$(".customer-info").each(function(){
+	$(".item-info").each(function(){
 		var name = $(this).attr('id');
 	    if(typeof(info.data[name]) != 'object'){
-	        $(this).text(info.data[name]);
+	        $(this).val(info.data[name]);
 			if(name == "type"){
-	        	$(this).text(g_orderType[info.data[name]]);
+	        	// $(this).text(g_orderType[info.data[name]]);
+	        	$(this).text('按揭贷款');
 	        }else if(name == "signstatus"){
 	        	$(this).text(g_signStatus[info.data[name]]);
 	        }
@@ -261,7 +262,7 @@ $(function(){
 			return;
 		}
 		ajax_jquery({
-	        url: apiUrl + ajaxUrl,
+	        url: apiUrl + '/admin/postloan/view',
 	        data:{
 	        	'id': id,
 	        	'idcard_time': idcard_time,

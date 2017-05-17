@@ -72,7 +72,7 @@ function formatAmount(n) {
 
 // 格式化日期时间
 function formatDatetime(timeStr){
-    if(timeStr == ''){
+    if(timeStr == '' || timeStr == null ){
         return '';
     }
     var timeStr = timeStr*1000;
@@ -88,7 +88,7 @@ function formatDatetime(timeStr){
 
 // 格式化日期
 function formatDate(timeStr){
-    if(timeStr == ''){
+    if(timeStr == '' || timeStr == null ){
         return '';
     }
     var timeStr = timeStr*1000;
