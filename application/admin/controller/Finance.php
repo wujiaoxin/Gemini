@@ -129,7 +129,14 @@ class Finance extends Admin {
 
 							//放款成功加入客户签约
 							$customer_info = db('member')->where('mobile',$result['mobile'])->find();
-							$bank_name = db('bankcard')->where('uid',$customer_info['uid'])->find();
+							$b_map = array(
+									'uid'=>$customer_info['uid'],
+									'order_id'=>$data['id']
+								);
+							$bank_name = db('bankcard')->where($b_map)->find();
+							if (!$bank_name) {
+								$bank_name['bank_account_id'] = '';
+							}
 							$cus_data = array(
 									'uid'=>$customer_info['uid'],
 									'mobile'=>$result['mobile'],
