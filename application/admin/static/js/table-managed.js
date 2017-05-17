@@ -271,6 +271,25 @@ var TableManaged = function () {
             jQuery('#table-postloan-Repayment_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
             // jQuery('#table-postloan-Repayment_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
 
+            贷后管理模块-代扣审核列表table id="table-postloan-withhold"
+            $('#table-postloan-withhold').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                configData
+            });
+
+            jQuery('#table-postloan-withhold_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-postloan-withhold_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-postloan-withhold_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
+
         }
     };
 }();

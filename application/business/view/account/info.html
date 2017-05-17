@@ -10,6 +10,11 @@
 	#dealer_lic_pic{
 		width: 120px;
 	}
+	#qrcode_img{
+		width: 200px;
+		height: 200px;
+		margin-left: -18px;
+	}
 </style>
 <script type="text/javascript">
 	var info = {};
@@ -57,7 +62,9 @@
 				<div class="control-group">
 					<label class="control-label">渠道代码</label>
 					<div class="controls">
-						<a title="点击查看二维码" id="qrcode_url" target="_blank"><span id="invite_code" class="info-item"></span></a>
+						<a title="点击查看二维码" id="qrcode_url" target="_blank">
+							<span id="invite_code" class="info-item"></span>
+						</a>
 					</div>
 				</div>
 				<div class="control-group">
@@ -73,6 +80,12 @@
 						<span id="dealer_lic_pic" class="info-item">
                             <img src="{$images['path']|default=''}" class="img-responsive">
 						</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">员工注册二维码</label>
+					<div class="controls">
+						<img id="qrcode_img" src="" alt="扫描二维码注册员工账号">
 					</div>
 				</div>
 			</div>
@@ -114,6 +127,7 @@ $(function(){
 	        $(this).text(info[name]);
 	    }
 	});
+	$('#qrcode_img').attr('src',info.qrcode_url);
 	$('#qrcode_url').attr('href',info.qrcode_url);
 
 	if(info['forms']!=""){
