@@ -47,6 +47,15 @@ class Bairong extends Base {
 		
 		$results = $core -> query_result;
 		
+
+		$res = json_decode($results,true);
+		$arr = array();
+		foreach ($res as $k => $v) {
+			$arr[] =array('name'=>$k,'value'=>$v);
+		}
+		
+		$this->assign('res',$arr);
+		
 		$this->assign('query', $name);
 		$this->assign('results', $results);
 		
