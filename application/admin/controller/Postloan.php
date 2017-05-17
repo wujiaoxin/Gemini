@@ -41,4 +41,15 @@ class Postloan extends Admin {
 		return $this->fetch();
 	}
 
+
+	public function withhold() {
+		$this->setMeta('代扣审核');
+		return $this->fetch();
+	}
+
+	public function view() {
+		$this->setMeta('审核查看');
+		return $this->fetch();
+	}
+
 }
