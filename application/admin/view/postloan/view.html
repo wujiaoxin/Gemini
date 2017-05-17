@@ -22,7 +22,12 @@
 }
 </style>
 <script type="text/javascript">
-
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
 </script>
 {/block}
 {block name="body"}
@@ -91,7 +96,7 @@
 			    </div>
 			    <label class="col-sm-2 control-label">签约状态</label>
 			   	<div class="col-sm-4 pt5">
-			      	<input type="text" id="status" class="item-info" disabled="disabled">
+			      	<input type="text" id="signstatus" class="item-info" disabled="disabled">
 			    </div>
 		  	</div>
 		  	<div class="form-group">
@@ -147,14 +152,15 @@
 <script type="text/javascript" src="__JS__/manager.js"></script>
 <script type="text/javascript" src="__JS__/lightGallery.js"></script>
 <script>
+	var g_signStatus = {'-1':'签约失败','0':'待签约','1':'签约成功','2':'签约中','3':'银行卡异步签约失败'};
 	$(".customer-info").each(function(){
 		var name = $(this).attr('id');
 	    if(typeof(info[name]) != 'object'){
 	        $(this).text(info[name]);
 			if(name == "type"){
 	        	$(this).text(g_orderType[info[name]]);
-	        }else if(name == "status"){
-	        	$(this).text(g_orderStatus[info[name]]);
+	        }else if(name == "signstatus"){
+	        	$(this).text(g_signStatus[info[name]]);
 	        }
 	    }
 	});
