@@ -1389,6 +1389,7 @@ INSERT INTO `gemini_menu` VALUES ('41', '提现审核', 'admin', 'list', '1', '0
 INSERT INTO `gemini_menu` VALUES ('42', '回款审核', 'admin', 'list-alt', '1', '0', '/admin/finance/receivable', '0', '', '财务管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('43', '平台资金记录', 'admin', 'arrows-alt', '1', '0', '/admin/finance/transaction', '0', '', '财务管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('44', '回款管理', 'admin', 'money', '1', '0', '/admin/postloan/repayment', '0', '', '贷后管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('45', '代扣审核', 'admin', 'search', '1', '0', '/admin/postloan/withhold', '0', '', '贷后管理', '0', '0');
 
 -- ----------------------------
 -- Table structure for `gemini_model`
