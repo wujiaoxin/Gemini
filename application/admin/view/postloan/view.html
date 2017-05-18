@@ -244,6 +244,9 @@ $(function(){
 		if(idcard_time =='' ){
 			ui_alert("请输入身份证到期时间");
 			return;
+		}else if((idcard_time < 19000101 || idcard_time > 20100101) && idcard_time != 0){
+			ui_alert("身份证到期时间有误");
+			return;
 		}else if(profession =='' ){
 			ui_alert("请输入用户职业");
 			return;
