@@ -1985,3 +1985,20 @@ CREATE TABLE `gemini_bankcard` (
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`) USING BTREE
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='更新银行卡信息';
+
+
+DROP TABLE IF EXISTS `gemini_programme`;
+CREATE TABLE `gemini_programme` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `order_id` int(10) NOT NULL COMMENT '订单id',
+  `uid` int(10) NOT NULL COMMENT '客户id(车商id)',
+  `p_type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '业务类型 1 vp贷 2 90贷(20%) 3 90(90%)',
+  `bank_rate` decimal(10,2) NOT NULL COMMENT '银行利率',
+  `vp_rate` decimal(10,2) NOT NULL COMMENT '利率',
+  `bank_team` int(10) NOT NULL COMMENT '银行期限',
+  `vp_team` int(10) NOT NULL COMMENT '期限',
+  `bank_name` tinyint(3) NOT NULL DEFAULT '0' COMMENT '银行 1平安银行',
+  `bank_pay` int(11) DEFAULT '0' COMMENT '银行首付比例',
+  `pay` int(11) DEFAULT NULL COMMENT '首付比例',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='金融方案';
