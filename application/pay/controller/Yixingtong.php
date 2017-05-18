@@ -168,9 +168,8 @@ class Yixingtong extends Base {
 	}
 
 	//签约分期收款TODO
-	public function installment($idcard = '', $name = '', $bankcard='', $mobile='', $password = ""){
+	public function installment($uid, $mobile='',$idcard_time ='',$addr=''){
 		$service = "installmentSign";
-
 		//可变数据(需要传参)
 		$data  = array( 
 			'service' => $service,
@@ -257,6 +256,9 @@ class Yixingtong extends Base {
 		}
 		*/
 		$data = input('post.');
+		if (!$data) {
+			$this->redirect('/');
+		}
 		$success = $data['success'];
 		if (!$success) {
 			$resp['code'] = '0';

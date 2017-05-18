@@ -53,7 +53,7 @@ class Finance extends Admin {
 
 					$money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.id',$data['id'])->find();
 
-					$result = db('order')->field('fee,loan_limit,examine_limit,type,mobile,sn')->where('id',$data['id'])->find();
+					$result = db('order')->field('fee,loan_limit,examine_limit,type,mobile,sn,endtime')->where('id',$data['id'])->find();
 					
 					if ($result['type'] == '2' || $result['type'] == '4') {
 
@@ -137,6 +137,7 @@ class Finance extends Admin {
 							if (!$bank_name) {
 								$bank_name['bank_account_id'] = '';
 							}
+							$totalperiod = floor($result['endtime']/30);
 							$cus_data = array(
 									'uid'=>$customer_info['uid'],
 									'mobile'=>$result['mobile'],
@@ -148,7 +149,12 @@ class Finance extends Admin {
 									'product_name'=>'90贷',
 									'product_price'=>$result['examine_limit'],
 									'money'=>$result['examine_limit'],
-									'create_time'=>time()
+									'create_time'=>time(),
+									'total_times'=>$totalperiod,
+									'repay_type'=>'SELF_REPAY',
+									'other_rate'=>0,
+									'first_repaydate'=>time()+30*3600*24
+
 								);
 							db('member_withhold')->insert($cus_data);
 							$resp['code'] = 1;

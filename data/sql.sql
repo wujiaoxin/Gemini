@@ -1950,31 +1950,23 @@ CREATE TABLE `gemini_member_withhold` (
   `papercontract` varchar(40) NOT NULL COMMENT '用户贷款合同号',
   `image_contract` int(10) NOT NULL COMMENT '用户贷款合同照片地址',
   `contractno` varchar(20) DEFAULT NULL COMMENT '签约合同号 ',
-  `productid` varchar(50) DEFAULT NULL COMMENT '产品ID',
   `product_name` varchar(255) NOT NULL COMMENT '产品名称',
   `product_price` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '产品价格',
-  `payment_amount` decimal(20,2) DEFAULT NULL COMMENT '首付款金额',
-  `first_repaydate` varchar(255) NOT NULL DEFAULT '' COMMENT '首次还款日期',
+  `first_repaydate` int(11) NOT NULL DEFAULT '0' COMMENT '首次还款日期',
   `installment_policy` varchar(255) NOT NULL COMMENT '分期策略',
-  `repayment_cycle` varchar(255) NOT NULL COMMENT '还款周期',
-  `interest_mode` varchar(255) DEFAULT NULL COMMENT '利息计算规则',
-  `interest_cycle` varchar(255) DEFAULT NULL COMMENT '利率计算周期',
   `other_rate` decimal(3,2) DEFAULT NULL COMMENT '其他利率',
   `interest_rate` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '利率',
-  `overduefine_Amount` varchar(255) DEFAULT NULL COMMENT '滞纳金规则',
   `money` varchar(255) NOT NULL DEFAULT '' COMMENT '贷款本金总金额',
-  `total_amount` varchar(255) NOT NULL DEFAULT '' COMMENT '每期还款总金额列表',
-  `capital_amount` varchar(255) NOT NULL DEFAULT '' COMMENT '每期本金金额列表',
-  `interest_amount` varchar(255) NOT NULL DEFAULT '0' COMMENT '每期其他金额列表',
-  `other_amount` varchar(255) NOT NULL DEFAULT '' COMMENT '每期其他金额列表',
-  `operate_type` varchar(255) DEFAULT NULL COMMENT '操作类型',
+  `total_amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '每期还款总金额列表',
+  `capital_amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '每期本金金额列表',
+  `other_amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '每期其他金额列表',
   `total_times` int(11) NOT NULL DEFAULT '0' COMMENT '总期数',
   `repaid_time` int(11) DEFAULT '0' COMMENT '已还期数',
   `repay_type` varchar(255) NOT NULL DEFAULT '' COMMENT '还款方式',
   `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
   `update_time` int(11) DEFAULT NULL COMMENT '成功通知时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户代扣表';
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户代扣表';
 
 DROP TABLE IF EXISTS `gemini_bankcard`;
 CREATE TABLE `gemini_bankcard` (

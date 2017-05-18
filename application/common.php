@@ -1324,3 +1324,24 @@ function getIDCardInfo($IDCard) {
 
 	return $res;
 }
+/*
+**站内利息获取
+*/
+function get_rate($time){
+
+	$totalperiod = floor($time/30);
+
+	if ($totalperiod == '12') {
+		
+		$rate = 1.1/100;
+
+	}elseif ($totalperiod == '24') {
+		
+		$rate = 1.3/100;
+
+	}elseif ($totalperiod == '36') {
+		
+		$rate = 1.5/100;
+	}
+	return $rate;
+}
