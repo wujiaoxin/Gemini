@@ -1324,3 +1324,79 @@ function getIDCardInfo($IDCard) {
 
 	return $res;
 }
+/*
+**站内利息获取
+*/
+function get_rate($time){
+
+	$totalperiod = floor($time/30);
+
+	if ($totalperiod == '12') {
+		
+		$rate = 1.1/100;
+
+	}elseif ($totalperiod == '24') {
+		
+		$rate = 1.3/100;
+
+	}elseif ($totalperiod == '36') {
+		
+		$rate = 1.5/100;
+	}
+	return $rate;
+}
+
+/*
+**金融方案 TODO
+*/
+function get_programme($orderid){
+	$res = array();
+	$result = db('programme')->alias('p')->join('__ORDER__ o','p.order_id = o.id')->where('order_id',$orderid)->find();
+	if ($result['p_type'] == '1') {
+		$res['name'] = 'VP贷';
+		$res['monthpay'] = get_vpmonth($result);
+		$res['avgmonthpay'] = $result['monthpay'];
+		$res['downpay'] = round($result['car_price']*$result['bank_pay']/100);
+	}
+	if ($result['p_type'] == '2') {
+		$res['name'] = '90贷';
+
+		//90贷本息
+		$res['monthpay'] = get_monthpay($result,$result['vp_team']);
+		//银行本息
+		$res['bank_monthpay'] = get_vpmonth($result);
+
+		if ($result['vp_team'] == '12') {
+
+			$res['firstYear'] = $res['monthpay'] +$res['bank_monthpay'];
+			$res['twoYear'] = $res['threeYear'] =  $res['bank_monthpay'];
+
+		}
+		if ($result['vp_team'] == '24') {
+			$res['firstYear'] = $res['twoYear'] = $res['monthpay'] +$res['bank_monthpay'];
+			$res['twoYear'] = $res['bank_monthpay'];
+		}
+		if ($result['vp_team'] == '36') {
+			$res['firstYear'] = $res['twoYear'] = $res['threeYear'] = $res['monthpay'] +$res['bank_monthpay'];
+		}
+		$team = $result['bank_team'] > $result['vp_team'] ? $result['bank_team']:$result['vp_team'];
+		$res['avgmonthpay'] = ($res['monthpay']*$result['vp_team'] + $res['bank_monthpay']*$result['bank_team'])/$team;
+		$res['downpay'] = round($result['car_price']*$result['pay']/100);
+	}
+	return $res;
+}
+
+/*
+** 金融方案90贷月供
+*/
+function get_monthpay($data,$team){
+	$res = round($data['car_price']*($data['bank_pay']-$data['pay'])*(1+$data['bank_rate']*$data['bank_team']/100)/100/$team);
+	return $res;
+}
+/*
+** VP贷月供
+*/
+function get_vpmonth($data){
+	$res = round($result['car_price']*(100-$result['pay'])*(1+$result['bank_rate']*$result['bank_team']/100)/100/$res['bank_team']);
+	return $res;
+}

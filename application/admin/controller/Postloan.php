@@ -43,65 +43,7 @@ class Postloan extends Admin {
 
 
 	public function withhold() {
-
-		if (IS_POST) {
-			$data = input('post.');
-			$info = db('member_withhold')->where('id',$data['id'])->find();
-			$repay = db('order_repay')->where('order_id',$info['order_id'])->order('repay_time')->find();
-			$arr = array();
-			$arr1 = array();
-			$arr2 = array();
-			for ($i=0; $i < $repay['totalperiod']; $i++) { 
-				$arr[] = $repay['repay_money'];
-				$arr1[] = $repay['interest_money'];
-				$arr2[] = '0';
-			}
-			$service = "installmentSign";
-			$res  = array( 
-				'service' => $service,
-				'orderNo' => '2007050512345678912345678' . rand(100000,999999),
-				'signType' =>'MD5',
-				'notifyUrl' => 'http://mengxd.com/index.php/index/index/signstage.html',
-				'realName' => $order_info['name'],
-				'certNo' => $order_info['idcard_num'],
-				'certValidTime' => $idcard_time,
-				'imageUrl2' => 'https://v1.vpdai.com'.$info['idcard_face_pic'],
-				'certBackImageUrl' => 'https://v1.vpdai.com'.$info['idcard_back_pic'],
-				'mobileNo' => $order_info['mobile'],
-				'bankCardNo' => '6228480438657589174',
-				'imageUrl3' => 'https://v1.vpdai.com/uploads/order_files/20170113/ab58b08d3e8f33235c02e620fd0c439a.jpg',
-				'profession' => '职工',
-				'address' => $addr,
-				'paperContractNo' => $order_info['sn'],
-				'imageUrl1' => $info['image_contract'],
-				'productName' => '90贷',
-				'productPrice' => $order_info['examine_limit'],
-				'totalCapitalAmount' => $totalperiod,
-				'installmentPolicy' => 'CUSTOMIZE',
-				'firstRepayDate' => '2017-05-20',
-				'interestRate' => 100,
-				'otherRate' => 0,
-				'totalTimes' => 9,
-				'repayType' => 'SELF_REPAY',
-				'eachTotalAmount' => '[2,2,2,2,2,2,2,2,2]',
-				'eachCapitalAmount' => '[1,1,1,1,1,1,1,1,1]',
-				'eachInterestAmount' => '[1,1,1,1,1,1,1,1,1]',
-				'eachOtherAmount' => '[0,0,0,0,0,0,0,0,0]',
-		   );
-			$result = \com\Withhold::installSign($res);
-			if ($result['resultCode'] == 'EXECUTE_SUCCESS') {
-				$resp['code'] = '1';
-				$resp['msg'] = '签约成功';
-
-			}elseif ($result['resultCode'] == 'EXECUTE_PROCESSING') {
-				$resp['code'] = '1';
-				$resp['msg'] = '签约处理中';
-			}else{
-				$resp['code'] = '0';
-				$resp['msg'] = '银行卡验证失败';
-			}
-			return json($resp);
-		}
+		
 		$result = db('member_withhold')->select();
 		foreach ($result as $k => $v) {
 			$name = serch_realname($v['uid']);
@@ -116,20 +58,104 @@ class Postloan extends Admin {
 	}
 
 	public function view() {
-		$result = db('member_withhold')->find(input('id'));
-		$files = db('order_files')->where('order_id',$result['order_id'])->limit(9)->order('create_time DESC')->select();
-		$name = serch_realname($result['uid']);
-		$result['realname'] = $name;
-		$res =array(
-			'data'=>$result,
-			'files'=>$files
+
+		if (IS_POST) {
+			$data = input('post.');
+			$info = db('member_withhold')->where('id',$data['id'])->find();
+			if ($info['signstatus'] == '0') {
+				$name = serch_realname($info['uid']);
+				$order = db('order_repay')->alias('d')->join('__ORDER__ o','o.id = d.order_id')->where('order_id',$info['order_id'])->order('repay_time')->find();
+				$service = "installmentSign";
+				$res  = array( 
+					'service' => $service,
+					'orderNo' => '2007050512345678912345678' . rand(100000,999999),
+					'signType' =>'MD5',
+					'notifyUrl' => 'https://'.$_SERVER['HTTP_HOST'].'/pay/yixingtong/signstage.html',
+					'realName' => $name,
+					'certNo' => $order['idcard_num'],
+					'certValidTime' => $data['idcard_time'],
+					'imageUrl2' => 'https://'.$_SERVER['HTTP_HOST'].get_order_files($data['idcard_face_pic'])['path'],
+					'certBackImageUrl' => 'https://'.$_SERVER['HTTP_HOST'].get_order_files($data['idcard_back_pic'])['path'],
+					'mobileNo' => $order['mobile'],
+					'bankCardNo' => '6228480438657589174',
+					'imageUrl3' => 'https://'.$_SERVER['HTTP_HOST'].get_order_files($data['bankimage'])['path'],
+					'profession' => $data['profession'],
+					'address' => $data['address'],
+					'paperContractNo' => $order['sn'],
+					'imageUrl1' => 'https://'.$_SERVER['HTTP_HOST'].get_order_files($data['image_contract'])['path'],
+					'productName' => '90贷',
+					'productPrice' => $order['examine_limit'],
+					'totalCapitalAmount' => $order['examine_limit'],
+					'installmentPolicy' => 'CUSTOMIZE',
+					'firstRepayDate' => date('Y-m-d',$info['first_repaydate']),
+					'interestRate' => get_rate($order['endtime'])*100,
+					'otherRate' => 0,
+					'totalTimes' => $info['total_times'],
+					'repayType' => 'SELF_REPAY',
+					'eachTotalAmount' => get_arr($info['total_times'],$order['repay_money']),
+					'eachCapitalAmount' => get_arr($info['total_times'],$order['self_money']),
+					'eachInterestAmount' => get_arr($info['total_times'],$order['interest_money']),
+					'eachOtherAmount' => get_arr($info['total_times'],0),
+			    );
+				$res_info = array(
+						'orderno'=>$res['orderNo'],
+						'idcard_face_pic'=>$data['idcard_face_pic'],
+						'idcard_back_pic'=>$data['idcard_back_pic'],
+						'idcard_time'=>$data['idcard_time'],
+						'bankimage'=>$data['bankimage'],
+						'profession'=>$res['profession'],
+						'address'=>$res['address'],
+						'total_amount'=>$order['repay_money'],
+						'image_contract'=>$data['image_contract'],
+						'interest_rate'=>$res['interestRate'],
+						'capital_amount'=>$order['self_money'],
+						'other_amount'=>'0',
+						'installment_policy'=>'CUSTOMIZE',
+					);
+				// var_dump($res_info);
+				
+				$result = \com\Withhold::installSign($res);
+				if ($result['resultCode'] == 'EXECUTE_SUCCESS') {
+					$resp['code'] = '1';
+					$resp['msg'] = '签约成功';
+					$res_info['signstatus'] = '1';
+
+				}elseif ($result['resultCode'] == 'EXECUTE_PROCESSING') {
+					$resp['code'] = '1';
+					$resp['msg'] = '签约处理中';
+					$res_info['signstatus'] = '2';
+				}else{
+					$resp['code'] = '0';
+					$resp['msg'] = $result['resultMessage'];
+					$res_info['signstatus'] = '-1';
+				}
+				db('member_withhold')->where('id',$info['id'])->update($res_info);
+			}else{
+				$resp['code'] = 0;
+				$resp['msg'] = '已签约';
+			}
+			
+			return json($resp);
+		}else{
+			$result = db('member_withhold')->find(input('id'));
+			$files = db('order_files')->where('order_id',$result['order_id'])->limit(9)->order('create_time DESC')->select();
+			$repay = db('order')->field('examine_limit')->where('id',$result['order_id'])->find();
+			$order_repay = db('order_repay')->field('repay_money')->where('order_id',$result['order_id'])->find();
+			$result['loan_limit'] = $repay['examine_limit'];
+			$result['repay_money'] = $order_repay['repay_money'];
+			$name = serch_realname($result['uid']);
+			$result['realname'] = $name;
+			$res =array(
+				'data'=>$result,
+				'files'=>$files
+				);
+			$data = array(
+				'infoStr' =>json_encode($res),
 			);
-		$data = array(
-			'infoStr' =>json_encode($res),
-		);
-		$this->assign($data);
-		$this->setMeta('审核查看');
-		return $this->fetch();
+			$this->assign($data);
+			$this->setMeta('审核查看');
+			return $this->fetch();
+		}
 	}
 
 }

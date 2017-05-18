@@ -255,3 +255,10 @@ function get_collect($id,$key,$group){
 	$res = db('Collect_data')->where($map)->order('create_time DESC')->find();
 	return $res['value'];
 }
+function  get_arr($total,$value){
+	$arr = array();
+	for ($i=0; $i < $total; $i++) { 
+		$arr[] = $value;
+	}
+	return json_encode($arr);
+}
