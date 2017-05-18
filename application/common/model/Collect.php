@@ -8,16 +8,14 @@
 // +----------------------------------------------------------------------
 
 namespace app\common\model;
-
+	
 /**
-* 设置模型
-*/
-class Channel extends Base{
+ * 设备信息
+ * @author molong <molong@tensent.cn>
+ */
+class Collect extends \app\common\model\Base {
 
-	protected $type = array(
-		'id'  => 'integer',
-	);
+	protected $name = "Collect_data";
 
-	protected $auto = array('update_time', 'status'=>1);
-	protected $insert = array('create_time');
+
 }

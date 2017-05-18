@@ -11,14 +11,17 @@ class risk extends Admin {
 
 	public function rating() {
 		
-		$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard')->join('__MEMBER__ m','c.uid = m.uid')->where("credit_status",3)->order('id desc')->fetchSQL(false)->select();
-		
+		$creditList = db('credit')->alias('c')->field('c.*,o.name as realname,o.idcard_num as idcard,o.dealer_id,o.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.credit_status",3)->order('id desc')->fetchSQL(false)->select();
+		foreach ($creditList as $k => $v) {
+			$name = model('Dealer')->field('name')->where('id',$v['dealer_id'])->find();
+			$salesname = model('User')->field('realname as u_realname')->where('uid',$v['uid'])->find();
+			$creditList[$k]['dealer_name'] = $name['name'];
+			$creditList[$k]['u_realname'] = $salesname['u_realname'];
+		}
 		$data = array(
 			'infoStr' =>json_encode($creditList),
 		);
-		//var_dump($data);die;
 		$this->assign($data);
-		
 		$this->setMeta('客户评级');
 		return $this->fetch();
 	}
@@ -72,11 +75,36 @@ class risk extends Admin {
 			}
 			
 		}else{
-			$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard,o.car_price')->join('__MEMBER__ m','c.uid = m.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.id",$id)->order('id desc')->fetchSQL(false)->find();			
+			$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard,o.car_price')->join('__MEMBER__ m','c.uid = m.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.id",$id)->order('id desc')->fetchSQL(false)->find();
+
+			$collect = model('Collect');
+			$basic_info = array(
+				'realname'=>$creditList['realname'],
+				'idcard'=>$creditList['idcard'],
+				'mobile'=>$creditList['mobile'],
+				'realname'=>$creditList['realname'],
+				'year'=>getIDCardInfo($creditList['idcard']),
+				'platform'=>get_collect($id,'platform','device'),
+				'addr'=>get_collect($id,'addr','location'),
+				'wanip'=>get_collect($id,'wanip','network'),
+				'platform'=>get_collect($id,'platform','device'),
+
+				);//基本信息
+			$where = array(
+				'uid'=>$id,
+				'key'=>'message',
+				'group'=>'message'
+				);
+			$message_info = db('Collect_data')->field('value')->where($where)->select();
+			if ($message_info) {
+				$message_info = json_decode($message_info['0']['value'],true);//短信列表
+			}
+			$creditList = array_merge($creditList,$basic_info);
 			$data = array(
 				'infoStr' =>json_encode($creditList),
-			);			
+			);
 			$this->assign($data);
+			$this->assign('message',$message_info);
 			$this->setMeta('评级详情');
 			return $this->fetch('ratingInfo');
 		}

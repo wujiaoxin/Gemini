@@ -230,6 +230,14 @@ class Order extends Api {
 			db('order')->where("id", $creditResult['order_id'])->where("status",-2)->update($orderData);
 		}
 		
+		$res = array(
+			'uid'=>$uid,
+			'type'=>5,
+			'order_id'=>$creditResult['order_id'],
+			'bank_account_id'=>$bank_account_id,
+			'create_time'=>time()
+			);
+		db('bankcard')->insert($res);
 		
 		$resp = '{
 			"code": 1,

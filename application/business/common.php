@@ -49,7 +49,6 @@
                 'create_time'=>time()
             );
           $result = db('carry')->insert($data_moneys);
-          // echo $result;die;
           if ($result){
                 $resp["code"] = 1;
                 $resp["msg"] = '处理中';
