@@ -554,9 +554,9 @@
 									</td>
 									<td>
 										<select class="form-control" id="bank_term">
-											<option value="365">12个月</option>
-											<option value="730">24个月</option>
-											<option value="1095">36个月</option>
+											<option value="12">12个月</option>
+											<option value="24">24个月</option>
+											<option value="36" selected="selected" >36个月</option>
 										</select>
 									</td>
 									<td ><input type="number" value="2" id="bank_rate">‰</td>
@@ -579,9 +579,9 @@
 									</td>
 									<td>
 										<select class="form-control" id="vp_term">
-											<option value="365">12个月</option>
-											<option value="730">24个月</option>
-											<option value="1095">36个月</option>
+											<option value="12">12个月</option>
+											<option value="24">24个月</option>
+											<option value="36" >36个月</option>
 										</select>
 									</td>
 									<td><input type="number" value="2" id="vp_rate">‰</td>
@@ -805,7 +805,15 @@
 					"credit_score" : credit_score,
 					"refuse_reason" : refuseReason,
 					"treatment" : treatment,
-					"descr" : descr
+					"descr" : descr,
+					'bank_name':bank_name,
+					'bank_term':bank_term,
+					'bank_rate':bank_rate,
+					'bank_pay':bank_pay,
+					'vp_type':vp_type,
+					'vp_term':vp_term,
+					'vp_rate':vp_rate,
+					'vp_pay':vp_pay
 				},
 			success:function(resp){
 				if (resp.code == "1" ) {

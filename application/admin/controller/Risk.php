@@ -34,6 +34,8 @@ class risk extends Admin {
 			$res_crd = db('credit')->where('id', $data['id'])->find();
 			if ($data['refuse_reason'] == '3' && $res_crd['credit_result'] == '0') {
 				$risks = model('Risk');
+				
+				
 				$res = db('credit')->alias('c')->field('c.uid,c.order_id,m.realname,m.idcard,m.bankcard')->join('__MEMBER__ m','c.uid = m.uid')->where('c.id',$data['id'])->find();
 				$collect = db('collect_data')->where('uid',$res_crd['uid'])->order('id DESC')->select();
 				foreach ($collect as $k => $v) {
@@ -56,9 +58,18 @@ class risk extends Admin {
 					$data['refuse_reason'] = '1';
 				}
 			}
+
 			if ($res_crd['credit_result'] != '0') {
 				return $this->error("已审核！");
 			}
+			//评级通过生成金融方案
+			if ($data['credit_result'] == '1') {
+				$data['uid'] = $res_crd['uid'];
+				$data['order_id'] = $res_crd['order_id'];
+				$program = model('Programme');
+				$program->result($data);
+			}
+			
 			$result = db('credit')->where('id', $data['id'])->fetchSQL(false)->update($data);			
 			//var_dump($result);
 			/*if($data['credit_result'] == 1){//授信审核通过
@@ -76,7 +87,6 @@ class risk extends Admin {
 			
 		}else{
 			$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard,o.car_price,m.bankcard')->join('__MEMBER__ m','c.uid = m.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.id",$id)->order('id desc')->fetchSQL(false)->find();
-
 			$collect = model('Collect');
 			$basic_info = array(
 				'realname'=>$creditList['realname'],
@@ -91,6 +101,8 @@ class risk extends Admin {
 				'platform'=>get_collect($id,'platform','device'),
 
 				);//基本信息
+
+			$programme = db('programme')->where(['uid'=>$creditList['uid'],'order_id'=>$creditList['order_id']])->find();
 			$where = array(
 				'uid'=>$id,
 				'key'=>'message',
@@ -101,9 +113,15 @@ class risk extends Admin {
 				$message_info = json_decode($message_info['0']['value'],true);//短信列表
 			}
 			$creditList = array_merge($creditList,$basic_info);
+
+			$creditList =array(
+				'creditList'=>$creditList,
+				'programme'=>$programme
+				);
 			$data = array(
 				'infoStr' =>json_encode($creditList),
 			);
+			// var_dump($data);die;
 			$this->assign($data);
 			$this->assign('message',$message_info);
 			$this->setMeta('评级详情');
