@@ -1405,6 +1405,11 @@ function get_programme($orderid){
 				$res['threeYear'] = 0;
 			}
 
+			if ($result['bank_term'] == '36' && $result['vp_term'] == '24') {
+				$res['firstYear'] = $res['twoYear'] =  $res['monthpay'] +$res['bank_monthpay'];
+				$res['threeYear'] =  $res['bank_monthpay'];
+			}
+
 			$res['term'] = $result['bank_term'];
 		}else{
 
