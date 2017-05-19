@@ -294,6 +294,9 @@ class Credit extends Api {
 
 				$threeYear = $res['threeYear'];
 
+				$term = $res['term'];
+
+				$name = $res['name'];
 
 				$respStr = '{
 					"code": 1,
@@ -301,8 +304,8 @@ class Credit extends Api {
 					"data": {
 						"resultcode": 1,
 						"resultmsg": "授信通过",
-						"name": "90贷",
-						"month": '.$team.',
+						"name": '.$name.',
+						"month": '.$term.',
 						"downpay": '.$downpay.',
 						"loan": '.$loan.',
 						"avgmonthpay": '.$avgmonthpay.',
