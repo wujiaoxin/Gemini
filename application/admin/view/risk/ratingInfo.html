@@ -713,8 +713,6 @@
 		$('#vp_term').val(info.programme.vp_term);
 		$('#vp_rate').val(info.programme.vp_rate);
 		$('#vp_pay').val(info.programme.vp_pay);
-	}else{
-		ui_alert("获取数据失败");
 	}
 	//loan_limit
 	//info.loan_limit
@@ -811,8 +809,8 @@
 		ajax_jquery({
 			url: apiUrl +'/admin/risk/ratingInfo',
 			data:{
-					"id": info.id,
-					"mobile": info.mobile,
+					"id": info.creditList.id,
+					"mobile": info.creditList.mobile,
 					"credit_result": credit_result,
 					"credit_level" : credit_level,
 					"credit_score" : credit_score,
