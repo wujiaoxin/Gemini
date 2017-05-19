@@ -1324,3 +1324,131 @@ function getIDCardInfo($IDCard) {
 
 	return $res;
 }
+/*
+**站内利息获取
+*/
+function get_rate($time){
+
+	$totalperiod = floor($time/30);
+
+	if ($totalperiod == '12') {
+		
+		$rate = 1.1/100;
+
+	}elseif ($totalperiod == '24') {
+		
+		$rate = 1.3/100;
+
+	}elseif ($totalperiod == '36') {
+		
+		$rate = 1.5/100;
+	}
+	return $rate;
+}
+
+/*
+**金融方案 TODO
+*/
+function get_programme($orderid){
+	$res = array();
+	$result = db('programme')->alias('p')->join('__ORDER__ o','p.order_id = o.id')->where('order_id',$orderid)->find();
+	if ($result['vp_type'] == '1') {
+		$res['name'] = 'VP贷';
+		$res['monthpay'] = get_vpmonth($result);
+		$res['avgmonthpay'] = $res['monthpay'];
+		$res['downpay'] = round($result['car_price']*$result['bank_pay']/100);
+		$res['term'] = $result['bank_term'];
+		
+		if ($result['bank_term'] == '12') {
+			$res['firstYear'] = $res['monthpay'];
+			 $res['twoYear'] = 0;
+			 $res['threeYear'] = 0;
+		}elseif ($result['bank_term'] == '24') {
+			$res['firstYear'] = $res['twoYear'] = $res['monthpay'];
+			 $res['threeYear'] = 0;
+		}else{
+			$res['firstYear'] = $res['twoYear'] = $res['threeYear'] = $res['monthpay'];
+		}
+	}
+	if ($result['vp_type'] == '2') {
+
+		$res['name'] = '90贷';
+
+		//90贷本息
+		$res['monthpay'] = get_monthpay($result,$result['vp_term']);
+		//银行本息
+		$res['bank_monthpay'] = get_vpmonth($result);
+
+		$success = $result['bank_term'] >= $result['vp_term'] ? true :false;
+
+		if ($success) {
+
+			if ($result['bank_term'] == '12'){
+				$res['firstYear'] = $res['monthpay'] +$res['bank_monthpay'];
+				$res['twoYear'] = $res['threeYear'] = 0;
+			}
+
+			if ($result['bank_term'] == '36' && $result['vp_term'] == '12') {
+				$res['firstYear'] = $res['monthpay'] +$res['bank_monthpay'];
+				$res['twoYear'] = $res['threeYear'] =  $res['bank_monthpay'];
+			}
+
+			if ($result['bank_term'] == '24' && $result['vp_term'] == '12') {
+
+				$res['firstYear'] = $res['monthpay'] +$res['bank_monthpay'];
+				$res['twoYear']  =  $res['bank_monthpay'];
+				$res['threeYear'] = 0;
+			}
+
+			if ($result['bank_term'] == '24' && $result['vp_term'] == '24') {
+				$res['firstYear'] = $res['twoYear'] = $res['monthpay'] +$res['bank_monthpay'];
+				$res['threeYear'] = 0;
+			}
+
+			$res['term'] = $result['bank_term'];
+		}else{
+
+			if ($result['bank_term'] == '24' && $result['vp_term'] == '36') {
+				$res['firstYear'] = $res['twoYear'] = $res['monthpay'] +$res['bank_monthpay'];
+				$res['threeYear'] =  $res['monthpay'];
+			}
+
+			if ($result['bank_term'] == '12' && $result['vp_term'] == '36') {
+
+				$res['firstYear'] = $res['monthpay'] + $res['bank_monthpay'];
+				$res['threeYear'] = $res['twoYear'] = $res['monthpay'];
+			}
+
+			if ($result['bank_term'] == '12' && $result['vp_term'] == '24') {
+
+				$res['firstYear'] = $res['monthpay'] + $res['bank_monthpay'];
+				$res['twoYear'] = $res['monthpay'];
+				$res['threeYear'] = 0;
+			}
+
+			$res['term'] = $result['vp_term'];
+		}
+
+		$res['avgmonthpay'] = round(($res['monthpay']*$result['vp_term'] + $res['bank_monthpay']*$result['bank_term'])/$res['term']);
+
+		$res['downpay'] = round($result['car_price']*$result['vp_pay']/100);
+
+	}
+	$res['rate'] = round(100-$result['vp_pay']);
+	return $res;
+}
+
+/*
+** 金融方案90贷月供
+*/
+function get_monthpay($data,$term){
+	$res = round($data['car_price']*($data['bank_pay']-$data['vp_pay'])*(1+$data['bank_rate']*$data['bank_term']/100)/100/$term);
+	return $res;
+}
+/*
+** VP贷月供
+*/
+function get_vpmonth($data){
+	$res = round($data['car_price']*(100-$data['vp_pay'])*(1+$data['bank_rate']*$data['bank_term']/100)/100/$data['bank_term']);
+	return $res;
+}

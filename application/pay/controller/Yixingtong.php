@@ -39,37 +39,7 @@ class Yixingtong extends Base {
 		$service = "installmentSign";
 		// $service = "installmentBankCardVerify";
 
-		/*$data  = array( 'service' => $service,
-						'partnerId' => $partnerId,
-						'orderNo' => rand(100000,999999),
-						'signType' =>'MD5',
-						'notifyUrl' => '',//
-						'realName' => $mobile,
-						'certNo' => $bankcard,
-						'certValidTime' => $name,
-						'imageUrl2' => $imageUrl2,
-						'certBackImageUrl' => $certBackImageUrl,
-						'mobileNo' => $mobileNo,
-						'bankCardNo' => $bankCardNo,
-						'profession' => $profession,
-						'address' => $address,
-						'paperContractNo' => $paperContractNo,
-						'productName' => $productName,
-						'productPrice' => $productPrice,
-						'totalCapitalAmount' => $totalCapitalAmount,
-						'installmentPolicy' => 'CUSTOMIZE',
-						'firstRepayDate' => $firstRepayDate,
-						'interestRate' => $interestRate,
-						'otherRate' => $otherRate,
-						'totalTimes' => $totalTimes,
-						'repayType' => $repayType,
-						'eachTotalAmount' => $eachTotalAmount,
-						'eachCapitalAmount' => $eachCapitalAmount,
-						'eachInterestAmount' => $eachInterestAmount,
-						'eachOtherAmount' => $eachOtherAmount,						
-					   //'sign' => 'BE11C991DE06605162B3B8A98F84E480'
-					   );*/
-	$data  = array( 'service' => $service,
+			$data  = array( 'service' => $service,
 						'partnerId' => $partnerId,
 						'orderNo' => '2007050512345678912345678' . rand(100000,999999),
 						'signType' =>'MD5',
@@ -167,10 +137,9 @@ class Yixingtong extends Base {
 		return $this->fetch();
 	}
 
-	//签约分期收款TODO
-	public function installment($idcard = '', $name = '', $bankcard='', $mobile='', $password = ""){
+	//签约分期收款TODO //作为测试
+	public function installment($uid, $mobile='',$idcard_time ='',$addr=''){
 		$service = "installmentSign";
-
 		//可变数据(需要传参)
 		$data  = array( 
 			'service' => $service,
@@ -257,6 +226,9 @@ class Yixingtong extends Base {
 		}
 		*/
 		$data = input('post.');
+		if (!$data) {
+			$this->redirect('/');
+		}
 		$success = $data['success'];
 		if (!$success) {
 			$resp['code'] = '0';
@@ -286,13 +258,12 @@ class Yixingtong extends Base {
 			$info['descr'] =$data['resultMessage'];
 			$info['signstatus'] = '1';
 			
-			db('member_withhold')->where('orderNo',$data['orderNo'])->update($info);
 		}
 		if ($data['signStatus'] == 'UPAYSIGN_FAIL') {
 			$info['signStatus']='3';
 			$info['descr'] = $data['description'].$data['errorCode'];
-			db('member_withhold')->where('orderno',$data['orderNo'])->update($info);
 		}
+		db('member_withhold')->where('orderNo',$data['orderNo'])->update($info);
 		echo "success";exit();
 	}
 }
