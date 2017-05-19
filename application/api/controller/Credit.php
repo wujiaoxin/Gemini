@@ -304,7 +304,7 @@ class Credit extends Api {
 					"data": {
 						"resultcode": 1,
 						"resultmsg": "授信通过",
-						"name": '.$name.',
+						"name": "'.$name.'",
 						"month": '.$term.',
 						"downpay": '.$downpay.',
 						"loan": '.$loan.',
