@@ -51,10 +51,20 @@
             {
                 form_key:"orderSupplement_pic_8",
                 form_label:"垫资合同"
+            },
+            {
+                form_key:"orderSupplement_pic_9",
+                form_label:"代扣银行卡"
             }];
 
     </script>
     <style type="text/css">
+        .mb10 {
+            margin-bottom: 10px;
+        }
+        .pb20 {
+            padding-bottom: 20px;
+        }
         .pic-cont-block {
             display: flex;
             justify-content: space-around;
@@ -160,7 +170,7 @@
             <div class="pages navbar-through">
                 <div class="page">
                     <div class="page-content">
-                        <div class="list-block mt10">
+                        <div class="list-block mt10 mb10">
                             <ul>
                                 <li class="accordion-item accordion-item-expanded">
                                     <a href="#" class="item-content item-link">
@@ -276,23 +286,16 @@
                                         </div>
                                     </a>
                                     <div class="accordion-item-content">
-                                        <div class="content-block pic-info">
+                                        <div class="content-block pic-info pb20">
                                             <div class="pic-cont">
-                                                <div class="pic-cont-title">个人信息</div>
+                                                <!-- <div class="pic-cont-title">个人信息</div> -->
                                                 <div class="pic-cont-block">
-                                                    <div class="pic-cont-item"><img src=""></div>
-                                                    <div class="pic-cont-item"><img src=""></div>
-                                                    <div class="pic-cont-item"><img src=""></div>
-                                                </div>
+                                              <!--   </div>
                                             </div>
                                              <div class="pic-cont pb10">
                                                 <div class="pic-cont-title">证件信息</div>
-                                                <div class="pic-cont-block">
-                                                    <div class="pic-cont-item"><img src=""></div>
-                                                    <div class="pic-cont-item"><img src=""></div>
-                                                    <div class="pic-cont-item"><img src=""></div>
-                                                    <div class="pic-cont-item"><img src=""></div>
-                                                    <div class="pic-cont-item"><img src=""></div>
+                                                <div class="pic-cont-block"> -->
+                                                    <!-- <div class="pic-cont-item"><img src=""></div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -350,15 +353,18 @@
                          stepbarShow(2);
                     }
                     var pic = resp.data.files;
+                    var str = '';
                     for(var index = 0; index < keyList.length; index++){
                         $.each(pic,function(i,n){
                             if(keyList[index].form_key == n.form_key){
-                                $('.pic-info .pic-cont-item').eq(index).find('img').attr('src',pic[i].path);
+                                str += '<div class="pic-cont-item"><img src="'+ pic[i].path +'"></div>';
+                                // $('.pic-info .pic-cont-item').eq(index).find('img').attr('src',pic[i].path);
                                 picList.push(pic[i].path);
                                 return false;
                             }
                         })
                     }
+                    $('.pic-cont-block').html(str);
                     myPhotoBrowserPopup = myApp.photoBrowser({
                         photos : picList,
                         theme: 'dark',
