@@ -268,7 +268,7 @@ class Order extends \app\common\model\Base {
 
 		$result = db('member')->field('realname,mobile as sales_mobile')->where('uid',$info['uid'])->find();
 
-		$result_one = db('dealer')->alias('d')->join('__MEMBER__ m','m.mobile = d.mobile')->field('name')->where('m.uid',$info['mid'])->find();
+		$result_one = db('dealer')->alias('d')->join('__MEMBER__ m','m.mobile = d.mobile')->field('name,property')->where('m.uid',$info['mid'])->find();
 		
 		//TODO :空判断
 		if ($result) {
@@ -286,7 +286,7 @@ class Order extends \app\common\model\Base {
 		}
 		
 		$info['dealer_name'] = $result_one['name'];//车商名称
-
+		$info['property'] = $result_one['property'];//车商属性
 		return $info;
 	}
 
