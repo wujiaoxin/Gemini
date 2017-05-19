@@ -139,12 +139,13 @@ class Postloan extends Admin {
 		}else{
 			$result = db('member_withhold')->find(input('id'));
 			$files = db('order_files')->where('order_id',$result['order_id'])->limit(9)->order('create_time DESC')->select();
-			$repay = db('order')->field('examine_limit')->where('id',$result['order_id'])->find();
+			$repay = db('order')->field('examine_limit,type')->where('id',$result['order_id'])->find();
 			$order_repay = db('order_repay')->field('repay_money')->where('order_id',$result['order_id'])->find();
 			$result['loan_limit'] = $repay['examine_limit'];
 			$result['repay_money'] = $order_repay['repay_money'];
 			$name = serch_realname($result['uid']);
 			$result['realname'] = $name;
+			$result['type'] = $repay['type'];
 			$res =array(
 				'data'=>$result,
 				'files'=>$files
