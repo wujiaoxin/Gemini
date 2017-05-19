@@ -1806,7 +1806,7 @@ CREATE TABLE `gemini_dealer_money` (
   `repay_money` decimal(20,2) DEFAULT NULL COMMENT '待收资金',
   `descr` varchar(255) NOT NULL DEFAULT 'NULL' COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='资金记录表';
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='资金记录表';
 
 DROP TABLE IF EXISTS `gemini_order_repay`;
 CREATE TABLE `gemini_order_repay` (
@@ -1923,7 +1923,7 @@ CREATE TABLE `gemini_member_blacklist` (
   `create_time` int(11) NOT NULL,
   `descr` varchar(255) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='黑名单记录表';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='黑名单记录表';
 
 
 DROP TABLE IF EXISTS `gemini_member_withhold`;
@@ -1932,9 +1932,9 @@ CREATE TABLE `gemini_member_withhold` (
   `uid` int(10) NOT NULL COMMENT '用户id',
   `order_id` int(10) NOT NULL COMMENT '订单id',
   `orderno` varchar(60) NOT NULL DEFAULT '' COMMENT '请求流水号',
-  `idcard_num` varchar(255) NOT NULL DEFAULT '' COMMENT '身份证号',
-  `idcard_face_pic` varchar(255) NOT NULL DEFAULT '' COMMENT '身份证正面照片地址',
-  `idcard_back_pic` varchar(255) NOT NULL DEFAULT '' COMMENT '身份证反面照片地址',
+  `idcard_num` varchar(36) DEFAULT NULL COMMENT '身份证号',
+  `idcard_face_pic` int(11) DEFAULT NULL COMMENT '身份证正面照片地址',
+  `idcard_back_pic` int(11) DEFAULT NULL COMMENT '身份证反面照片地址',
   `idcard_time` int(11) NOT NULL DEFAULT '0' COMMENT '身份证到期日期',
   `bankcard` varchar(64) NOT NULL COMMENT '银行卡号',
   `bankcard_type` varchar(255) DEFAULT '' COMMENT '银行卡类型',
@@ -1948,11 +1948,11 @@ CREATE TABLE `gemini_member_withhold` (
   `profession` varchar(128) NOT NULL COMMENT '用户职业',
   `address` varchar(255) NOT NULL COMMENT '用户联系地址',
   `papercontract` varchar(40) NOT NULL COMMENT '用户贷款合同号',
-  `image_contract` int(10) NOT NULL COMMENT '用户贷款合同照片地址',
+  `image_contract` int(10) DEFAULT NULL COMMENT '用户贷款合同照片地址',
   `contractno` varchar(20) DEFAULT NULL COMMENT '签约合同号 ',
   `product_name` varchar(255) NOT NULL COMMENT '产品名称',
   `product_price` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '产品价格',
-  `first_repaydate` int(11) NOT NULL DEFAULT '0' COMMENT '首次还款日期',
+  `first_repaydate` int(11) DEFAULT NULL COMMENT '首次还款日期',
   `installment_policy` varchar(255) NOT NULL COMMENT '分期策略',
   `other_rate` decimal(3,2) DEFAULT NULL COMMENT '其他利率',
   `interest_rate` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '利率',
@@ -1966,7 +1966,7 @@ CREATE TABLE `gemini_member_withhold` (
   `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
   `update_time` int(11) DEFAULT NULL COMMENT '成功通知时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户代扣表';
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户代扣表';
 
 DROP TABLE IF EXISTS `gemini_bankcard`;
 CREATE TABLE `gemini_bankcard` (
@@ -1984,7 +1984,7 @@ CREATE TABLE `gemini_bankcard` (
   `descr` varchar(255) DEFAULT '' COMMENT '描述',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='更新银行卡信息';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='更新银行卡信息';
 
 
 DROP TABLE IF EXISTS `gemini_programme`;
@@ -1992,13 +1992,14 @@ CREATE TABLE `gemini_programme` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `order_id` int(10) NOT NULL COMMENT '订单id',
   `uid` int(10) NOT NULL COMMENT '客户id(车商id)',
-  `p_type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '业务类型 1 vp贷 2 90贷(20%) 3 90(90%)',
+  `vp_type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '业务类型 1 vp贷 2 90贷(20%) 3 90(90%)',
   `bank_rate` decimal(10,2) NOT NULL COMMENT '银行利率',
   `vp_rate` decimal(10,2) NOT NULL COMMENT '利率',
-  `bank_team` int(10) NOT NULL COMMENT '银行期限',
-  `vp_team` int(10) NOT NULL COMMENT '期限',
+  `bank_term` int(10) NOT NULL DEFAULT '0' COMMENT '银行期限',
+  `vp_term` int(10) NOT NULL DEFAULT '0' COMMENT '期限',
   `bank_name` tinyint(3) NOT NULL DEFAULT '0' COMMENT '银行 1平安银行',
   `bank_pay` int(11) DEFAULT '0' COMMENT '银行首付比例',
-  `pay` int(11) DEFAULT NULL COMMENT '首付比例',
+  `vp_pay` int(11) DEFAULT NULL COMMENT '首付比例',
+  `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='金融方案';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='金融方案';
