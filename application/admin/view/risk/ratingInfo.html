@@ -536,9 +536,58 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">合作金融方案</label>
 						<div class="col-sm-10 pt5">
-							<span class="col-sm-2">银行机构 平安银行</span>
+							<!-- <span class="col-sm-2">银行机构 平安银行</span>
 							<span class="col-sm-3" id="loan_limit">-</span>
-							<!--<span class="col-sm-2">月供 1000*12</span>-->
+							<span class="col-sm-2">月供 1000*12</span> -->
+							<table class="table table-bordered text-center" id="table-financialProgram">
+								<tr>
+									<td>银行</td>
+									<td>期限</td>
+									<td>日利率</td>
+									<td>首付比例</td>
+								</tr>
+								<tr>
+									<td>
+										<select class="form-control" id="bank_name">
+											<option value="1" selected="selected">平安银行</option>
+										</select>
+									</td>
+									<td>
+										<select class="form-control" id="bank_term">
+											<option value="365">12个月</option>
+											<option value="730">24个月</option>
+											<option value="1095">36个月</option>
+										</select>
+									</td>
+									<td ><input type="number" value="2" id="bank_rate">‰</td>
+									<td><input type="number" value="30" id="bank_pay">%</td>
+								</tr>
+								<tr>
+									<td>类型</td>
+									<td>期限</td>
+									<td>日利率</td>
+									<td>首付比例</td>
+								</tr>
+								<tr>
+									<td>
+										<select class="form-control" id="vp_type">
+											<option selected="selected" disabled="disabled" style='display: none'></option>
+											<option value="1">VP贷</option>
+											<option value="2">90贷(20%)</option>
+											<option value="3">90贷(90%)</option>
+										</select>
+									</td>
+									<td>
+										<select class="form-control" id="vp_term">
+											<option value="365">12个月</option>
+											<option value="730">24个月</option>
+											<option value="1095">36个月</option>
+										</select>
+									</td>
+									<td><input type="number" value="2" id="vp_rate">‰</td>
+									<td><input type="number" value="10" id="vp_pay">%</td>
+								</tr>
+							</table>
 						</div>
 					</div>
 					<div class="form-group">
@@ -672,6 +721,14 @@
 		}
 	});
 
+	// 金融案参数关联
+	// $('#vp_type').change(function(){
+	// 	if($(this).val() == '1'){
+	// 		$('#vp_term').attr('disabled','disabled');
+	// 	}
+	// })
+
+
 	$('#examineBtn').click(function(){
 		var credit_result = 0;
 		var credit_score = $("#credit_score").val();
@@ -681,6 +738,14 @@
 		var treatment = $("#treatment").val();
 		var descr = $("#descr").val().replace(/\n/g,"");
 
+		var bank_name = $('#bank_name').val();
+		var bank_term = $('#bank_term').val();
+		var bank_rate = $('#bank_rate').val();
+		var bank_pay = $('#bank_pay').val();
+		var vp_type = $('#vp_type').val();
+		var vp_term = $('#vp_term').val();
+		var vp_rate = $('#vp_rate').val();
+		var vp_pay = $('#vp_pay').val();
 
 		if(credit_score > 100 || credit_score < 0){
 			ui_alert("请输入正确授信评分");
@@ -695,6 +760,39 @@
 			}else{
 				credit_result = -1;
 			}
+		}
+		if(bank_name == '' || bank_name == null){
+			ui_alert("请选择银行");
+			$("#bank_name").focus();
+			return false;
+		}else if(bank_term == '' || bank_term == null){
+			ui_alert("请选择期限");
+			$("#bank_term").focus();
+			return false;
+		}else if(bank_rate == '' || bank_rate < 0 || bank_rate > 1000 ){
+			ui_alert("日利率输入有误");
+			$("#bank_rate").focus();
+			return false;
+		}else if(bank_pay == '' || bank_pay < 0 || bank_pay > 100){
+			ui_alert("首付比例输入有误");
+			$("#bank_pay").focus();
+			return false;
+		}else if(vp_type == '' || vp_type == null){
+			ui_alert("请选择借款类型");
+			$("#vp_type").focus();
+			return false;
+		}else if(vp_term == '' || vp_term == null){
+			ui_alert("请选择期限");
+			$("#vp_term").focus();
+			return false;
+		}else if(vp_rate == '' || vp_rate < 0 || vp_rate > 1000){
+			ui_alert("日利率输入有误");
+			$("#vp_rate").focus();
+			return false;
+		}else if(vp_pay == '' || vp_pay < 0 || vp_pay > 100){
+			ui_alert("首付比例输入有误");
+			$("#vp_pay").focus();
+			return false;
 		}
 
 		ajax_jquery({
