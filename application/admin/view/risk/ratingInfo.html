@@ -688,18 +688,31 @@
 
 <script>
 
-	if(info){
-		$("#realname").text(info.realname);
-		$("#idcard").text(info.idcard);
-		$("#mobile").text(info.mobile);
-		$("#loan_limit").text('贷款金额：' + (info.car_price * 0.9).toFixed(2) + '元');
-		$("#credit_score").val(info.credit_score || "");
-		$("#descr").val(info.descr || "");
-		$("#year").text(info.year);
-		$("#platform").text(info.platform);
-		$("#addr").text(info.addr);
-		$("#wanip").text(info.wanip);
-		$('#bankcard').text(info.bankcard);
+	if(info.creditList){
+		$("#realname").text(info.creditList.realname);
+		$("#idcard").text(info.creditList.idcard);
+		$("#mobile").text(info.creditList.mobile);
+		$("#loan_limit").text('贷款金额：' + (info.creditList.car_price * 0.9).toFixed(2) + '元');
+		$("#credit_score").val(info.creditList.credit_score || "");
+		$("#descr").val(info.creditList.descr || "");
+		$("#year").text(info.creditList.year);
+		$("#platform").text(info.creditList.platform);
+		$("#addr").text(info.creditList.addr);
+		$("#wanip").text(info.creditList.wanip);
+		$('#bankcard').text(info.creditList.bankcard);
+	}else{
+		ui_alert("获取数据失败");
+	}
+
+	if(info.programme){
+		$('#bank_name').val(info.programme.bank_name);
+		$('#bank_term').val(info.programme.bank_term);
+		$('#bank_rate').val(info.programme.bank_rate);
+		$('#bank_pay').val(info.programme.bank_pay);
+		$('#vp_type').val(info.programme.vp_type);
+		$('#vp_term').val(info.programme.vp_term);
+		$('#vp_rate').val(info.programme.vp_rate);
+		$('#vp_pay').val(info.programme.vp_pay);
 	}else{
 		ui_alert("获取数据失败");
 	}
