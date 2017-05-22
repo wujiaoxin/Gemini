@@ -7,6 +7,7 @@ var g_dealObj = {'0':'系统','1':'商户'};
 var g_examineStatus = {'-1':'处理中','0':'审核拒绝','1':'审核通过'};
 var g_dealerStatus = {'3':'待审核','1':'审核通过','9':'终止合作'};
 var g_dealerProperty = {'1':'车商','2':'4S店','3':'担保公司'};
+var g_creditResult = {'-1':'审核未通过','0':'待审核','1':'通过','2':'更换常用银行卡','3':'更换常用手机号'};
 var apiUrl ='';
 function ui_alert(msg,type,position){
    $.messager.show(msg, {placement: position,type:type});
