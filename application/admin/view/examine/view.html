@@ -365,6 +365,9 @@
 	        }
 	    }
 	});
+	$('span[name="credit_score"]').text(info['credit_info']['credit_score']);
+	$('span[name="credit_level"]').text(info['credit_info']['credit_level']);
+	$('span[name="credit_result"]').text(g_creditResult[info['credit_info']['credit_result']]);
 	$('span[name="bankcard"]').text(info['member_info']['bankcard']);
 	$('span[name="score"]').text(info['member_info']['score']);
 
