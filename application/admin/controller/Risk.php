@@ -32,6 +32,9 @@ class risk extends Admin {
 			$data = input('post.');
 			//黑名单
 			$res_crd = db('credit')->where('id', $data['id'])->find();
+			if ($res_crd['credit_result'] != '0') {
+				return $this->error("已审核！");
+			}
 			if ($data['refuse_reason'] == '3' && $res_crd['credit_result'] == '0') {
 				$risks = model('Risk');
 				
@@ -59,15 +62,14 @@ class risk extends Admin {
 				}
 			}
 
-			if ($res_crd['credit_result'] != '0') {
-				return $this->error("已审核！");
-			}
+			
 			//评级通过生成金融方案
 			if ($data['credit_result'] == '1') {
 				$data['uid'] = $res_crd['uid'];
 				$data['order_id'] = $res_crd['order_id'];
 				$program = model('Programme');
 				$program->result($data);
+				$data['refuse_reason'] = '0';
 			}
 			
 			$result = db('credit')->where('id', $data['id'])->fetchSQL(false)->update($data);			
