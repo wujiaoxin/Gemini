@@ -50,13 +50,13 @@ function tryOCR(id,type){
 function formatDate(timeStr){
     var timeStr = timeStr*1000;
     var now =new Date(timeStr);
-    var year=now.getFullYear();     
-    var month=now.getMonth()+1;     
-    var date=now.getDate();     
-    var hour=fillZero(now.getHours());     
-    var minute=fillZero(now.getMinutes());     
-    var second=fillZero(now.getSeconds());    
-    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+    var year=now.getFullYear();
+    var month=now.getMonth()+1;
+    var date=now.getDate();
+    var hour=fillZero(now.getHours());
+    var minute=fillZero(now.getMinutes());
+    var second=fillZero(now.getSeconds());
+    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;
 };
 function fillZero(i){
     if (i<10){
