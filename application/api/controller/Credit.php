@@ -282,7 +282,7 @@ class Credit extends Api {
 				
 				$res = get_programme($orderData['id']);
 
-				if ($res['downpay']) {
+				if (!empty($res)) {
 
 					$downpay = $res['downpay'];
 
@@ -334,7 +334,7 @@ class Credit extends Api {
 					}';
 
 				}else{
-					
+
 					$downpay = round((int)$car_price * 0.1);
 					$loan = round((int)$car_price * 0.9);
 					

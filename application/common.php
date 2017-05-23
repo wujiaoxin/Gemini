@@ -1439,7 +1439,9 @@ function get_programme($orderid){
 		$res['downpay'] = round($result['car_price']*$result['vp_pay']/100);
 
 	}
-	$res['rate'] = round(100-$result['vp_pay']);
+	if (is_array($result)) {
+		$res['rate'] = round(100-$result['vp_pay']);
+	}
 	return $res;
 }
 
