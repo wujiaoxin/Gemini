@@ -104,7 +104,7 @@ class risk extends Admin {
 				);//基本信息
 			$programme = db('programme')->where(['uid'=>$creditList['uid'],'order_id'=>$creditList['order_id']])->find();
 			$where = array(
-				'uid'=>$id,
+				'uid'=>$creditList['uid'],
 				'key'=>'message',
 				'group'=>'message'
 				);
