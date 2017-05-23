@@ -38,7 +38,6 @@ class Finance extends Admin {
 
 			$data = input('post.');
 
-			// var_dump($data);die;
 			if (isset($data['status'])) {
 
 				$datas = array(
@@ -54,7 +53,6 @@ class Finance extends Admin {
 					$money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.id',$data['id'])->find();
 
 					$result = db('order')->field('fee,loan_limit,examine_limit,type,mobile,sn,endtime')->where('id',$data['id'])->find();
-					
 					if ($result['type'] == '2' || $result['type'] == '4') {
 
 						if ($money['lock_money'] >= $result['fee']) {//判断冻结金额和订单费用
