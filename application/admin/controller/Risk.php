@@ -11,10 +11,10 @@ class risk extends Admin {
 
 	public function rating() {
 		
-		$creditList = db('credit')->alias('c')->field('c.*,o.name as realname,o.idcard_num as idcard,o.dealer_id,o.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.credit_status",3)->order('id desc')->fetchSQL(false)->select();
+		$creditList = db('credit')->alias('c')->field('c.*,o.name as realname,o.idcard_num as idcard,o.dealer_id,o.uid as umid')->join('__ORDER__ o','c.order_id = o.id')->where("c.credit_status",3)->order('id desc')->fetchSQL(false)->select();
 		foreach ($creditList as $k => $v) {
 			$name = model('Dealer')->field('name')->where('id',$v['dealer_id'])->find();
-			$salesname = model('User')->field('realname as u_realname')->where('uid',$v['uid'])->find();
+			$salesname = model('User')->field('realname as u_realname')->where('uid',$v['umid'])->find();
 			$creditList[$k]['dealer_name'] = $name['name'];
 			$creditList[$k]['u_realname'] = $salesname['u_realname'];
 		}
@@ -32,6 +32,9 @@ class risk extends Admin {
 			$data = input('post.');
 			//黑名单
 			$res_crd = db('credit')->where('id', $data['id'])->find();
+			if ($res_crd['credit_result'] != '0') {
+				return $this->error("已审核！");
+			}
 			if ($data['refuse_reason'] == '3' && $res_crd['credit_result'] == '0') {
 				$risks = model('Risk');
 				
@@ -59,15 +62,14 @@ class risk extends Admin {
 				}
 			}
 
-			if ($res_crd['credit_result'] != '0') {
-				return $this->error("已审核！");
-			}
+			
 			//评级通过生成金融方案
 			if ($data['credit_result'] == '1') {
 				$data['uid'] = $res_crd['uid'];
 				$data['order_id'] = $res_crd['order_id'];
 				$program = model('Programme');
 				$program->result($data);
+				$data['refuse_reason'] = '0';
 			}
 			
 			$result = db('credit')->where('id', $data['id'])->fetchSQL(false)->update($data);			
@@ -93,15 +95,13 @@ class risk extends Admin {
 				'idcard'=>$creditList['idcard'],
 				'bankcard'=>$creditList['bankcard'],
 				'mobile'=>$creditList['mobile'],
-				'realname'=>$creditList['realname'],
 				'year'=>getIDCardInfo($creditList['idcard']),
-				'platform'=>get_collect($id,'platform','device'),
-				'addr'=>get_collect($id,'addr','location'),
-				'wanip'=>get_collect($id,'wanip','network'),
-				'platform'=>get_collect($id,'platform','device'),
+				'platform'=>get_collect($creditList['uid'],'platform','device'),
+				'addr'=>get_collect($creditList['uid'],'addr','location'),
+				'wanip'=>get_collect($creditList['uid'],'wanip','network'),
+				'platform'=>get_collect($creditList['uid'],'platform','device'),
 
 				);//基本信息
-
 			$programme = db('programme')->where(['uid'=>$creditList['uid'],'order_id'=>$creditList['order_id']])->find();
 			$where = array(
 				'uid'=>$id,
@@ -112,7 +112,9 @@ class risk extends Admin {
 			if ($message_info) {
 				$message_info = json_decode($message_info['0']['value'],true);//短信列表
 			}
-			$creditList = array_merge($creditList,$basic_info);
+			if (is_array($creditList)) {
+				$creditList = array_merge($creditList,$basic_info);
+			}
 
 			$creditList =array(
 				'creditList'=>$creditList,

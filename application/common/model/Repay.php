@@ -126,22 +126,12 @@ class Repay extends \app\common\model\Base {
 		$deal = db('order')->where('id',$order_id)->find();
 
 		$deal['product_name'] = repay_type($deal['type']);
+		
 
 		$totalperiod = floor($deal['endtime']/30);
 
-		if ($totalperiod == '12') {
-			
-			$deal['rate'] = 1.1/100;
+		$deal['rate'] = get_rate($deal['endtime']);
 
-
-		}elseif ($totalperiod == '24') {
-			
-			$deal['rate'] = 1.3/100;
-
-		}elseif ($totalperiod == '36') {
-			
-			$deal['rate'] = 1.5/100;
-		}
 		$list = array();
 		
 		$has_use_self_money = 0;
@@ -155,7 +145,7 @@ class Repay extends \app\common\model\Base {
 			$load_repay = array();
 
 			// $load_repay['repay_time'] = time()+30*24*60*60*$i;
-			$load_repay['repay_time']  = $repay_day = next_replay_month ($repay_day);
+			$load_repay['repay_time']  = next_replay_month ($repay_day);
 			// $load_repay['repay_money11'] = date('Y-m-d H:i:s',$load_repay['repay_time']);
 			$load_repay['repay_period'] = $i;
 
@@ -209,18 +199,8 @@ class Repay extends \app\common\model\Base {
 		$totalperiod = floor($deal['endtime']/30);
 
 		//利率
-		if ($totalperiod == '12') {
-			
-			$deal['rate'] = 1.1/100;
+		$deal['rate'] = get_rate($deal['endtime']);
 
-		}elseif ($totalperiod == '24') {
-			
-			$deal['rate'] = 1.3/100;
-
-		}elseif ($totalperiod == '36') {
-			
-			$deal['rate'] = 1.5/100;
-		}
 		$list = array();
 		
 		$has_use_self_money = 0;
@@ -233,7 +213,7 @@ class Repay extends \app\common\model\Base {
 
 			$load_repay = array();
 
-			$load_repay['repay_time']  = $repay_day = next_replay_month ($repay_day);
+			$load_repay['repay_time'] = next_replay_month ($repay_day);
 			
 			$load_repay['repay_period'] = $i;
 
