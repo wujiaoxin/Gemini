@@ -96,13 +96,12 @@ class risk extends Admin {
 				'bankcard'=>$creditList['bankcard'],
 				'mobile'=>$creditList['mobile'],
 				'year'=>getIDCardInfo($creditList['idcard']),
-				'platform'=>get_collect($id,'platform','device'),
-				'addr'=>get_collect($id,'addr','location'),
-				'wanip'=>get_collect($id,'wanip','network'),
-				'platform'=>get_collect($id,'platform','device'),
+				'platform'=>get_collect($creditList['uid'],'platform','device'),
+				'addr'=>get_collect($creditList['uid'],'addr','location'),
+				'wanip'=>get_collect($creditList['uid'],'wanip','network'),
+				'platform'=>get_collect($creditList['uid'],'platform','device'),
 
 				);//基本信息
-
 			$programme = db('programme')->where(['uid'=>$creditList['uid'],'order_id'=>$creditList['order_id']])->find();
 			$where = array(
 				'uid'=>$id,
