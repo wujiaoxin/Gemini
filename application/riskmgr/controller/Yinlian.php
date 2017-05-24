@@ -12,6 +12,27 @@ use app\common\controller\Base;
 
 class Yinlian extends Base {
 	public function index() {
+		/*$res = '{ 
+			"resCode": "0001", 
+			"resMsg": "提交失败", 
+			"statCode": "2006", 
+			"statMsg": "没有查询到结果,无此卡号数据,card:6222620110009991101", 
+			"orderId": "165093", 
+			"smartOrderId": "upsmart201705171044078c9d6ba92dd94345a7edb3f7c2be3990", 
+			"sign": "BEE384A4EF16F913DADF7285E306F34E", 
+			"data": { 
+				"validate":"1",
+				"result":
+				{
+					"S0001":"20110717",
+					"S0003":"12",
+					"S0006":"2"
+				} 
+			} 
+		}';
+		$aa = json_decode($res,true);
+		var_dump($aa['data']['result']);
+		dump($aa);die;*/
 		return $this->fetch();
 	}
 	
@@ -88,7 +109,35 @@ class Yinlian extends Base {
 			fwrite($handle,"==========================\r\n\r\n");
 		}
 		fclose($handle);
-		
+		/*//测试数据
+		$results ='{ 
+			"resCode": "0001", 
+			"resMsg": "提交失败", 
+			"statCode": "2006", 
+			"statMsg": "没有查询到结果,无此卡号数据,card:6222620110009991101", 
+			"orderId": "165093", 
+			"smartOrderId": "upsmart201705171044078c9d6ba92dd94345a7edb3f7c2be3990", 
+			"sign": "BEE384A4EF16F913DADF7285E306F34E", 
+			"data": { 
+				"validate":"1",
+				"result":
+				{
+					"S0001":"20110717",
+					"S0003":"12",
+					"S0502":"2"
+				} 
+			} 
+		}';*/
+		$info = json_decode($results,true);
+		$arr = array();
+		if ($info['data']['validate'] == '1') {
+			
+			foreach ($info['data']['result'] as $k => $v) {
+				$arr[] =array('name'=>$k,'value'=>$v);
+			}
+		}
+		$this->assign('res',$arr);
+
 		$this->assign('query', $name);
 		//$this->assign('url', $url);
 		$this->assign('results', $results);
