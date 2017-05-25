@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="zh-CN" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="zh-CN" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!--> <html lang="zh-CN" class="no-js"> <!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+  <meta charset="utf-8" />
+  <title>车商管理后台</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta content="" name="description" />
+  <meta content="" name="author" />
+  <!-- BEGIN GLOBAL MANDATORY STYLES -->
+
+  <link href="/public/business/lib/metronic/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+  <link href="/public/business/lib/metronic/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+  <link href="/public/business/lib/metronic/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+  <link href="/public/business/lib/metronic/css/style-metro.css" rel="stylesheet" type="text/css"/>
+  <link href="/public/business/lib/metronic/css/style.css" rel="stylesheet" type="text/css"/>
+  <link href="/public/business/lib/metronic/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+  <link href="/public/business/lib/metronic/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+  <link href="/public/business/lib/metronic/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+  <link href="/public/business/css/messager.css" rel="stylesheet" type="text/css"/>
+  <!-- END GLOBAL MANDATORY STYLES -->
+  <style type="text/css">
+/*     html,
+    body,
+    .page-container,
+    .page-content {
+      height: 100%;
+    } */
+  </style>
+  <!-- BEGIN PAGE LEVEL STYLES -->
+  {block name="style"}{/block}
+  <!-- END PAGE LEVEL STYLES -->
+</head>
+<!-- END HEAD -->
+
+<!-- BEGIN BODY -->
+<body class="page-header-fixed">
+  <!-- BEGIN HEADER -->
+  <div class="header navbar navbar-inverse navbar-fixed-top">
+   
+    <!-- BEGIN PAGE -->
+      <div class="container-fluid">
+        
+        <!-- <div class="alert hide">
+          <a class="close"></a>
+          <span></span>
+        </div> -->
+        {block name="body"}{/block}
+      </div>
+      <!-- END PAGE CONTAINER-->
+    </div>
+  <script src="/public/business/lib/metronic/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+  <script src="/public/business/lib/metronic/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+  <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+  <script src="/public/business/lib/metronic/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+  <script src="/public/business/lib/metronic/js/bootstrap.min.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+  <script src="/public/business/lib/metronic/js/excanvas.min.js"></script>
+  <script src="/public/business/lib/metronic/js/respond.min.js"></script>
+  <![endif]-->
+  <script src="/public/business/lib/metronic/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+  <script src="/public/business/lib/metronic/js/jquery.blockui.min.js" type="text/javascript"></script>
+  <script src="/public/business/lib/metronic/js/jquery.cookie.min.js" type="text/javascript"></script>
+  <script src="/public/business/lib/metronic/js/jquery.uniform.min.js" type="text/javascript" ></script>
+  <script src="/public/js/messager.js" type="text/javascript" ></script>
+  <!-- END CORE PLUGINS -->
+  <script src="/public/business/js/validate.js" type="text/javascript"></script>
+  <!-- BEGIN PAGE LEVEL SCRIPTS -->
+  <script src="/public/business/js/app.js"></script>
+  {block name="script"}{/block}
+  <!-- END PAGE LEVEL SCRIPTS -->
+  <!-- END JAVASCRIPTS -->
+</body>
+
+<!-- END BODY -->
+
+</html>
