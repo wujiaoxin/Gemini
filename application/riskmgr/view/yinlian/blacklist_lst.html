@@ -1,0 +1,90 @@
+{extend name="base"/}
+{block name="style"}
+<script type="text/javascript">
+var info = {};
+    try {
+        info = JSON.parse('{$infoStr}');
+    } catch (e) {
+        alert("数据异常");
+    }
+</script>
+{/block}
+{block name="body"}
+<div class="left" style="background-color: #fff;font-size: 18px">
+    <a href="#" class="link icon-only" id="backbtn">
+        <img src="/public/wap/images/logo.png" height="100%"/>
+    </a>
+    <a href="{:url('yinlian/blacklist')}">
+        黑名单查询接口
+    </a>
+</div>
+
+<div class="portlet box grey">
+    <div class="portlet-body">
+        <table class="table-striped table-bordered table-hover dataTable no-footer" id="table-loanItem">
+            <thead>
+                <tr>
+                    <th >主体名称</th> 
+                    <th width="15%">主体代码</th> 
+                    <th>证件地址</th> 
+                    <th>性别</th> 
+                    <th>年龄</th> 
+                    <th width="10%">单位名称</th> 
+                    <th>单位地址</th> 
+                    <th>联系电话</th>
+                    <th>电子邮件</th>
+                    <th width="10%">贷款金额</th> 
+                    <th>贷款日期</th> 
+                    <th>贷款期限</th> 
+                    <th>逾期金额</th> 
+                    <th>还款状态</th> 
+                    <th>逾期开始日期</th> 
+                    <th width="13%">发布日期</th> 
+                    <th>信息来源</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="/public/business/js/table-managed.js"></script>
+<script>
+    function tpl(data){
+        var html = '';
+        if(typeof(data) =='object'){
+        for(var index = 0; index < data.length; index++){
+            html += '<tr class="odd gradex">'
+                +'<td>' + data[index].entityName + '</td>'
+                +'<td>'+ data[index].entityId +'</td>'
+                +'<td>'+ data[index].address +'</td>'
+                +'<td>'+ data[index].gender +'</td>'
+                +'<td>'+ data[index].age +'</td>'
+                +'<td>'+ data[index].orgName +'</td>'
+                +'<td>'+ data[index].orgAddress +'</td>'
+                +'<td>'+ data[index].phone +'</td>'
+                +'<td>'+ data[index].email +'</td>'
+                +'<td>'+ data[index].loanAmount +'</td>'
+                +'<td>'+ data[index].loanDate +'</td>'
+                +'<td>'+ data[index].loanTerm +'</td>'
+                +'<td>'+ data[index].overAmount +'</td>'
+                +'<td>'+ data[index].state+'</td>'
+                +'<td>'+ data[index].overDate +'</td>'
+                +'<td>'+ data[index].publishDate +'</td>'
+                +'<td>'+ data[index].publishSource +'</td>'
+                +'</tr>'
+            }
+        }
+        return html;
+    };
+    $('#table-loanItem tbody').html(tpl(info['data']));
+    $("#backbtn").click(function(){
+        location.href = "/riskmgr";
+    });
+</script>
+{/block}

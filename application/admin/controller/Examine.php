@@ -283,7 +283,7 @@ class examine extends Admin {
 		
 		$member_info['credit_level'] =$credit_info['credit_level'];
 		
-		$member_info['credit_level'] =$credit_info['credit_level'];
+		$member_info['credit_score'] =$credit_info['credit_score'];
 		
 		$repay_info = db('order_repay')->where('order_id', $order_info['id'])->select();
 
@@ -308,7 +308,7 @@ class examine extends Admin {
 
 		$fileFilter['status'] = 1;//有效文件
 
-		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($fileFilter)->limit(100)->select();
+		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($fileFilter)->order('create_time DESC')->limit(100)->select();
 
 		$list = array(
 
