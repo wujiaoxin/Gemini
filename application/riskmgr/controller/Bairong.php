@@ -12,6 +12,15 @@ use app\common\controller\Base;
 
 class Bairong extends Base {
 	public function index() {
+		/*$result = '{ "Rule_final_decision": "Review", "Rule_final_weight": "5", "Rule_name_XJS030": "评分无值", "Rule_weight_XJS030": "5", "als_fst_cell_bank_inteday": "265", "als_fst_id_bank_inteday": "265", "als_lst_cell_bank_consnum": "1", "als_lst_cell_bank_csinteday": "1", "als_lst_cell_bank_inteday": "265", "als_lst_id_bank_consnum": "1", "als_lst_id_bank_csinteday": "1", "als_lst_id_bank_inteday": "265", "als_m12_cell_avg_monnum": "1.00", "als_m12_cell_bank_allnum": "1", "als_m12_cell_bank_avg_monnum": "1.00", "als_m12_cell_bank_max_inteday": "", "als_m12_cell_bank_max_monnum": "1", "als_m12_cell_bank_min_inteday": "", "als_m12_cell_bank_min_monnum": "0", "als_m12_cell_bank_orgnum": "1", "als_m12_cell_bank_selfnum": "0", "als_m12_cell_bank_tot_mons": "1", "als_m12_cell_max_inteday": "", "als_m12_cell_max_monnum": "1", "als_m12_cell_min_inteday": "", "als_m12_cell_min_monnum": "0", "als_m12_cell_tot_mons": "1", "als_m12_id_avg_monnum": "1.00", "als_m12_id_bank_allnum": "1", "als_m12_id_bank_avg_monnum": "1.00", "als_m12_id_bank_max_inteday": "", "als_m12_id_bank_max_monnum": "1", "als_m12_id_bank_min_inteday": "", "als_m12_id_bank_min_monnum": "0", "als_m12_id_bank_orgnum": "1", "als_m12_id_bank_selfnum": "0", "als_m12_id_bank_tot_mons": "1", "als_m12_id_max_inteday": "", "als_m12_id_max_monnum": "1", "als_m12_id_min_inteday": "", "als_m12_id_min_monnum": "0", "als_m12_id_tot_mons": "1", "brcreditpoint": "", "code": "00", "flag_applyloanstr": "1", "flag_execution": "0", "flag_ruleapplyloan": "0", "flag_ruleexecution": "0", "flag_rulescore": "0", "flag_rulespeciallist": "0", "flag_score": "0", "flag_specialList_c": "0", "swift_number": "3000592_20170516143251_2376" }';
+		$res = json_decode($result,true);
+		$arr = array();
+		foreach ($res as $k => $v) {
+			$arr[] =array('name'=>$k,'value'=>$v);
+		}*/
+		// var_dump($arr);die;
+		// die;
+		// $this->assign('res',$arr);
 		return $this->fetch();
 	}
 	

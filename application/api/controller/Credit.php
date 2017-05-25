@@ -282,103 +282,105 @@ class Credit extends Api {
 				
 				$res = get_programme($orderData['id']);
 
-				$downpay = $res['downpay'];
+				if (!empty($res)) {
 
-				$loan = round((int)$car_price * $res['rate']/100);
-				
-				$avgmonthpay = $res['avgmonthpay'];
-				
-				$firstYear = $res['firstYear'];
+					$downpay = $res['downpay'];
 
-				$twoYear = $res['twoYear'];
+					$loan = round((int)$car_price * $res['rate']/100);
+					
+					$avgmonthpay = $res['avgmonthpay'];
+					
+					$firstYear = $res['firstYear'];
 
-				$threeYear = $res['threeYear'];
+					$twoYear = $res['twoYear'];
 
-				$term = $res['term'];
+					$threeYear = $res['threeYear'];
 
-				$name = $res['name'];
+					$term = $res['term'];
 
-				$respStr = '{
-					"code": 1,
-					"msg": "获取成功！",
-					"data": {
-						"resultcode": 1,
-						"resultmsg": "授信通过",
-						"name": "'.$name.'",
-						"month": '.$term.',
-						"downpay": '.$downpay.',
-						"loan": '.$loan.',
-						"avgmonthpay": '.$avgmonthpay.',
-						"order_id": '.$order_id.',
-						"order_status": '.$order_status.',
-						"repay": [
-							{
-								"plan": "第一年",
-								"period": "1-12",
-								"monthpay": '.$firstYear.'
-							},
-							{
-								"plan": "第二年",
-								"period": "13-24",
-								"monthpay": '.$twoYear.'
-							},
-							{
-								"plan": "第三年",
-								"period": "25-36",
-								"monthpay": '.$threeYear.'
-							}
-						]
-					}
-				}';
+					$name = $res['name'];
 
-				/*$car_price = $orderData['car_price'];
-				$order_id = $orderData['id'];
-				$order_status = $orderData['status'];
-				
-				$downpay = round((int)$car_price * 0.1);
-				$loan = round((int)$car_price * 0.9);
-				
-				$avgmonthpay = round($loan*1.1/36);
-				
-				$bankrepay = round($loan*0.7*1.1/36);
-				
-				$firstYear = round($loan*0.2*1.1/12) + $bankrepay;
+					$respStr = '{
+						"code": 1,
+						"msg": "获取成功！",
+						"data": {
+							"resultcode": 1,
+							"resultmsg": "授信通过",
+							"name": "'.$name.'",
+							"month": '.$term.',
+							"downpay": '.$downpay.',
+							"loan": '.$loan.',
+							"avgmonthpay": '.$avgmonthpay.',
+							"order_id": '.$order_id.',
+							"order_status": '.$order_status.',
+							"repay": [
+								{
+									"plan": "第一年",
+									"period": "1-12",
+									"monthpay": '.$firstYear.'
+								},
+								{
+									"plan": "第二年",
+									"period": "13-24",
+									"monthpay": '.$twoYear.'
+								},
+								{
+									"plan": "第三年",
+									"period": "25-36",
+									"monthpay": '.$threeYear.'
+								}
+							]
+						}
+					}';
 
-				
-				//TODO 利息计算修正
-				
-				$respStr = '{
-					"code": 1,
-					"msg": "获取成功！",
-					"data": {
-						"resultcode": 1,
-						"resultmsg": "授信通过",
-						"name": "90贷",
-						"month": 36,
-						"downpay": '.$downpay.',
-						"loan": '.$loan.',
-						"avgmonthpay": '.$avgmonthpay.',
-						"order_id": '.$order_id.',
-						"order_status": '.$order_status.',
-						"repay": [
-							{
-								"plan": "第一年",
-								"period": "1-12",
-								"monthpay": '.$firstYear.'
-							},
-							{
-								"plan": "第二年",
-								"period": "13-24",
-								"monthpay": '.$bankrepay.'
-							},
-							{
-								"plan": "第三年",
-								"period": "25-36",
-								"monthpay": '.$bankrepay.'
-							}
-						]
-					}
-				}';*/
+				}else{
+
+					$downpay = round((int)$car_price * 0.1);
+					$loan = round((int)$car_price * 0.9);
+					
+					$avgmonthpay = round($loan*1.1/36);
+					
+					$bankrepay = round($loan*0.7*1.1/36);
+					
+					$firstYear = round($loan*0.2*1.1/12) + $bankrepay;
+
+					//TODO 利息计算修正
+					
+					$respStr = '{
+						"code": 1,
+						"msg": "获取成功！",
+						"data": {
+							"resultcode": 1,
+							"resultmsg": "授信通过",
+							"name": "90贷",
+							"month": 36,
+							"downpay": '.$downpay.',
+							"loan": '.$loan.',
+							"avgmonthpay": '.$avgmonthpay.',
+							"order_id": '.$order_id.',
+							"order_status": '.$order_status.',
+							"repay": [
+								{
+									"plan": "第一年",
+									"period": "1-12",
+									"monthpay": '.$firstYear.'
+								},
+								{
+									"plan": "第二年",
+									"period": "13-24",
+									"monthpay": '.$bankrepay.'
+								},
+								{
+									"plan": "第三年",
+									"period": "25-36",
+									"monthpay": '.$bankrepay.'
+								}
+							]
+						}
+					}';
+
+				}
+
 			}
 			
 			$resp = json_decode($respStr); 
