@@ -57,6 +57,41 @@
                 form_label:"代扣银行卡"
             }];
 
+            var keyList_guarantors = [
+            {
+                form_key:"orderSupplement_pic_1",
+                form_label:"身份证正面照"
+            },
+            {
+                form_key:"orderSupplement_pic_2",
+                form_label:"身份证反面照"
+            },
+            {
+                form_key:"orderSupplement_pic_3",
+                form_label:"车辆照片1"
+            },
+            {
+                form_key:"orderSupplement_pic_4",
+                form_label:"车辆照片2"
+            },
+            {
+                form_key:"orderSupplement_pic_5",
+                form_label:"车辆照片3"
+            },
+            {
+                form_key:"orderSupplement_pic_6",
+                form_label:"车辆照片4"
+            },
+            {
+                form_key:"orderSupplement_pic_7",
+                form_label:"签约照"
+            },
+            {
+                form_key:"orderSupplement_pic_8",
+                form_label:"合同"
+            }];
+
+
     </script>
     <style type="text/css">
         .mb10 {
@@ -350,7 +385,10 @@
                     }else if(status == 4){
                         stepbarShow(3);
                     }else{
-                         stepbarShow(2);
+                        stepbarShow(2);
+                    }
+                    if(resp.data.info.property == '3'){
+                        keyList = keyList_guarantors;
                     }
                     var pic = resp.data.files;
                     var str = '';
@@ -389,7 +427,8 @@
         $(function(){
             stepbarShow(2);
             $$('.pic-info').on('click','.pic-cont-item', function () {
-                myPhotoBrowserPopup.open();
+                var num = $(this).index();
+                myPhotoBrowserPopup.open(num);
             });
         });
     </script>
