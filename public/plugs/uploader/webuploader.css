@@ -4,91 +4,90 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     padding: 0;
 }
 .webuploader-container {
-	position: relative;
+    position: relative;
 }
 .webuploader-element-invisible {
-	position: absolute !important;
-	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    position: absolute !important;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
     clip: rect(1px,1px,1px,1px);
 }
 .webuploader-pick {
-	position: relative;
-	display: inline-block;
-	cursor: pointer;
-	background: #ff9900;
-	padding: 5px 15px;
-	color: #ffffff;
-	text-align: center;
-	border-radius: 3px;
-	overflow: hidden;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    background: #ff9900;
+    padding: 5px 15px;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 3px;
+    overflow: hidden;
     width: 90%;
     margin-top:5px;
-   	font-size: 20px;
-	/* border:1px solid  #ccc; */
+    font-size: 20px;
+    /* border:1px solid  #ccc; */
 }
-
 .webuploader-pick-disable {
-	opacity: 0.6;
-	pointer-events:none;
+    opacity: 0.6;
+    pointer-events:none;
 }
 /**
  * 文件删除按钮的样式
  */
 .webuploader-pick-file-close {
-	color: #000;
+    color: #000;
     font-size: 17px;
-	height:20px;
+    height:20px;
     font-weight: 700;
     line-height: 1;
     /*opacity: 0.2;*/
     text-shadow: 0 1px 0 #fff;
-	background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
     border: 0 none;
     cursor: pointer;
     padding: 0;
-	float:left;
+    float:left;
 }
 .webuploader-pick-file-close .loading,.webuploader-pick-file-close .close{
-	display:inline-block;
-	width:17px;
-	height:17px;
+    display:inline-block;
+    width:17px;
+    height:17px;
 }
 .webuploader-pick-file-close .loading{
-	background:url(loading_close.gif) no-repeat 0 0;
+    background:url(loading_close.gif) no-repeat 0 0;
 }
 .webuploader-pick-file-close .close{
-	background:url(loading_close.gif) no-repeat -23px 0;
+    background:url(loading_close.gif) no-repeat -23px 0;
 }
 /**
  * 上传完成后的文件列表样式
  */
 .upload-file-list-info {
-	list-style: outside none none;
+    list-style: outside none none;
 } 
 .upload-file-list-info li{
-	margin:5px 0px;
-	padding:5px;
-	border:1px solid #ccc;
+    margin:5px 0px;
+    padding:5px;
+    border:1px solid #ccc;
 } 
 .upload-file-list-info .upload-file-info .fname{
-	display:inline-block;
-	width:40%;
-	text-indent:5px;
-	float:left;
-	overflow:hidden;
-	text-overflow:ellipsis;
-	white-space:nowrap;
+    display:inline-block;
+    width:40%;
+    text-indent:5px;
+    float:left;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 .upload-file-list-info .upload-file-info .fsize{
-	display:inline-block;
-	float:right;
+    display:inline-block;
+    float:right;
 }
 .upload-file-list-info .file-progress {
-	margin-bottom: 0px !important;
+    margin-bottom: 0px !important;
 }
 .upload-file-list-info .filebox{
-	display: block;
-	max-width: 100%;
+    display: block;
+    max-width: 100%;
     overflow: hidden;
     margin-top: 5px;
     margin-bottom: 5px;
