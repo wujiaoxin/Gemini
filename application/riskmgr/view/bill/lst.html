@@ -7,10 +7,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <meta http-equiv="pragma" content="no-cache">
     <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/css/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
     <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
     <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">    
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/bootstrap-datetimepicker.min.css" media="all">    
+
 </head>
 <body>
     <?php if($_GET['type'] == 1):?>
@@ -19,9 +22,10 @@
                 <div class="navbar">
                     <div class="navbar-inner">
                         <div class="left">
-                            <a href="#" class="link icon-only" id="backbtn">
-                                <img src="/public/wap/images/logo.png" height="100%"/>交易账单查询
+                            <a href="" class="link icon-only" id="backbtn">
+                                <img src="/public/wap/images/logo.png" height="100%"/>
                             </a>
+                            <a href="">交易账单查询</a>
                             </div>
                         <div class="right">
                         </div>
@@ -38,7 +42,7 @@
                                     <li>
                                         <div class="item-content">
                                             <div class="item-inner register-inner">
-                                                <div class="item-title label">商户名称</div>
+                                                <div class=" col-sm-6">商户名称</div>
                                                 <div class="item-input register-inner">
                                                     <input type="text" id="name" name="name"  value=""  placeholder="商户名称" />
                                                 </div>
@@ -48,7 +52,7 @@
                                      <li>
                                         <div class="item-content">
                                             <div class="item-inner register-inner">
-                                                <div class="item-title label">商户编号</div>
+                                                <div class=" col-sm-6">商户编号</div>
                                                 <div class="item-input register-inner">
                                                     <input type="text" id="mid" name="mid"  value=""  placeholder="商户编号" />
                                                 </div>
@@ -58,7 +62,7 @@
                                      <li>
                                         <div class="item-content">
                                             <div class="item-inner register-inner">
-                                                <div class="item-title label">查询方式</div>
+                                                <div class=" col-sm-6">查询方式</div>
                                                 <select name="type" id="">
                                                     <option selected="selected" value="1">按商户编号查询</option>
                                                     <option  value="2">按商户名称查询</option>
@@ -70,9 +74,9 @@
                                     <li>
                                         <div class="item-content">
                                             <div class="item-inner register-inner">
-                                                <div class="item-title label">交易起始日期</div>
+                                                <div class=" col-sm-6">交易起始日期</div>
                                                 <div class="item-input register-inner">
-                                                    <input type="date" id="begindate" name="begindate"  value=""  placeholder="例如:2011-11-12" />
+                                                    <input size="16" type="text" name="begindate"  value=""   class="controls input-append date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" placeholder="交易起始日期">
                                                 </div>
                                             </div>
                                         </div>
@@ -81,9 +85,9 @@
                                      <li>
                                         <div class="item-content">
                                             <div class="item-inner register-inner">
-                                                <div class="item-title label">交易结束日期</div>
+                                                <div class=" col-sm-6">交易结束日期</div>
                                                 <div class="item-input register-inner">
-                                                    <input type="date" id="enddate" name="enddate"  value=""  placeholder="例如:2011-11-12" />
+                                                     <input size="16" id="enddate" name="enddate" type="text"  value=""   class="controls input-append date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" placeholder="交易结束日期">
                                                 </div>
                                             </div>
                                         </div>
@@ -91,7 +95,7 @@
                                     <li>
                                         <div class="item-content">
                                             <div class="item-inner register-inner">
-                                                <div class="item-title label">查询密码</div>
+                                                <div class=" col-sm-6">查询密码</div>
                                                 <div class="item-input register-inner">
                                                     <input type="text" id="password" name="password"  value=""  placeholder="查询密码" />
                                                 </div>
@@ -125,18 +129,17 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="pages navbar-through toolbar-through">
                     <div data-page="appHome" class="page">
                         <div class="page-content">
                         
                             <form action="/riskmgr/bill/bill_verify" id="login-form" class="list-block mt10" method="post" onsubmit="return checkData();">
                                  <ul class="clearfix">
-
                                     <li>
                                         <div class="item-content">
                                             <div class="item-inner register-inner">
-                                                <div class="item-title label">持卡人姓名</div>
+                                                <div class=" col-sm-6">持卡人姓名</div>
                                                 <div class="item-input register-inner">
                                                     <input type="text" id="name" name="name"  value=""  placeholder="持卡人姓名" />
                                                 </div>
@@ -146,7 +149,7 @@
                                      <li>
                                         <div class="item-content">
                                             <div class="item-inner register-inner">
-                                                <div class="item-title label">银行卡号</div>
+                                                <div class=" col-sm-6">银行卡号</div>
                                                 <div class="item-input register-inner">
                                                     <input type="text" id="card" name="card"  value=""  placeholder="银行卡号" />
                                                 </div>
@@ -154,12 +157,12 @@
                                         </div>
                                     </li>
                                     
-                                    <li>
+                                     <li>
                                         <div class="item-content">
                                             <div class="item-inner register-inner">
-                                                <div class="item-title label">交易起始日期</div>
+                                                <div class=" col-sm-6">交易起始日期</div>
                                                 <div class="item-input register-inner">
-                                                    <input type="date" id="begindate" name="begindate"  value=""  placeholder="例如:2011-11-12" />
+                                                    <input size="16" type="text" name="begindate"  value=""   class="controls input-append date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" placeholder="交易起始日期">
                                                 </div>
                                             </div>
                                         </div>
@@ -168,9 +171,9 @@
                                      <li>
                                         <div class="item-content">
                                             <div class="item-inner register-inner">
-                                                <div class="item-title label">交易结束日期</div>
+                                                <div class="col-sm-6 ">交易结束日期</div>
                                                 <div class="item-input register-inner">
-                                                    <input type="date" id="enddate" name="enddate"  value=""  placeholder="例如:2011-11-12" />
+                                                     <input size="16" id="enddate" name="enddate" type="text"  value=""   class="controls input-append date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" placeholder="交易结束日期">
                                                 </div>
                                             </div>
                                         </div>
@@ -178,7 +181,7 @@
                                     <li>
                                         <div class="item-content">
                                             <div class="item-inner register-inner">
-                                                <div class="item-title label">查询密码</div>
+                                                <div class="col-sm-6 ">查询密码</div>
                                                 <div class="item-input register-inner">
                                                     <input type="text" id="password" name="password"  value=""  placeholder="查询密码" />
                                                 </div>
@@ -202,8 +205,8 @@
     <?php endif;?>
     <div id="loading"></div>
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
-    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript" src="/public/wap/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="/public/wap/js/bootstrap-datetimepicker.fr.js"></script>
     <script type="text/javascript">
     function checkData(){
         if($("#name").val() == "" ||  $("#password").val() == ""){
@@ -216,6 +219,21 @@
     }
     $('#backbtn').click(function(){
         location.href = "/riskmgr";
+    });
+
+
+    $('.form_date').datetimepicker({
+        language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+        pickerPosition:'bottom-left',
+    }).on('changeDate', function (ev) {  
+        $(this).datetimepicker('hide');  
     });
     </script>
 
