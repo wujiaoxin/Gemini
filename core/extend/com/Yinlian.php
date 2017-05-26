@@ -15,16 +15,16 @@ class Yinlian {
 	**测试账户
 	*/
 
-	public static $accout = 'T102006';//
+	/*public static $accout = 'T102006';//
 	public static $pk = "T102006";
-	public static $service = 'https://222.72.248.198/';
+	public static $service = 'https://222.72.248.198/';*/
 
 	/*
 	**正式系统
 	*/
-	/*public static $accout = '102006';
-	public static $pk = 'a6910dfbdf4d46c38746b9c4e5a31ae3';
-	public static $service = 'https://data.unionpaysmart.com/';*/
+	public static $accout = '102007';
+	public static $pk = '46876f41f59b4e949a5d61ccfb1faff4';
+	public static $service = 'https://data.unionpaysmart.com/';
 
 
 	public static function  sendHttpRequest($url,$params ='') {
