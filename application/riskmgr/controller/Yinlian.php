@@ -108,40 +108,6 @@ class Yinlian extends Base {
 	}
 
 	public function blacklist_lst($idcard ='',$password = ""){
-		
-		/*$data = '{
-		  "resCode" : "0000",
-		  "resMsg" : "提交成功",
-		  "sign" : "883187a6d48188331e2d276e58d42afe",
-		  "data" : [ {
-		    "entityName" : "",
-		    "entityId" : "350205198311185962",
-		    "address" : "重庆市",
-		    "gender" : "男",
-		    "age" : "",
-		    "orgName" : "重庆****学校",
-		    "orgAddress" : "",
-		    "phone" : "",
-		    "email" : "",
-		    "loanAmount" : "10000",
-		    "loanDate" : "",
-		    "loanTerm" : "",
-		    "overAmount" : "6011.34",
-		    "state" : "逾期",
-		    "overDate" : "",
-		    "publishDate" : "2014-11-03",
-		    "publishSource" : "石家庄人民法院"
-		  } ]
-		}';
-		$data =json_decode($data,true);
-*/
-		/*$data='';
-		$data =array(
-			'infoStr'=>json_encode($data)
-			);
-
-		$this->assign($data);*/
-		
 		if (request()->isPost()) {
 			if($password != "yinlian"){
 				return $this->error("查询密码错误", 'blacklist');
@@ -149,32 +115,25 @@ class Yinlian extends Base {
 			$data =input('post.');
 			//350205198311185962
 			$idcard = $data['idcard'];
-			$accout = 'T102006';
-			$pk = "T102006";
-			$server = 'https://222.72.248.198/info/p2pBlack';
-			$data =array(
+			$accout = \com\Yinlian::$accout;
+			$server = \com\Yinlian::$service.'info/p2pBlack';
+
+			$info =array(
 				'account'=>$accout,
 				'entityId'=>$idcard,
 				);
-			$dataStr = '';
-			foreach($data as $key => $value) {			
-				$dataStr = $dataStr .$key .$value;
-			}
-			$dataStr = $dataStr . $pk;
-			$sign = md5($dataStr);
-			$sign = strtoupper($sign);
+			$sign = \com\Yinlian::buildSign($info);
 
-			$data1 =array(
+			$infores =array(
 				'account'=>$accout,
 				'entityId'=>$idcard,
 				'sign'=>$sign,
 				);
-			$url = $server.'?'.http_build_query($data1);
-				
-			$resp = sendHttpRequest($url);
+			$url = $server.'?'.http_build_query($infores);
+			$resp =  \com\Yinlian::sendHttpRequest($url);
 			$data =json_decode($resp,true);
 			$data =array(
-			'infoStr'=>json_encode($data)
+				'infoStr'=>json_encode($data)
 			);
 			$this->assign($data);
 			return view();
@@ -183,9 +142,4 @@ class Yinlian extends Base {
 		}
 		
 	}
-
-	public function billcheck(){
-		
-	}
-
 }
