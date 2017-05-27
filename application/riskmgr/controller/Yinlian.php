@@ -89,6 +89,12 @@ class Yinlian extends Base {
 		fclose($handle);
 		$info = json_decode($results,true);
 		$arr = array();
+		if (empty($info)) {
+			$this->error('参数错误');
+		}
+		if ($info['resCode'] != '0000') {
+			$this->redirect(url('/riskmgr/yinlian'));
+		}
 		if ($info['data']['validate'] == '1') {
 			
 			foreach ($info['data']['result'] as $k => $v) {
