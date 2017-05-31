@@ -253,7 +253,13 @@ function get_collect($id,$key,$group){
 		'group'=>$group
 		);
 	$res = db('Collect_data')->where($map)->order('create_time DESC')->find();
-	return $res['value'];
+	if ($res) {
+		return $res['value'];
+	}else{
+		$res = array();
+		return $res;
+	}
+	
 }
 function  get_arr($total,$value){
 	$arr = array();

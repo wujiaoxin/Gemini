@@ -49,6 +49,9 @@ class Court extends Base {
 			$resp =  \com\Yinlian::sendHttpRequest($url);
 
 			$data =json_decode($resp,true);
+			if ($data['resCode'] != '0000') {
+				$this->error($data['resMsg']);
+			}
 			$data =array(
 				'infoStr'=>json_encode($data)
 			);
@@ -85,6 +88,10 @@ class Court extends Base {
 
 
 			$data =json_decode($resp,true);
+
+			if ($data['resCode'] != '0000') {
+				$this->error($data['resMsg']);
+			}
 			$data =array(
 				'infoStr'=>json_encode($data)
 			);

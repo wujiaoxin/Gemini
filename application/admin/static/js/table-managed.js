@@ -288,6 +288,26 @@ var TableManaged = function () {
             jQuery('#table-postloan-withhold_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
             // jQuery('#table-postloan-withhold_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
 
+            // 风控管理模块-客户评级table id="table-rating"
+            $('#table-rating').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                configData
+            });
+
+            jQuery('#table-rating_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-rating_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-rating_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
         }
     };
 }();

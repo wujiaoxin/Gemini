@@ -41,6 +41,9 @@ class Judgemen extends Base {
 		$url = $server.'?'.http_build_query($data1).'&entityName='.$entityName;
 		$resp =  \com\Yinlian::sendHttpRequest($url);
 		$data =json_decode($resp,true);
+		if ($data['resCode'] != '0000') {
+			$this->error($data['resMsg']);
+		}
 		$data =array(
 			'infoStr'=>json_encode($data)
 		);
@@ -77,6 +80,9 @@ class Judgemen extends Base {
 		$resp =  \com\Yinlian::sendHttpRequest($url);
 
 		$results =json_decode($resp,true);
+		if ($data['resCode'] != '0000') {
+			$this->error($data['resMsg']);
+		}
 		$data =array(
 			'infoStr'=>json_encode($results)
 		);
