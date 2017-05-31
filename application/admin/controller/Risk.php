@@ -106,11 +106,13 @@ class risk extends Admin {
 				'idcard'=>$creditList['idcard'],
 				'bankcard'=>$creditList['bankcard'],
 				'mobile'=>$creditList['mobile'],
+				'salesman_carprice'=>$creditList['car_price'],
 				'year'=>getIDCardInfo($creditList['idcard']),
 				'platform'=>get_collect($creditList['uid'],'platform','device'),
 				'addr'=>get_collect($creditList['uid'],'addr','location'),
 				'wanip'=>get_collect($creditList['uid'],'wanip','network'),
 				'platform'=>get_collect($creditList['uid'],'platform','device'),
+				'phone_serial'=>get_collect($creditList['uid'],'imei','device'),
 
 				);//基本信息
 			$programme = db('programme')->where(['uid'=>$creditList['uid'],'order_id'=>$creditList['order_id']])->find();
@@ -131,7 +133,8 @@ class risk extends Admin {
 			$creditList =array(
 				'creditList'=>$creditList,
 				'programme'=>$programme,
-				'manualVerification' =>$manualVerification
+				'manualVerification' =>$manualVerification,
+				'basicInfo'=>$basic_info
 				);
 			$data = array(
 				'infoStr' =>json_encode($creditList),
