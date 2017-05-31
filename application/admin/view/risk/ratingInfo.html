@@ -468,7 +468,12 @@
 						    </div>
 						    <label class="col-sm-2 control-label">是否结婚</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="marry" class="customer-info">
+						      	<select class="form-control customer-info" name="marry">
+									<option selected="selected" style='display: none'></option>
+									<option value="1">未婚</option>
+									<option value="2">已婚</option>
+									<option value="3">无法核实</option>
+								</select>
 						    </div>
 						</div>
 						<div class="form-group">
@@ -830,8 +835,6 @@
 		    obj[name] = value;
 		});
 		var manual_verification = JSON.stringify(obj);
-		console.log(manual_verification)
-		return;
 
 		if(credit_score > 100 || credit_score < 0){
 			ui_alert("请输入正确授信评分");
