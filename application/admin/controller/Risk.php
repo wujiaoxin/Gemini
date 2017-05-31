@@ -31,9 +31,20 @@ class risk extends Admin {
 			$data = input('post.');
 			//黑名单
 			$res_crd = db('credit')->where('id', $data['id'])->find();
+
 			if ($res_crd['credit_result'] != '0') {
 				return $this->error("已审核！");
 			}
+
+			$res = $data['manual_verification'];
+			
+			$results = json_decode($res,true);
+
+			$results['uid'] = $res_crd['uid'];
+			$results['credit_id'] = $data['id'];
+			
+			db('customer_info')->insert($results);
+
 			if ($data['refuse_reason'] == '3' && $res_crd['credit_result'] == '0') {
 				$risks = model('Risk');
 				
@@ -89,6 +100,7 @@ class risk extends Admin {
 		}else{
 			$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard,o.car_price,m.bankcard')->join('__MEMBER__ m','c.uid = m.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.id",$id)->order('id desc')->fetchSQL(false)->find();
 			$collect = model('Collect');
+			$manualVerification = db('customer_info')->where('credit_id',$creditList['id'])->find();
 			$basic_info = array(
 				'realname'=>$creditList['realname'],
 				'idcard'=>$creditList['idcard'],
@@ -115,9 +127,11 @@ class risk extends Admin {
 				$creditList = array_merge($creditList,$basic_info);
 			}
 
+
 			$creditList =array(
 				'creditList'=>$creditList,
-				'programme'=>$programme
+				'programme'=>$programme,
+				'manualVerification' =>$manualVerification
 				);
 			$data = array(
 				'infoStr' =>json_encode($creditList),
