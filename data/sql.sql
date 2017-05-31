@@ -2003,3 +2003,38 @@ CREATE TABLE `gemini_programme` (
   `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='金融方案';
+
+
+DROP TABLE IF EXISTS `gemini_customer_info`;
+CREATE TABLE `gemini_customer_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL DEFAULT '0' COMMENT '客户id',
+  `credit_id` int(11) NOT NULL DEFAULT '0' COMMENT '授信id',
+  `fixed_income` decimal(20,2) DEFAULT NULL COMMENT '月固定输入',
+  `other_income` decimal(10,2) DEFAULT NULL COMMENT '其他收入',
+  `avg_expenditure` decimal(10,2) DEFAULT NULL COMMENT '平均支出',
+  `other_expenditure` decimal(10,2) DEFAULT NULL COMMENT '其他支出',
+  `credit_amount` decimal(10,2) DEFAULT NULL COMMENT '信用卡借款金额',
+  `small_amount` decimal(10,2) DEFAULT NULL COMMENT '小额借款金额',
+  `bank_amount` decimal(10,2) DEFAULT NULL COMMENT '银行借款金额',
+  `bank_balance` decimal(10,2) DEFAULT NULL COMMENT '银行卡余额',
+  `loan_expenditure` decimal(10,2) DEFAULT NULL COMMENT '借款支出',
+  `loan_num` int(10) NOT NULL COMMENT '借款笔数',
+  `repay_desc` tinyint(1) NOT NULL DEFAULT '0' COMMENT '还款记录说明 1 记录良好,无逾期 2 记录可接受,近期仅信用卡有逾期 3记录可接受,仅历史有逾期 4 需补充资料说明 5 记录差,但未到拒绝标准 6 信用差,可直接拒绝',
+  `profession` varchar(255) NOT NULL COMMENT '用户职业',
+  `address` varchar(255) NOT NULL COMMENT '用户地址',
+  `work_unit` varchar(255) NOT NULL COMMENT '工作单位',
+  `work_time` int(10) NOT NULL COMMENT '工作年限',
+  `marry` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否结婚 1未婚 2已婚 3 无法核实',
+  `spouse` varchar(255) NOT NULL COMMENT '配偶名称',
+  `spouse_tel` varchar(18) NOT NULL DEFAULT '' COMMENT '配偶手机号',
+  `spouse_profession` varchar(255) NOT NULL COMMENT '配偶职业',
+  `parent_profession` varchar(255) NOT NULL COMMENT '父母职业',
+  `investment` varchar(255) NOT NULL COMMENT '对外投资情况',
+  `house_type` tinyint(1) NOT NULL COMMENT '房屋类型 1 自建房 2 商品房 3 无房产 4 无法核实',
+  `house_area` text COMMENT '房屋面积',
+  `house_property` tinyint(1) NOT NULL DEFAULT '0' COMMENT '居住房产 1 自有 2 租赁 3 无固定住所 4 其他 5 无法核实',
+  `descr` varchar(255) NOT NULL COMMENT '备注',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='人工审核信息';
