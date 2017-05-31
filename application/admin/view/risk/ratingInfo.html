@@ -436,8 +436,8 @@
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">还款记录说明</label>
 						    <div class="col-sm-2 pt5">
-						     	<select class="form-control" name="repay_desc" class="customer-info">
-									<option selected="selected" disabled="disabled" style='display: none'></option>
+						     	<select class="form-control customer-info" name="repay_desc">
+									<option selected="selected" style='display: none'></option>
 									<option value="1">记录良好,无逾期</option>
 									<option value="2">记录可接受,近期仅信用卡有逾期</option>
 									<option value="3">记录可接受,仅历史有逾期</option>
@@ -498,8 +498,8 @@
 						    </div>
 						    <label class="col-sm-2 control-label">居住房产</label>
 						    <div class="col-sm-2 pt5">
-						      	<select class="form-control" name="house_property" class="customer-info">
-									<option selected="selected" disabled="disabled" style='display: none'></option>
+						      	<select class="form-control customer-info" name="house_property">
+									<option selected="selected" style='display: none'></option>
 									<option value="1">自有</option>
 									<option value="2">租赁</option>
 									<option value="3">无固定住所</option>
@@ -511,8 +511,8 @@
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">拥有房屋类型</label>
 						    <div class="col-sm-2 pt5">
-						     	<select class="form-control" name="house_type" class="customer-info">
-									<option selected="selected" disabled="disabled" style='display: none'></option>
+						     	<select class="form-control customer-info" name="house_type">
+									<option selected="selected" style='display: none'></option>
 									<option value="1">自建房</option>
 									<option value="2">商品房</option>
 									<option value="3">无房产</option>
@@ -830,6 +830,8 @@
 		    obj[name] = value;
 		});
 		var manual_verification = JSON.stringify(obj);
+		console.log(manual_verification)
+		return;
 
 		if(credit_score > 100 || credit_score < 0){
 			ui_alert("请输入正确授信评分");
