@@ -1,0 +1,64 @@
+{extend name="base"/}
+{block name="style"}
+<script type="text/javascript">
+var info = {};
+    try {
+        info = JSON.parse('{$infoStr}');
+    } catch (e) {
+        alert("数据异常");
+    }
+</script>
+{/block}
+{block name="body"}
+<div class="left" style="background-color: #fff">
+    
+        <a href="{:url('/riskmgr/index')}"><img src="/public/wap/images/logo.png" height="100%"/></a>
+        <a href="#" class="link icon-only" id="backbtn" style="font-size: 18px">银行卡多笔交易查询</a>
+     <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="flip-scroll">
+                <form action="" method="post">
+                    <table class="table table-bordered table-hover" id="table-loanItem">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center" width="10%">交易时间</th>
+                                <th class="text-center" width="10%">交易金额（单位分）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="/public/business/js/table-managed.js"></script>
+<script>
+    function tpl(data){
+        var html = '';
+        if(typeof(data) =='object'){
+        for(var index = 0; index < data.length; index++){
+            html += '<tr class="odd gradex">'
+                 +'<td >' + data[index].transTime + '</td>'
+                +'<td>'+ data[index].transAmount +'</td>'
+                +'</tr>'
+            }
+        }
+        return html;
+    };
+    $('#table-loanItem tbody').html(tpl(info['transactions']));
+    $("#backbtn").click(function(){
+        location.href = "/riskmgr/bill";
+    });
+</script>
+{/block}

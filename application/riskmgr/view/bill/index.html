@@ -20,7 +20,7 @@
                 <div class="navbar-inner">
                     <div class="left">
                         <a href="#" class="link icon-only">
-                            <img src="/public/wap/images/logo.png" height="100%"/>数据查询
+                            <img src="/public/wap/images/logo.png" height="100%"/>交易账单查询
                         </a>
                     </div>
                     <div class="right">
@@ -30,23 +30,11 @@
             <div class="pages navbar-through toolbar-through">
                 <div data-page="appHome" class="page">
                     <div class="page-content">
-						<div class="content-block">									
-							<button id="bairong" class="button button-big button-fill dpblue" style="width:100%">百融查询</button>
-						</div>
-						<div class="content-block">									
-							<button id="yinlian" class="button button-big button-fill dpblue" style="width:100%">银联智慧查询</button>
-						</div>
                         <div class="content-block">                                 
-                            <button id="blacklist" class="button button-big button-fill dpblue" style="width:100%">银联黑名单查询</button>
+                            <button id="bill_list" class="button button-big button-fill dpblue" style="width:100%">商户交易验证接口</button>
                         </div>
                         <div class="content-block">                                 
-                            <button id="bill" class="button button-big button-fill dpblue" style="width:100%">多笔交易验证接口</button>
-                        </div>
-                        <div class="content-block">                                 
-                            <button id="judgemen" class="button button-big button-fill dpblue" style="width:100%">裁判文书详情查询接口</button>
-                        </div>
-                        <div class="content-block">                                 
-                            <button id="court" class="button button-big button-fill dpblue" style="width:100%">法院公告详情查询接口</button>
+                            <button id="bill_detail" class="button button-big button-fill dpblue" style="width:100%">银行卡交易验证服务接口</button>
                         </div>
                     </div>
                 </div>
@@ -59,23 +47,11 @@
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
     <script type="text/javascript">
- 		$("#bairong").click(function(){
-			location.href = "/riskmgr/bairong";
-		});
-		$("#yinlian").click(function(){
-			location.href = "/riskmgr/yinlian";
-		});
-		$("#blacklist").click(function(){
-            location.href = "/riskmgr/yinlian/blacklist";
+        $("#bill_list").click(function(){
+            location.href = "/riskmgr/bill/lst?type=1";
         });
-        $("#court").click(function(){
-            location.href = "/riskmgr/court";
-        });
-        $("#judgemen").click(function(){
-            location.href = "/riskmgr/judgemen";
-        });
-         $("#bill").click(function(){
-            location.href = "/riskmgr/bill";
+        $("#bill_detail").click(function(){
+            location.href = "/riskmgr/bill/lst?type=2";
         });
     </script>
 

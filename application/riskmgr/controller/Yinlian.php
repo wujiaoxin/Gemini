@@ -12,30 +12,8 @@ use app\common\controller\Base;
 
 class Yinlian extends Base {
 	public function index() {
-		/*$res = '{ 
-			"resCode": "0001", 
-			"resMsg": "提交失败", 
-			"statCode": "2006", 
-			"statMsg": "没有查询到结果,无此卡号数据,card:6222620110009991101", 
-			"orderId": "165093", 
-			"smartOrderId": "upsmart201705171044078c9d6ba92dd94345a7edb3f7c2be3990", 
-			"sign": "BEE384A4EF16F913DADF7285E306F34E", 
-			"data": { 
-				"validate":"1",
-				"result":
-				{
-					"S0001":"20110717",
-					"S0003":"12",
-					"S0006":"2"
-				} 
-			} 
-		}';
-		$aa = json_decode($res,true);
-		var_dump($aa['data']['result']);
-		dump($aa);die;*/
 		return $this->fetch();
 	}
-	
 	public function results($idcard = '', $name = '', $bankcard='', $mobile='', $password = "") {
 		if($password != "yinlian"){
 			return $this->error("查询密码错误", 'index');
@@ -109,27 +87,12 @@ class Yinlian extends Base {
 			fwrite($handle,"==========================\r\n\r\n");
 		}
 		fclose($handle);
-		/*//测试数据
-		$results ='{ 
-			"resCode": "0001", 
-			"resMsg": "提交失败", 
-			"statCode": "2006", 
-			"statMsg": "没有查询到结果,无此卡号数据,card:6222620110009991101", 
-			"orderId": "165093", 
-			"smartOrderId": "upsmart201705171044078c9d6ba92dd94345a7edb3f7c2be3990", 
-			"sign": "BEE384A4EF16F913DADF7285E306F34E", 
-			"data": { 
-				"validate":"1",
-				"result":
-				{
-					"S0001":"20110717",
-					"S0003":"12",
-					"S0502":"2"
-				} 
-			} 
-		}';*/
 		$info = json_decode($results,true);
 		$arr = array();
+
+		if ($info['resCode'] != '0000') {
+			$this->error($info['statMsg']);
+		}
 		if ($info['data']['validate'] == '1') {
 			
 			foreach ($info['data']['result'] as $k => $v) {
@@ -142,5 +105,45 @@ class Yinlian extends Base {
 		//$this->assign('url', $url);
 		$this->assign('results', $results);
 		return $this->fetch();
+	}
+
+	public function blacklist(){
+		return view();
+	}
+
+	public function blacklist_lst($idcard ='',$password = ""){
+		if (request()->isPost()) {
+			if($password != "yinlian"){
+				return $this->error("查询密码错误", 'blacklist');
+			}
+			$data =input('post.');
+			//350205198311185962
+			$idcard = $data['idcard'];
+			$accout = \com\Yinlian::$accout;
+			$server = \com\Yinlian::$service.'info/p2pBlack';
+
+			$info =array(
+				'account'=>$accout,
+				'entityId'=>$idcard,
+				);
+			$sign = \com\Yinlian::buildSign($info);
+
+			$infores =array(
+				'account'=>$accout,
+				'entityId'=>$idcard,
+				'sign'=>$sign,
+				);
+			$url = $server.'?'.http_build_query($infores);
+			$resp =  \com\Yinlian::sendHttpRequest($url);
+			$data =json_decode($resp,true);
+			$data =array(
+				'infoStr'=>json_encode($data)
+			);
+			$this->assign($data);
+			return view();
+		}else{
+			return view();
+		}
+		
 	}
 }
