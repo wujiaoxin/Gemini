@@ -38,7 +38,7 @@ class examine extends Admin {
 	}
 
 	public function application() {
-		$list = db('Order')->order('create_time')->select();
+		$list = db('Order')->order('create_time DESC')->select();
 		foreach ($list as $k => $v) {
 			$list[$k]['salesman'] = serch_realname($v['uid']);
 			$name = serch_name($v['dealer_id']);
