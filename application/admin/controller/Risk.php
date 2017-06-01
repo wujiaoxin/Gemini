@@ -42,6 +42,7 @@ class risk extends Admin {
 
 			$results['uid'] = $res_crd['uid'];
 			$results['credit_id'] = $data['id'];
+			$results['create_time'] = time();
 			
 			db('customer_info')->insert($results);
 
