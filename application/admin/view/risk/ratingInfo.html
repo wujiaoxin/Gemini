@@ -3,6 +3,11 @@
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css">
 <link rel="stylesheet" type="text/css" href="/public/business/css/selectArea.css">
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
+<style type="text/css">
+	.form-group div{
+		word-wrap: break-word;
+	}
+</style>
 <script type="text/javascript">
 	var info = {};
 	try {
@@ -437,7 +442,7 @@
 						    <label class="col-sm-2 control-label">还款记录说明</label>
 						    <div class="col-sm-2 pt5">
 						     	<select class="form-control customer-info" name="repay_desc">
-									<option selected="selected" style='display: none'></option>
+									<option selected="selected" value="0" style='display: none'></option>
 									<option value="1">记录良好,无逾期</option>
 									<option value="2">记录可接受,近期仅信用卡有逾期</option>
 									<option value="3">记录可接受,仅历史有逾期</option>
@@ -469,7 +474,7 @@
 						    <label class="col-sm-2 control-label">是否结婚</label>
 						    <div class="col-sm-2 pt5">
 						      	<select class="form-control customer-info" name="marry">
-									<option selected="selected" style='display: none'></option>
+									<option selected="selected" value="0" style='display: none'></option>
 									<option value="1">未婚</option>
 									<option value="2">已婚</option>
 									<option value="3">无法核实</option>
@@ -504,7 +509,7 @@
 						    <label class="col-sm-2 control-label">居住房产</label>
 						    <div class="col-sm-2 pt5">
 						      	<select class="form-control customer-info" name="house_property">
-									<option selected="selected" style='display: none'></option>
+									<option selected="selected" value="0" style='display: none'></option>
 									<option value="1">自有</option>
 									<option value="2">租赁</option>
 									<option value="3">无固定住所</option>
@@ -517,7 +522,7 @@
 						    <label class="col-sm-2 control-label">拥有房屋类型</label>
 						    <div class="col-sm-2 pt5">
 						     	<select class="form-control customer-info" name="house_type">
-									<option selected="selected" style='display: none'></option>
+									<option selected="selected" value="0" style='display: none'></option>
 									<option value="1">自建房</option>
 									<option value="2">商品房</option>
 									<option value="3">无房产</option>
@@ -831,7 +836,12 @@
 		var obj = {};
 		$(".customer-info","#manualVerification").each(function(){
 			var name = $(this).attr('name');
-			var value = $(this).val().replace(/\n/g,"");
+			var value = $(this).val();
+			if(value == null){
+				value == '';
+			}else{
+				value = value.replace(/\n/g,"");
+			}
 		    obj[name] = value;
 		});
 		var manual_verification = JSON.stringify(obj);
