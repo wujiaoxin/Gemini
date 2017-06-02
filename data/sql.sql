@@ -269,19 +269,23 @@ CREATE TABLE `gemini_auth_group` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户组状态：为1正常，为0禁用,-1为删除',
   `rules` varchar(500) NOT NULL DEFAULT '' COMMENT '用户组拥有的规则id，多个规则 , 隔开',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of gemini_auth_group
 -- ----------------------------
-INSERT INTO `gemini_auth_group` VALUES ('1', 'admin', '', '车商销售经理', '4S店车商销售经理，负责报单', '1', '40,37,34,39,1');
-INSERT INTO `gemini_auth_group` VALUES ('2', 'admin', '', '银行风控经理', '银行授信审核', '1', '39,38,35,34,1');
-INSERT INTO `gemini_auth_group` VALUES ('3', 'admin', '', '风控审核专员', '订单预审', '1', '39,38,35,34,1');
-INSERT INTO `gemini_auth_group` VALUES ('4', 'admin', '', 'VP贷财务经理', '财务审核', '1', '39,38,35,34,1');
 INSERT INTO `gemini_auth_group` VALUES ('5', 'admin', '', 'VP贷财务出纳', '财务出纳', '1', '39,38,35,34,1');
+INSERT INTO `gemini_auth_group` VALUES ('4', 'admin', '', 'VP贷财务经理', '财务审核', '1', '56,55,54,53,52,1,39');
+INSERT INTO `gemini_auth_group` VALUES ('3', 'admin', '', '风控审核专员', '风控初审', '1', '61,50,48,47,1,38,35,34,39');
+INSERT INTO `gemini_auth_group` VALUES ('2', 'admin', '', '银行风控经理', '银行授信审核', '1', '56,51,50,49,47,1,39');
+INSERT INTO `gemini_auth_group` VALUES ('1', 'admin', '', '车商销售经理', '4S店车商销售经理，负责报单', '1', '40,37,34,39,1');
 INSERT INTO `gemini_auth_group` VALUES ('6', 'admin', '', '资方联系专员', '合作资金方', '1', '39,38,35,34,1');
 INSERT INTO `gemini_auth_group` VALUES ('7', 'admin', '', '车商管理员', '车商企业', '1', '');
 INSERT INTO `gemini_auth_group` VALUES ('8', 'admin', '', '车商财务', '车商财务员工', '1', '');
+INSERT INTO `gemini_auth_group` VALUES ('9', 'admin', '', 'VP贷风控经理', '风控终审', '1', '61,60,50,49,48,1,39');
+INSERT INTO `gemini_auth_group` VALUES ('10', 'admin', '', '商家推广专员', '商家业务员', '1', '47,46,1');
+INSERT INTO `gemini_auth_group` VALUES ('11', 'admin', '', '商家运营专员', '商家运营', '1', '47,46,1');
+INSERT INTO `gemini_auth_group` VALUES ('12', 'admin', '', 'VP贷贷后专员', '贷后管理', '1', '61,57,47,1,39');
 
 -- ----------------------------
 -- Table structure for `gemini_auth_group_access`
@@ -316,53 +320,72 @@ CREATE TABLE `gemini_auth_rule` (
   `condition` varchar(300) NOT NULL DEFAULT '' COMMENT '规则附加条件',
   PRIMARY KEY (`id`),
   KEY `module` (`module`,`status`,`type`)
-) ENGINE=MyISAM AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of gemini_auth_rule
 -- ----------------------------
-INSERT INTO `gemini_auth_rule` VALUES ('1', 'admin', '2', 'admin/index/index', '后台首页', '首页管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('2', 'admin', '2', 'admin/form/index', '自定义表单', '运营管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('3', 'admin', '2', 'admin/addons/hooks', '钩子列表', '扩展管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('4', 'admin', '2', 'admin/addons/index', '插件列表', '扩展管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('5', 'admin', '2', 'admin/ad/index', '广告管理', '运营管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('6', 'admin', '2', 'admin/link/index', '友链管理', '运营管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('7', 'admin', '2', 'admin/action/log', '行为日志', '会员管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('8', 'admin', '2', 'admin/action/index', '行为列表', '会员管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('9', 'admin', '2', 'admin/group/access', '权限列表', '会员管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('10', 'admin', '2', 'admin/group/index', '用户组表', '会员管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('11', 'admin', '2', 'admin/user/index', '用户列表', '会员管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('12', 'admin', '2', 'admin/model/index', '模型管理', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('13', 'admin', '2', 'admin/category/index', '栏目管理', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('14', 'admin', '2', 'admin/seo/index', 'SEO设置', '系统管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('15', 'admin', '2', 'admin/database/index?type=import', '数据恢复', '系统管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('16', 'admin', '2', 'admin/database/index?type=export', '数据备份', '系统管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('17', 'admin', '2', 'admin/channel/index', '导航管理', '系统管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('18', 'admin', '2', 'admin/menu/index', '菜单管理', '系统管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('19', 'admin', '2', 'admin/config/group', '配置管理', '系统管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('20', 'admin', '2', 'admin/index/clear', '更新缓存', '首页管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('21', 'admin', '1', 'admin/config/add', '配置添加', '系统管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('22', 'admin', '2', 'admin/content/index', '内容列表', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('23', 'admin', '2', 'admin/content/add', '内容添加', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('24', 'admin', '1', 'admin/content/edit', '内容编辑', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('25', 'admin', '1', 'admin/content/del', '内容删除', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('26', 'admin', '1', 'admin/content/status', '内容设置状态', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('27', 'admin', '1', 'admin/category/add', '栏目添加', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('28', 'admin', '1', 'admin/category/edit', '栏目编辑', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('29', 'admin', '1', 'admin/category/editable', '栏目单字编辑', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('30', 'admin', '1', 'admin/category/remove', '栏目删除', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('31', 'admin', '1', 'admin/category/merge', '栏目合并', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('32', 'admin', '1', 'admin/category/move', '栏目移动', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('33', 'admin', '1', 'admin/category/status', '栏目状态', '内容管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('34', 'admin', '2', 'admin/order/index', '订单管理', '订单管理', '1', '');
-INSERT INTO `gemini_auth_rule` VALUES ('35', 'admin', '1', 'admin/order/edit', '订单编辑', '订单管理', '1', '');
 INSERT INTO `gemini_auth_rule` VALUES ('36', 'admin', '1', 'admin/order/del', '订单删除', '订单管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('35', 'admin', '1', 'admin/order/edit', '订单编辑', '订单管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('34', 'admin', '2', 'admin/order/index', '订单管理', '订单管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('33', 'admin', '1', 'admin/category/status', '栏目状态', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('32', 'admin', '1', 'admin/category/move', '栏目移动', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('31', 'admin', '1', 'admin/category/merge', '栏目合并', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('30', 'admin', '1', 'admin/category/remove', '栏目删除', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('29', 'admin', '1', 'admin/category/editable', '栏目单字编辑', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('28', 'admin', '1', 'admin/category/edit', '栏目编辑', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('27', 'admin', '1', 'admin/category/add', '栏目添加', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('26', 'admin', '1', 'admin/content/status', '内容设置状态', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('25', 'admin', '1', 'admin/content/del', '内容删除', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('24', 'admin', '1', 'admin/content/edit', '内容编辑', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('23', 'admin', '2', 'admin/content/add', '内容添加', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('22', 'admin', '2', 'admin/content/index', '内容列表', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('21', 'admin', '1', 'admin/config/add', '配置添加', '系统管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('20', 'admin', '2', 'admin/index/clear', '更新缓存', '首页管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('19', 'admin', '2', 'admin/config/group', '配置管理', '系统管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('18', 'admin', '2', 'admin/menu/index', '菜单管理', '系统管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('17', 'admin', '2', 'admin/channel/index', '导航管理', '系统管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('16', 'admin', '2', 'admin/database/index?type=export', '数据备份', '系统管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('15', 'admin', '2', 'admin/database/index?type=import', '数据恢复', '系统管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('14', 'admin', '2', 'admin/seo/index', 'SEO设置', '系统管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('13', 'admin', '2', 'admin/category/index', '栏目管理', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('12', 'admin', '2', 'admin/model/index', '模型管理', '内容管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('11', 'admin', '2', 'admin/user/index', '用户列表', '会员管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('10', 'admin', '2', 'admin/group/index', '用户组表', '会员管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('9', 'admin', '2', 'admin/group/access', '权限列表', '会员管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('8', 'admin', '2', 'admin/action/index', '行为列表', '会员管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('7', 'admin', '2', 'admin/action/log', '行为日志', '会员管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('6', 'admin', '2', 'admin/link/index', '友链管理', '运营管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('5', 'admin', '2', 'admin/ad/index', '广告管理', '运营管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('4', 'admin', '2', 'admin/addons/index', '插件列表', '扩展管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('3', 'admin', '2', 'admin/addons/hooks', '钩子列表', '扩展管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('2', 'admin', '2', 'admin/form/index', '自定义表单', '运营管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('1', 'admin', '2', 'admin/index/index', '后台首页', '首页管理', '1', '');
 INSERT INTO `gemini_auth_rule` VALUES ('37', 'admin', '1', 'admin/order/add', '订单新增', '订单管理', '1', '');
 INSERT INTO `gemini_auth_rule` VALUES ('38', 'admin', '1', 'admin/order/status', '订单审核', '订单管理', '1', '');
 INSERT INTO `gemini_auth_rule` VALUES ('39', 'admin', '1', 'admin/user/editpwd', '修改密码', '会员管理', '1', '');
 INSERT INTO `gemini_auth_rule` VALUES ('40', 'admin', '1', 'admin/upload/upload', '附件上传', '订单管理', '1', '');
 INSERT INTO `gemini_auth_rule` VALUES ('41', 'admin', '1', 'admin/upload/delete', '附件删除', '订单管理', '1', '');
 INSERT INTO `gemini_auth_rule` VALUES ('42', 'admin', '1', 'admin/order/view', '订单查看', '订单管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('43', 'admin', '2', 'admin/seo/rewrite', '伪静态规则', '系统管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('44', 'admin', '2', 'admin/dealer/index', '车商管理', '首页管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('45', 'admin', '2', 'admin/customer/index', '客户管理', '首页管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('46', 'admin', '2', 'admin/assetchannel/index', '资产渠道', '首页管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('47', 'admin', '2', 'admin/examine/application', '贷款申请', '首页管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('48', 'admin', '2', 'admin/examine/dataReview', '资料复核', '首页管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('49', 'admin', '2', 'admin/examine/loanLimit', '借款额度审批', '首页管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('50', 'admin', '2', 'admin/risk/rating', '客户评级', '首页管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('51', 'admin', '2', 'admin/risk/blacklist', '黑名单', '首页管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('52', 'admin', '2', 'admin/finance/loan', '放款审核', '财务管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('53', 'admin', '2', 'admin/finance/recharge', '充值审核', '财务管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('54', 'admin', '2', 'admin/finance/withdraw', '提现审核', '财务管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('55', 'admin', '2', 'admin/finance/receivable', '还款审核', '财务管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('56', 'admin', '2', 'admin/finance/transaction', '平台资金记录', '财务管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('57', 'admin', '2', 'admin/postloan/repayment', '回款管理', '首页管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('58', 'admin', '2', 'admin/postloan/withhold', '代扣审核', '首页管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('59', 'admin', '1', 'admin/assetchannel/edit', '资产渠道编辑', '渠道管理', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('60', 'admin', '1', 'admin/risk/ratingInfo', '评级详情', '客户评级', '1', '');
+INSERT INTO `gemini_auth_rule` VALUES ('61', 'admin', '1', 'admin/examine/view', '资料审核', '审核管理(查看和提交)', '1', '');
 
 -- ----------------------------
 -- Table structure for `gemini_category`
@@ -1325,6 +1348,7 @@ CREATE TABLE `gemini_member_extend_setting` (
 -- ----------------------------
 INSERT INTO `gemini_member_extend_setting` VALUES ('1', 'education', '学历', '10', 'select', '', '', '1', '1:小学\r\n2:初中\r\n3:高中', '0', '1', '1455930923', '1455930787');
 
+
 -- ----------------------------
 -- Table structure for `gemini_menu`
 -- ----------------------------
@@ -1345,7 +1369,7 @@ CREATE TABLE `gemini_menu` (
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`),
   KEY `status` (`status`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of gemini_menu
@@ -1376,20 +1400,20 @@ INSERT INTO `gemini_menu` VALUES ('23', '插件列表', 'admin', 'usb', '6', '0'
 INSERT INTO `gemini_menu` VALUES ('24', '钩子列表', 'admin', 'code', '6', '0', 'admin/addons/hooks', '0', '', '插件管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('25', '自定义表单', 'admin', '', '5', '0', 'admin/form/index', '0', '', '运营管理', '0', '0');
 INSERT INTO `gemini_menu` VALUES ('26', '伪静态规则', 'admin', '', '2', '0', 'admin/seo/rewrite', '0', '', '优化设置', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('30', '客户管理', 'admin', 'user', '1', '0', '/admin/customer/index', '0', '', '首页', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('31', '资产渠道', 'admin', 'road', '1', '0', '/admin/assetchannel/index', '0', '', '渠道管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('33', '贷款申请', 'admin', 'align-justify', '1', '0', '/admin/examine/application', '0', '', '审核管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('34', '资料复核', 'admin', 'align-center', '1', '0', '/admin/examine/dataReview', '0', '', '审核管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('35', '借款额度审批', 'admin', 'align-right', '1', '0', '/admin/examine/loanLimit', '0', '', '审核管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('37', '客户评级', 'admin', 'credit-card', '1', '0', '/admin/risk/rating', '0', '', '风控策略', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('38', '黑名单', 'admin', 'table', '1', '0', '/admin/risk/blacklist', '0', '', '风控策略', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('39', '放款审核', 'admin', 'file-text', '1', '0', '/admin/finance/loan', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('40', '充值审核', 'admin', 'th', '1', '0', '/admin/finance/recharge', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('41', '提现审核', 'admin', 'list', '1', '0', '/admin/finance/withdraw', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('42', '回款审核', 'admin', 'list-alt', '1', '0', '/admin/finance/receivable', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('43', '平台资金记录', 'admin', 'arrows-alt', '1', '0', '/admin/finance/transaction', '0', '', '财务管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('44', '回款管理', 'admin', 'money', '1', '0', '/admin/postloan/repayment', '0', '', '贷后管理', '0', '0');
-INSERT INTO `gemini_menu` VALUES ('45', '代扣审核', 'admin', 'search', '1', '0', '/admin/postloan/withhold', '0', '', '贷后管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('44', '回款管理', 'admin', 'money', '1', '0', 'admin/postloan/repayment', '0', '', '贷后管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('43', '平台资金记录', 'admin', 'arrows-alt', '1', '0', 'admin/finance/transaction', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('42', '回款审核', 'admin', 'list-alt', '1', '0', 'admin/finance/receivable', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('41', '提现审核', 'admin', 'list', '1', '0', 'admin/finance/withdraw', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('40', '充值审核', 'admin', 'th', '1', '0', 'admin/finance/recharge', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('39', '放款审核', 'admin', 'file-text', '1', '0', 'admin/finance/loan', '0', '', '财务管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('38', '黑名单', 'admin', 'table', '1', '0', 'admin/risk/blacklist', '0', '', '风控策略', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('37', '客户评级', 'admin', 'credit-card', '1', '0', 'admin/risk/rating', '0', '', '风控策略', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('35', '借款额度审批', 'admin', 'align-right', '1', '0', 'admin/examine/loanLimit', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('34', '资料复核', 'admin', 'align-center', '1', '0', 'admin/examine/dataReview', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('33', '贷款申请', 'admin', 'align-justify', '1', '0', 'admin/examine/application', '0', '', '审核管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('31', '资产渠道', 'admin', 'road', '1', '0', 'admin/assetchannel/index', '0', '', '渠道管理', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('30', '客户管理', 'admin', 'user', '1', '0', 'admin/customer/index', '0', '', '首页', '0', '0');
+INSERT INTO `gemini_menu` VALUES ('45', '代扣审核', 'admin', 'search', '1', '0', 'admin/postloan/withhold', '0', '', '贷后管理', '0', '0');
 
 -- ----------------------------
 -- Table structure for `gemini_model`
