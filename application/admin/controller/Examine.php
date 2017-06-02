@@ -47,7 +47,9 @@ class examine extends Admin {
 				$list = db('Order')->where('uid',$uid)->order('create_time DESC')->select();
 
 			}elseif($role == 11){
+
 				$result = db('member')->field('dealer_id')->where('uid',$uid)->find();
+
 				$list = db('Order')->where('dealer_id',$result['dealer_id'])->select();
 
 			}else{
@@ -143,8 +145,9 @@ class examine extends Admin {
 			return json($resp);
 			
 		}else{
-			$list = db('Order')->where('status','3')->order('create_time')->select();
 
+			$list = db('Order')->where('status','3')->order('create_time DESC')->select();
+		
 			foreach ($list as $k => $v) {
 
 				$list[$k]['salesman'] = serch_realname($v['uid']);
