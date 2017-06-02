@@ -36,15 +36,6 @@ class risk extends Admin {
 				return $this->error("已审核！");
 			}
 
-			$res = $data['manual_verification'];
-			
-			$results = json_decode($res,true);
-
-			$results['uid'] = $res_crd['uid'];
-			$results['credit_id'] = $data['id'];
-			
-			db('customer_info')->insert($results);
-
 			if ($data['refuse_reason'] == '3' && $res_crd['credit_result'] == '0') {
 				$risks = model('Risk');
 				
@@ -196,6 +187,37 @@ class risk extends Admin {
 			$this->assign($data);
 			$this->setMeta('黑名单');
 			return $this->fetch('addBlacklist');
+		}
+	}
+
+	public function manualVerification(){
+		
+		if (IS_POST) {
+			$data = input('post.');
+			//黑名单
+			$res_crd = db('credit')->where('id', $data['id'])->find();
+
+			$is_success = db('customer_info')->field('uid')->where('uid',$res_crd['uid'])->find();
+
+			if (!empty($is_success)) {
+				return $this->error('已保存过信息');
+			}
+
+			$info = $data['manual_verification'];
+			
+			$results = json_decode($info,true);
+
+			$results['uid'] = $res_crd['uid'];
+
+			$results['credit_id'] = $data['id'];
+			
+			$res = db('customer_info')->insert($results);
+
+			if ($res) {
+				return $this->success('保存成功');
+			}else{
+				return $this->error('保存失败');
+			}
 		}
 	}
 }
