@@ -38,7 +38,28 @@ class examine extends Admin {
 	}
 
 	public function application() {
-		$list = db('Order')->order('create_time DESC')->select();
+
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if($uid > 0){
+			if ($role == 10) {
+
+				$list = db('Order')->where('uid',$uid)->order('create_time DESC')->select();
+
+			}elseif($role == 11){
+
+				$result = db('member')->field('dealer_id')->where('uid',$uid)->find();
+
+				$list = db('Order')->where('dealer_id',$result['dealer_id'])->select();
+
+			}else{
+				$list = db('Order')->order('create_time DESC')->select();
+			}
+
+		}else{
+			return $this->error('请重新登录');
+		}
+		
 		foreach ($list as $k => $v) {
 			$list[$k]['salesman'] = serch_realname($v['uid']);
 			$name = serch_name($v['dealer_id']);
@@ -124,8 +145,9 @@ class examine extends Admin {
 			return json($resp);
 			
 		}else{
-			$list = db('Order')->where('status','3')->order('create_time')->select();
 
+			$list = db('Order')->where('status','3')->order('create_time DESC')->select();
+		
 			foreach ($list as $k => $v) {
 
 				$list[$k]['salesman'] = serch_realname($v['uid']);
