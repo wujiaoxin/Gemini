@@ -266,4 +266,19 @@ class Yixingtong extends Base {
 		db('member_withhold')->where('orderNo',$data['orderNo'])->update($info);
 		echo "success";exit();
 	}
+
+
+	//签约分期代扣还款
+	public function notifyurl(){
+		$data = input('post.');
+		if ($data['status'] == 'SUCCESS') {
+			$info = array(
+				'true_repay_money'=>$data['totalAmount'],
+				'true_repay_time'=>strtotime($data['notifyTime']),
+				'status'=>1,
+				'has_status'=>1,
+				);
+			db('order_repay')->where('externalorder',$data['externalOrderNo'])->update($info);
+		}
+	}
 }
