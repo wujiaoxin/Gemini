@@ -145,7 +145,7 @@ class Repay extends \app\common\model\Base {
 			$load_repay = array();
 
 			// $load_repay['repay_time'] = time()+30*24*60*60*$i;
-			$load_repay['repay_time']  = next_replay_month ($repay_day);
+			$load_repay['repay_time']  =  $repay_day = next_replay_month ($repay_day);
 			// $load_repay['repay_money11'] = date('Y-m-d H:i:s',$load_repay['repay_time']);
 			$load_repay['repay_period'] = $i;
 
@@ -213,7 +213,7 @@ class Repay extends \app\common\model\Base {
 
 			$load_repay = array();
 
-			$load_repay['repay_time'] = next_replay_month ($repay_day);
+			$load_repay['repay_time'] = $repay_day = next_replay_month ($repay_day);
 			
 			$load_repay['repay_period'] = $i;
 
@@ -245,7 +245,6 @@ class Repay extends \app\common\model\Base {
 
 			$list[] = $load_repay;
 		}
-
 		$this->saveAll($list);
 
 		return 1;

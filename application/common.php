@@ -1369,6 +1369,9 @@ function get_programme($orderid){
 		}else{
 			$res['firstYear'] = $res['twoYear'] = $res['threeYear'] = $res['monthpay'];
 		}
+		if (is_array($result)) {
+			$res['rate'] = round(100-$result['vp_pay']-$result['bank_pay']);
+		}
 	}
 	if ($result['vp_type'] == '2') {
 
@@ -1437,10 +1440,9 @@ function get_programme($orderid){
 		$res['avgmonthpay'] = round(($res['monthpay']*$result['vp_term'] + $res['bank_monthpay']*$result['bank_term'])/$res['term']);
 
 		$res['downpay'] = round($result['car_price']*$result['vp_pay']/100);
-
-	}
-	if (is_array($result)) {
-		$res['rate'] = round(100-$result['vp_pay']);
+		if (is_array($result)) {
+			$res['rate'] = round(100-$result['vp_pay']);
+		}
 	}
 	return $res;
 }
