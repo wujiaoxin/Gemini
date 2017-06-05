@@ -93,4 +93,17 @@ class Withhold {
 		$sign = strtolower($sign);
 		return $sign;
 	} 
+
+
+	//还款签约
+
+	public static function selfrepay($data){
+		$data['partnerId']=self::$partnerId;
+		ksort($data);
+		$res = self::getRequestParamString($data);
+		$data['sign']=self::buildSign($res);
+		$res = self::sendHttpRequest($data,self::$url);
+		$res = json_decode($res, true);
+		return $res;
+	}
 }

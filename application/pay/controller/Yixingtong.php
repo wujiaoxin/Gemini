@@ -278,7 +278,7 @@ class Yixingtong extends Base {
 				'status'=>1,
 				'has_status'=>1,
 				);
-			db('order_repay')->where('externalorder',$data['externalOrderNo'])->update($info);
+			db('order_repay')->where('ordenon',$data['ordenon'])->update($info);
 		}
 	}
 }
