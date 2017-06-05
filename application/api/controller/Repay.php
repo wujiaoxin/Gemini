@@ -16,7 +16,7 @@ class Repay extends Api {
 		
 		$uid = session('user_auth.uid');
 		
-		$repayList = db('order_repay')->field('product_name as name, repay_period as period, totalperiod as totalperiod, repay_money as monthpay, FROM_UNIXTIME(repay_time,\'%Y-%m-%d\') as time, has_repay as isrepaid')->where("uid",$uid)->fetchSQL(false)->select();
+		$repayList = db('order_repay')->field('product_name as name, repay_period as period, totalperiod as totalperiod, repay_money as monthpay, FROM_UNIXTIME(repay_time,\'%Y-%m-%d\') as time, has_repay as isrepaid')->where("uid",$uid)->order('repay_time')->fetchSQL(false)->select();
 		foreach ($repayList as $k => $v) {
 			if ($v['isrepaid'] == '-1') {
 				$repayList[$k]['isrepaid'] = 0;
@@ -71,5 +71,77 @@ class Repay extends Api {
 		return json($resp);
 	}
 
+	/* TODO 还款表加 orderon 字段
+	** $orderid 订单id
+	** $period  订单期数
+	*/
+	public function selfrepay($orderid,$period){
+
+		$uid = session('user_auth.uid');
+
+		$map = array('order_id'=>$orderid,'uid'=>$uid);
+
+		$contractNo = db('member_withhold')->field('contractno')->where($map)->find();
+
+		$map['repay_period'] = $period;
+
+		$res = db('order_repay')->field('repay_money,repay_time,id,status,has_repay')->where($map)->find();
+		/*$datatime = date('Y-m',$res['repay_time']);
+		$endtime = date('Y-m',time());
+		if ($datatime > $endtime) {
+			$resp['code'] = 2;
+			$resp['msg'] = '未到还款时间,请联系客服';
+			return json($resp);
+		}*/
+		switch ($res['status']) {
+			case '-2':
+				$resp['code'] = -2;
+				$resp['msg'] = '还款处理中';
+				return json($resp);
+			case '1':
+				$resp['code'] = 0;
+				$resp['msg'] = '已还款';
+				return json($resp);
+		}
+
+		$service = "installmentSelfRepay";
+		$orderon = '2007050512345678912' . rand(100000,999999);
+    	$data = array(
+    		'service' => $service,
+    		'signType' =>'MD5',
+			// 'notifyUrl' => url('pay/yixingtong/notifyurl'),
+			'notifyUrl' => 'https://t.vpdai.com/pay/yixingtong/notifyurl',
+			'orderNo' => $orderon,
+    		'contractNo'=>$contractNo['contractno'],
+    		'externalOrderNo'=>'20070505123456789' . rand(100000,999999),
+    		'totalAmount'=>$res['repay_money'],
+    		);
+    	db('order_repay')->where('id',$res['id'])->update(['orderon'=>$orderon]);//TODO未生效
+    	$result = \com\Withhold::selfrepay($data);
+    	if ($result['resultCode'] == 'EXECUTE_SUCCESS') {
+    		$resp['code'] = 1;
+			$resp['msg'] ='还款成功';
+
+    	}elseif ($result['resultCode'] == 'EXECUTE_PROCESSING') {
+    		$resp['code'] = -2;
+			$resp['msg'] ='还款处理中';
+    	}{
+    		$resp['code'] = 3;
+    		$resp['msg'] = $result['resultMessage'];
+    	}
+    	$results = json_encode($result);
+    	$filename="query_log.txt";
+		$handle=fopen($filename,"a+");
+		if($handle){
+			fwrite($handle,"=========还款操作=============\r\n");
+			fwrite($handle, date("Y-m-d h:i:sa")."\r\n");
+			// fwrite($handle,$name."\r\n");
+			// fwrite($handle,$data."\r\n");
+			fwrite($handle,$results."\r\n");
+			fwrite($handle,"==========================\r\n\r\n");
+		}
+		fclose($handle);
+		return json($resp);
+	}
 	
 }

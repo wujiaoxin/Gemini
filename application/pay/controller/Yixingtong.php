@@ -271,7 +271,8 @@ class Yixingtong extends Base {
 	//签约分期代扣还款
 	public function notifyurl(){
 		$data = input('post.');
-		if ($data['status'] == 'SUCCESS') {
+		$res = db('order_repay')->field('status')->where('orderno',$data['ordenon'])->find();
+		if ($data['settleStatus'] == 'SUCCESS') {
 			$info = array(
 				'true_repay_money'=>$data['totalAmount'],
 				'true_repay_time'=>strtotime($data['notifyTime']),
@@ -279,6 +280,15 @@ class Yixingtong extends Base {
 				'has_status'=>1,
 				);
 			db('order_repay')->where('ordenon',$data['ordenon'])->update($info);
+		}else{
+			$info = array(
+				'status'=>-2,
+				'has_status'=>-2,
+				);
+			if ($res['status'] != '1') {
+				db('order_repay')->where('ordenon',$data['ordenon'])->update($info);
+			}
 		}
+		echo "success";exit();
 	}
 }
