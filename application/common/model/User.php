@@ -122,6 +122,52 @@ class User extends Base{
 		}
 	}
 
+
+	/*
+	* 用户验证码登录模型
+	*/
+	public function ulogin($username = '', $smsverify = '', $type = 1){
+		$map = array();
+		if (\think\Validate::is($username,'email')) {
+			$type = 2;
+		}elseif (preg_match("/^1[34578]{1}\d{9}$/",$username)) {
+			$type = 3;
+		}
+		switch ($type) {
+			case 1:
+				$map['username'] = $username;
+				break;
+			case 2:
+				$map['email'] = $username;
+				break;
+			case 3:
+				$map['mobile'] = $username;
+				break;
+			case 4:
+				$map['uid'] = $username;
+				break;
+			case 5:
+				$map['uid'] = $username;
+				break;
+			default:
+				return 0; //参数错误
+		}
+
+		$user = $this->db()->where($map)->find();
+		if($user != null){
+			$user = $user->toArray();
+			if(is_array($user) && $user['status']){
+				$this->autoLogin($user); //更新用户登录信息
+				return $user['uid']; //登录成功，返回用户ID
+			}else{
+				return -1; //用户被禁用
+			}
+		} else {
+			return -1; //用户不存在
+		}
+	}
+
+
 	/**
 	 * 用户注册
 	 * @param  integer $user 用户信息数组
