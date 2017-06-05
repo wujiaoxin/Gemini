@@ -72,7 +72,7 @@ class User extends Api {
 		}
 	}
 	
-	public function login($mobile = '', $password = '', $imgverify = null, $smsverify=null, $sid = null,$type=1){
+	public function login($mobile = '', $password = '', $imgverify = null, $smsverify=null, $sid = null){
 		$resp["code"] = 0;
 		$resp["msg"] = '未知错误';		
 				
@@ -80,7 +80,7 @@ class User extends Api {
 		//$this->checkVerify($verify);
 
 		$user = model('User');
-		if ($type == 2) {
+		if ($smsverify) {
 			$uid  = $user->ulogin($mobile, $smsverify);
 			/* 验证验证码 */
 			$storeSmsCode = session('smsCode');
