@@ -13,19 +13,28 @@ use app\common\controller\Admin;
 class assetchannel extends Admin {
 
 	public function index() {
-		//define('IS_ROOT', is_administrator());		
+		//define('IS_ROOT', is_administrator());
+
+		//TODO 需要区分商家推广和商家运营	
 		$map = '';
-		if (!IS_ROOT) {
-			$uid = session('user_auth.uid');
-			if($uid > 0){
-				$map = 'uid = '.$uid.' or bank_uid = '.$uid;
-			}else{
-				return $this->error('请重新登录');
-			}
-		}
+		
 		$order = "id desc";
+
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if($uid > 0){
+			if ($role == 10 || $role == 11) {
+				$list = db('Dealer')->alias('d')->join('__MEMBER__ m','m.dealer_id = d.id')->where('uid',$uid)->select();
+			}else{
+				$list  = db('Dealer')->where($map)->order($order)->select();
+			}
+
+		}else{
+			return $this->error('请重新登录');
+		}
+
 		// $list  = db('Dealer')->where($map)->order($order)->paginate(10);
-		$list  = db('Dealer')->where($map)->order($order)->select();
+		
 		foreach ($list as $k => $v) {
 			$list[$k]['qrcode_url'] = 'https://pan.baidu.com/share/qrcode?w=512&h=512&url='.url("/public/wechat/user/register").'?authcode='.$v['invite_code'];
 		}

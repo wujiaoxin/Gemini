@@ -7,10 +7,6 @@
 	.form-group div{
 		word-wrap: break-word;
 	}
-	.form-group textarea{
-		resize: both;
-    	min-width: 600px;
-	}
 </style>
 <script type="text/javascript">
 	var info = {};
@@ -540,13 +536,10 @@
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">备注</label>
-						    <div class="col-sm-10 pt5">
-						     	<textarea rows="8" cols="20" name="descr" class="customer-info"></textarea>
+						    <div class="col-sm-2 pt5">
+						     	<textarea name="descr" class="customer-info"></textarea>
 						    </div>
 						</div>
-						<div class="form-group text-center">
-							<a type="button" class="btn btn-primary" id="manualVerificationBtn">保存</a>
-					</div>
 					</form>
 				</div>
 				<div class="tab-pane" id="tab_1_6">
@@ -602,7 +595,7 @@
 								<tr>
 									<td>银行</td>
 									<td>期限</td>
-									<td>月利率</td>
+									<td>日利率</td>
 									<td>首付比例</td>
 								</tr>
 								<tr>
@@ -624,7 +617,7 @@
 								<tr>
 									<td>类型</td>
 									<td>期限</td>
-									<td>月利率</td>
+									<td>日利率</td>
 									<td>首付比例</td>
 								</tr>
 								<tr>
@@ -728,8 +721,8 @@
 		            </div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">审核备注</label>
-					    <div class="col-sm-10 pt5">
-					     	<textarea rows="8" cols="20" id="descr"></textarea>
+					    <div class="col-sm-2 pt5">
+					     	<textarea id="descr"></textarea>
 					    </div>
 					</div>
 					<div class="form-group text-center">
@@ -821,38 +814,6 @@
 	// 	}
 	// })
 
-	$('#manualVerificationBtn').click(function(){
-		var obj = {};
-		$(".customer-info","#manualVerification").each(function(){
-			var name = $(this).attr('name');
-			var value = $(this).val();
-			if(value == null){
-				value == '';
-			}else{
-				value = value.replace(/\n/g,"");
-			}
-		    obj[name] = value;
-		});
-		var manual_verification = JSON.stringify(obj);
-		ajax_jquery({
-			url: apiUrl +'/admin/risk/manualVerification',
-			data:{
-					"id": info.creditList.id,
-					'manual_verification': manual_verification
-				},
-			success:function(resp){
-				if (resp.code == "1" ) {
-						ui_alert("保存成功","success");
-				} else {
-					if (typeof(resp.msg) == 'string' && resp.msg != '') {
-						ui_alert(resp.msg);
-					}
-					return false;
-				}
-			}
-		});
-	});
-
 
 	$('#examineBtn').click(function(){
 		var credit_result = 0;
@@ -871,6 +832,19 @@
 		var vp_term = $('#vp_term').val();
 		var vp_rate = $('#vp_rate').val();
 		var vp_pay = $('#vp_pay').val();
+
+		var obj = {};
+		$(".customer-info","#manualVerification").each(function(){
+			var name = $(this).attr('name');
+			var value = $(this).val();
+			if(value == null){
+				value == '';
+			}else{
+				value = value.replace(/\n/g,"");
+			}
+		    obj[name] = value;
+		});
+		var manual_verification = JSON.stringify(obj);
 
 		if(credit_score > 100 || credit_score < 0){
 			ui_alert("请输入正确授信评分");
@@ -939,7 +913,8 @@
 					'vp_type':vp_type,
 					'vp_term':vp_term,
 					'vp_rate':vp_rate,
-					'vp_pay':vp_pay
+					'vp_pay':vp_pay,
+					'manual_verification': manual_verification
 				},
 			success:function(resp){
 				if (resp.code == "1" ) {

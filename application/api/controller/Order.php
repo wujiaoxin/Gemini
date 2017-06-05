@@ -216,33 +216,52 @@ class Order extends Api {
 		return $controller->$action();
 	}
 	
-	//更新还款银行卡信息 TODO
-	public function updateBankInfo($type = null, $bank_name = null, $bank_branch = null, $bank_account_name = null, $bank_account_id = null){
-		
-		
-		$uid = session('user_auth.uid');
-		$creditResult = db('credit')->field('uid,mobile,order_id,credit_status,credit_result')->where("uid",$uid)->order('id desc')->find();
-		
-		
-		if($creditResult['credit_result'] == 1){//授信审核通过
-			//$orderData = $creditResult['order_id'];
-			$orderData['status'] = 0;
-			db('order')->where("id", $creditResult['order_id'])->where("status",-2)->update($orderData);
-		}
-		
-		$res = array(
-			'uid'=>$uid,
-			'type'=>5,
-			'order_id'=>$creditResult['order_id'],
-			'bank_account_id'=>$bank_account_id,
-			'create_time'=>time()
-			);
-		db('bankcard')->insert($res);
-		
+	//更新还款银行卡信息
+	public function updateBankInfo($type = null, $bank_name = null, $bank_branch = null, $bank_account_name = null, $bank_account_id = ''){
 		$resp = '{
 			"code": 1,
 			"msg": "保存成功"
 		}';
+		if (empty($bank_account_id)) {
+			$resp = '{
+				"code": 0,
+				"msg": "银行卡不能为空"
+			}';
+			$resp = json_decode($resp);
+			return $resp;
+		}
+		$uid = session('user_auth.uid');
+		$creditResult = db('credit')->field('uid,mobile,order_id,credit_status,credit_result')->where("uid",$uid)->order('id desc')->find();
+		
+		if($creditResult['credit_result'] == 1){//授信审核通过
+			//$orderData = $creditResult['order_id'];
+			$orderData['status'] = 0;
+			$results =db('order')->where("id", $creditResult['order_id'])->where("status",-2)->update($orderData);
+			if ($results) {
+				$res = array(
+				'uid'=>$uid,
+				'type'=>5,
+				'order_id'=>$creditResult['order_id'],
+				'bank_account_id'=>$bank_account_id,
+				'create_time'=>time()
+				);
+				db('bankcard')->insert($res);
+
+			}else{
+				$resp = '{
+					"code": 0,
+					"msg": "找不到订单"
+				}';
+			}
+			
+		}else{
+			$resp = '{
+				"code": 0,
+				"msg": "保存失败"
+			}';
+		}
+		
+		
 		
 		
 		$resp = json_decode($resp);
