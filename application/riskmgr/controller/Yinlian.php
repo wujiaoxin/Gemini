@@ -29,20 +29,19 @@ class Yinlian extends Base {
 			$pk = "46876f41f59b4e949a5d61ccfb1faff4";
 			$server = 'https://profile.unionpaysmart.com/quota/usernature';
 		}
-
+		$index = "S0503,S0660,S0661,S0469,S0507,S0534,S0535,S0560,S0537,S0546,S0526,S0495,S0027,S0107,S0586,S0588,S0684,S0685,S0686,S0687,S0630,S0307,S0308,S0559,S0210,S0670,S0043,S0428,S0434,S0440,S0443,S0446,S0449,S0640,S0572,S0514,S0668,S0666,S0151,S0266,S0199,S0188,S0410,S0218,S0416,S0422,S0452";
 		$data  = array( 'account' => $accout,
 						//'address' => '杭州市',
 					   'card' => $bankcard,
 					   //'email' => 'a@test.com',
 						'identityCard' => $idcard,
 					   'identityType' =>'1',
-					   'index' => 'all',
+					   'index' => $index,
 					   'mobile' => $mobile,
 					   'name' => $name,
 					   'orderId' => rand(100000,999999)//,
 					   //'sign' => 'BE11C991DE06605162B3B8A98F84E480'
 					   );
-
 		$dataStr = '';
 		foreach($data as $key => $value) {			
 			$dataStr = $dataStr .$key .$value;
