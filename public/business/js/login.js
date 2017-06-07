@@ -58,9 +58,16 @@ var Login = function () {
 		            },
 		            success:function(resp){
 		                if (resp.code == "1" ) {
-		                		ui_alert("登录成功","success");
 		                		//localStorage.setItem('token',resp.data.token);
-		                        window.location.href = "/business/index/index";
+		                		if(resp.data == 1){
+		                			ui_alert("登录成功","success");
+		                			window.location.href = "/guarantee/index/index";
+		                		}else if(resp.data == 1){
+		                			ui_alert("登录成功","success");
+		                			window.location.href = "/business/index/index";
+		                		}else{
+		                			ui_alert("权限错误,请联系客服");
+		                		}
 		                } else {
 		                    if(resp.code == "-2" || resp.code == "1001"){
 		                        isimgverify = 1;

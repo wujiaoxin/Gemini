@@ -43,12 +43,6 @@
     border: none;
 }
 
-#tab_1_1 table input[name="property"],input[name="forms"] {
-    margin-left: 10px;
-    border: none;
-    border-bottom: 1px solid black
-}
-
 #tab_1_1 table input:focus {
     outline: none;
 }
@@ -185,7 +179,7 @@ try {
 								<tr>
 									<td>身份证正面照</td>
 									<td>
-										<div class="col-lg-10 col-sm-10">
+										<div>
 											<div class="picker-box">
 												<div id="picker_rep_idcard_pic" class="picker_button">上传照片</div>
 												<input type="hidden" name="rep_idcard_pic" id="field_rep_idcard_pic" {if condition="$info['rep_idcard_pic'] neq '0'"}value="{$info['rep_idcard_pic']|default=''}"{/if} ">
@@ -212,7 +206,7 @@ try {
 									</td>
 									<td>身份证反面照</td>
 									<td>
-										<div class="col-lg-10 col-sm-10">
+										<div>
 											<div class="picker-box">
 												<div id="picker_rep_idcard_back_pic" class="picker_button">上传照片</div>
 												<input type="hidden" name="rep_idcard_back_pic" id="field_rep_idcard_back_pic" {if condition="$info['rep_idcard_back_pic'] neq '0'"}value="{$info['rep_idcard_back_pic']|default=''}"{/if}>
@@ -241,7 +235,7 @@ try {
 								<tr>
 									<td>营业执照照片</td>
 									<td>
-										<div class="col-lg-10 col-sm-10">
+										<div>
 											<div class="picker-box">
 												<div id="picker_dealer_lic_pic" class="picker_button">上传照片</div>
 												<input type="hidden" name="dealer_lic_pic" id="field_dealer_lic_pic" {if condition="$info['dealer_lic_pic'] neq '0'"}value="{$info['dealer_lic_pic']|default=''}"{/if}>
