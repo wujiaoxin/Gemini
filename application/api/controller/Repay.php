@@ -71,7 +71,7 @@ class Repay extends Api {
 	*/
 	public function searchrepay($orderid,$period){
 		$map = array('order_id'=>$orderid,'repay_period'=>$period);
-		$res = db('order_repay')->where($map)->find();
+		$res = db('order_repay')->alias('a')->field('a.*,o.update_time as create_time')->join('__ORDER__ o','a.order_id=o.id')->where($map)->find();
 		if ($res) {
 			$resp['code'] = 1;
 			$resp['msg'] = '获取成功!';
