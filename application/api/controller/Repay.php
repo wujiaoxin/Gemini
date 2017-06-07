@@ -75,7 +75,8 @@ class Repay extends Api {
 	** $period 订单期数
 	*/
 	public function searchrepay($orderid,$period){
-		$res = db('order_repay')->where('order_id',$orderid)->find();
+		$map = array('order_id'=>$orderid,'repay_period'=>$period);
+		$res = db('order_repay')->where($map)->find();
 		if ($res) {
 			$resp['code'] = 1;
 			$resp['msg'] = '获取成功!';
