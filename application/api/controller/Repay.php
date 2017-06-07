@@ -16,7 +16,7 @@ class Repay extends Api {
 		
 		$uid = session('user_auth.uid');
 		
-		$repayList = db('order_repay')->field('product_name as name, repay_period as period, totalperiod as totalperiod, repay_money as monthpay, FROM_UNIXTIME(repay_time,\'%Y-%m-%d\') as time, has_repay as isrepaid')->where("uid",$uid)->order('repay_time')->fetchSQL(false)->select();
+		$repayList = db('order_repay')->field('product_name as name, repay_period as period, totalperiod as totalperiod, repay_money as monthpay, FROM_UNIXTIME(repay_time,\'%Y-%m-%d\') as time, has_repay as isrepaid,order_id as orderid')->where("uid",$uid)->order('repay_time')->fetchSQL(false)->select();
 		foreach ($repayList as $k => $v) {
 			if ($v['isrepaid'] == '-1') {
 				$repayList[$k]['isrepaid'] = 0;
@@ -68,6 +68,23 @@ class Repay extends Api {
 			}
 		}';
 		$resp = json_decode($resp);*/
+		return json($resp);
+	}
+	/*
+	** $orderid 订单id
+	** $period 订单期数
+	*/
+	public function searchrepay($orderid,$period){
+		$res = db('order_repay')->where('order_id',$orderid)->find();
+		if ($res) {
+			$resp['code'] = 1;
+			$resp['msg'] = '获取成功!';
+			$resp['data'] = $res;
+		}else{
+			$resp['code'] = 0;
+			$resp['msg'] = '获取失败!';
+			$resp['data'] = '';
+		}
 		return json($resp);
 	}
 
