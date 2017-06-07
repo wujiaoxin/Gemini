@@ -145,4 +145,41 @@ class Yinlian extends Base {
 		}
 		
 	}
+
+	//银联对应关系调用接口
+	public function authvalid($idcard='',$name='',$mobile='',$idcid='',$type=''){
+		//测试
+		/*$idcard = '6222620110009991101';
+		$name = '王菲菲';
+		$mobile = '18888888888';
+		$idcid = '411527199101133522';
+		$type = '4';*/
+		$accout = \com\Yinlian::$accout;
+		$server = \com\Yinlian::$service.'auth/valid';
+
+		$info =array(
+			'account'=>$accout,
+			'card'=>$idcard,
+			'cid'=>$idcid,
+			'mobile'=>$mobile,
+			'name'=>$name,
+			'type'=>$type
+			);
+		$sign = \com\Yinlian::buildSign($info);
+
+		$infores =array(
+			'account'=>$accout,
+			'card'=>$idcard,
+			'cid'=>$idcid,
+			'mobile'=>$mobile,
+			'name'=>$name,
+			'type'=>$type,
+			'sign'=>$sign,
+			);
+		$url = $server.'?'.http_build_query($infores);
+		$resp =  \com\Yinlian::sendHttpRequest($url);
+		$data =json_decode($resp,true);
+		return $data;
+		
+	}
 }

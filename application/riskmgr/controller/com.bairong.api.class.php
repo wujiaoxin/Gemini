@@ -178,6 +178,10 @@ class Core{
 			$meal = '';
 			//$meal = join(',',$this -> headerTitle);
 			//$meal = join(',',$titles);
+			//加入银行卡四要素
+			/*if ($titles['0'] == 'BankFourPro') {
+				$meal = join(',',$titles);
+			}*/
 		}
 		
 		
