@@ -44,7 +44,9 @@ class Finance extends Admin {
 
 					'descr' => $data['descr'],
 
-					'status'=> $data['status']
+					'status'=> $data['status'],
+
+					'update_time'=>time()
 
 				);
 				
@@ -78,7 +80,9 @@ class Finance extends Admin {
 
 								'lock_money' => $lock_money_result,
 
-								'lines_ky' =>$lines_result
+								'lines_ky' =>$lines_result,
+
+
 
 								);
 
