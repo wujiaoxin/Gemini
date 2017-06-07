@@ -138,7 +138,7 @@ class Repay extends Api {
     	}elseif ($result['resultCode'] == 'EXECUTE_PROCESSING') {
     		$resp['code'] = -2;
 			$resp['msg'] ='还款处理中';
-    	}{
+    	}else{
     		$resp['code'] = 3;
     		$resp['msg'] = $result['resultMessage'];
     	}
@@ -148,8 +148,6 @@ class Repay extends Api {
 		if($handle){
 			fwrite($handle,"=========还款操作=============\r\n");
 			fwrite($handle, date("Y-m-d h:i:sa")."\r\n");
-			// fwrite($handle,$name."\r\n");
-			// fwrite($handle,$data."\r\n");
 			fwrite($handle,$results."\r\n");
 			fwrite($handle,"==========================\r\n\r\n");
 		}
