@@ -1,0 +1,88 @@
+{extend name="base"/}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
+<link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
+{/block}
+{block name="body"}
+<div class="portlet box grey">
+	<div class="portlet-title">
+		<div class="caption"><i class="icon-user"></i>我的渠道</div>
+		<div class="actions">
+			<a href="/guarantee/user/newChannel.html" class="btn blue"><i class="icon-plus"></i>新增渠道</a>
+			<button class="btn btn-danger ajax-post confirm" url="{:url('delete')}" target-form="ids">删 除</button>
+		</div>
+	</div>
+	<div class="portlet-body">
+		<table class="table table-striped table-bordered table-hover" id="table-assetChannel">
+			<thead>
+				<tr>
+					<th><input class="checkbox check-all" type="checkbox"></th>
+					<th>编号</th>
+					<th>渠道名称</th>
+					<th>渠道类型</th>
+					<th>法人</th>
+					<th>联系电话</th>
+					<th>创建时间</th>
+					<th>创建人</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- <tr class="odd gradeX">
+					<td>100001</td>
+					<td>王三</td>
+					<td>13456679797</td>
+					<td>业务员</td>
+					<td>2017-10-12</td>	
+					<td>正常</td>
+					<td>停用</td>
+				</tr> -->
+			</tbody>
+		</table>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="__JS__/table-managed.js"></script>
+<script type="text/javascript" src="__JS__/manager.js"></script>
+
+<script type="text/javascript">
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html += '<tr class="odd gradex">'
+		  		+'<td><input class="ids row-selected" type="checkbox" name="id[]" value="'+data[index].id+'"></td>'
+		  		+'<td>' + data[index].id + '</td>'
+		  		+'<td>'+ data[index].name +'</td>'
+		  		+'<td>'+ g_dealerProperty[data[index].property] +'</td>'
+		  		+'<td>'+ data[index].rep +'</td>'
+		  		+'<td>'+ data[index].mobile +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
+		  		+'<td>'+ ''+'</td>'
+		  		+'<td>'+ g_dealerStatus[data[index].status] +'</td>'
+		  		+'<td><a href="/admin/assetChannel/edit?id='+ data[index].id + '">编辑</a></td>'
+		  		 +'</tr>'
+			}
+		}
+		return html;
+	};
+	$('#table-assetChannel tbody').html(tpl(info.data));
+
+    $(function(){
+    	TableManaged.init();
+    });
+</script>
+
+{/block}

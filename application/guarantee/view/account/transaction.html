@@ -1,0 +1,101 @@
+{extend name="base"}
+{block name="style"}
+<link rel="stylesheet" href="/public/business/css/myItem.css">
+{/block}
+{block name="body"}
+<!--资金记录-->
+<div class="row-fluid">
+	<div class="span12">
+		<div class="portlet">
+			<div>
+				<div class="select-block">
+					<span class="selectParm-title">日期范围:</span>
+					<ul class="selectParm selectOrderDate">
+						<li data='0' class="active">全部</li>
+						<li data='1'>今天</li>
+						<li data='2'>最近7天</li>
+						<li data='3'>1个月</li>
+						<li data='4'>2个月</li>
+						<li data='5'>3个月</li>
+					</ul>
+				</div>
+				<div class="select-block">
+					<span class="selectParm-title">交易类型:</span>
+					<ul class="selectParm selectOrderType">
+						<li data='0' class="active">全部</li>
+						<li data='5'>支付款项</li>
+						<li data='1'>垫资到账</li>
+						<li data='2'>垫资还款</li>
+						<li data='3'>充值</li>
+						<li data='4'>提现</li>
+					</ul>
+				</div>
+			</div>
+			<div class="portlet box">
+				<div class="portlet-body">
+					<table class="table table-hover table-bordered" id="table-transaction">
+						<thead>
+							<tr>
+								<th>时间</th>
+								<th>类型</th>
+								<th>交易对方</th>
+								<th>操作金额</th>
+								<th>备注</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<script>
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + formatDatetime(data[index].create_time) + '</td>'
+		  		+'<td>'+ g_transactionType[data[index].type] +'</td>'
+		  		+'<td>'+ g_dealObj[data[index].deal_other]+'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].account_money) +'</td>'
+		  		+'<td>'+ data[index].descr +'</td>'
+		  		 +'</tr>'
+			}
+		}
+		return html;
+	};
+	function ajaxTransaction(dateRange,type){
+		ajax_jquery({
+	        url: apiUrl +'/business/account/transaction',
+	        data:{
+	            'dateRange': dateRange,
+	            'type': type
+	        },
+	        success:function(resp){
+	            if (resp.code == "1" ) {
+            		$('#table-transaction tbody').html(tpl(resp.data));
+	            } else {
+	                if (typeof(resp.msg) == 'string') {
+	                    ui_alert(resp.msg);
+	                    return false;
+	                }
+	            }
+	        }
+		});
+	}
+	jQuery(document).ready(function(){
+		ajaxTransaction('0','0');
+		$('.selectParm').on('click','li',function(){
+	   		$(this).addClass('active').siblings('li').removeClass('active');
+	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
+	   		var Type = $('.selectOrderType li.active').attr('data');
+	   		ajaxTransaction(orderDateRange,Type);
+	   })
+	});
+</script>
+{/block}
