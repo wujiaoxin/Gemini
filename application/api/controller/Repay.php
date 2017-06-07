@@ -16,12 +16,7 @@ class Repay extends Api {
 		
 		$uid = session('user_auth.uid');
 		
-		$repayList = db('order_repay')->field('product_name as name, repay_period as period, totalperiod as totalperiod, repay_money as monthpay, FROM_UNIXTIME(repay_time,\'%Y-%m-%d\') as time, has_repay as isrepaid,order_id as orderid')->where("uid",$uid)->order('repay_time')->fetchSQL(false)->select();
-		foreach ($repayList as $k => $v) {
-			if ($v['isrepaid'] == '-1') {
-				$repayList[$k]['isrepaid'] = 0;
-			}
-		}
+		$repayList = db('order_repay')->field('product_name as name, repay_period as period, totalperiod as totalperiod, repay_money as monthpay, FROM_UNIXTIME(repay_time,\'%Y-%m-%d\') as time, has_repay as isrepaid,order_id as orderid,has_repay')->where("uid",$uid)->order('repay_time')->fetchSQL(false)->select();
 		//不分页
 		$resp['code'] = 1;		
 		$resp['msg'] = "获取成功！";		
