@@ -62,7 +62,7 @@ var Login = function () {
 		                		if(resp.data == 1){
 		                			ui_alert("登录成功","success");
 		                			window.location.href = "/guarantee/index/index";
-		                		}else if(resp.data == 1){
+		                		}else if(resp.data == 2){
 		                			ui_alert("登录成功","success");
 		                			window.location.href = "/business/index/index";
 		                		}else{
