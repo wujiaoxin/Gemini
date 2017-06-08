@@ -51,8 +51,11 @@
 				<label class="control-label">职位*</label>
 				<div class="controls">
 					<select  id="job" class="m-wrap span12">
-						<option value="1">业务员</option>
-						<option value="8">财务</option>
+						<option value="13">总经理</option>
+						<option value="14">信审</option>
+						<option value="15">终审</option>
+						<option value="16">财务</option>
+						<option value="17">运营</option>
 					</select>
 				</div>
 			</div>
@@ -122,7 +125,7 @@
 		   		return;
 		   	}
 		   	ajax_jquery({
-	            url: apiUrl +'/business/user/addStaff',
+	            url: apiUrl +'/guarantee/user/addStaff',
 	            data:{
 	            	"name": name,
 	            	"mobile": mobile,
@@ -134,16 +137,16 @@
 	            success:function(resp){
 	                if (resp.code == "1" ) {
 	                		ui_alert("新增成功","success");
-	                        window.location.href = "/business/user/myStaff";
+	                        window.location.href = "/guarantee/user/myStaff";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 	                        ui_alert(resp.msg);
-	                    } 
-	                    return false;          
+	                    }
+	                    return false;
 	                }
 	            }
-	        }); 	
+	        });
 	   })
 	});
 </script>
-{/block}	
+{/block}
