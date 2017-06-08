@@ -300,3 +300,21 @@
     return $result;
 
   }
+
+  /*
+**查询车商名称
+*/
+function serch_realname($uid){
+  $result = db('member')->field('realname')->where('uid',$uid)->find();
+  // var_dump($result);die;
+  return $result['realname'];
+}
+/*
+**查询车商名称
+*/
+function serch_name($uid){
+
+  $result = db('dealer')->field('name as dealer_name')->where('id',$uid)->find();
+  return $result;
+
+}

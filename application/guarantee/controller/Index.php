@@ -11,7 +11,7 @@ namespace app\guarantee\controller;
 use app\guarantee\controller\Baseness;
 
 class Index extends Baseness {
-	public function _initialize(){
+	/*public function _initialize(){
 		$uid = session("user_auth.uid");
 		$mobile =session('business_mobile');
 		if($uid == null){
@@ -25,7 +25,7 @@ class Index extends Baseness {
 		if ($result['status'] != '1') {
 			return $this->redirect('/guarantee/login/waiting');
 		}
-	}
+	}*/
 	public function index() {
 		$mobile = session('business_mobile');
 		$uid = session('user_auth.uid');

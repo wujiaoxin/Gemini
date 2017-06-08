@@ -10,7 +10,7 @@
 namespace app\guarantee\controller;
 use app\guarantee\controller\Baseness;
 
-class User extends Baseness {
+class Examine extends Baseness {
 	public function index() {
 		$nickname      = input('nickname');
 		$map['status'] = array('egt', 0);
