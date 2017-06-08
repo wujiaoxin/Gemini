@@ -176,7 +176,7 @@ class Order extends Api {
 		$orderModel = model('Order');
 		
 		
-		$data['total'] = $orderModel->get_order_total($uid,$role,$type);
+		$data = $orderModel->get_order_total($uid,$role,$type);
 		
 		$resp['code'] = 1;
 		$resp['msg'] = '获取成功!';
