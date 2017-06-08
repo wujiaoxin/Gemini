@@ -33,19 +33,14 @@
 {/block}
 {block name="body"}
 <div class="main-box clearfix">
-	<header class="main-box-header clearfix">
-		<div class="pull-left">
-			<h2>{$meta_title}</h2>
-		</div>
-	</header>
 	<div class="main-box-body clearfix">
-		<div class="tabs-wrapper">
+		<div class="tabbable tabbable-custom">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#tab_1_1" data-toggle="tab">订单信息</a></li>
 				<li><a href="#tab_1_2" data-toggle="tab">渠道信息</a></li>
 				<li><a href="#tab_1_3" data-toggle="tab">客户信息</a></li>
-				<li><a href="#tab_1_4" data-toggle="tab">还款信息</a></li>
-				<li><a href="#tab_1_5" data-toggle="tab">逾期信息</a></li>
+<!-- 				<li><a href="#tab_1_4" data-toggle="tab">还款信息</a></li>
+				<li><a href="#tab_1_5" data-toggle="tab">逾期信息</a></li> -->
 				<li><a href="#tab_1_6" data-toggle="tab">附件资料</a></li>
 				<li><a href="#tab_1_7" data-toggle="tab">审批历史</a></li>
 			</ul>
@@ -210,54 +205,6 @@
 						    </div>
 						</div>
 					</div>
-				</div>
-				<div class="tab-pane" id="tab_1_4">
-				<!-- todo -->
-					<table class="table table-hover" id="repay-table">
-						<caption>还款计划</caption>
-						<thead>
-							<tr>
-								<th>还款期数</th>
-								<th>还款时间</th>
-								<th>还款金额</th>
-								<th>状态</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-				<div class="tab-pane" id="tab_1_5">
-				<!-- todo -->
-					<table class="table table-hover" id="overdue">
-						<caption>逾期记录</caption>
-						<thead>
-							<tr>
-								<th>逾期期数</th>
-								<th>逾期天数</th>
-								<th>逾期利率</th>
-								<th>应还日期</th>
-								<th>应还本金</th>
-								<th>应还利息</th>
-								<th>违约金</th>
-								<th>还款状态</th>
-								<th>备注</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
-						</tbody>
-					</table>
 				</div>
 				<div class="tab-pane" id="tab_1_6">
 					<ul class="pic-container" id="documentInfo">

@@ -14,7 +14,7 @@
 {block name="body"}
 <div class="portlet box grey">
 	<div class="portlet-title">
-		<div class="caption"><i class="icon-file"></i>所有订单</div>
+		<div class="caption"><i class="icon-file"></i>所有项目</div>
 	</div>
 	<div class="portlet-body">
 		<table class="table table-striped table-bordered table-hover" id="table-orderExamine">
@@ -71,7 +71,9 @@
 		  		 +'</tr>'
 			}
 		}
+		console.log(html);
 		return html;
+
 	};
 	$('#table-orderExamine tbody').html(tpl(info));
 

@@ -49,6 +49,10 @@
     outline: none;
 }
 
+.webuploader-pick-file-close .close{
+	background: inherit;
+}
+
 .picker_button {
     margin:8px 8px 0 0;
 }
@@ -163,15 +167,15 @@ try {
 									<td colspan="3">
 										<input type="checkbox" name="property" value="1"/>车商
 										<input type="checkbox" name="property" value="2"/>4S店
-										<input type="checkbox" name="property" value="3"/>担保公司
+										<!-- <input type="checkbox" name="property" value="3"/>担保公司 -->
 									</td>
 								</tr>
 								<tr>
 									<td>合作形式</td>
 									<td colspan="3">
-										<input type="checkbox" name="forms" value="1"/>二手车按揭贷款
+										<!-- <input type="checkbox" name="forms" value="1"/>二手车按揭贷款 -->
 										<input type="checkbox" name="forms" value="2"/>二手车按揭垫资
-										<input type="checkbox" name="forms" value="3"/>新车按揭贷款
+										<!-- <input type="checkbox" name="forms" value="3"/>新车按揭贷款 -->
 										<input type="checkbox" name="forms" value="4"/>新车按揭垫资
 									</td>
 								</tr>
@@ -301,7 +305,7 @@ try {
 {/block}
 {block name="script"}
 <script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
-<script type="text/javascript" src="/public/plugs/webuploader/webuploader.custom.js"></script>
+<script type="text/javascript" src="/public/business/js/webuploader.custom.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js" ></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/chosen.jquery.min.js"></script>
 <script type="text/javascript" src="/public/business/js/selectArea.js"></script>
