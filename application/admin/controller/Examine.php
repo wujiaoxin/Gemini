@@ -195,7 +195,7 @@ class examine extends Admin {
 							$fee = fee_money($info['endtime'],$info['examine_limit']);
 
 							$fee1['fee'] = $fee;
-							$fee1['finance'] = '1';
+							$fee1['finance'] = '2';
 							db('order')->where('id',$data['id'])->update($fee1);
 						}else{
 
