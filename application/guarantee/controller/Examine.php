@@ -7,15 +7,10 @@
 // | Author: molong <molong@tensent.cn> <http://www.tensent.cn>
 // +----------------------------------------------------------------------
 
-namespace app\admin\controller;
-use app\common\controller\Admin;
+namespace app\guarantee\controller;
+use app\guarantee\controller\Baseness;
 
-class examine extends Admin {
-
-	/**
-	 * 用户管理首页
-	 * @author 麦当苗儿 <zuojiazi@vip.qq.com>
-	 */
+class Examine extends Baseness {
 	public function index() {
 		$nickname      = input('nickname');
 		$map['status'] = array('egt', 0);
@@ -195,7 +190,7 @@ class examine extends Admin {
 							$fee = fee_money($info['endtime'],$info['examine_limit']);
 
 							$fee1['fee'] = $fee;
-							$fee1['finance'] = '2';
+							$fee1['finance'] = '1';
 							db('order')->where('id',$data['id'])->update($fee1);
 						}else{
 
@@ -278,6 +273,117 @@ class examine extends Admin {
 		$this->setMeta('借款额度审批');
 
 		return $this->fetch('loanLimit');
+	}
+
+	public function finance() {
+
+		if (IS_POST){
+
+			$data = input('post.');
+			if (isset($data['status'])) {
+
+				if ($data['status'] == '1') {
+
+					$infos = array(
+							'status' => '1',
+							'examine_limit' =>$data['examine_limit'],
+							'descr'=>$data['descr']
+						);
+
+					$result = db('order')->where('id',$data['id'])->update($infos);
+
+					if ($result) {
+
+						$info = db('order')->field('examine_limit,endtime,type')->where('id',$data['id'])->find();
+
+						if ($info['type'] == '2' || $info['type'] == '4') {
+
+							$fee = fee_money($info['endtime'],$info['examine_limit']);
+
+							$fee1['fee'] = $fee;
+							$fee1['finance'] = '1';
+							db('order')->where('id',$data['id'])->update($fee1);
+						}else{
+
+							db('order')->where('id',$data['id'])->setField('finance','2');
+						}
+						$resp['code'] = 1;
+
+						$resp['msg'] = '提交成功';
+
+					}else{
+
+						$resp['code'] = 0;
+
+						$resp['msg'] = '提交失败';
+
+						return json($resp);
+					}
+				}else{
+
+					$info_s = array(
+
+						'reject_reason' => $data['descr'],
+
+						'status' =>$data['status'],
+
+						'examine_limit' =>$data['examine_limit']
+
+						);
+					$result = db('order')->where('id',$data['id'])->update($info_s);
+					if ($result) {
+
+						$resp['code'] = 1;
+
+						$resp['msg'] = '提交成功';
+					}else{
+
+						$resp['code'] = 0;
+
+						$resp['msg'] = '提交失败';
+
+					}
+
+				}
+
+			}else{
+
+				$resp['code'] = 0;
+
+				$resp['msg'] = '提交异常';
+			}
+
+			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
+
+			return json($resp);
+
+		}else{
+			
+			$list = db('Order')->where('status','4')->order('create_time')->select();
+
+			foreach ($list as $k => $v) {
+
+				$list[$k]['salesman'] = serch_realname($v['uid']);
+
+				$name = serch_name($v['dealer_id']);
+
+				$list[$k]['dealername'] = $name['dealer_name'];
+			}
+
+			$data = array(
+
+				'infoStr' =>json_encode($list)
+			);
+			
+			$this->assign($data);
+
+			$this->setMeta('查看审核');
+
+		}
+
+		$this->setMeta('借款额度审批');
+
+		return $this->fetch('finance');
 	}
 
 

@@ -147,7 +147,7 @@ class Yinlian extends Base {
 	}
 
 	//银联对应关系调用接口
-	public function authvalid($idcard='',$name='',$mobile='',$idcid='',$type=''){
+	public function authvalid($idcard='',$realname='',$bankcard='',$mobile='',$type=''){
 		//测试
 		/*$idcard = '6222620110009991101';
 		$name = '王菲菲';
@@ -160,9 +160,9 @@ class Yinlian extends Base {
 		$info =array(
 			'account'=>$accout,
 			'card'=>$idcard,
-			'cid'=>$idcid,
+			'cid'=>$bankcard,
 			'mobile'=>$mobile,
-			'name'=>$name,
+			'name'=>$realname,
 			'type'=>$type
 			);
 		$sign = \com\Yinlian::buildSign($info);
@@ -170,9 +170,9 @@ class Yinlian extends Base {
 		$infores =array(
 			'account'=>$accout,
 			'card'=>$idcard,
-			'cid'=>$idcid,
+			'cid'=>$bankcard,
 			'mobile'=>$mobile,
-			'name'=>$name,
+			'name'=>$realname,
 			'type'=>$type,
 			'sign'=>$sign,
 			);

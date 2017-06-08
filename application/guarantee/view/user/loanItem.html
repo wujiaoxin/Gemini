@@ -1,0 +1,138 @@
+{extend name="base"/}
+{block name="style"}
+<link rel="stylesheet" href="/public/business/lib/metronic/css/select2_metro.css">
+<link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css">
+<link rel="stylesheet" href="/public/business/css/myItem.css">
+<script type="text/javascript">
+
+</script>
+{/block}
+
+{block name="body"}
+<div class="alert hide">
+	<a class="close"></a>
+	<span></span>
+</div>
+<div>
+	<div class="select-block">
+		<span class="selectParm-title">业务类型:</span>
+		<ul class="selectParm selectOrderType">
+			<li data='' class="active" >全部</li>
+			<li data='1'>二手车按揭贷款</li>
+			<li data='2'>二手车按揭垫资</li>
+			<li data='3'>新车按揭贷款</li>
+			<li data='4'>新车按揭垫资</li>
+		</ul>
+	</div>
+	<div class="select-block">
+		<span class="selectParm-title">日期范围:</span>
+		<ul class="selectParm selectOrderDate">
+			<li data='' class="active">全部</li>
+			<li data='1'>今天</li>
+			<li data='2'>最近7天</li>
+			<li data='3'>1个月</li>
+			<li data='4'>2个月</li>
+			<li data='5'>3个月</li>
+		</ul>
+	</div>
+	<div class="select-block">
+		<span class="selectParm-title">交易状态:</span>
+		<ul class="selectParm selectOrderStatus">
+			<li data='' class="active">全部</li>
+			<li data='0'>待提交</li>
+			<li data='3'>资料审核</li>
+			<li data='4'>额度审核</li>
+			<li data='2'>审核拒绝</li>
+			<li data='1'>审核通过</li>
+		</ul>
+	</div>
+</div>
+<div class="portlet box grey">
+	<div class="portlet-title">
+		<div class="caption">借款项目</div>
+	</div>
+	<div class="portlet-body">
+		<table class="table table-striped table-bordered table-hover" id="table-loanItem">
+			<thead>
+				<tr>
+					<th>订单编号</th>
+					<th>订单类型</th>
+					<th>借款时间</th>
+					<th>业务员</th>
+					<th>借款金额</th>
+					<th>审批额度</th>
+					<th>费用</th>
+					<th>借款期限/天</th>
+					<th>状态</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="/public/business/js/table-managed.js"></script>
+<script>
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + data[index].sn + '</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
+		  		+'<td>'+ data[index].realname +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].loan_limit) +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].examine_limit) +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].fee) +'</td>'
+		  		+'<td>'+ data[index].endtime +'</td>'
+		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
+		  		 +'</tr>'
+			}
+		}
+		return html;
+	};
+
+	function ajaxLoanItem(type,dateRange,status){
+		$('#table-loanItem').dataTable().fnClearTable();//清空原数据
+		ajax_jquery({
+	        url: apiUrl +'/business/user/loanItem',
+	        data:{
+	            'type': type,
+	            'dateRange': dateRange,
+	            'status': status
+	        },
+	        success:function(resp){
+	            if (resp.code == "1" ) {
+	            	$('#table-loanItem tbody').html(tpl(resp.data));
+	            	$('#table-loanItem').dataTable({"bDestroy":true});
+	            } else {
+	                if (typeof(resp.msg) == 'string') {
+	                    ui_alert(resp.msg);
+	                    return false;
+	                }
+	            }
+	        }
+		});
+	}
+
+	jQuery(document).ready(function() {
+	   // App.init();
+	   TableManaged.init();
+	   ajaxLoanItem('','','');
+
+	   $('.selectParm').on('click','li',function(){
+	   		$(this).addClass('active').siblings('li').removeClass('active');
+	   		var orderType = $('.selectOrderType li.active').attr('data');
+	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
+	   		var orderStatus = $('.selectOrderStatus li.active').attr('data');
+	   		ajaxLoanItem(orderType,orderDateRange,orderStatus);
+	   })
+	});
+</script>
+{/block}

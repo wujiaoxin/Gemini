@@ -166,6 +166,25 @@ class Order extends Api {
 		return json($resp);
 	}
 
+
+	//获取订单统计
+	public function get_total($type = null) {
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		$resp['code'] = 0;
+		$resp['msg'] = '未知错误';
+		$orderModel = model('Order');
+		
+		
+		$data['total'] = $orderModel->get_order_total($uid,$role,$type);
+		
+		$resp['code'] = 1;
+		$resp['msg'] = '获取成功!';
+		$resp['data'] = $data;
+ 
+		return json($resp);
+	}
+
 	//获取订单详情
 	public function detail($id){
 		$uid = session('user_auth.uid');
