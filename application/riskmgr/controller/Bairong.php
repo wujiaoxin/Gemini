@@ -82,4 +82,43 @@ class Bairong extends Base {
 		
 		return $this->fetch();
 	}
+
+	//百融四要素验证
+	/*public function verification_card($idcard = '', $name = '', $mobile = '', $bank = '' ,$password = ""){
+		
+		require_once("config.php");
+		require_once("com.bairong.api.class.php");
+		$headerTitle = array(
+			"haina" => array(
+				"BankFourPro"
+			),
+		);
+		
+		$targetList = array(
+			array(
+					"meal" => "BankFourPro",
+					"name" => '王闫飞',
+					"id" => '411527199101133522',
+					"cell" => '18603821907',
+					'bank_id'=>'6222620110009991101',
+					
+			)
+		);
+		CONFIG::init();
+
+		$core = Core::getInstance(CONFIG::$account,CONFIG::$password,CONFIG::$apicode,CONFIG::$querys);
+
+		$core -> pushTargetList($targetList);
+		$core -> mapping($headerTitle);
+		
+		$results = $core -> query_result;
+		$res = json_decode($results,true);
+		if ($res['code'] == '600000') {
+			$result = $res['product']['msg'];
+		}else{
+			$result = $res['code'];
+		}
+		
+		return $result;
+	}*/
 }
