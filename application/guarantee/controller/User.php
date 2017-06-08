@@ -10,41 +10,16 @@
 namespace app\guarantee\controller;
 use app\guarantee\controller\Baseness;
  class User extends Baseness {
-	public function guide() {
-		$mobile = session("business_mobile");
-		$modelDealer = model('Dealer');
-		// 检测商户是否已经录入信息
-		if (IS_POST) {
-			$data = input('post.');
-			if ($data) {
-				unset($data['id']);
-				unset($data['status']);
-				unset($data['mobile']);
-				$result = $modelDealer->save($data, array('mobile' => $mobile));
-				if ($result) {
-					return $this->success("修改成功！", url(''));
-				} else {
-					return $this->error("修改失败！");
-				}
-			} else {
-				return $this->error($modelDealer->getError());
-			}
-		} else {
-			$info = db('Dealer')->where(array('mobile' => $mobile))->find();
-			if(!$info){
-				$data['mobile'] = $mobile;
-				$data['invite_code'] = $modelDealer->buildInviteCode();
-				$result = $modelDealer->save($data);
-				$info = db('Dealer')->where(array('mobile' => $mobile))->find();
-			}
-			$data = array(
-				'info'    => $info,
-				'infoStr' => json_encode($info),
-			);
-			$this->assign($data);
-			return $this->fetch();
-		}
-	}
+ 	
+ 	public function _initialize(){
+ 		parent::_initialize();
+ 		$role = session('user_auth.role');
+ 		$mobile = session('business_mobile');
+ 		if ($role == '17') {
+ 			$ids = db('member')->field('dealer_id')->where('mobile',$mobile)->find();
+ 			session('guarantee_id',$dis['dealer_id']);
+ 		}
+ 	}
 
 	public function myStaff() {
 		//商家员工
@@ -544,8 +519,7 @@ use app\guarantee\controller\Baseness;
 	public function myChannel() {
 		//商家员工
 		$uid = session('user_auth.uid');
-		$result = db('member')->alias('m')->join('__DEALER__ d','m.mobile = d.mobile')->field('d.id')->where('m.uid',$uid)->order('id DESC')->find();
-		$members = db('member')->where('dealer_id',$result['id'])->select();
+		$members = db('dealer')->where('guarantee_id',$uid)->select();
 		$data = array(
 				'info'    => $members,
 				'infoStr' => json_encode($members),
@@ -567,6 +541,7 @@ use app\guarantee\controller\Baseness;
 				$data['money_level'] = '1000000';
 				$data['lines_ky'] = '1000000';
 			}
+			$data['guarantee_id'] = $uid;//担保公司id  TODO
 			if ($data) {
 				unset($data['id']);
 				$data['invite_code'] = $link->buildInviteCode();
@@ -574,7 +549,7 @@ use app\guarantee\controller\Baseness;
 				model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
 				$result = $link->save($data);
 				if ($result) {
-					return $this->success("新建成功！", url('assetchannel/index'));
+					return $this->success("新建成功！", url('guarantee/index'));
 				} else {
 					return $this->error($link->getError());
 				}

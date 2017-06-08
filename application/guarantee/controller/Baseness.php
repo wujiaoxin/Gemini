@@ -14,6 +14,7 @@ class Baseness extends base{
 		parent::_initialize();
 		$mobile = session("business_mobile");
 		$uid = session("user_auth.uid");
+		$role = session("user_auth.role");
 		if($mobile == null || $uid == null){
 			return $this->redirect("/business/login/login");
 		}
@@ -22,5 +23,39 @@ class Baseness extends base{
 		if ($result['status'] == '3') {
 			return $this->redirect('/guarantee/login/waiting');
 		}
+		switch ($role) {
+			case '14':
+				$action   = CONTROLLER_NAME;
+				if ($action != 'dataReview') {
+					return $this->error('没有访问权限');
+				}
+				break;
+			case '15':
+				$action   = CONTROLLER_NAME;
+				if ($action != 'Index') {
+					return $this->error('没有访问权限');
+				}
+				break;
+			case '16':
+				$action   = ACTION_NAME;
+				if ($action == 'finance' || $action == 'repayItem'|| $action == 'payItem') {
+					return view();
+				}else{
+					return $this->error('没有访问权限');
+				}
+				break;
+			case '17':
+				$action   = CONTROLLER_NAME;
+				if ($action != 'Index') {
+					return $this->error('没有访问权限');
+				}
+				break;
+			default:
+				# code...
+				break;
+		}
+	}
+	protected function setMeta($title = '') {
+		$this->assign('meta_title', $title);
 	}
 }
