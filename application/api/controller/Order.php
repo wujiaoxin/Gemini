@@ -172,7 +172,7 @@ class Order extends Api {
 
 
 	//获取订单统计
-	public function get_total($type = null) {
+	public function getTotal($type = null) {
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
 		$resp['code'] = 0;
@@ -185,7 +185,6 @@ class Order extends Api {
 			$resp['code'] = 1;
 			$resp['msg'] = '获取成功!';
 			$resp['data'] = $data;
-
 		}else{
 			$resp['code'] = 0;
 			$resp['msg'] = '请重新登录!';
