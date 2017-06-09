@@ -178,14 +178,19 @@ class Order extends Api {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 		$orderModel = model('Order');
+		if ($uid>0) {
+			
+			$data = $orderModel->get_order_total($uid,$role,$type);
+			
+			$resp['code'] = 1;
+			$resp['msg'] = '获取成功!';
+			$resp['data'] = $data;
+
+		}else{
+			$resp['code'] = 0;
+			$resp['msg'] = '请重新登录!';
+		}
 		
-		
-		$data = $orderModel->get_order_total($uid,$role,$type);
-		
-		$resp['code'] = 1;
-		$resp['msg'] = '获取成功!';
-		$resp['data'] = $data;
- 
 		return json($resp);
 	}
 
