@@ -366,7 +366,7 @@ class User extends Api {
 			}
 			//银联三要素验证
 			$event = new \app\riskmgr\controller\Yinlian();
-			$res = $event->authvalid($idcard,$realname,$bankcard,'',3);
+			$res = $event->authvalid($idcard,$realname,$bankcard,'',4);
 			if (!empty($res)) {
 				if ($res['resCode'] == '0000' && $res['stat'] == '1') {
 					$resp["code"] = 1;
