@@ -101,7 +101,7 @@
 	function ajaxLoanItem(type,dateRange,status){
 		$('#table-loanItem').dataTable().fnClearTable();//清空原数据
 		ajax_jquery({
-	        url: apiUrl +'/business/user/loanItem',
+	        url: apiUrl +'/guarantee/user/loanItem',
 	        data:{
 	            'type': type,
 	            'dateRange': dateRange,
