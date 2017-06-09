@@ -365,24 +365,40 @@ class User extends Api {
 				$saveData["bankcard"] = $bankcard;
 			}
 			//银联三要素验证
-			$event = new \app\riskmgr\controller\Yinlian();
-			$res = $event->authvalid($idcard,$realname,$bankcard,'',4);
-			if (!empty($res)) {
-				if ($res['resCode'] == '0000' && $res['stat'] == '1') {
-					$resp["code"] = 1;
-					$resp["msg"] = '更新成功';	
-					$resp["data"] = $saveData;
-				}else{
-					$resp["code"] = 2;
-					$resp["msg"] = $res['resMsg'];	
-					$resp["data"] = $saveData;
-					return json($resp);
+			$authvalidTime = session('authvalidTime');
+			if($authvalidTime != null){
+				if($authvalidTime == 1){
+					session('authvalidTime', 2);
+					$resp["code"] = -3;
+					$resp["msg"] = "已验证成功";
 				}
 			}else{
-				$resp["code"] = 3;
-				$resp["msg"] = "信息录入异常,请联系客服";
-				return json($resp);
+				$event = new \app\riskmgr\controller\Yinlian();
+				$res = $event->authvalid($idcard,$realname,$bankcard,'',4);
+				if (!empty($res)) {
+					if ($res['resCode'] == '0000' && $res['stat'] == '1') {
+						$resp["code"] = 1;
+						$resp["msg"] = '更新成功';	
+						$resp["data"] = $saveData;
+						session('authvalidTime',1);
+					}elseif ($res['resCode'] == '0000' && $res['stat'] == '2') {
+						$resp["code"] = 4;
+						$resp["msg"] = '实名信息不匹配';	
+						// $resp["data"] = $saveData;
+						return json($resp);
+					}else{
+						$resp["code"] = 5;
+						$resp["msg"] = empty($res['resMsg']) ? '数据异常': $res['resMsg'];;	
+						// $resp["data"] = $saveData;
+						return json($resp);
+					}
+				}else{
+					$resp["code"] = 3;
+					$resp["msg"] = "信息录入异常,请联系客服";
+					return json($resp);
+				}
 			}
+			
 			db('member')->where('uid',$uid)->update($saveData);			
 			
 			//加入绑卡记录

@@ -31,24 +31,27 @@ class Examine extends Baseness {
 		$this->setMeta('用户信息');
 		return $this->fetch();
 	}
-
+	//TODO
 	public function application() {
 
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
 		if($uid > 0){
-			if ($role == 10) {
-
-				$list = db('Order')->where('uid',$uid)->order('create_time DESC')->select();
-
-			}elseif($role == 11){
-
-				$result = db('member')->field('dealer_id')->where('uid',$uid)->find();
-
-				$list = db('Order')->where('dealer_id',$result['dealer_id'])->select();
-
-			}else{
-				$list = db('Order')->order('create_time DESC')->select();
+			if ($role == 18) {
+				$resl = db('dealer')->field('id')->where('guarantee_id',$uid)->select();
+				$arr = array();
+				foreach ($resl as $k => $v) {
+					$ids = db('member')->field('uid')->where('dealer_id',$v['id'])->find();
+					$arr[] = $ids['uid'];
+				}
+				$list = array();
+				if (!empty($arr)) {
+					foreach ($arr as $vl) {
+						$list = db('Order')->where('uid',$vl)->order('create_time DESC')->select();
+					}
+				}
+			}elseif ($role) {
+				# code...
 			}
 
 		}else{
@@ -190,7 +193,7 @@ class Examine extends Baseness {
 							$fee = fee_money($info['endtime'],$info['examine_limit']);
 
 							$fee1['fee'] = $fee;
-							$fee1['finance'] = '1';
+							$fee1['finance'] = '2';
 							db('order')->where('id',$data['id'])->update($fee1);
 						}else{
 
