@@ -87,6 +87,10 @@ class User extends Api {
 			if ($smsverify != $storeSmsCode) {
 				return ['code'=>1005,'msg'=>'短信验证码错误'];
 			}
+			$role = session('user_auth.role');
+			if ($role != '1') {
+				return ['code'=>1010,'msg'=>'没有权限登录'];
+			}
 		}else{
 			if (!$mobile || !$password) {
 				$resp["code"] = 0;
@@ -112,7 +116,8 @@ class User extends Api {
 				$userInfo['headerimgurl'] = "https://www.vpdai.com/public/images/default_avatar.jpg";
 			}
 			$userInfo['token'] = generateToken($uid, $sid);
-			
+			 
+
 			$resp["code"] = 1;
 			$resp["msg"] = '登录成功';	
 			$resp["data"] = $userInfo;

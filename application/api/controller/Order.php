@@ -38,18 +38,17 @@ class Order extends Api {
 		// echo $role;die;
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-		if ($_POST) {
-			$data = input('post.');
-			if ($data['mobile'] == '' || $data['price'] == '' ) {
-				$resp['code'] = 0;
-				$resp['msg'] = '无法创建订单';
-			}
-			$orderModel = model('Order');
-			$list = $orderModel->add_order($uid,$role,$data);
-			if (!$list) {
-				$resp['code'] = 0;
-				$resp['msg'] = '提交失败！';
-			}
+		$data = input('post.');
+		if ($data['mobile'] == '' || $data['price'] == '' ) {
+			$resp['code'] = 0;
+			$resp['msg'] = '无法创建订单';
+		}
+		$orderModel = model('Order');
+		$list = $orderModel->add_order($uid,$role,$data);
+		if (!$list) {
+			$resp['code'] = 0;
+			$resp['msg'] = '提交失败！';
+		}else{
 			$data['id'] = $list;
 			$resp['code'] = 1;
 			$resp['msg'] = '提交成功';
