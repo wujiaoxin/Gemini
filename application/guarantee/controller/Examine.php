@@ -77,7 +77,8 @@ class Examine extends Baseness {
 	}
 
 	public function dataReview() {
-
+		$role =session('user_auth.role');
+		$uid =session('user_auth.uid');
 		if (IS_POST) {
 
 			$data = input('post.');
@@ -145,16 +146,32 @@ class Examine extends Baseness {
 			
 		}else{
 
-			$list = db('Order')->where('status','3')->order('create_time DESC')->select();
-		
-			foreach ($list as $k => $v) {
-
-				$list[$k]['salesman'] = serch_realname($v['uid']);
-
-				$name = serch_name($v['dealer_id']);
-
-				$list[$k]['dealername'] = $name['dealer_name'];
+			if ($role != '18') {
+				$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+				$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
+				$uid = $res['uid'];
 			}
+			$resl = db('Dealer')->field('id')->where('guarantee_id',$uid)->select();
+
+			if (!empty($resl)) {
+				foreach ($resl as $vl) {
+					$map['dealer_id'] =$vl['id'];
+					$map['status'] = '3';
+					$list = db('Order')->where($map)->order('create_time DESC')->select();
+				}
+			}
+
+			if (!empty($list)) {
+				foreach ($list as $k => $v) {
+					$list[$k]['salesman'] = serch_realname($v['uid']);
+
+					$name = serch_name($v['dealer_id']);
+
+					$list[$k]['dealername'] = $name['dealer_name'];
+				}
+			}
+		
+			
 			$data = array(
 
 				'infoStr' =>json_encode($list)
@@ -163,13 +180,14 @@ class Examine extends Baseness {
 			$this->assign($data);
 		}
 
-		$this->setMeta('资料复核');
+		$this->setMeta('信用审核');
 
 		return $this->fetch('dataReview');
 	}
 
 	public function loanLimit() {
-
+		$role =session('user_auth.role');
+		$uid =session('user_auth.uid');
 		if (IS_POST){
 
 			$data = input('post.');
@@ -252,15 +270,28 @@ class Examine extends Baseness {
 
 		}else{
 			
-			$list = db('Order')->where('status','4')->order('create_time')->select();
+			if ($role != '18') {
+				$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+				$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
+				$uid = $res['uid'];
+			}
+			$resl = db('Dealer')->field('id')->where('guarantee_id',$uid)->select();
+			if (!empty($resl)) {
+				foreach ($resl as $vl) {
+					$map['dealer_id'] =$vl['id'];
+					$map['status'] = '4';
+					$list = db('Order')->where($map)->order('create_time DESC')->select();
+				}
+			}
 
-			foreach ($list as $k => $v) {
+			if (!empty($list)) {
+				foreach ($list as $k => $v) {
+					$list[$k]['salesman'] = serch_realname($v['uid']);
 
-				$list[$k]['salesman'] = serch_realname($v['uid']);
+					$name = serch_name($v['dealer_id']);
 
-				$name = serch_name($v['dealer_id']);
-
-				$list[$k]['dealername'] = $name['dealer_name'];
+					$list[$k]['dealername'] = $name['dealer_name'];
+				}
 			}
 
 			$data = array(
@@ -274,13 +305,14 @@ class Examine extends Baseness {
 
 		}
 
-		$this->setMeta('借款额度审批');
+		$this->setMeta('额度审核');
 
 		return $this->fetch('loanLimit');
 	}
 
 	public function finance() {
-
+		$role =session('user_auth.role');
+		$uid =session('user_auth.uid');
 		if (IS_POST){
 
 			$data = input('post.');
@@ -363,16 +395,31 @@ class Examine extends Baseness {
 
 		}else{
 			
-			$list = db('Order')->where('status','4')->order('create_time')->select();
-
-			foreach ($list as $k => $v) {
-
-				$list[$k]['salesman'] = serch_realname($v['uid']);
-
-				$name = serch_name($v['dealer_id']);
-
-				$list[$k]['dealername'] = $name['dealer_name'];
+			if ($role != '18') {
+				$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+				$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
+				$uid = $res['uid'];
 			}
+			$resl = db('Dealer')->field('id')->where('guarantee_id',$uid)->select();
+			if (!empty($resl)) {
+				foreach ($resl as $vl) {
+					$map['dealer_id'] =$vl['id'];
+					$map['finance'] = '3';
+					$map['status'] = '1';
+					$list = db('Order')->where($map)->order('create_time DESC')->select();
+				}
+			}
+
+			if (!empty($list)) {
+				foreach ($list as $k => $v) {
+					$list[$k]['salesman'] = serch_realname($v['uid']);
+
+					$name = serch_name($v['dealer_id']);
+
+					$list[$k]['dealername'] = $name['dealer_name'];
+				}
+			}
+
 
 			$data = array(
 
@@ -385,7 +432,7 @@ class Examine extends Baseness {
 
 		}
 
-		$this->setMeta('借款额度审批');
+		$this->setMeta('财务审核');
 
 		return $this->fetch('finance');
 	}
