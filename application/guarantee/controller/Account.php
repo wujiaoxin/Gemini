@@ -79,7 +79,7 @@ class Account extends Baseness {
 			}
       		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code,d.priv_bank_account_id')->where('m.uid',$uid)->find();
 	      	if ($account){
-	            $data['infoStr'] = json_encode($account);
+	            
 	            $data = array(
 	          		'info'=>$account,
 	          		'infoStr'=>json_encode($account)
@@ -88,7 +88,8 @@ class Account extends Baseness {
 	      	} else{
 		        $data['code'] = '1';
 		        $data['msg'] = '信息出错';
-		        $this->assign(json_encode($data));
+		        $data['infoStr'] = json_encode($data);
+		        $this->assign($data);
 	        }
 			return $this->fetch();
 		}
