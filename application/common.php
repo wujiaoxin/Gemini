@@ -1462,3 +1462,31 @@ function get_vpmonth($data){
 	$res = ceil($data['car_price']*(100-$data['bank_pay'])*(1+$data['bank_rate']*$data['bank_term']/100)/100/$data['bank_term']);
 	return $res;
 }
+
+/**
+ * 记录行为日志，并执行该行为的规则
+ * @param string $action 行为标识
+ * @param string $model 触发行为的模型名
+ * @param int $param 参数
+ * @param int $record_id 触发行为的记录id
+ * @param int $user_id 执行行为的用户id
+ */
+function examine_log($action = null,$controller = null,$param = null , $record_id = null,$status = null , $type, $descr =null) {
+
+	if (empty($user_id)) {
+		$user_id = is_login();
+	}
+	//插入行为日志
+	$data['uid']     = $user_id;
+	$data['ip']   = ip2long(get_client_ip());
+	$data['controller'] = $controller;
+	$data['action'] = $action;
+	$data['param'] = $param;
+	$data['record_id'] = $record_id;
+	$data['status'] = $status;
+	$data['type'] = $type;
+	$data['create_time'] = time();
+	$data['descr'] = $descr;
+	
+	db('examine_log')->insert($data);
+}
