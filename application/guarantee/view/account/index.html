@@ -358,9 +358,9 @@
 			var Mobile = $('#bankcard-mobile').val();
 			var IdentificationNo = $('#bankcard-idcard').val();
 			var CardNumber = $('#bankcard-account').val();
-			var Province = $('.select2_province').val();
-			var City = $('.select2_city').val();
-			var BankCode = $('.select2_bank').val();
+			var Province = $('.select2_province').select2("val");
+			var City = $('.select2_city').select2("val");
+			var BankCode = $('.select2_bank').select2("val");
 			if(CardNumber == ""){
         		ui_alert("请输入银行卡账号");
         		return false;
