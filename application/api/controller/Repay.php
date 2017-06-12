@@ -99,13 +99,27 @@ class Repay extends Api {
 		$map['repay_period'] = $period;
 
 		$res = db('order_repay')->field('repay_money,repay_time,id,status,has_repay')->where($map)->find();
-		/*$datatime = date('Y-m',$res['repay_time']);
+		/*
+		//判断是否绑卡
+		$map = array('uid'=>$uid,'order_id'=>$orderid);
+		$withhold = db('member_withhold')->field('signstatus')->where($map)->find();
+		if(!empty($withhold)){
+			if($withhold['signstatus'] != 1){
+				$resp['code'] = 5;
+				$resp['msg'] = '没有绑卡,请联系客服';
+				return json($resp);
+			}
+		}
+		//到期执行代扣还款 TODO
+		$datatime = date('Y-m',$res['repay_time']);
 		$endtime = date('Y-m',time());
 		if ($datatime > $endtime) {
 			$resp['code'] = 2;
 			$resp['msg'] = '未到还款时间,请联系客服';
 			return json($resp);
-		}*/
+		}
+		
+		*/
 		switch ($res['status']) {
 			case '-2':
 				$resp['code'] = -2;
@@ -122,8 +136,8 @@ class Repay extends Api {
     	$data = array(
     		'service' => $service,
     		'signType' =>'MD5',
-			// 'notifyUrl' => url('pay/yixingtong/notifyurl'),
-			'notifyUrl' => 'https://t.vpdai.com/pay/yixingtong/notifyurl',
+			'notifyUrl' => url('pay/yixingtong/notifyurl'),
+			// 'notifyUrl' => 'https://t.vpdai.com/pay/yixingtong/notifyurl',
 			'orderNo' => $orderon,
     		'contractNo'=>$contractNo['contractno'],
     		'externalOrderNo'=>'20070505123456789' . rand(100000,999999),

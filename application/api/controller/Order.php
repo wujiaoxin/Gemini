@@ -38,14 +38,17 @@ class Order extends Api {
 		// echo $role;die;
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-		if ($_POST) {
-			$data = input('post.');
-			$orderModel = model('Order');
-			$list = $orderModel->add_order($uid,$role,$data);
-			if (!$list) {
-				$resp['code'] = 0;
-				$resp['msg'] = '提交失败！';
-			}
+		$data = input('post.');
+		if ($data['mobile'] == '' || $data['price'] == '' ) {
+			$resp['code'] = 0;
+			$resp['msg'] = '无法创建订单';
+		}
+		$orderModel = model('Order');
+		$list = $orderModel->add_order($uid,$role,$data);
+		if (!$list) {
+			$resp['code'] = 0;
+			$resp['msg'] = '提交失败！';
+		}else{
 			$data['id'] = $list;
 			$resp['code'] = 1;
 			$resp['msg'] = '提交成功';
@@ -163,6 +166,29 @@ class Order extends Api {
 		$resp['msg'] = '获取成功!';
 		$resp['data'] = $data;
  
+		return json($resp);
+	}
+
+
+	//获取订单统计
+	public function getTotal($type = null) {
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		$resp['code'] = 0;
+		$resp['msg'] = '未知错误';
+		$orderModel = model('Order');
+		if ($uid>0) {
+			
+			$data = $orderModel->get_order_total($uid,$role,$type);
+			
+			$resp['code'] = 1;
+			$resp['msg'] = '获取成功!';
+			$resp['data'] = $data;
+		}else{
+			$resp['code'] = 0;
+			$resp['msg'] = '请重新登录!';
+		}
+		
 		return json($resp);
 	}
 

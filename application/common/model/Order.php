@@ -297,4 +297,47 @@ class Order extends \app\common\model\Base {
 
 	}
 
+	//获取订单统计
+	public function get_order_total($uid,$role,$type){
+		$res = array();
+		$res['pending'] = $this->get_all_order_total($uid,$role,'','0');//待提交
+		$res['examine'] = $this->get_all_order_total($uid,$role,'','3');//审核中
+		$res['supplement'] = $this->get_all_order_total($uid,$role,'','5');//补充资料
+		$res['loan'] = $this->get_all_order_total($uid,$role,'','1');//已放款
+		$res['refuse'] = $this->get_all_order_total($uid,$role,'','2');//已拒绝
+		$res['total'] = $this->get_all_order_total($uid,$role,'','');//全部订单
+		$res['every'] = $this->get_orders($uid,$role);
+		return $res;
+	}
+
+	private function get_orders($uid,$role){
+		if ($role == '1') {
+
+			$filter['uid'] = $uid;
+
+		}elseif($role == '7'){
+
+			$filter['mid'] = $uid;
+
+			$filter['uid'] = $uid;
+
+		}else{
+
+			$filter['uid'] = $uid;
+		}
+		$total = '';
+		$filter['credit_status'] = '3';
+		$begin_time = date("Y-m-d H:i:s",mktime(0, 0 , 0,date("m"),date("d")-date("w")+1,date("Y")));
+		$end_time = date("Y-m-d H:i:s",mktime(23,59,59,date("m"),date("d")-date("w")+7,date("Y")));
+		$begin =strtotime($begin_time);
+        $end =strtotime($end_time);
+        $filter['create_time'] = array(array('gt',$begin),array('lt',$end));
+        $res = array();
+		$res['loan_num']= $this->where($filter)->where('finance','4')->count();
+		$results= $this->field('sum(examine_limit) as loan_limit')->where($filter)->where('finance','4')->find();
+		$res['loan_money'] = $results['loan_limit'];
+		$res['nums'] = $this->where($filter)->count();
+		return $res;
+	}
+
 }

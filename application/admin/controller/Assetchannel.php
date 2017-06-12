@@ -70,7 +70,7 @@ class assetchannel extends Admin {
 				$passwords = 'vpdai'.substr($data['idno'],12,6);
 				//加入担保公司
 				if ($data['property'] =='3') {
-					model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'13');
+					model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'18');
 				}else{
 					model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
 				}

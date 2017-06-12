@@ -87,6 +87,10 @@ class User extends Api {
 			if ($smsverify != $storeSmsCode) {
 				return ['code'=>1005,'msg'=>'短信验证码错误'];
 			}
+			$role = session('user_auth.role');
+			if ($role != '1') {
+				return ['code'=>1010,'msg'=>'没有权限登录'];
+			}
 		}else{
 			if (!$mobile || !$password) {
 				$resp["code"] = 0;
@@ -112,7 +116,8 @@ class User extends Api {
 				$userInfo['headerimgurl'] = "https://www.vpdai.com/public/images/default_avatar.jpg";
 			}
 			$userInfo['token'] = generateToken($uid, $sid);
-			
+			 
+
 			$resp["code"] = 1;
 			$resp["msg"] = '登录成功';	
 			$resp["data"] = $userInfo;
@@ -364,9 +369,51 @@ class User extends Api {
 			if($idcard!=null){
 				$saveData["bankcard"] = $bankcard;
 			}
+			//银联三要素验证
+			$authvalidTime = session('authvalidTime');
+			if($authvalidTime != null){
+				if($authvalidTime == 1){
+					session('authvalidTime', 2);
+					$resp["code"] = -3;
+					$resp["msg"] = "已验证成功";
+				}
+			}else{
+				$event = new \app\riskmgr\controller\Yinlian();
+				$res = $event->authvalid($idcard,$realname,$bankcard,'',4);
+				if (!empty($res)) {
+					if ($res['resCode'] == '0000' && $res['stat'] == '1') {
+						$resp["code"] = 1;
+						$resp["msg"] = '更新成功';	
+						$resp["data"] = $saveData;
+						session('authvalidTime',1);
+					}elseif ($res['resCode'] == '0000' && $res['stat'] == '2') {
+						$resp["code"] = 4;
+						$resp["msg"] = '实名信息不匹配';	
+						// $resp["data"] = $saveData;
+						return json($resp);
+					}else{
+						$resp["code"] = 5;
+						$resp["msg"] = empty($res['resMsg']) ? '数据异常': $res['resMsg'];;	
+						// $resp["data"] = $saveData;
+						return json($resp);
+					}
+				}else{
+					$resp["code"] = 3;
+					$resp["msg"] = "信息录入异常,请联系客服";
+					return json($resp);
+				}
+			}
 			
 			db('member')->where('uid',$uid)->update($saveData);			
 			
+			//加入绑卡记录
+			$results = array(
+				'uid'=>$uid,
+				'type'=>1,
+				'bank_account_id'=>$bankcard,
+				'create_time'=>time()
+				);
+			db('bankcard')->insert($results);
 			$userInfo = db('member')->field('mobile')->where("uid",$uid)->find();
 			
 			if($userInfo != null ){
@@ -377,11 +424,6 @@ class User extends Api {
 					db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);//更新order表					
 				}
 			}
-			
-			$resp["code"] = 1;
-			$resp["msg"] = '更新成功';	
-			$resp["data"] = $saveData;
-
 			return json($resp);
 		}else{
 			$resp["code"] = 0;

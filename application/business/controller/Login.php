@@ -21,15 +21,14 @@ class Login extends Base {
 				return json($resp);
 			}
 			$success = db('member')->field('access_group_id')->where('mobile',$mobile)->find();
-			
-			if ($success['access_group_id'] == '7' || $success['access_group_id'] == '13' || $success['access_group_id'] == '14' ||$success['access_group_id'] == '15' || $success['access_group_id'] == '16' || $success['access_group_id'] == '17') {
+			if ($success['access_group_id'] == '7' || $success['access_group_id'] == '13' || $success['access_group_id'] == '14' ||$success['access_group_id'] == '15' || $success['access_group_id'] == '16' || $success['access_group_id'] == '17' || $success['access_group_id'] == '18') {
 				$user = model('User');
 				$uid  = $user->login($mobile, $password);
 				if ($uid > 0) {
 					$resp["code"] = 1;
 					$resp["msg"] = '登录成功！';
 					session("business_mobile", $mobile);
-					if ($success['access_group_id'] == '13' || $success['access_group_id'] == '14' ||$success['access_group_id'] == '15' || $success['access_group_id'] == '16' || $success['access_group_id'] == '17') {
+					if ($success['access_group_id'] == '13' || $success['access_group_id'] == '14' ||$success['access_group_id'] == '15' || $success['access_group_id'] == '16' || $success['access_group_id'] == '17' || $success['access_group_id'] == '18') {
 						$resp['data'] ='1';
 					}else{
 						$resp['data'] = '2';

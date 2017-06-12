@@ -147,34 +147,34 @@ class Yinlian extends Base {
 	}
 
 	//银联对应关系调用接口
-	public function authvalid($idcard='',$name='',$mobile='',$idcid='',$type=''){
+	public function authvalid($idcard='',$realname='',$bankcard='',$mobile='',$type=''){
 		//测试
-		/*$idcard = '6222620110009991101';
-		$name = '王菲菲';
+		/*$bankcard = '6222620110009991101';
+		$realname = '王菲菲';
 		$mobile = '18888888888';
-		$idcid = '411527199101133522';
-		$type = '4';*/
+		$idcard = '411527199101133522';
+		$type = 4;*/
 		$accout = \com\Yinlian::$accout;
 		$server = \com\Yinlian::$service.'auth/valid';
 
 		$info =array(
 			'account'=>$accout,
-			'card'=>$idcard,
-			'cid'=>$idcid,
+			'card'=>$bankcard,
+			'cid'=>$idcard,
 			'mobile'=>$mobile,
-			'name'=>$name,
+			'name'=>$realname,
 			'type'=>$type
 			);
 		$sign = \com\Yinlian::buildSign($info);
 
 		$infores =array(
 			'account'=>$accout,
-			'card'=>$idcard,
-			'cid'=>$idcid,
+			'card'=>$bankcard,
+			'cid'=>$idcard,
 			'mobile'=>$mobile,
-			'name'=>$name,
+			'name'=>$realname,
 			'type'=>$type,
-			'sign'=>$sign,
+			'sign'=>$sign
 			);
 		$url = $server.'?'.http_build_query($infores);
 		$resp =  \com\Yinlian::sendHttpRequest($url);
