@@ -509,11 +509,8 @@ $(function(){
 				optionStr += '<option value="' + i + '">' + n[1] + '</option>';
 			}
 		})
-		$('.select2_city').html(optionStr);
-		$('.select2_city').select2({
-	        placeholder: "请选择城市",
-	        allowClear: false
-	    });
+		$('.select2_city.select2-offscreen').html(optionStr);
+		$('.select2_city').val('').trigger('change');
 	}
 
 
@@ -529,13 +526,12 @@ $(function(){
         allowClear: false
     });
     $('.select2_city').select2({
-	        placeholder: "请选择城市",
-	        allowClear: false
-	    });
+        placeholder: "请选择城市",
+        allowClear: false
+    });
 
     $('.select2_province').change(function() {
     	var provId = $(this).val();
-    	$('.select2_city').empty();
     	tplCity(provId);
 	})
 })
