@@ -169,6 +169,8 @@ class Examine extends Baseness {
 
 					$list[$k]['dealername'] = $name['dealer_name'];
 				}
+			}else{
+				$list = '';
 			}
 		
 			
@@ -292,6 +294,8 @@ class Examine extends Baseness {
 
 					$list[$k]['dealername'] = $name['dealer_name'];
 				}
+			}else{
+				$list = '';
 			}
 
 			$data = array(
@@ -418,6 +422,8 @@ class Examine extends Baseness {
 
 					$list[$k]['dealername'] = $name['dealer_name'];
 				}
+			}else{
+				$list = '';
 			}
 
 

@@ -190,7 +190,7 @@ class Account extends Baseness {
 		if ($role != '18') {
 			$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile,d.id')->where('uid',$uid)->find();
 			$mobile = $uids['mobile'];
-			$dealerid = $uids['id'];
+			$uid = $uids['id'];
 		}
 		if(IS_POST){
 			$data = input('post.');
@@ -221,7 +221,7 @@ class Account extends Baseness {
 			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 			$types = '2,4';
 			$map = array(
-			    'dealer_id'=>$dealerid,
+			    'dealer_id'=>$uid,
 			    'finance'=>'3',
 			    'type'=> array('IN',$types)
 			  );

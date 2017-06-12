@@ -66,8 +66,12 @@ class Login extends Base {
 	}
 	public function waiting(){
 		$mobile = session('business_mobile');
-		$status = db('dealer')->field('status')->where('mobile',$mobile)->find();
-		if ($status['status'] == '1') {
+		$res = db('dealer')->field('status,property')->where('mobile',$mobile)->find();
+		if ($res['status'] == '1' && $res['property'] == '3') {
+			$this->redirect(url('/guarantee/index/index'));
+		}elseif ($res['status'] == '1' && $res['property'] == '2') {
+			$this->redirect(url('index/index'));
+		}elseif ($res['status'] == '1' && $res['property'] == '2') {
 			$this->redirect(url('index/index'));
 		}else{
 			db('dealer')->where('mobile',$mobile)->setField('status','3');
