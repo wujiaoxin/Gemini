@@ -57,7 +57,7 @@ class Order extends Api {
 		return json($resp);
 	}
 	
-	public function getList($status = null, $type = null) {
+	public function getList($status = null, $type = null,$page = 15) {
 		$map = '';
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
@@ -80,7 +80,11 @@ class Order extends Api {
 			}else{
 				if ($status == 3) {
 
-					$map = $map.' and status in (3,4)';
+					$map = $map.' and status in (1,3,4)';
+
+				}elseif ($status == 1) {
+
+					$map = $map.' and finance = 4';
 
 				}else{
 
@@ -96,7 +100,7 @@ class Order extends Api {
 			
 			$sort = "id desc";
 			$map .= ' and credit_status = 3';
-			$list  = db('Order')->where($map)->order($sort)->paginate(15);
+			$list  = db('Order')->where($map)->order($sort)->paginate($page);
 			
 			$resp['code'] = 1;
 			$resp['msg'] = 'OK';
@@ -105,7 +109,7 @@ class Order extends Api {
 		}else{
 			$Order = model('Order');
 
-			$list = $Order->get_order_list($uid, $role, $type, $status);
+			$list = $Order->get_order_list($uid, $role, $type, $status,$page);
 			$resp['code'] = 1;
 			$resp['msg'] = 'OK';
 			$resp['data'] = $list;
@@ -180,7 +184,6 @@ class Order extends Api {
 		if ($uid>0) {
 			
 			$data = $orderModel->get_order_total($uid,$role,$type);
-			
 			$resp['code'] = 1;
 			$resp['msg'] = '获取成功!';
 			$resp['data'] = $data;

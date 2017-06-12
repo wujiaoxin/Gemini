@@ -51,7 +51,7 @@ class Order extends \app\common\model\Base {
 	}
 	
 	
-	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null){
+	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null,$page = 15){
 		if ($role == '0') {
 			$ids = db('member')->field('mobile')->where('uid',$uid)->find();
 			$filter['mobile'] = $ids['mobile'];
@@ -72,13 +72,15 @@ class Order extends \app\common\model\Base {
 			if ($status == 3) {
 				$name = '3,4';
 				$filter['status'] = array('IN',$name);
+			}elseif ($status == 1) {
+				$filter['finance'] = '4';
 			}else{
 				$filter['status'] = $status;
 			}
 		}
 		$sort = "id desc";
 		$filter['credit_status'] = '3';
-		$list = db('Order')->where($filter)->order($sort)->paginate(15);
+		$list = db('Order')->where($filter)->order($sort)->paginate($page);
 		// $list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
 		return $list;
 	}
@@ -140,12 +142,18 @@ class Order extends \app\common\model\Base {
 
 			if ($status == 3) {
 
-				$name = '3,4';
+				$name = '1,3,4';
 
 				$filter['status'] = array('IN',$name);
 
 				$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
 			
+			}elseif ($status == 1) {
+
+					$filter['finance']= '4';
+
+					$ord = db('Order')->field('sum(examine_limit) as loan_limit')->where($filter)->find();
+
 			}else{
 
 				$filter['status'] = $status;
@@ -153,17 +161,13 @@ class Order extends \app\common\model\Base {
 
 			}
 		}
-		
-		if ($filter['status'] == '2') {
 
-			$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
-		}
-
-		if ($filter['status'] == '1') {
-
-			$ord = db('Order')->field('sum(examine_limit) as loan_limit')->where($filter)->find();
-		}
 		$total['order_num'] = db('Order')->where($filter)->count();
+
+		if (empty($ord['loan_limit'])) {
+
+			$ord['loan_limit'] = 0;
+		}
 
 		$total['loan_limit'] = $ord['loan_limit'];
 		
@@ -335,7 +339,11 @@ class Order extends \app\common\model\Base {
         $res = array();
 		$res['loan_num']= $this->where($filter)->where('finance','4')->count();
 		$results= $this->field('sum(examine_limit) as loan_limit')->where($filter)->where('finance','4')->find();
+		if (empty($results['loan_limit'])) {
+			$results['loan_limit'] = 0;
+		}
 		$res['loan_money'] = $results['loan_limit'];
+
 		$res['nums'] = $this->where($filter)->count();
 		return $res;
 	}
