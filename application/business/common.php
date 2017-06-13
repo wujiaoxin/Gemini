@@ -12,11 +12,12 @@
   ** momod 操作方法
   */
   function modify_account($data,$uid,$name=0,$money_type=0,$type=0,$memod=0){
+     $dealer = db('dealer')->alias('d')->field('d.id as dealer_id')->join('__MEMBER__ m','d.mobile = m.mobile')->where('uid', $uid)->find();
     if(isset($data['money']) && $memod == 'INSERT'){
         if($type == 'recharge'){
            $sn = date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
            $rec_money = array(
-                'uid'=>$uid,
+                'uid'=>$dealer['dealer_id'],
                 'sn'=>$sn,
                 'status'=>'-1',
                 'money'=>$data['money'],
@@ -38,7 +39,7 @@
         }
         if ($type == 'withdraw') {
           $data_moneys = array(
-                'uid'=>$uid,
+                'uid'=>$dealer['dealer_id'],
                 'sn'=>$data['sn'],
                 'status'=>'-1',
                 'money'=>$data['money'],
@@ -62,7 +63,7 @@
     }
     if (isset($data['fee']) && $memod == 'INSERT') {
       $fee_money = array(
-          'uid'=>$uid,
+          'uid'=>$dealer['dealer_id'],
           'account_money'=>$data['fee'],
           'desc'=>'冻结订单为'.$data['order_id'].'的资金',
           'type'=>$name,
@@ -268,7 +269,7 @@
 
     //冻结资金
     
-    $dealer_money = db('dealer')->alias('d')->field('money,lock_money')->join('__MEMBER__ m','d.mobile = m.mobile')->where('uid', $uid)->find();
+    $dealer_money = db('dealer')->alias('d')->field('d.id as dealer_id,d.money,d.lock_money')->join('__MEMBER__ m','d.mobile = m.mobile')->where('uid', $uid)->find();
     
 
     //待收金额和可用
@@ -285,7 +286,7 @@
 
     $info = array(
 
-      'uid'=>$uid,
+      'uid'=>$dealer_money['dealer_id'],
       'type'=> $type,
       'deal_other'=>$name,
       'create_time'=>time(),

@@ -19,17 +19,8 @@ class Postloan extends Admin {
 
 		$result = $repay->select();
 
-		foreach ($result as $k => $v) {
+		$result = db('order_repay')->alias('r')->field('r.*,d.name as dealer_name,o.sn')->join('__DEALER__ d','r.dealer_id = d.id','LEFT')->join('__ORDER__ o','o.id = r.order_id','LEFT')->select();
 
-			$sercher = serch_name($v['dealer_id']);
-			
-			$order_sn = $order->get_sn($v['order_id']);
-			
-			$result[$k]['dealer_name'] = $sercher['dealer_name'];
-
-			$result[$k]['sn'] = $order_sn['sn'];
-
-		}
 		$data = array(
 
 			'infoStr' => json_encode($result)
@@ -44,11 +35,7 @@ class Postloan extends Admin {
 
 	public function withhold() {
 		
-		$result = db('member_withhold')->select();
-		foreach ($result as $k => $v) {
-			$name = serch_realname($v['uid']);
-			$result[$k]['realname'] = $name;
-		}
+		$result = db('member_withhold')->alias('w')->field('w.*,m.realname')->join('__MEMBER__ m','w.uid = m.uid','LEFT')->select();
 		$data = array(
 			'infoStr' =>json_encode($result),
 		);
@@ -140,15 +127,10 @@ class Postloan extends Admin {
 			
 			return json($resp);
 		}else{
-			$result = db('member_withhold')->find(input('id'));
+			$result = db('member_withhold')->alias('w')->field('w.*,o.examine_limit as loan_limit,o.type,r.repay_money,m.realname')->join('__ORDER__ o','w.order_id = o.id','LEFT')->join('__ORDER_REPAY__ r','w.order_id = r.order_id','LEFT')->join('__MEMBER__ m','w.uid = m.uid','LEFT')->find(input('id'));
+
 			$files = db('order_files')->where('order_id',$result['order_id'])->limit(9)->order('create_time DESC')->select();
-			$repay = db('order')->field('examine_limit,type')->where('id',$result['order_id'])->find();
-			$order_repay = db('order_repay')->field('repay_money')->where('order_id',$result['order_id'])->find();
-			$result['loan_limit'] = $repay['examine_limit'];
-			$result['repay_money'] = $order_repay['repay_money'];
-			$name = serch_realname($result['uid']);
-			$result['realname'] = $name;
-			$result['type'] = $repay['type'];
+			
 			$res =array(
 				'data'=>$result,
 				'files'=>$files
