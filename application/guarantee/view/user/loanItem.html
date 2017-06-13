@@ -76,7 +76,7 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
-<script type="text/javascript" src="/public/business/js/table-managed.js"></script>
+<script type="text/javascript" src="/public/guarantee/js/table-managed.js"></script>
 <script>
 	function tpl(data){
 		var html = '';
@@ -101,7 +101,7 @@
 	function ajaxLoanItem(type,dateRange,status){
 		$('#table-loanItem').dataTable().fnClearTable();//清空原数据
 		ajax_jquery({
-	        url: apiUrl +'/business/user/loanItem',
+	        url: apiUrl +'/guarantee/user/loanItem',
 	        data:{
 	            'type': type,
 	            'dateRange': dateRange,

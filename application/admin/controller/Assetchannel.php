@@ -114,6 +114,10 @@ class assetchannel extends Admin {
 					$data['money_level'] = '1000000';
 					$data['lines_ky'] = '1000000';
 				}
+				if ($data['property'] =='3') {
+					$res =array('access_group_id'=>'18','realname'=>$data['rep'],'idcard'=>$data['idno']);
+					model('User')->save($res,array('mobile'=>$data['mobile']));
+				}
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {
 					return $this->success("修改成功！", url('assetchannel/index'));
