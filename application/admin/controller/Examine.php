@@ -44,27 +44,23 @@ class examine extends Admin {
 		if($uid > 0){
 			if ($role == 10) {
 
-				$list = db('Order')->where('uid',$uid)->order('create_time DESC')->select();
+				$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->order('create_time DESC')->where('uid',$uid)->order('create_time DESC')->select();
 
 			}elseif($role == 11){
 
 				$result = db('member')->field('dealer_id')->where('uid',$uid)->find();
 
-				$list = db('Order')->where('dealer_id',$result['dealer_id'])->select();
+				$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->order('create_time DESC')->where('dealer_id',$result['dealer_id'])->select();
 
 			}else{
-				$list = db('Order')->order('create_time DESC')->select();
+				$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->order('create_time DESC')->select();
 			}
 
 		}else{
 			return $this->error('请重新登录');
 		}
 		
-		foreach ($list as $k => $v) {
-			$list[$k]['salesman'] = serch_realname($v['uid']);
-			$name = serch_name($v['dealer_id']);
-			$list[$k]['dealername'] = $name['dealer_name'];
-		}
+		
 		$data = array(
 
 			'infoStr' =>json_encode($list)
@@ -146,16 +142,9 @@ class examine extends Admin {
 			
 		}else{
 
-			$list = db('Order')->where('status','3')->order('create_time DESC')->select();
+			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where('status','3')->order('create_time DESC')->select();
 		
-			foreach ($list as $k => $v) {
-
-				$list[$k]['salesman'] = serch_realname($v['uid']);
-
-				$name = serch_name($v['dealer_id']);
-
-				$list[$k]['dealername'] = $name['dealer_name'];
-			}
+			
 			$data = array(
 
 				'infoStr' =>json_encode($list)
@@ -253,16 +242,8 @@ class examine extends Admin {
 
 		}else{
 			
-			$list = db('Order')->where('status','4')->order('create_time')->select();
+			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where('status','4')->order('create_time')->select();
 
-			foreach ($list as $k => $v) {
-
-				$list[$k]['salesman'] = serch_realname($v['uid']);
-
-				$name = serch_name($v['dealer_id']);
-
-				$list[$k]['dealername'] = $name['dealer_name'];
-			}
 
 			$data = array(
 

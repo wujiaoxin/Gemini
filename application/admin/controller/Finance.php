@@ -49,7 +49,7 @@ class Finance extends Admin {
 					'update_time'=>time()
 
 				);
-				
+
 				if ($data['status'] == '1') {
 
 					$money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.id',$data['id'])->find();
@@ -183,11 +183,7 @@ class Finance extends Admin {
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			}else{
 
-				$result = db('order')->where('id',$data['id'])->find();
-
-				$sercher =  serch_name($result['dealer_id']);
-
-				$result['dealer_name'] = $sercher['dealer_name'];//渠道名称
+				$result = db('order')->alias('o')->field('o.*,d.name as dealer_name')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->where('o.id',$data['id'])->find();
 
 				$resp['code'] = 1;
 
@@ -201,16 +197,7 @@ class Finance extends Admin {
 
 		}else{
 
-			$result = db('order')->where('finance','2')->select();
-
-			foreach ($result as $k => $v) {
-
-				$sercher = serch_name($v['dealer_id']);
-
-				$result[$k]['dealer_name'] = $sercher['dealer_name'];//渠道名称
-
-			}
-
+			$result = db('order')->alias('o')->field('o.*,d.name as dealer_name')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->where('finance','2')->select();
 			$data = array(
 				'infoStr' => json_encode($result)
 			);
@@ -280,11 +267,7 @@ class Finance extends Admin {
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			}else{
 
-				$result = db('recharge')->where('sn',$data['id'])->find();
-
-				$sercher =  serch_name_dealer($result['uid']);
-
-				$result['dealer_name'] = $sercher['dealer_name'];//渠道名称
+				$result = db('recharge')>alias('c')->field('c.*,d.name as dealer_name')->join('__DEALER__ d','c.uid = d.id')->where('sn',$data['id'])->find();
 
 				$resp['code'] = 1;
 
@@ -295,15 +278,8 @@ class Finance extends Admin {
 			
 			return json($resp);
 		}else{
-			$result = db('recharge')->order('create_time DESC,status ASC')->select();
+			$result = db('recharge')->alias('c')->field('c.*,d.name as dealer_name')->join('__DEALER__ d','c.uid = d.id')->order('create_time DESC,status ASC')->select();
 			
-			foreach ($result as $k => $v) {
-
-				$sercher = serch_name_dealer($v['uid']);
-
-				$result[$k]['dealer_name'] = $sercher['dealer_name'];
-			}
-
 			$data = array(
 				'infoStr' => json_encode($result)
 			);
@@ -380,11 +356,7 @@ class Finance extends Admin {
 
 			}else{
 
-				$result = db('carry')->where('sn',$data['id'])->find();
-
-				$sercher = serch_name_dealer($result['uid']);
-
-				$result['dealer_name'] = $sercher['dealer_name'];
+				$result = db('carry')->alias('c')->field('c.*,d.name as dealer_name')->join('__DEALER__ d','d.id = c.uid','LEFT')->where('sn',$data['id'])->find();
 
 				$resp['code'] = 1;
 
@@ -398,15 +370,7 @@ class Finance extends Admin {
 
 		}else{
 
-			$result = db('carry')->order('create_time DESC, status ASC')->select();
-
-			foreach ($result as $k => $v) {
-
-				$sercher = serch_name_dealer($v['uid']);
-
-				$result[$k]['dealer_name'] = $sercher['dealer_name'];
-
-			}
+			$result = db('carry')->alias('c')->field('c.*,d.name as dealer_name')->join('__DEALER__ d','d.id = c.uid','LEFT')->order('create_time DESC, status ASC')->select();
 
 			$data = array(
 				'infoStr' => json_encode($result)
@@ -490,11 +454,7 @@ class Finance extends Admin {
 				return json($resp);
 			}else{
 
-				$result = db('order_repay')->where('id',$data['id'])->find();
-
-				$sercher = serch_name($result['dealer_id']);
-
-				$result['dealer_name'] = $sercher['dealer_name'];
+				$result = db('order_repay')->alias('r')->field('r.*,d.name as dealer_name')->join('__DEALER__ d','d.id = r.dealer_id','LEFT')->where('r.id',$data['id'])->find();
 
 
 				$resp['code'] = 1;
@@ -511,19 +471,8 @@ class Finance extends Admin {
 
 			$order = model('Order');
 
-			$result = db('order_repay')->where('status','-2')->order('status')->select();
+			$result = db('order_repay')->alias('r')->field('r.*,o.sn,d.name as dealer_name')->join('__ORDER__ o','o.id = r.order_id','LEFT')->join('__DEALER__ d','r.dealer_id = d.id')->where('r.status','-2')->order('status')->select();
 
-			foreach ($result as $k => $v) {
-
-				$order_sn = $order->get_sn($v['order_id']);
-
-				$sercher = serch_name($v['dealer_id']);
-
-				$result[$k]['dealer_name'] = $sercher['dealer_name'];
-
-				$result[$k]['sn'] = $order_sn['sn'];
-
-			}
 			$data = array(
 
 				'infoStr' => json_encode($result)
@@ -540,14 +489,7 @@ class Finance extends Admin {
 	// 平台资金记录
 	public function transaction() {
 
-		$result = db('dealer_money')->order('create_time DESC')->select();
-
-		foreach ($result as $k => $v) {
-
-			$serch_name = serch_name_dealer($v['uid']);
-
-			$result[$k]['dealer_name'] = $serch_name['dealer_name'];
-		}
+		$result = db('dealer_money')->alias('m')->field('m.*,d.name as dealer_name')->join('__DEALER__ d','d.id = m.uid','LEFT')->order('create_time DESC')->select();
 
 		$data = array(
 				'infoStr' => json_encode($result)

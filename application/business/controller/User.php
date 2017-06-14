@@ -127,25 +127,17 @@ use app\business\controller\Baseness;
 		$mobile = session('business_mobile');
 		$where = array(
 
-			'mid' => $uid,
+			'o.mid' => $uid,
 
-			'status'=>1
+			'o.status'=>1
 
 			);
 
 		//分组统计
-		$result = db('order')->field('mid,uid,sum(examine_limit) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
-		foreach ($result as $k => $v) {
-			$result[$k]['realname'] = serch_real($v['uid']);
-		}
-		$num = db('order')->field('mid,uid,count(id) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
-		foreach ($num as $k => $v) {
-			$num[$k]['realname'] = serch_real($v['uid']);
-		}
-		$avg = db('order')->field('mid,uid,avg(examine_limit) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
-		foreach ($num as $k => $v) {
-			$avg[$k]['realname'] = serch_real($v['uid']);
-		}
+		$result = db('order')->field('o.mid,o.uid,sum(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
+		
+		$num = db('order')->field('o.mid,o.uid,count(o.id) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
+		$avg = db('order')->field('o.mid,o.uid,avg(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
 		
 		//一个月内每天的订单数量
 		$begin = date('Y-m-d',strtotime("-1 month"));//30天前
@@ -299,13 +291,11 @@ use app\business\controller\Baseness;
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
+					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn,m.realname as yewu_realname')->join('__ORDER__ d',' d.id = o.order_id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
 				}else{
-					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
+					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn,m.realname as yewu_realname')->join('__ORDER__ d',' d.id = o.order_id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->order('o.status ASC')->select();
 				}
-				foreach ($order_repay as $k => $v) {
-					$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
-				}
+				
 				if ($order_repay) {
 					$resp['code'] = '1';
 					$resp['msg'] = '数据正常';
