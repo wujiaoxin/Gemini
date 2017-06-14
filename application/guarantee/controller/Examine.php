@@ -76,7 +76,7 @@ class Examine extends Baseness {
 		return $this->fetch();
 	}
 
-	public function dataReview() {
+	public function creditReview() {
 		$role =session('user_auth.role');
 		$uid =session('user_auth.uid');
 		if ($role != '18') {
@@ -156,7 +156,7 @@ class Examine extends Baseness {
 
 		$this->setMeta('信用审核');
 
-		return $this->fetch('dataReview');
+		return $this->fetch('creditReview');
 	}
 
 	public function loanLimit() {
