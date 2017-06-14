@@ -89,35 +89,24 @@ class Examine extends Baseness {
 			$data = input('post.');
 			if (isset($data['status'])) {
 				$res = db('Order')->field('status')->where('id',$data['id'])->find();
-				if ($res['status'] == '1') {
+				if ($res['status'] != '11') {
 					$resp['code'] = 0;
 
 					$resp['msg'] = '已审核!';
 				}
 				$info = array(
 
-					'status'=>$data['status']
+					'status'=>$data['status'],
 
+					'proposal_limit'=>$data['proposal_limit'],
+
+					'descr'=>$data['descr']
 				);
 				
-				if ($data['status'] == '5') {
-					
-					$info['descr'] = $data['descr'];
-
-					$result = db('order')->where('id',$data['id'])->update($info);
-
-				}elseif ($data['status'] == '2') {
-					$info['descr'] = $data['descr'];
-					$result = db('order')->where('id',$data['id'])->update($info);
-
-					
-				}else{
-					$info['proposal_limit'] = $data['proposal'];
-					$info['examine_limit'] = $data['examine_limit'];
-					$info['status'] = '10';//信审
-					$result = db('order')->where('id',$data['id'])->update($info);
+				if ($res['status'] == '11') {
+					$info['status'] = '12';//信审
 				}
-				
+				$result = db('order')->where('id',$data['id'])->update($info);
 				if ($result) {
 
 						$resp['code'] = 1;
@@ -162,113 +151,65 @@ class Examine extends Baseness {
 	public function loanLimit() {
 		$role =session('user_auth.role');
 		$uid =session('user_auth.uid');
-		if (IS_POST){
+		if ($role != '18') {
+			$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+			$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
+			$uid = $res['uid'];
+		}
+		if (IS_POST) {
 
 			$data = input('post.');
 			if (isset($data['status'])) {
+				$res = db('Order')->field('status')->where('id',$data['id'])->find();
+				if ($res['status'] != '12') {
 
-				if ($data['status'] == '1') {
+					$resp['code'] = 0;
 
-					$infos = array(
-							'status' => '1',
-							'examine_limit' =>$data['examine_limit'],
-							'descr'=>$data['descr']
-						);
-
-					$result = db('order')->where('id',$data['id'])->update($infos);
-
-					if ($result) {
-
-						$info = db('order')->field('examine_limit,endtime,type')->where('id',$data['id'])->find();
-
-						if ($info['type'] == '2' || $info['type'] == '4') {
-
-							$fee = fee_money($info['endtime'],$info['examine_limit']);
-
-							$fee1['fee'] = $fee;
-							$fee1['finance'] = '2';
-							db('order')->where('id',$data['id'])->update($fee1);
-						}else{
-
-							db('order')->where('id',$data['id'])->setField('finance','2');
-						}
-						$resp['code'] = 1;
-
-						$resp['msg'] = '提交成功';
-
-					}else{
-
-						$resp['code'] = 0;
-
-						$resp['msg'] = '提交失败';
-
-						return json($resp);
-					}
-				}else{
-
-					$info_s = array(
-
-						'reject_reason' => $data['descr'],
-
-						'status' =>$data['status'],
-
-						'examine_limit' =>$data['examine_limit']
-
-						);
-					$result = db('order')->where('id',$data['id'])->update($info_s);
-					if ($result) {
-
-						$resp['code'] = 1;
-
-						$resp['msg'] = '提交成功';
-					}else{
-
-						$resp['code'] = 0;
-
-						$resp['msg'] = '提交失败';
-
-					}
-
+					$resp['msg'] = '已审核!';
 				}
+				$info = array(
 
+					'status'=>$data['status'],
+
+					'examine_limit'=>$data['examine_limit'],
+
+					'descr'=>$data['descr']
+				);
+				
+				if ($res['status'] == '12') {
+					$info['status'] = '13';//信审
+				}
+				$result = db('order')->where('id',$data['id'])->update($info);
+				if ($result) {
+
+						$resp['code'] = 1;
+
+						$resp['msg'] = '提交成功';
+					}else{
+
+						$resp['code'] = 0;
+
+						$resp['msg'] = '提交失败';
+					}
 			}else{
 
 				$resp['code'] = 0;
 
-				$resp['msg'] = '提交异常';
+				$resp['msg'] = '提交失败';
 			}
-
+			
+			// var_dump($resp);die;
 			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
-
 			return json($resp);
-
+			
 		}else{
 			
-			if ($role != '18') {
-				$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
-				$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
-				$uid = $res['uid'];
-			}
-			$resl = db('Dealer')->field('id')->where('guarantee_id',$uid)->select();
-			if (!empty($resl)) {
-				foreach ($resl as $vl) {
-					$map['dealer_id'] =$vl['id'];
-					$map['status'] = '12';
-					$list = db('Order')->where($map)->order('create_time DESC')->select();
-				}
-			}
 
-			if (!empty($list)) {
-				foreach ($list as $k => $v) {
-					$list[$k]['salesman'] = serch_realname($v['uid']);
-
-					$name = serch_name($v['dealer_id']);
-
-					$list[$k]['dealername'] = $name['dealer_name'];
-				}
-			}else{
-				$list = '';
-			}
+			$map = array(
+				'o.status'=>12,
+				'd.guarantee_id'=>$uid
+			);
+			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
 
 			$data = array(
 
