@@ -142,7 +142,7 @@ class Examine extends Baseness {
 			
 		}else{
 			$map = array(
-				'o.status'=>3,
+				'o.status'=>11,
 				'd.guarantee_id'=>$uid
 			);
 			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
@@ -253,7 +253,7 @@ class Examine extends Baseness {
 			if (!empty($resl)) {
 				foreach ($resl as $vl) {
 					$map['dealer_id'] =$vl['id'];
-					$map['status'] = '4';
+					$map['status'] = '12';
 					$list = db('Order')->where($map)->order('create_time DESC')->select();
 				}
 			}
@@ -380,8 +380,7 @@ class Examine extends Baseness {
 			if (!empty($resl)) {
 				foreach ($resl as $vl) {
 					$map['dealer_id'] =$vl['id'];
-					$map['finance'] = '3';
-					$map['status'] = '1';
+					$map['status'] = '13';
 					$list = db('Order')->where($map)->order('create_time DESC')->select();
 				}
 			}
