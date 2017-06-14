@@ -1,7 +1,7 @@
 {extend name="base"/}
 {block name="style"}
-<link rel="stylesheet" type="text/css" href="/application/admin/static/css/metronic.css"/>
-<link rel="stylesheet" type="text/css" href="/application/admin/static/css/DT_bootstrap.css"/>
+<link rel="stylesheet" href="/public/business/lib/metronic/css/select2_metro.css" />
+<link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css" />
 <script type="text/javascript">
 	var info = {};
 	try {
@@ -54,8 +54,8 @@
 {block name="script"}
 <script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
-<script type="text/javascript" src="/application/admin/static/js/table-managed.js"></script>
 <script type="text/javascript" src="/application/admin/static/js/manager.js"></script>
+<script type="text/javascript" src="/public/guarantee/js/table-managed.js"></script>
 
 <script type="text/javascript">
 	function tpl(data){
@@ -72,7 +72,7 @@
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		+'<td>'+ ''+'</td>'
 		  		+'<td>'+ g_dealerStatus[data[index].status] +'</td>'
-		  		+'<td><a href="/admin/assetChannel/edit?id='+ data[index].id + '">编辑</a></td>'
+		  		+'<td><a href="/guarantee/user/newChannel.html?id='+ data[index].id + '">编辑</a></td>'
 		  		 +'</tr>'
 			}
 		}

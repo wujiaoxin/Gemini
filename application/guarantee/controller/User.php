@@ -24,6 +24,12 @@ use app\guarantee\controller\Baseness;
 	public function myStaff() {
 		//担保公司员工
 		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if ($role == 13) {
+			$mobile = db('dealer')->alias('d')->field('d.mobile')->join('__MEMBER__ m','m.dealer_id = d.id')->where('m.uid',$uid)->find();
+			$uids = db('member')->field('uid')->where('mobile',$mobile['mobile'])->find();
+			$uid = $uids['uid'];
+		}
 		$result = db('member')->alias('m')->join('__DEALER__ d','m.mobile = d.mobile')->field('d.id')->where('m.uid',$uid)->order('id DESC')->find();
 		$members = db('member')->where('dealer_id',$result['id'])->select();
 		$data = array(
@@ -53,6 +59,10 @@ use app\guarantee\controller\Baseness;
 		}
 	}
 	public function newStaff() {
+		$role = session('user_auth.role');
+		if ($role == 13) {
+			$this->error('没有权限新增员工');
+		}
 		return $this->fetch('newStaff');
 	}
 	/*
@@ -60,6 +70,7 @@ use app\guarantee\controller\Baseness;
 	 * */
 	public function addStaff(){
 		if (IS_POST){
+
 			$data = input('post.');
 			if ($data) {
 				$uid = session('user_auth.uid');
@@ -105,7 +116,13 @@ use app\guarantee\controller\Baseness;
 
 	public function myShop() {
 		$uid =session('user_auth.uid');
+		$role =session('user_auth.role');
 		$mobile = session('business_mobile');
+		if ($role != 18) {
+			$mobile = db('dealer')->alias('d')->field('d.mobile')->join('__MEMBER__ m','m.dealer_id = d.id')->where('m.uid',$uid)->find();
+			$uids = db('member')->field('uid')->where('mobile',$mobile['mobile'])->find();
+			$uid = $uids['uid'];
+		}
 		$where = array(
 
 			'mid' => $uid,
@@ -167,9 +184,22 @@ use app\guarantee\controller\Baseness;
 
 	public function loanItem() {
 		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
 		if (IS_POST) {
 			$data = input('post.');
-			$map['mid'] =$uid;
+			if ($role != '18') {
+				$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+				$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
+				$uid = $res['uid'];
+			}
+			$resl = db('Dealer')->field('id')->where('guarantee_id',$uid)->select();
+			/*$arr = array();
+			foreach ($resl as $k => $v) {
+				$ids = db('member')->field('uid')->where('dealer_id',$v['id'])->find();
+				$arr[] = $ids['uid'];
+			}
+			$list = array();*/
+			
 			if ($data['type']) {
 				$map['type'] = $data['type'];
 			}
@@ -183,13 +213,30 @@ use app\guarantee\controller\Baseness;
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
-				$result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+				// $result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+				if (!empty($resl)) {
+					foreach ($resl as $vl) {
+						$map['dealer_id'] =$vl['id'];
+						$result = db('Order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('create_time DESC')->select();
+					}
+				}else{
+				}
 			}else{
-				$result = db('order')->where($map)->select();
+				// $result = db('order')->where($map)->select();
+				if (!empty($resl)) {
+					foreach ($resl as $vl) {
+
+						$map['dealer_id'] =$vl['id'];
+						$result = db('Order')->where($map)->order('create_time DESC')->select();
+					}
+				}
 			}
-			foreach ($result as $k => $v) {
-				$result[$k]['realname'] = serch_real($v['uid']);
+			if (!empty($result)) {
+				foreach ($result as $k => $v) {
+					$result[$k]['realname'] = serch_real($v['uid']);
+				}
 			}
+			
 			if ($result) {
 				$resp['code'] = '1';
 				$resp['msg'] = '数据正常';
@@ -204,15 +251,15 @@ use app\guarantee\controller\Baseness;
 	}
 
 	public function repayItem() {
+
 		$uid =session('user_auth.uid');
+		$role =session('user_auth.role');
 		$mobile = session('business_mobile');
 
 		if (IS_POST) {
 
 			$data = input('post.');
-
 			$dealer_id = db('Dealer')->field('id,forms')->where('mobile',$mobile)->find();
-
 			if (isset($data['payPwd']) && isset($data['orderId'])){
 
 				$user = db('member')->field('paypassword')->where('mobile',$mobile)->find();
@@ -263,13 +310,19 @@ use app\guarantee\controller\Baseness;
 				}
 				return json($resp);
 			}else{
-				$map['o.dealer_id'] =$dealer_id['id'];
+				if ($role != '18') {
+					$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+					$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
+					$uid = $res['uid'];
+				}
+				$resl = db('Dealer')->field('id')->where('guarantee_id',$uid)->select();
+				// $map['o.dealer_id'] =$dealer_id['id'];
 				if ($data['type']) {
 					$map['d.type'] = $data['type'];
 				}
-				if ($dealer_id['forms'] == '1' || $dealer_id['forms'] == '3') {
+				/*if ($dealer_id['forms'] == '1' || $dealer_id['forms'] == '3') {
 					$map['d.type'] = '';
-				}
+				}*/
 				if (isset($data['status'])) {
 					if ($data['status'] != '') {
 		    			$map['status'] = $data['status'];
@@ -279,12 +332,28 @@ use app\guarantee\controller\Baseness;
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
+
+					if (!empty($resl)) {
+						foreach ($resl as $vl) {
+							$map['o.dealer_id'] =$vl['id'];
+							$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
+						}
+					}
+
+					
 				}else{
-					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
+					if (!empty($resl)) {
+						foreach ($resl as $vl) {
+							$map['o.dealer_id'] =$vl['id'];
+							$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
+						}
+					}
+					
 				}
-				foreach ($order_repay as $k => $v) {
-					$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
+				if (!empty($order_repay)) {
+					foreach ($order_repay as $k => $v) {
+						$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
+					}
 				}
 				if ($order_repay) {
 					$resp['code'] = '1';
@@ -431,6 +500,10 @@ use app\guarantee\controller\Baseness;
 	//设置交易密码
 	public function setpay(){
 		$mobile = session("business_mobile");
+		$role = session('user_auth.role');
+		if ($role == 13) {
+			$this->error('没有权限设置交易密码');
+		}
 		$user = model('User');
 		if (IS_POST) {
 			$data = input('post.');
@@ -447,6 +520,10 @@ use app\guarantee\controller\Baseness;
 	}
 	//修改交易密码
 	public function resetpay(){
+		$role = session('user_auth.role');
+		if ($role == 13) {
+			$this->error('没有权限修改交易密码');
+		}
 		if (IS_POST) {
 			$user = model('User');
 			$data = $this->request->post();
@@ -525,6 +602,12 @@ use app\guarantee\controller\Baseness;
 	public function myChannel() {
 		//担保公司员工
 		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if ($role != '18') {
+			$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+			$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
+			$uid = $res['uid'];
+		}
 		$list = db('dealer')->where('guarantee_id',$uid)->select();
 		$result =array(
 			'data' =>$list,
@@ -539,6 +622,10 @@ use app\guarantee\controller\Baseness;
 
 	//添加
 	public function newChannel() {
+		$role = session('user_auth.role');
+		if ($role == 13) {
+			$this->error('没有权限新增渠道');
+		}
 		$link = model('Dealer');
 		if (IS_POST) {
 			$data = input('post.');

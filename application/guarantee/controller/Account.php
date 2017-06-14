@@ -13,9 +13,14 @@ use app\common\model;
 
 class Account extends Baseness {
 	public function index() {
+		$role =session('user_auth.role');
+		$uid =session('user_auth.uid');
 		if (IS_POST) {
 			$data = input('post.');
 	      	$mobile = session("business_mobile");
+	      	if ($role != '18') {
+				$this->error('你没有权限修改','/');
+			}
 			if (isset($data['smsVerify'])) {
 				$storeSmsCode = session('smsCode');
 				if($data['smsVerify'] != $storeSmsCode){
@@ -67,10 +72,14 @@ class Account extends Baseness {
 				}
   			}
 		}else{
-			$mobile = session("business_mobile");
-      		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code')->where('m.mobile',$mobile)->find();
+			if ($role != '18') {
+				$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+				$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
+				$uid = $res['uid'];
+			}
+      		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code,d.priv_bank_account_id')->where('m.uid',$uid)->find();
 	      	if ($account){
-	            $data['infoStr'] = json_encode($account);
+	            
 	            $data = array(
 	          		'info'=>$account,
 	          		'infoStr'=>json_encode($account)
@@ -79,7 +88,8 @@ class Account extends Baseness {
 	      	} else{
 		        $data['code'] = '1';
 		        $data['msg'] = '信息出错';
-		        $this->assign(json_encode($data));
+		        $data['infoStr'] = json_encode($data);
+		        $this->assign($data);
 	        }
 			return $this->fetch();
 		}
@@ -176,6 +186,12 @@ class Account extends Baseness {
   	public function withdraw() {
 		$mobile = session('business_mobile');
 		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if ($role != '18') {
+			$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile,d.id')->where('uid',$uid)->find();
+			$mobile = $uids['mobile'];
+			$uid = $uids['id'];
+		}
 		if(IS_POST){
 			$data = input('post.');
 			$paypassword = $data['paypassword'];
@@ -205,7 +221,7 @@ class Account extends Baseness {
 			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 			$types = '2,4';
 			$map = array(
-			    'mid'=>$uid,
+			    'dealer_id'=>$uid,
 			    'finance'=>'3',
 			    'type'=> array('IN',$types)
 			  );
@@ -230,6 +246,11 @@ class Account extends Baseness {
 	public function bankcard() {
 		$mobile = session('business_mobile');
 		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if ($role != '18') {
+			$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+			$mobile = $uids['mobile'];
+		}
 		$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 		$data = array(
 				'info'=>$bankcard,
@@ -240,8 +261,15 @@ class Account extends Baseness {
 	}
 	public function transaction() {
 		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
 		if (IS_POST) {
 			$data = input('post.');
+
+			if ($role != '18') {
+				$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+				$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
+				$uid = $res['uid'];
+			}
 			$map['uid']=$uid;
 			if ($data['type']) {
 				$map['type'] = $data['type'];
@@ -288,16 +316,15 @@ class Account extends Baseness {
 		}
 		return $this->fetch('lineOfCredit');
 	}
-	public function creditRecord(){
-		if (IS_POST) {
 
-		}else{
-
-		}
-		return $this->fetch('creditRecord');
-	}
   	public function info() {
+		$role =session('user_auth.role');
+		$uid =session('user_auth.uid');
 		$mobile = session('business_mobile');
+		if ($role != '18') {
+			$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+			$mobile = $uids['mobile'];
+		}
 		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic,dealer_lic_pic,invite_code')->where('mobile',$mobile)->find();
 		if($deals){
 			$deals['qrcode_url'] = 'https://pan.baidu.com/share/qrcode?w=512&h=512&url='.url("/public/wechat/user/register").'?authcode='.$deals['invite_code'];
