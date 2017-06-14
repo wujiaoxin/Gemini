@@ -110,7 +110,12 @@
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	$('#table-loanItem tbody').html(tpl(resp.data));
-	            	$('#table-loanItem').dataTable({"bDestroy":true});
+	            	$('#table-loanItem').dataTable({
+	            		"bDestroy":true,
+	            		"aaSorting": [
+		                    [ 0, "desc" ]
+		                ]
+		            });
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);
