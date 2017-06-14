@@ -70,6 +70,9 @@ var TableManaged = function () {
                     null,
                     { "bSortable": false }
                 ],
+                "aaSorting": [
+                    [ 1, "desc" ]
+                ],
                 configData
             });
 
@@ -115,6 +118,9 @@ var TableManaged = function () {
                     null,
                     { "bSortable": false }
                 ],
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
                 configData
             });
 
@@ -135,6 +141,9 @@ var TableManaged = function () {
                     null,
                     { "bSortable": false }
                 ],
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
                 configData
             });
 
@@ -154,6 +163,9 @@ var TableManaged = function () {
                     null,
                     null,
                     { "bSortable": false }
+                ],
+                "aaSorting": [
+                    [ 0, "desc" ]
                 ],
                 configData
             });
@@ -177,6 +189,9 @@ var TableManaged = function () {
                     null,
                     { "bSortable": false }
                 ],
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
                 configData
             });
 
@@ -197,6 +212,9 @@ var TableManaged = function () {
                     null,
                     null,
                     { "bSortable": false }
+                ],
+                "aaSorting": [
+                    [ 0, "desc" ]
                 ],
                 configData
             });
@@ -221,6 +239,9 @@ var TableManaged = function () {
                     null,
                     { "bSortable": false }
                 ],
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
                 configData
             });
 
@@ -240,6 +261,9 @@ var TableManaged = function () {
                     null,
                     null,
                     { "bSortable": false }
+                ],
+                "aaSorting": [
+                    [ 0, "desc" ]
                 ],
                 configData
             });
@@ -301,6 +325,9 @@ var TableManaged = function () {
                     null,
                     null,
                     { "bSortable": false }
+                ],
+                "aaSorting": [
+                    [ 0, "desc" ]
                 ],
                 configData
             });
