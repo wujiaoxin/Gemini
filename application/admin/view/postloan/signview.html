@@ -5,20 +5,18 @@
 <link rel="stylesheet" type="text/css" href="/public/business/css/selectArea.css">
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
 <style type="text/css">
-.pic-container {
- 	padding: 0;
+.select2_bank,
+.select2_province,
+.select2_city{
+	width: 150px;
 }
-.pic-container li div {
-  	line-height: 120px;
-  	margin: 10px 0;
-  	overflow: hidden;
-  	min-width: 100px;
-  	border: 5px solid #dedede;
-  	border-radius: 5px;
+.select2-search-choice-close {
+    margin-top: 0px !important;
+    right: 20px !important;
+    min-height: 10px;
 }
-.pic-container li img {
-  	width: 100%;
-  	border-radius: 3px;
+.select2-search-choice-close:before {
+    color: black !important;
 }
 </style>
 <script type="text/javascript">
@@ -44,7 +42,7 @@
 			    <div class="col-sm-4 pt5">
 			      	<input type="text" id="uid" class="item-info" disabled="disabled">
 			    </div>
-			    <label class="col-sm-2 control-label">订单名称</label>
+			    <label class="col-sm-2 control-label">用户类型</label>
 			    <div class="col-sm-4 pt5">
 			      	<input type="text" id="type" class="item-info" disabled="disabled">
 			    </div>
@@ -52,92 +50,50 @@
 		  	<div class="form-group">
 		    	<label class="col-sm-2 control-label">真实姓名</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="realname" class="item-info" disabled="disabled">
+			      	<input type="text" id="realname" class="item-info">
 			    </div>
 			    <label class="col-sm-2 control-label">手机号</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="number" id="mobile" class="item-info" disabled="disabled">
+			      	<input type="number" id="mobile" class="item-info">
 			    </div>
 		  	</div>
 		  	<div class="form-group">
 		    	<label class="col-sm-2 control-label">身份证号</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="idcard_num" class="item-info" disabled="disabled">
+			      	<input type="text" id="idcard_num" class="item-info">
 			    </div>
 			    <label class="col-sm-2 control-label">银行卡号</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="bankcard" class="item-info" disabled="disabled">
+			      	<input type="text" id="bankcard" class="item-info">
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">借贷金额</label>
+		    	<label class="col-sm-2 control-label">开户省份</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="number" id="loan_limit" class="item-info" disabled="disabled">
+			      	<select class="select2_province" data-placeholder="省份">
+					</select>
 			    </div>
-			    <label class="col-sm-2 control-label">期数</label>
+			    <label class="col-sm-2 control-label">开户城市</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="total_times" class="item-info" disabled="disabled">
-			    </div>
-		  	</div>
-		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">月供</label>
-			    <div class="col-sm-4 pt5">
-			      	<input type="number" id="repay_money" class="item-info" disabled="disabled">
-			    </div>
-			    <label class="col-sm-2 control-label">首次还款时间</label>
-			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="first_repaydate" class="item-info" disabled="disabled">
+			      	<select class="select2_city" data-placeholder="城市">
+						<option value=""></option>
+					</select>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		  		<label class="col-sm-2 control-label">贷款合同号</label>
-			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="papercontract" class="item-info" disabled="disabled">
+		  		<label class="col-sm-2 control-label">开户银行</label>
+			    <div class="col-sm-4">
+			      	<select class="select2_bank" data-placeholder="请选择开户银行">
+					</select>
 			    </div>
-			    <label class="col-sm-2 control-label">签约状态</label>
-			   	<div class="col-sm-4 pt5">
-			      	<input type="text" id="signstatus" class="item-info" disabled="disabled">
-			    </div>
-		  	</div>
-		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">用户职业</label>
+		    	<label class="col-sm-2 control-label">乾多多标识</label>
 			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="profession" class="item-info">
-			    </div>
-			    <label class="col-sm-2 control-label">用户联系地址</label>
-			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="address" class="item-info">
-			    </div>
-		  	</div>
-			<div class="form-group">
-		    	<label class="col-sm-2 control-label">身份证到期时间</label>
-			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="idcard_time" class="idcard_time" placeholder="yyyyMMdd">
-			    </div>
-		  	</div>
-		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">身份证正面照ID</label>
-			    <div class="col-sm-4 pt5">
-			      	<input type="number" id="idcard_face_pic" class="item-info">
-			    </div>
-			    <label class="col-sm-2 control-label">身份证反面照ID</label>
-			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="idcard_back_pic" class="item-info">
-			    </div>
-		  	</div>
-		  	<div class="form-group">
-		    	<label class="col-sm-2 control-label">银行卡照片ID</label>
-			    <div class="col-sm-4 pt5">
-			      	<input type="number" id="bankimage" class="item-info">
-			    </div>
-			    <label class="col-sm-2 control-label">合同照片ID</label>
-			    <div class="col-sm-4 pt5">
-			      	<input type="text" id="image_contract" class="item-info">
+			      	<input type="number" id="qdd_mark" class="item-info" disabled="disabled">
 			    </div>
 		  	</div>
 		  	<div class="form-group">
 			    <div class="text-center col-sm-4">
-					<a class="btn btn-primary" id="withholdExamineBtn">提交</a>
+					<a class="btn btn-primary" id="bindCardBtn">提交</a>
 				</div>
 			</div>
 			<ul class="pic-container" id="documentInfo">
@@ -151,146 +107,97 @@
 <script type="text/javascript" src="/public/business/js/selectArea.js"></script>
 <script type="text/javascript" src="__JS__/manager.js"></script>
 <script type="text/javascript" src="__JS__/lightGallery.js"></script>
+<script type="text/javascript" src="/public/business/js/validate.js?v=1"></script>
+<script type="text/javascript" src="/public/guarantee/js/selectBankInfo.js"></script>
 <script>
 	var g_signStatus = {'-1':'签约失败','0':'待签约','1':'签约成功','2':'签约中','3':'银行卡异步签约失败'};
 	$(".item-info").each(function(){
 		var name = $(this).attr('id');
-	    if(typeof(info.data[name]) != 'object'){
-	        $(this).val(info.data[name]);
+	    if(typeof(info[name]) != 'object'){
+	        $(this).val(info[name]);
 			if(name == "type"){
-	        	$(this).val(g_orderType[info.data[name]]);
+	        	$(this).val(g_orderType[info[name]]);
 	        	// $(this).val('按揭贷款');
 	        }else if(name == "signstatus"){
-	        	$(this).val(g_signStatus[info.data[name]]);
+	        	$(this).val(g_signStatus[info[name]]);
 	        }else if(name == "first_repaydate"){
-	        	$(this).val(formatDate([info.data[name]]));
+	        	$(this).val(formatDate([info[name]]));
 	        }
 	    }
 	});
-	var keyList = [
-            {
-                form_key:"orderSupplement_pic_1",
-                form_label:"身份证正面照"
-            },
-            {
-                form_key:"orderSupplement_pic_2",
-                form_label:"身份证反面照"
-            },
-            {
-                form_key:"orderSupplement_pic_3",
-                form_label:"人车合照"
-            },
-            {
-                form_key:"orderSupplement_pic_4",
-                form_label:"合格证"
-            },
-            {
-                form_key:"orderSupplement_pic_5",
-                form_label:"保单证书"
-            },
-            {
-                form_key:"orderSupplement_pic_6",
-                form_label:"购车发票"
-            },
-            {
-                form_key:"orderSupplement_pic_7",
-                form_label:"首付凭证"
-            },
-            {
-                form_key:"orderSupplement_pic_8",
-                form_label:"合同"
-            },
-            {
-                form_key:"orderSupplement_pic_9",
-                form_label:"代扣银行卡"
-            }];
-	function picTpl(data){
-		var html = '';
-		if(typeof(data) =='object'){
-			$.each(keyList,function(){
-				var form_key = this.form_key;
-				for(var index = 0; index < data.length; index++){
-					if(form_key == data[index].form_key){
-						html +=  '<li data-src="' + data[index].path + '" class="col-xs-3 col-md-2">'
-			                      	+'<div>'
-			                        	+ '<a href="#"><img src="' + data[index].path + '"></a>'
-			                      	+'</div>'
-			                      	+'<p class="text-center">'+ data[index].id+'</p>'
-			                    +'</li>';
-					  	break;
-					}
-				}
-				return true;
-			});
-		}
-		return html;
-	}
-
-	$('.pic-container').html(picTpl(info.files));
-	$("#documentInfo").lightGallery();
+	$('.select2_bank').val(info['bank']).trigger('change');
+	$('.select2_province').val(info['province']).trigger('change');
+	$('.select2_city').val(info['city']).trigger('change');
 
 </script>
 <script>
 $(function(){
 	var id = getUrlParam('id');
-	$('#withholdExamineBtn').click(function(){
-		var idcard_time = $('#idcard_time').val();
-		var profession = $('#profession').val();
-		var address = $('#address').val();
-		var idcard_face_pic = $('#idcard_face_pic').val();
-		var idcard_back_pic = $('#idcard_back_pic').val();
-		var bankimage = $('#bankimage').val();
-		var image_contract = $('#image_contract').val();
-		if(idcard_time =='' ){
-			ui_alert("请输入身份证到期时间");
-			return;
-		}else if((idcard_time < 20100101 || idcard_time > 20991231) && idcard_time != 0){
-			ui_alert("身份证到期时间有误");
-			return;
-		}else if(profession =='' ){
-			ui_alert("请输入用户职业");
-			return;
-		}else if(address =='' ){
-			ui_alert("请输入用户联系地址");
-			return;
-		}else if(idcard_face_pic =='' ){
-			ui_alert("请输入身份证正面照ID");
-			return;
-		}else if(idcard_back_pic =='' ){
-			ui_alert("请输入身份证反面照ID");
-			return;
-		}else if(bankimage =='' ){
-			ui_alert("请输入银行卡照ID");
-			return;
-		}else if(image_contract =='' ){
-			ui_alert("请输入合同照ID");
-			return;
-		}
-		ajax_jquery({
-	        url: apiUrl + '/admin/postloan/view',
-	        data:{
-	        	'id': id,
-	        	'idcard_time': idcard_time,
-	        	'profession': profession,
-	        	'address': address,
-	        	'idcard_face_pic': idcard_face_pic,
-	        	'idcard_back_pic': idcard_back_pic,
-	        	'bankimage': bankimage,
-	        	'image_contract': image_contract
-	        },
-	        success:function(resp){
-	            if (resp.code == "1" ) {
-	            	ui_alert("提交成功","success");
-	            	window.location.href = apiUrl + "/admin/postloan/withhold";
-	            } else {
-	                if (typeof(resp.msg) == 'string') {
-	                    ui_alert(resp.msg);
-	                    return false;
-	                }
-	            }
-	        }
-		});
-	})
+	$('#bindCardBtn').click(function(){
+        var RealName = $('#realname').val();
+        var Mobile = $('#mobile').val();
+        var IdentificationNo = $('#idcard_num').val();
+        var CardNumber = $('#bankcard').val();
+        var Province = $('.select2_province').select2("val");
+        var City = $('.select2_city').select2("val");
+        var BankCode = $('.select2_bank').select2("val");
+        if(RealName == ""){
+            ui_alert("请输入开户人姓名");
+            return false;
+        }else if(Mobile == ""){
+            ui_alert("请输入手机号");
+            return false;
+        }else if(!validatePhoneNumber(Mobile)){
+            ui_alert("请输入正确手机号");
+            return false;
+        }else if(IdentificationNo == ""){
+            ui_alert("请输入开户人身份证号");
+            return false;
+        }else if(!validateIdCard(IdentificationNo)){
+            ui_alert("身份证号输入有误");
+            return false;
+        }else if(CardNumber == ""){
+            ui_alert("请输入银行卡账号");
+            return false;
+        }else if(!validateBankNum(CardNumber)){
+            ui_alert("银行卡账号有误");
+            return false;
+        }else if(BankCode == ""){
+            ui_alert("请选择开户银行");
+            return false;
+        }else if(Province == ""){
+            ui_alert("请选择省份");
+            return false;
+        }else if(City == ""){
+            ui_alert("请选择城市");
+            return false;
+        }
+        ajax_jquery({
+            url: apiUrl +'/guarantee/account/bindCard',
+            data:{
+                "RealName": RealName,
+                "Mobile": Mobile,
+                "IdentificationNo": IdentificationNo,
+                "CardNumber": CardNumber,
+                "Province": Province,
+                "City": City,
+                "BankCode": BankCode
+            },
+            success:function(resp){
+                if (resp.code == "1" ) {
+                        ui_alert("银行卡绑定成功","success");
+                        window.location.href = "/guarantee/account/index";
+                } else {
+                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+                        ui_alert(resp.msg);
+                    } else {
+                        ui_alert("绑定失败，请重试或联系客服!");
+                    }
+                    return false;
+                }
+            }
+        });
+    });
 })
 </script>
 {/block}
