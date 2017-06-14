@@ -126,10 +126,10 @@ $(function(){
             ui_alert("请输入正确手机号");
             return false;
         }else if(IdentificationNo == ""){
-            ui_alert("请输入开户人省");
+            ui_alert("请输入开户人身份证号");
             return false;
         }else if(!validateIdCard(IdentificationNo)){
-            ui_alert("请输入正确手机号");
+            ui_alert("身份证号输入有误");
             return false;
         }
         ajax_jquery({

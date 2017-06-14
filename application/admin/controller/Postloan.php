@@ -164,7 +164,7 @@ class Postloan extends Admin {
 		}
 	}
 
-	public function singview() {
+	public function signview() {
 
 		if (IS_POST) {
 			$data = input('post.');

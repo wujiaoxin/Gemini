@@ -312,6 +312,29 @@ var TableManaged = function () {
             jQuery('#table-postloan-withhold_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
             // jQuery('#table-postloan-withhold_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown
 
+            // 贷后管理模块-代扣审核列表table id="table-postloan-sign"
+            $('#table-postloan-sign').dataTable({
+                "aoColumns": [
+                    { "bSortable": true },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ],
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
+                configData
+            });
+
+            jQuery('#table-postloan-sign .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#table-postloan-sign .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            // jQuery('#table-postloan-sign .dataTables_length select').select2(); // initialzie select2 dropdown
+
+
             // 风控管理模块-客户评级table id="table-rating"
             $('#table-rating').dataTable({
                 "aoColumns": [
