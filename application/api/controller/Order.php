@@ -60,7 +60,7 @@ class Order extends Api {
 		return json($resp);
 	}
 	
-	public function getList($status = null, $type = null,$page = 15) {
+	public function getList($status = null, $type = null) {
 		$map = '';
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
@@ -103,7 +103,7 @@ class Order extends Api {
 			
 			$sort = "id desc";
 			$map .= ' and credit_status = 3';
-			$list  = db('Order')->where($map)->order($sort)->paginate($page);
+			$list  = db('Order')->where($map)->order($sort)->paginate(15);
 			
 			$resp['code'] = 1;
 			$resp['msg'] = 'OK';
@@ -112,7 +112,7 @@ class Order extends Api {
 		}else{
 			$Order = model('Order');
 
-			$list = $Order->get_order_list($uid, $role, $type, $status,$page);
+			$list = $Order->get_order_list($uid, $role, $type, $status);
 			$resp['code'] = 1;
 			$resp['msg'] = 'OK';
 			$resp['data'] = $list;
@@ -135,7 +135,7 @@ class Order extends Api {
 	}
 	
 	
-	public function save($id = null, $type = null, $mobile = null, $idcard = null, $loan_limit = null, $loan_term = null) {
+	public function save($id = null, $loan_limit = null, $loan_term = null) {
 		// $uid = session('user_auth.uid');
 		$uid = $id;
 		$resp['code'] = 0;
