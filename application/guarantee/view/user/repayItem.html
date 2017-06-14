@@ -171,7 +171,12 @@
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	$('#table-repayItem tbody').html(tpl(resp.data));
-	            	$('#table-repayItem').dataTable({"bDestroy":true});
+	            	$('#table-repayItem').dataTable({
+	            		"bDestroy":true,
+	            		"aaSorting": [
+		                    [ 0, "desc" ]
+		                ]
+	            	});
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);

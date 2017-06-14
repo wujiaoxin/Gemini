@@ -1,0 +1,84 @@
+{extend name="public/base"/}
+{block name="style"}
+
+<!-- <link type="text/css" href="__PUBLIC__/css/libs/bootstrap-editable.css"> -->
+<link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
+<link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
+{/block}
+{block name="body"}
+<div class="main-box clearfix">
+	<header class="main-box-header clearfix">
+		<div class="pull-left">
+			<h2>{$meta_title}</h2>
+		</div>
+	</header>
+	<div class="main-box-body clearfix">
+		<div class="clearfix">
+			<table class="table table-hover" id="table-postloan-withhold">
+				<thead>
+					<tr>
+						<th>客户ID</th>
+						<th>订单号</th>
+						<th>真实姓名</th>
+						<th>银行卡号</th>
+						<th>创建时间</th>
+						<th>签约时间</th>
+						<th>签约状态</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="__JS__/table-managed.js"></script>
+<script type="text/javascript" src="__JS__/manager.js"></script>
+<script type="text/javascript">
+	function tpl(data){
+		var html = '';
+		var g_signStatus = {'-1':'签约失败','0':'待签约','1':'签约成功','2':'签约中','3':'银行卡异步签约失败'};
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+			var opera = '';
+			if(data[index].signstatus == '0'){
+				opera ='<a href="/admin/postloan/view?id='+ data[index].id + '">审核</a>';
+			}else{
+				opera = '';
+			}
+
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + data[index].uid + '</td>'
+		  		+'<td>' + data[index].papercontract + '</td>'
+		  		+'<td>'+ data[index].realname +'</td>'
+		  		+'<td>'+ data[index].bankcard +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
+		  		+'<td>'+ formatDate(data[index].update_time) +'</td>'
+		  		+'<td>'+ g_signStatus[data[index].signstatus] +'</td>'
+		  		+'<td>'+ opera +'</td>'
+		  		 +'</tr>'
+			}
+		}
+		return html;
+	};
+	$('#table-postloan-withhold tbody').html(tpl(info));
+
+    $(function(){
+    	TableManaged.init();
+    });
+</script>
+
+{/block}
