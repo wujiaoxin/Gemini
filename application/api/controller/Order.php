@@ -29,17 +29,20 @@ class Order extends Api {
 		$resp['msg'] = 'OrderAPI';
 		return json($data);
 	}
-	
 	//添加
-	public function add($mobile = null, $price = null) {
+	public function add($mobile = null,$price = null) {
 
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
 		// echo $role;die;
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-		$data = input('post.');
-		if ($data['mobile'] == '' || $data['price'] == '' ) {
+		$data =array(
+			'mobile'=>$mobile,
+			'price'=>$price
+		);
+		// $data = input();
+		if (empty($data)) {
 			$resp['code'] = 0;
 			$resp['msg'] = '无法创建订单';
 		}
