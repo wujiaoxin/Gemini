@@ -202,23 +202,6 @@
     return $data;
   }
   /*
-  ** status 订单状态
-  ** type 业务类型
-  */ 
-  function get_orders($uid,$status=0,$type){
-    if ($type == 'order_repay') {
-        $ids = db('dealer')->field('id')->where('mobile',$uid)->find();
-        $map = 'loantime <20';
-        $data = db('order_repay')->where('dealer_id',$ids['id'])->where($map)->select();
-        foreach ($data as $k => $v) {
-          $type = db('order')->field('type')->where('id',$v['order_id'])->find();
-          $data[$k]['type'] = $type['type'];
-        }
-    }
-    return $data;
-  }
-
-  /*
   **时间类型
   */
   function to_datetime($dateRange){

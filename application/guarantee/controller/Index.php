@@ -27,35 +27,32 @@ class Index extends Baseness {
 		}
 	}*/
 	public function index() {
-		$mobile = session('business_mobile');
-		$uid = session('user_auth.uid');
-		$role = session('user_auth.role');
+		$role =session('user_auth.role');
+		$uid =session('user_auth.uid');
 		if ($role != '18') {
-			$mobile = db('dealer')->alias('d')->field('d.mobile')->join('__MEMBER__ m','m.dealer_id = d.id')->where('m.uid',$uid)->find();
-			$uids = db('member')->field('uid')->where('mobile',$mobile['mobile'])->find();
-			$where = 'status in(0,1,3,4,5) and mid = '.$uids['uid'];//借款项目
-			$order_repay = get_orders($mobile['mobile'],'0','order_repay');//还款项目
-			$order_pay = db('dealer_money')->where('uid',$uids['uid'])->order('id DESC')->limit(5)->select();//交易记录
-			$money = get_money($uids['uid'],'money');//资金
-			$lines = db('dealer')->field('lines,lines_ky,name')->where('mobile',$mobile['mobile'])->find();
-
-		}else{
-
-			$where = 'status in(0,1,3,4,5) and mid = '.$uid;//借款项目
-			$order_repay = get_orders($mobile,'0','order_repay');//还款项目
-			$order_pay = db('dealer_money')->where('uid',$uid)->order('id DESC')->limit(5)->select();//交易记录
-			$money = get_money($uid,'money');//资金
-			$lines = db('dealer')->field('lines,lines_ky,name')->where('mobile',$mobile)->find();
+			$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+			$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
+			$uid = $res['uid'];
 		}
-		
-       	$order_loan = model('order')->where($where)->limit(5)->order('status ASC,id DESC')->select();
-		
+		//借款项目
+		$map = array(
+				'd.guarantee_id'=>$uid
+			);
+		$order_loan = db('Order')->alias('o')->field('o.*')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
+		//还款项目
+
+		$order_repay = db('order_repay')->alias('r')->alias('o')->field('o.*')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->where($map)->select();
+		//交易记录
+
+		$order_pay = db('dealer_money')->alias('r')->alias('o')->field('o.*')->join('__DEALER__ d','o.uid = d.id','LEFT')->where($map)->select();
+
+		//资金
 		$info = array(
 			'order_loan'=>$order_loan,
-			'money'=>$money,
-			'lines'=>$lines,
+			// 'money'=>$money,
+			// 'lines'=>$lines,
 			'order_repay'=>$order_repay,
-			'order_pay'=>$order_pay,
+			// 'order_pay'=>$order_pay,
 			);
 		$data = array(
 				'info'=>$info,
