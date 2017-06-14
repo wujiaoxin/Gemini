@@ -51,7 +51,7 @@ class Order extends \app\common\model\Base {
 	}
 	
 	
-	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null,$page = 15){
+	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null){
 		if ($role == '0') {
 			$ids = db('member')->field('mobile')->where('uid',$uid)->find();
 			$filter['mobile'] = $ids['mobile'];
@@ -80,7 +80,7 @@ class Order extends \app\common\model\Base {
 		}
 		$sort = "id desc";
 		$filter['credit_status'] = '3';
-		$list = db('Order')->where($filter)->order($sort)->paginate($page);
+		$list = db('Order')->where($filter)->order($sort)->paginate(15);
 		// $list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
 		return $list;
 	}
