@@ -1,7 +1,29 @@
 {extend name="base"/}
 {block name="style"}
+<link rel="stylesheet" href="/public/business/lib/metronic/css/select2_metro.css">
 <link rel="stylesheet" href="/public/business/lib/metronic/css/glyphicons.css">
 <link rel="stylesheet" href="/public/business/css/account.css">
+<style type="text/css" media="screen">
+	.select2_bank {
+		width: 220px;
+	}
+	.select2_province,
+	.select2_city{
+		width: 108px;
+	}
+	.select2-drop {
+        z-index: 10050 !important;
+    }
+    .select2-search-choice-close {
+        margin-top: 3px !important;
+        right: 20px !important;
+        min-height: 10px;
+    }
+
+    .select2-search-choice-close:before {
+        color: black !important;
+    }
+</style>
 <script>
 	var info = {};
 	try {
@@ -44,6 +66,18 @@
 		</div>
 	</div>
 	<div class="row-fluid account-item">
+		<div class="protrait span1"><a href="#" class="glyphicons credit_card"><i></i></a></div>
+		<div class="span3">
+			<h4>绑定银行卡</h4>
+			<p class="sub-title">线上支付转账、方便快捷</p>
+		</div>
+		<div class="index-info span5" id="item-bankcard">
+			<a href="#" class="glyphicons"><i class=""></i></a>
+			<span></span>
+		</div>
+		<div class="span2 account-item-btn"><a data-toggle="modal" href="#bankcardModal" class="btn">设置</a></div>
+	</div>
+	<div class="row-fluid account-item">
 		<div class="protrait span1"><a href="#" class="glyphicons lock"><i></i></a></div>
 		<div class="span3">
 			<h4>交易密码</h4>
@@ -81,6 +115,66 @@
 	</div>
 </div>
 
+<!-- 银行卡绑定弹窗 -->
+<div id="bankcardModal" class="modal hide fade">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	    <h3>绑定银行卡</h3>
+	</div>
+	<div class="modal-body">
+	    <div class="alert hide">
+	      	<a class="close"></a>
+	      	<span></span>
+	    </div>
+	    <div class="form-horizontal">
+	    	<div class="control-group">
+		        <label class="control-label">银行卡号</label>
+		        <div class="controls">
+		          	<input type="number" class="m-wrap" id="bankcard-account" disabled="disabled">
+		        </div>
+		    </div>
+	      	<div class="control-group">
+		        <label class="control-label">开户银行</label>
+		        <div class="controls">
+		          	<select class="select2_bank" data-placeholder="请选择开户银行">
+					</select>
+		        </div>
+		    </div>
+		    <div class="control-group">
+		        <label class="control-label">开户地址</label>
+		        <div class="controls">
+		          	<select class="select2_province" data-placeholder="请选择省份">
+					</select>
+					<select class="select2_city" data-placeholder="请选择城市">
+						<option value=""></option>
+					</select>
+		        </div>
+		    </div>
+	      	<div class="control-group">
+	        	<label class="control-label">开户人姓名</label>
+	        	<div class="controls">
+	          		<input type="text" class="m-wrap" id="bankcard-name">
+	        	</div>
+	      	</div>
+	      	<div class="control-group">
+	        	<label class="control-label">开户人手机号</label>
+	        	<div class="controls">
+	          		<input type="number" class="m-wrap" id="bankcard-mobile">
+	        	</div>
+	      	</div>
+	      	<div class="control-group">
+	        	<label class="control-label">开户人身份证号</label>
+	        	<div class="controls">
+	          		<input type="text" class="m-wrap" id="bankcard-idcard">
+	        	</div>
+	      	</div>
+	    </div>
+	</div>
+	<div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn">关闭</button>
+	    <a class="btn blue" id="bindCardBtn">确认修改</a>
+	</div>
+</div>
 <!-- 交易密码弹窗 -->
 <div id="payPasswordModal" class="modal hide fade">
 	<div class="modal-header">
@@ -192,7 +286,12 @@
 </div>
 {/block}
 {block name="script"}
-<script src="/public/business/js/validate.js" type="text/javascript"></script>
+<script type="text/javascript" src="/public/business/js/validate.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js" ></script>
+<script type="text/javascript" src="/public/guarantee/js/selectBankInfo.js" ></script>
+<script type="text/javascript">
+ $.fn.modal.Constructor.prototype.enforceFocus = function () {};
+ </script>
 <script>
 	function hasData(id,spanText){
 		$('#'+id).find('.glyphicons').addClass('circle_ok')
@@ -206,11 +305,22 @@
 						.next('span').text(spanText);
 	}
 
+	$('#bankcardModal').on('hide.bs.modal', function () {
+	 	$('.select2-drop').hide();
+	})
+
 	jQuery(document).ready(function () {
 		var mobile = encryptMobile(info['mobile']);
 		$('#dealer_name').text(info['name']);
 		$('#dealer_mobile').text(mobile);
 		$('.originalMobile').val(info['mobile']);
+
+		//银行卡绑定弹窗
+		$('#bankcard-name').val(info.rep);
+	 	$('#bankcard-mobile').val(info.mobile);
+	 	$('#bankcard-idcard').val(info.idno);
+	 	$('#bankcard-account').val(info.priv_bank_account_id);
+
 
 		if(typeof(info['idno']) == 'string'){
 			hasData('item-idno',info['rep']+' '+encryptID(info['idno']));
@@ -230,11 +340,84 @@
 			hasNoData('item-payPwd','未设置');
 		}
 
+		if(typeof(info['bindcard']) == 'string'){
+			hasData('item-bankcard',encryptBankcard(info['bindcard']));
+			$('#item-bankcard').next('.account-item-btn').hide();
+		}else{
+			hasNoData('item-bankcard','未设置');
+		}
+
 		if(typeof(info['email']) == 'string'){
 			hasData('item-mail',encryptMail(info['email']));
 		}else{
 			hasNoData('item-mail','未绑定');
 		}
+
+		$('#bindCardBtn').click(function(){
+			var RealName = $('#bankcard-name').val();
+			var Mobile = $('#bankcard-mobile').val();
+			var IdentificationNo = $('#bankcard-idcard').val();
+			var CardNumber = $('#bankcard-account').val();
+			var Province = $('.select2_province').select2("val");
+			var City = $('.select2_city').select2("val");
+			var BankCode = $('.select2_bank').select2("val");
+			if(CardNumber == ""){
+        		ui_alert("请输入银行卡账号");
+        		return false;
+        	}else if(!validateBankNum(CardNumber)){
+				ui_alert("银行卡账号有误");
+        		return false;
+        	}else if(BankCode == ""){
+				ui_alert("请选择开户银行");
+        		return false;
+        	}else if(Province == ""){
+				ui_alert("请选择省份");
+        		return false;
+        	}else if(City == ""){
+				ui_alert("请选择城市");
+        		return false;
+        	}else if(RealName == ""){
+				ui_alert("请输入开户人姓名");
+        		return false;
+        	}else if(Mobile == ""){
+				ui_alert("请输入手机号");
+        		return false;
+        	}else if(!validatePhoneNumber(Mobile)){
+        		ui_alert("请输入正确手机号");
+        		return false;
+        	}else if(IdentificationNo == ""){
+				ui_alert("请输入开户人省");
+        		return false;
+        	}else if(!validateIdCard(IdentificationNo)){
+        		ui_alert("请输入正确手机号");
+        		return false;
+        	}
+	        ajax_jquery({
+	            url: apiUrl +'/guarantee/account/bindCard',
+	            data:{
+	            	"RealName": RealName,
+	            	"Mobile": Mobile,
+	            	"IdentificationNo": IdentificationNo,
+	            	"CardNumber": CardNumber,
+	            	"Province": Province,
+	            	"City": City,
+	            	"BankCode": BankCode
+	            },
+	            success:function(resp){
+	                if (resp.code == "1" ) {
+	                		ui_alert("银行卡绑定成功","success");
+	                        window.location.href = "/guarantee/account/index";
+	                } else {
+	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+	                        ui_alert(resp.msg);
+	                    } else {
+	                        ui_alert("绑定失败，请重试或联系客服!");
+	                    }
+	                    return false;
+	                }
+	            }
+	        });
+		});
 
 		$('#payPasswordBtn').click(function(){
 			var smsVerify = $('#payPwd-smsVerify').val();
@@ -257,7 +440,7 @@
         		return false;
     		}
 	        ajax_jquery({
-	            url: apiUrl +'/business/account/index',
+	            url: apiUrl +'/guarantee/account/index',
 	            data:{
 	            	"smsVerify": smsVerify,
 	            	"newPayPwd": newPayPwd
@@ -265,7 +448,7 @@
 	            success:function(resp){
 	                if (resp.code == "1" ) {
 	                		ui_alert("交易密码修改成功","success");
-	                        window.location.href = "/business/account/index";
+	                        window.location.href = "/guarantee/account/index";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 	                        ui_alert(resp.msg);
@@ -292,7 +475,7 @@
         		return false;
         	}
 	        ajax_jquery({
-	            url: apiUrl +'/business/account/index',
+	            url: apiUrl +'/guarantee/account/index',
 	            data:{
 	            	"smsVerify": smsVerify,
 	            	"newMobile": newMobile
@@ -300,7 +483,7 @@
 	            success:function(resp){
 	                if (resp.code == "1" ) {
 	                		ui_alert("手机号修改成功","success");
-	                        window.location.href = "/business/account/index";
+	                        window.location.href = "/guarantee/account/index";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 	                        ui_alert(resp.msg);
@@ -323,14 +506,14 @@
         		return false;
         	}
 	        ajax_jquery({
-	            url: apiUrl +'/business/account/index',
+	            url: apiUrl +'/guarantee/account/index',
 	            data:{
 	            	"email": email
 	            },
 	            success:function(resp){
 	                if (resp.code == "1" ) {
 	                		ui_alert("邮箱修改成功","success");
-	                        window.location.href = "/business/account/index";
+	                        window.location.href = "/guarantee/account/index";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 	                        ui_alert(resp.msg);
