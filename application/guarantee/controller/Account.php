@@ -259,6 +259,42 @@ class Account extends Baseness {
 		$this->assign($data);
 		return $this->fetch();
 	}
+
+	public function bindCard(){
+		$uid = session('user_auth.uid');
+		if (IS_POST) {
+			$data = input('post.');
+			$map = array('bank_account_id'=>$data['CardNumber'],'type'=>1);
+			$res = db('bankcard')->where($map)->find();
+			if (empty($res)) {
+				$arr = array(
+					'uid'=>$uid,
+					'type'=>1,
+					'bank_account_id'=>$data['CardNumber'],
+					'bank_account_name'=>$data['RealName'],
+					'create_time'=>time(),
+					'idcard'=>$data['IdentificationNo']
+				);
+				db('bankcard')->insert($arr);
+			}
+			$epay = new \epay\Epay();
+			$ret = $epay::bankcard($data);
+	        if (empty($ret)) {
+	        	$resp['code'] = '0';
+	        	$resp['msg'] = '绑卡异常,请联系客服';
+	        	return json($resp);
+	        }
+	        $ret  = json_decode($ret,true);
+	        if ($ret['ResultCode'] == '88') {
+	        	$resp['code']='1';
+	        	$resp['msg'] = '绑卡成功';
+	        }else{
+	        	$resp['code'] = '0';
+	        	$resp['msg'] = $ret['Message'];
+	        }
+	        return json($resp);
+		}
+	}
 	public function transaction() {
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
