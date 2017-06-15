@@ -41,46 +41,66 @@
 	</div>
 </div>
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
-  	<div class="modal-dialog modal-sm" role="document">
+  	<div class="modal-dialog" role="document">
     	<div class="modal-content">
       		<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-        		<h4 class="modal-title">放款凭证</h4>
+        		<h4 class="modal-title">放款审核</h4>
         		<input type="hidden" id="orderId">
       		</div>
       	<div class="modal-body form-horizontal">
       		<div class="form-group">
-		    	<label class="col-sm-4 control-label">支付方式</label>
-			    <div class="col-sm-6">
-			      	<p class="form-control-static item-info">账户余额</p>
+		    	<label class="col-sm-2 control-label">订单编号</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" name="id"></p>
+			    </div>
+			    <label class="col-sm-2 control-label">订单类型</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" name="type"></p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		    	<label class="col-sm-4 control-label">渠道名称</label>
-			    <div class="col-sm-6">
-			      	<p class="form-control-static item-info" id="dealer_name"></p>
+		    	<label class="col-sm-2 control-label">放款账户</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" name="bankcard"></p>
+			    </div>
+			    <label class="col-sm-2 control-label">审批额度</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" name="examine_limit"></p>
+			    </div>
+		  	</div>
+		  	<div class="form-group" style="display: none;" id="type1">
+		    	<label class="col-sm-2 control-label">客户名称</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" name="name"></p>
+			    </div>
+			    <label class="col-sm-2 control-label">分期期数</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" name="repay_period"></p>
+			    </div>
+		  	</div>
+		  	<div class="form-group" style="display: none;" id="type2">
+		    	<label class="col-sm-2 control-label">客户名称</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" name="dealer_name"></p>
+			    </div>
+			    <label class="col-sm-2 control-label">还款日期</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" name="repay_time"></p>
 			    </div>
 		  	</div>
 		  	<div class="form-group">
-		    	<label class="col-sm-4 control-label">提交时间</label>
-			    <div class="col-sm-6">
-			      <p class="form-control-static item-info" id="create_time"></p>
+		  		<label class="col-sm-2 control-label">乾多多编号</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" name="qdd_mark"></p>
 			    </div>
-		  	</div>
-		  	<div class="form-group">
-		    	<label class="col-sm-4 control-label">费用类型</label>
-			    <div class="col-sm-6">
-			      <p class="form-control-static item-info">手续费</p>
-			    </div>
-		  	</div>
-		  	<div class="form-group">
-		    	<label class="col-sm-4 control-label">费用金额</label>
-			    <div class="col-sm-6">
-			      <p class="form-control-static item-info" id="fee"></p>
+			    <label class="col-sm-2 control-label">提交时间</label>
+			    <div class="col-sm-4">
+			      	<p class="form-control-static item-info" name="create_time"></p>
 			    </div>
 		  	</div>
           	<div class="form-group">
-            	<label class="col-sm-4 control-label">审核</label>
+            	<label class="col-sm-2 control-label">审核</label>
             	<div class="col-sm-6 pt5">
 	            	<select id="examineStatus">
 	            		<option value="1">通过</option>
@@ -89,9 +109,9 @@
 	            </div>
           	</div>
           	<div class="form-group">
-            	<label class="col-sm-4 control-label">审核备注</label>
+            	<label class="col-sm-2 control-label">审核备注</label>
             	<div class="col-sm-6 pt5">
-            		<textarea class="form-control" id="descr"></textarea>
+            		<textarea class="form-control" id="descr" name="descr"></textarea>
             	</div>
           	</div>
       </div>
@@ -135,6 +155,7 @@
 
     	$('#table-loanExamine').on('click','.opera',function(){
 	   		var orderId = $(this).attr('data');
+	   		var ordertype = {'1':'90贷','2':'vp贷','3':'90贷','4':'vp贷'};
 	   		$("#orderId").val(orderId);
 	   		ajax_jquery({
 		        url: apiUrl + '/admin/finance/loan',
@@ -144,14 +165,22 @@
 		        success:function(resp){
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
-							var name = $(this).attr('id');
+							var name = $(this).attr('name');
 						    if(typeof(resp.data[name])!='object' && this.tagName == 'P'){
 						        $(this).text(resp.data[name]);
 						    }else if(typeof(resp.data[name])!='' && (this.tagName == 'INPUT' || this.tagName == 'TEXTAREA')){
 						    	$(this).val(resp.data[name]);
 						    }
 						});
-						$('#create_time').text(formatDate(resp.data['create_time']));
+						$('p[name=type]').text(ordertype[resp.data.type]);
+						$('p[name=create_time]').text(formatDate(resp.data['create_time']));
+						if(resp.data.type == 1 || resp.data.type == 3){
+							$('#type1').show();
+							$('#type2').hide();
+						}else if(resp.data.type == 2 || resp.data.type == 4){
+							$('#type1').hide();
+							$('#type2').show();
+						}
 				   		$('#myModal').modal();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
@@ -180,7 +209,7 @@
 		        },
 		        success:function(resp){
 		            if (resp.code == "1" ) {
-		            	ui_alert("支付成功","success");
+		            	ui_alert("提交成功","success");
 		            	window.location.reload();
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
