@@ -222,7 +222,8 @@ class Order extends \app\common\model\Base {
 		$data =array(
 			'loan_limit' => $data['loan_limit'],
 			'endtime' => $data['loan_term'],
-			'status'=>'3'
+			'status'=>'3',
+			'type'=>$data['type']
 			);
 		$data['id'] = $uid;
 		$result = $this->save($data,['id'=>$data['id']]);

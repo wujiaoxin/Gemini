@@ -50,31 +50,32 @@
 <script type="text/javascript">
 	function tpl(data){
 		var html = '';
-		var g_signStatus = {'-1':'签约失败','0':'待签约','1':'签约成功','2':'签约中','3':'银行卡异步签约失败'};
+		var g_signStatus = {'-1':'绑卡失败','0':'待绑卡','1':'绑卡成功','2':'绑卡中'};
+		var g_signOrder = {'-1':'C端客户','-2':'担保机构','-3':'担保车商','-4':'资金方'};
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 			var opera = '';
-			if(data[index].signstatus == '0'){
+			if(data[index].status == '2'){
 				opera ='<a href="/admin/postloan/signview?id='+ data[index].id + '">审核</a>';
 			}else{
 				opera = '';
 			}
 
 		  	html += '<tr class="odd gradex">'
-		  		+'<td>' + data[index].uid + '</td>'
-		  		+'<td>' +  + '</td>'
-		  		+'<td>'+ data[index].realname +'</td>'
+		  		+'<td>' + data[index].id + '</td>'
+		  		+'<td>' + g_signOrder[data[index].order_id] + '</td>'
+		  		+'<td>'+ data[index].bank_account_name +'</td>'
 		  		+'<td>'+ data[index].idcard +'</td>'
-		  		+'<td>'+ data[index].bankcard +'</td>'
+		  		+'<td>'+ data[index].bank_account_id +'</td>'
 		  		+'<td>'+ formatDate(data[index].update_time) +'</td>'
-		  		+'<td>'+ g_signStatus[data[index].signstatus] +'</td>'
+		  		+'<td>'+ g_signStatus[data[index].status] +'</td>'
 		  		+'<td>'+ opera +'</td>'
 		  		 +'</tr>'
 			}
 		}
 		return html;
 	};
-	$('#table-postloan-withhold tbody').html(tpl(info));
+	$('#table-postloan-sign tbody').html(tpl(info));
 
     $(function(){
     	TableManaged.init();
