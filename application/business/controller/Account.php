@@ -68,7 +68,7 @@ class Account extends Baseness {
   			}
 		}else{
 			$mobile = session("business_mobile");
-      		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_coded,d.priv_bank_account_id')->where('m.mobile',$mobile)->find();
+      		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code,d.priv_bank_account_id')->where('m.mobile',$mobile)->find();
 	      	if ($account){
 	            $data['infoStr'] = json_encode($account);
 	            $data = array(

@@ -32,15 +32,15 @@ class Index extends Baseness {
 		$uid = session('user_auth.uid');
 		$where = 'status in(0,1,3,4,5) and mid = '.$uid;//借款项目
        	$order_loan = model('order')->where($where)->limit(5)->order('status ASC,id DESC')->select();
-		$order_repay = get_orders($mobile,'0','order_repay');//还款项目
 		$order_pay = db('dealer_money')->where('uid',$uid)->order('id DESC')->limit(5)->select();;//交易记录
-		$money = get_money($uid,'money');//资金
-		$lines = db('dealer')->field('lines,lines_ky,name')->where('mobile',$mobile)->find();
+
+		$money = get_money($uid);//资金
+
+		$lines = db('dealer')->field('name')->where('mobile',$mobile)->find();
 		$info = array(
 			'order_loan'=>$order_loan,
 			'money'=>$money,
 			'lines'=>$lines,
-			'order_repay'=>$order_repay,
 			'order_pay'=>$order_pay,
 			);
 		$data = array(

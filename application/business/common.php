@@ -153,72 +153,39 @@
   /*
   ** 首页资金记录
   ** uid 车商uid
-  ** type 资金类型
   */
-  function get_money($uid,$type){
+  function get_money($uid){
     $mobile = session('business_mobile');
-    if($type == 'money'){
-      //可用资金(记录为可提订单金额)
-        $types = '2,4';
-        $map = array(
-          'mid'=>$uid,
-          'finance'=>'3',
-          'type'=>array('IN',$types)
-          );
-        $money = db('order')->where($map)->sum('examine_limit');
-      //借款金额（记录为状态未审核通过）
-        $where = array(
-            'mid'=>$uid,
-          );
-        $name = '3,4,5';
-        $where['status'] = array('IN',$name);
-        $where['type'] = array('IN',$types);
-        $money_jk = db('order')->where($where)->sum('examine_limit');
-      //待还资金
-         $uids = db('dealer')->alias('d')->field('d.id')->join('__MEMBER__ m','m.mobile = d.mobile')->where('m.uid',$uid)->find();
-        $where_repay = array(
-          'dealer_id'=>$uids['id'],
-          'status'=>'-1',
-          );
-        $wheres = 'loantime < 50';
-        $repay_money = db('order_repay')->where($where_repay)->where($wheres)->sum('repay_money');
-        // 借款中的订单
+    //可用资金(记录为可提订单金额)
+      // $types = '2,4';
+      $map = array(
+        'mid'=>$uid,
+        'finance'=>'3',
+        // 'type'=>array('IN',$types)
+      );
+      $money = db('order')->where($map)->sum('examine_limit');
 
-        $order_loan = db('order')->where($where)->count('id');
-        //还款中的订单
-        $map_where = array(
+    //审核中（记录为状态未审核通过）
+      $where = array( 'mid'=>$uid);
+      $status = '0,3,4,5';
+      $where['status'] = array('IN',$status);
+      // $where['type'] = array('IN',$types);
+      $money_jk = db('order')->where($where)->sum('loan_limit');
+      $order_loan = db('order')->where($where)->count('id');
 
-          'dealer_id'=>$uids['id'],
-          'status' => '-1',
-          );
-        $order_repay = db('order_repay')->where($map_where)->where($wheres)->count('id');
-        $data = array(
-          'available_money'=>$money,
-          'loan_money'=>$money_jk,
-          'repay_money'=>(string)$repay_money,
-          'order_loan_num'=>$order_loan,
-          'order_repay_num'=>$order_repay,
-          );
-    }
+    //全部订单
+      // $map['type'] = array('IN',$types);
+      $money_total = db('order')->where('mid',$uid)->sum('loan_limit');
+      $order_loan_total = db('order')->where('mid',$uid)->count('id');
+      $data = array(
+        'available_money'=>$money,
+        'loan_money'=>$money_jk,
+        'order_loan_num'=>$order_loan,
+        'repay_money'=>$money_total,
+        'order_repay_num'=>$order_loan_total
+        );
     return $data;
   }
-  /*
-  ** status 订单状态
-  ** type 业务类型
-  */ 
-  function get_orders($uid,$status=0,$type){
-    if ($type == 'order_repay') {
-        $ids = db('dealer')->field('id')->where('mobile',$uid)->find();
-        $map = 'loantime <20';
-        $data = db('order_repay')->where('dealer_id',$ids['id'])->where($map)->select();
-        foreach ($data as $k => $v) {
-          $type = db('order')->field('type')->where('id',$v['order_id'])->find();
-          $data[$k]['type'] = $type['type'];
-        }
-    }
-    return $data;
-  }
-
   /*
   **时间类型
   */
