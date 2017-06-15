@@ -241,18 +241,18 @@
 									<label class="control-label">操作</label>
 									<div class="controls">
 										<select id="examineStatus">
-											<option value="1" id="examinePass">审核通过</option>
-											<option value="2">审核不通过</option>
-											<option value="5">补充资料</option>
+											<option value="">请选择</option>
+											<option value="14">放款审核</option>
+											<option value="3">申请垫资</option>
 										</select>
 									</div>
 								</div>
 							</div>
 							<div class="span6">
 								<div class="control-group">
-									<label class="control-label">审批备注</label>
+									<label class="control-label">打款账户</label>
 									<div class="controls">
-										<textarea id="descr"></textarea>
+										<input type="number">
 									</div>
 								</div>
 							</div>
@@ -297,7 +297,7 @@
 	// 审批历史
 	function historyTpl(data){
 		var html = '';
-		var operate = {'view':'查看','loan':'放款审核','recharge':'充值','withdraw':'提现','receivable':'回款','datareview':'资料审核','loanlimit':'额度审核','creditreview':'信用审核','trial':'初级审核'};
+		var operate = {'view':'查看','loan':'放款审核','recharge':'充值','withdraw':'提现','receivable':'回款','datareview':'资料审核','loanlimit':'额度审核'};
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 			var i = index + 1;
@@ -420,27 +420,11 @@
 		return limit;
 	}
 
-	var ajaxUrl = '';
-	var referrer = window.document.referrer;
-	if(referrer.indexOf('dataReview') != '-1' && info['order_info']['status'] == '11'){
-		$('#examine_limit_block').hide();
-		$('#examinePass').val('12');
-		$('#loan_limit').val(checkLimit(info['order_info']['loan_limit']));
-		ajaxUrl = '/guarantee/examine/creditReview';
-	}else if(referrer.indexOf('loanLimit') != '-1' && info['order_info']['status'] == '12'){
-		$('#proposal_limit').attr('disabled','disabled');
-		$('#examinePass').val('13');
-		$('#loan_limit').val(checkLimit(info['order_info']['loan_limit']));
-		$('#proposal_limit').val(checkLimit(info['order_info']['proposal_limit']));
-		ajaxUrl = '/guarantee/examine/loanlimit';
-	}else{
-		$('#orderExamineBtn').hide();
-		$('#proposal_limit').attr('disabled','disabled');
-		$('#examine_limit').attr('disabled','disabled');
-		$('#loan_limit').val(checkLimit(info['order_info']['loan_limit']));
-		$('#proposal_limit').val(checkLimit(info['order_info']['proposal_limit']));
-		$('#examine_limit').val(checkLimit(info['order_info']['examine_limit']));
-	}
+	$('#proposal_limit').attr('disabled','disabled');
+	$('#examine_limit').attr('disabled','disabled');
+	$('#loan_limit').val(checkLimit(info['order_info']['loan_limit']));
+	$('#proposal_limit').val(checkLimit(info['order_info']['proposal_limit']));
+	$('#examine_limit').val(checkLimit(info['order_info']['examine_limit']));
 
 
 </script>
@@ -451,32 +435,17 @@ $(function(){
 	$('#orderExamineBtn').click(function(){
 		var id = info['order_info']['id'];
 		var status = $('#examineStatus').val();
-		var proposal_limit = $('#proposal_limit').val();
-		var examine_limit = $('#examine_limit').val();
-		var descr = $('#descr').val().replace(/\n/g,"");
-		if(info['order_info']['status'] == '11' && proposal_limit == ''){
-			ui_alert('请输入建议金额');
-			return false;
-		}else if(info['order_info']['status'] == '12' && examine_limit == ''){
-			ui_alert('请输入审批金额');
-			return false;
-		}else if(status == ''){
-			ui_alert('请选择审核结果');
-			return false;
-		}
+
 		ajax_jquery({
-	        url: apiUrl + ajaxUrl,
+	        url: apiUrl + 'guarantee/examine/fview',
 	        data:{
 	        	'id': id,
-	        	'status': status,
-	        	'proposal_limit':proposal_limit,
-	        	'examine_limit': examine_limit,
-	        	'descr': descr
+	        	'status': status
 	        },
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	ui_alert("审核通过","success");
-	            	window.location.href = apiUrl + "/guarantee/examine/loanLimit";
+	            	window.location.href = apiUrl + "/guarantee/examine/finance";
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);

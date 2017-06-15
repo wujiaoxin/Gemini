@@ -87,6 +87,78 @@ $(function(){
 
     $('#status').val(info['status']);
 
+    //银行卡绑定弹窗
+    $('#bankcard-name').val(info.rep);
+    $('#bankcard-mobile').val(info.mobile);
+    $('#bankcard-idcard').val(info.idno);
+    $('#bankcard-account').val(info.priv_bank_account_id);
+
+    $('#bindCardBtn').click(function(){
+        var RealName = $('#bankcard-name').val();
+        var Mobile = $('#bankcard-mobile').val();
+        var IdentificationNo = $('#bankcard-idcard').val();
+        var CardNumber = $('#bankcard-account').val();
+        var Province = $('.select2_province').select2("val");
+        var City = $('.select2_city').select2("val");
+        var BankCode = $('.select2_bank').select2("val");
+        if(CardNumber == ""){
+            ui_alert("请输入银行卡账号");
+            return false;
+        }else if(!validateBankNum(CardNumber)){
+            ui_alert("银行卡账号有误");
+            return false;
+        }else if(BankCode == ""){
+            ui_alert("请选择开户银行");
+            return false;
+        }else if(Province == ""){
+            ui_alert("请选择省份");
+            return false;
+        }else if(City == ""){
+            ui_alert("请选择城市");
+            return false;
+        }else if(RealName == ""){
+            ui_alert("请输入开户人姓名");
+            return false;
+        }else if(Mobile == ""){
+            ui_alert("请输入手机号");
+            return false;
+        }else if(!validatePhoneNumber(Mobile)){
+            ui_alert("请输入正确手机号");
+            return false;
+        }else if(IdentificationNo == ""){
+            ui_alert("请输入开户人身份证号");
+            return false;
+        }else if(!validateIdCard(IdentificationNo)){
+            ui_alert("身份证号输入有误");
+            return false;
+        }
+        ajax_jquery({
+            url: apiUrl +'/guarantee/account/bindCard',
+            data:{
+                "RealName": RealName,
+                "Mobile": Mobile,
+                "IdentificationNo": IdentificationNo,
+                "CardNumber": CardNumber,
+                "Province": Province,
+                "City": City,
+                "BankCode": BankCode
+            },
+            success:function(resp){
+                if (resp.code == "1" ) {
+                        ui_alert("银行卡绑定成功","success");
+                        window.location.href = "/guarantee/account/index";
+                } else {
+                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+                        ui_alert(resp.msg);
+                    } else {
+                        ui_alert("绑定失败，请重试或联系客服!");
+                    }
+                    return false;
+                }
+            }
+        });
+    });
+
     $('#dealerExamineBtn').click(function(){
         var name = $("#name").val();
         var credit_code = $("#credit_code").val();

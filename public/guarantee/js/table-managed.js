@@ -49,9 +49,8 @@ var TableManaged = function () {
                     null,
     				{ "bSortable": false }
                 ],
-                "aLengthMenu": [
-                    [5, 10, 15, 20, -1],
-                    [5, 10, 15, 20, "全部"]
+                "aaSorting": [
+                    [ 0, "desc" ]
                 ],
                 config
             });
@@ -73,6 +72,9 @@ var TableManaged = function () {
                     null,
                     { "bSortable": false }
                 ],
+                "aaSorting": [
+                    [ 1, "desc" ]
+                ],
                 config
             });
             jQuery('#table-assetChannel_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
@@ -83,7 +85,7 @@ var TableManaged = function () {
             // 借款项目-借款项目table  id="table-loanItem"
             $('#table-loanItem').dataTable({
                 "aoColumns": [
-                    { "bSortable": true },
+                    { "bSortable": false },
                     null,
                     null,
                     null,
@@ -92,6 +94,9 @@ var TableManaged = function () {
                     null,
                     null,
                     null
+                ],
+                "aaSorting": [
+                    [ 0, "desc" ]
                 ],
                 config
             });
@@ -132,6 +137,9 @@ var TableManaged = function () {
                     null,
                     null
                 ],
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
                 config
             });
             jQuery('#table-payItem_wrapper .dataTables_filter input').addClass("m-wrap medium");
@@ -170,6 +178,9 @@ var TableManaged = function () {
                     null,
                     null,
                     { "bSortable": false }
+                ],
+                "aaSorting": [
+                    [ 0, "desc" ]
                 ],
                 config
             });
