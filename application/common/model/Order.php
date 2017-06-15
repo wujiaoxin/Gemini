@@ -192,7 +192,7 @@ class Order extends \app\common\model\Base {
 		if ($is_order['status'] == -2) {
 			$data['car_price'] = $data['price'];
 			$result = $this->allowField(true)->save($data,['id'=>$is_order['id']]);
-			return 111;
+			return $is_order['id'];
 
 		}else{
 			$order_sn = $this->build_order_sn();

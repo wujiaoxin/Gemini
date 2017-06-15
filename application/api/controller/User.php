@@ -72,20 +72,31 @@ class User extends Api {
 		}
 	}
 	
-	public function login($mobile = '', $password = '', $imgverify = null, $sid = null){
+	public function login($mobile = '', $password = '', $imgverify = null, $smsverify=null, $sid = null){
 		$resp["code"] = 0;
 		$resp["msg"] = '未知错误';		
-		if (!$mobile || !$password) {
-			$resp["code"] = 0;
-			$resp["msg"] = '用户名或者密码不能为空！';
-			return json($resp);
-		}		
+				
 		//验证码验证 TODO
 		//$this->checkVerify($verify);
 
 		$user = model('User');
-		$uid  = $user->login($mobile, $password);
+		if ($smsverify) {
+			$uid  = $user->ulogin($mobile, $smsverify);
+			/* 验证验证码 */
+			$storeSmsCode = session('smsCode');
+			if ($smsverify != $storeSmsCode) {
+				return ['code'=>1005,'msg'=>'短信验证码错误'];
+			}
+		}else{
+			if (!$mobile || !$password) {
+				$resp["code"] = 0;
+				$resp["msg"] = '用户名或者密码不能为空！';
+				return json($resp);
+			}
+			$uid  = $user->login($mobile, $password);
+		}
 		if ($uid > 0) {
+			
 			
 			//session('uid',$uid);
 			//session('mobile',$mobile);
@@ -391,7 +402,60 @@ class User extends Api {
 			$resp["data"] = $data;
 		}
 		return json($resp);
-	}	
+	}
 	
+
+
+	public function urlogin($mobile = '',$smsverify = null, $sid = null){
+		$resp["code"] = 0;
+		$resp["msg"] = '未知错误';
+
+		if (!$mobile) {
+			$resp["code"] = 0;
+			$resp["msg"] = '用户名不能为空！';
+			return json($resp);
+		}
+		$user = model('User');
+		$uid  = $user->ulogin($mobile, $smsverify);
+		if ($uid > 0) {
+			
+			$token = generateToken($uid, $sid);
+			session('token',$token);
+			
+			$userInfo = db('member')->field('uid,mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
+			$userInfo['roleid'] = $userInfo['access_group_id'];
+			unset($userInfo['access_group_id']);
+			
+			if(empty($userInfo['headerimgurl'])){
+				$userInfo['headerimgurl'] = "https://www.vpdai.com/public/images/default_avatar.jpg";
+			}
+			$userInfo['token'] = generateToken($uid, $sid);
+			
+			$resp["code"] = 1;
+			$resp["msg"] = '登录成功';	
+			$resp["data"] = $userInfo;
+			
+			return json($resp);
+		} else {
+			switch ($uid) {
+				case -1:{
+						$resp["code"] = 0;
+						$resp["msg"] = "用户不存在或被禁用！";
+						break; //系统级别禁用
+				}
+				case -2:{
+						$resp["code"] = 1002;
+						$resp["msg"] = "密码错误";
+						break;
+					}
+				default:{
+						$resp["code"] = 0;
+						$resp["msg"] = "登录失败";
+						break; // 0-接口参数错误（调试阶段使用）
+					}
+				}
+			return json($resp);
+		}
+	}
 }
 

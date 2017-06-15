@@ -36,16 +36,6 @@ class risk extends Admin {
 				return $this->error("已审核！");
 			}
 
-			$res = $data['manual_verification'];
-			
-			$results = json_decode($res,true);
-
-			$results['uid'] = $res_crd['uid'];
-			$results['credit_id'] = $data['id'];
-			$results['create_time'] = time();
-			
-			db('customer_info')->insert($results);
-
 			if ($data['refuse_reason'] == '3' && $res_crd['credit_result'] == '0') {
 				$risks = model('Risk');
 				
@@ -99,7 +89,7 @@ class risk extends Admin {
 			}
 			
 		}else{
-			$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard,o.car_price,m.bankcard')->join('__MEMBER__ m','c.uid = m.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.id",$id)->order('id desc')->fetchSQL(false)->find();
+			$creditList = db('credit')->alias('c')->field('c.*,m.realname,m.idcard,o.car_price,m.bankcard,o.create_time')->join('__MEMBER__ m','c.uid = m.uid')->join('__ORDER__ o','c.order_id = o.id')->where("c.id",$id)->order('id desc')->fetchSQL(false)->find();
 			$collect = model('Collect');
 			$manualVerification = db('customer_info')->where('credit_id',$creditList['id'])->find();
 			$basic_info = array(
@@ -109,12 +99,12 @@ class risk extends Admin {
 				'mobile'=>$creditList['mobile'],
 				'salesman_carprice'=>$creditList['car_price'],
 				'year'=>getIDCardInfo($creditList['idcard']),
-				'platform'=>get_collect($creditList['uid'],'platform','device'),
+				'platform'=>get_collect($creditList['uid'],'platform','device'),//设备平台
 				'addr'=>get_collect($creditList['uid'],'addr','location'),
 				'wanip'=>get_collect($creditList['uid'],'wanip','network'),
-				'platform'=>get_collect($creditList['uid'],'platform','device'),
-				'phone_serial'=>get_collect($creditList['uid'],'imei','device'),
-
+				'device'=>get_collect($creditList['uid'],'device','device'),//设备型号
+				'phone_serial'=>get_collect($creditList['uid'],'imei','device'),//国际移动设备身份码
+				'salesman_qrcode'=>$creditList['create_time']
 				);//基本信息
 			$programme = db('programme')->where(['uid'=>$creditList['uid'],'order_id'=>$creditList['order_id']])->find();
 			$where = array(
@@ -199,4 +189,37 @@ class risk extends Admin {
 			return $this->fetch('addBlacklist');
 		}
 	}
+
+
+	public function manualVerification(){
+		
+		if (IS_POST) {
+			$data = input('post.');
+			
+			$res_crd = db('credit')->where('id', $data['id'])->find();
+
+			$is_success = db('customer_info')->field('uid')->where('uid',$res_crd['uid'])->find();
+
+			if (!empty($is_success)) {
+				return $this->error('已保存过信息');
+			}
+
+			$info = $data['manual_verification'];
+			
+			$results = json_decode($info,true);
+
+			$results['uid'] = $res_crd['uid'];
+
+			$results['credit_id'] = $data['id'];
+			
+			$res = db('customer_info')->insert($results);
+
+			if ($res) {
+				return $this->success('保存成功');
+			}else{
+				return $this->error('保存失败');
+			}
+		}
+	}
+
 }

@@ -7,6 +7,10 @@
 	.form-group div{
 		word-wrap: break-word;
 	}
+	.form-group textarea{
+		resize: both;
+    	min-width: 600px;
+	}
 </style>
 <script type="text/javascript">
 	var info = {};
@@ -81,7 +85,7 @@
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">登录手机型号</label>
 						    <div class="col-sm-2 pt5">
-						     	<span id="" name="phone_model" class="customer-info">-</span>
+						     	<span id="device" name="device" class="customer-info">-</span>
 						    </div>
 						    <label class="col-sm-2 control-label">本次IP地址</label>
 						    <div class="col-sm-2 pt5">
@@ -125,7 +129,7 @@
 						    </div>
 						    <label class="col-sm-2 control-label">业务员生成二维码时间</label>
 						    <div class="col-sm-2 pt5">
-						      	<span id="" name="salesman_qrcode" class="customer-info">-</span>
+						      	<span id="salesman_qrcode" name="salesman_qrcode" class="customer-info">-</span>
 						    </div>
 						</div>
 						<div class="form-group">
@@ -536,9 +540,12 @@
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">备注</label>
-						    <div class="col-sm-2 pt5">
-						     	<textarea name="descr" class="customer-info"></textarea>
+						    <div class="col-sm-10 pt5">
+						     	<textarea rows="8" cols="20" name="descr" class="customer-info"></textarea>
 						    </div>
+						</div>
+						    <div class="form-group text-center">
+							<a type="button" class="btn btn-primary" id="manualVerificationBtn">保存</a>
 						</div>
 					</form>
 				</div>
@@ -595,7 +602,7 @@
 								<tr>
 									<td>银行</td>
 									<td>期限</td>
-									<td>日利率</td>
+									<td>月利率</td>
 									<td>首付比例</td>
 								</tr>
 								<tr>
@@ -617,7 +624,7 @@
 								<tr>
 									<td>类型</td>
 									<td>期限</td>
-									<td>日利率</td>
+									<td>月利率</td>
 									<td>首付比例</td>
 								</tr>
 								<tr>
@@ -681,7 +688,7 @@
 					    </div>
 					</div>
 					<div class="form-group">
-					    <label class="col-sm-2 control-label">日利率(‰)</label>
+					    <label class="col-sm-2 control-label">月利率(‰)</label>
 					    <div class="col-sm-2 pt5">
 					     	<input type="number" id="dayRate">‰
 					    </div>
@@ -721,8 +728,8 @@
 		            </div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">审核备注</label>
-					    <div class="col-sm-2 pt5">
-					     	<textarea id="descr"></textarea>
+					    <div class="col-sm-10 pt5">
+					     	<textarea rows="8" cols="20" id="descr"></textarea>
 					    </div>
 					</div>
 					<div class="form-group text-center">
@@ -815,6 +822,38 @@
 	// })
 
 
+	$('#manualVerificationBtn').click(function(){
+		var obj = {};
+		$(".customer-info","#manualVerification").each(function(){
+			var name = $(this).attr('name');
+			var value = $(this).val();
+			if(value == null){
+				value == '';
+			}else{
+				value = value.replace(/\n/g,"");
+			}
+		    obj[name] = value;
+		});
+		var manual_verification = JSON.stringify(obj);
+		ajax_jquery({
+			url: apiUrl +'/admin/risk/manualVerification',
+			data:{
+					"id": info.creditList.id,
+					'manual_verification': manual_verification
+				},
+			success:function(resp){
+				if (resp.code == "1" ) {
+						ui_alert("保存成功","success");
+				} else {
+					if (typeof(resp.msg) == 'string' && resp.msg != '') {
+						ui_alert(resp.msg);
+					}
+					return false;
+				}
+			}
+		});
+	});
+	
 	$('#examineBtn').click(function(){
 		var credit_result = 0;
 		var credit_score = $("#credit_score").val();
@@ -833,18 +872,6 @@
 		var vp_rate = $('#vp_rate').val();
 		var vp_pay = $('#vp_pay').val();
 
-		var obj = {};
-		$(".customer-info","#manualVerification").each(function(){
-			var name = $(this).attr('name');
-			var value = $(this).val();
-			if(value == null){
-				value == '';
-			}else{
-				value = value.replace(/\n/g,"");
-			}
-		    obj[name] = value;
-		});
-		var manual_verification = JSON.stringify(obj);
 
 		if(credit_score > 100 || credit_score < 0){
 			ui_alert("请输入正确授信评分");
@@ -869,7 +896,7 @@
 			$("#bank_term").focus();
 			return false;
 		}else if(bank_rate == '' || bank_rate < 0 || bank_rate > 1000 ){
-			ui_alert("日利率输入有误");
+			ui_alert("月利率输入有误");
 			$("#bank_rate").focus();
 			return false;
 		}else if(bank_pay == '' || bank_pay < 0 || bank_pay > 100){
@@ -885,7 +912,7 @@
 			$("#vp_term").focus();
 			return false;
 		}else if(vp_rate == '' || vp_rate < 0 || vp_rate > 1000){
-			ui_alert("日利率输入有误");
+			ui_alert("月利率输入有误");
 			$("#vp_rate").focus();
 			return false;
 		}else if(vp_pay == '' || vp_pay < 0 || vp_pay > 100){
@@ -913,8 +940,7 @@
 					'vp_type':vp_type,
 					'vp_term':vp_term,
 					'vp_rate':vp_rate,
-					'vp_pay':vp_pay,
-					'manual_verification': manual_verification
+					'vp_pay':vp_pay
 				},
 			success:function(resp){
 				if (resp.code == "1" ) {
