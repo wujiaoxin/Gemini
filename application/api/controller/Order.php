@@ -135,7 +135,7 @@ class Order extends Api {
 	}
 	
 	
-	public function save($id = null, $loan_limit = null, $loan_term = null) {
+	public function save($id = null,$type=null, $loan_limit = null, $loan_term = null) {
 		// $uid = session('user_auth.uid');
 		$uid = $id;
 		$resp['code'] = 0;
