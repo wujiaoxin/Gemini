@@ -417,7 +417,10 @@ class User extends Api {
 			$results = array(
 				'uid'=>$uid,
 				'type'=>1,
+				'order_id'=>-1,//C端绑卡判断
 				'bank_account_id'=>$bankcard,
+				'idcard'=>$idcard,
+				'bank_account_name'=>$realname,
 				'create_time'=>time()
 				);
 			db('bankcard')->insert($results);
