@@ -128,9 +128,11 @@
 
 	   $('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
-	   		var orderType = $('.selectOrderType li.active').attr('data');
+	   		// var orderType = $('.selectOrderType li.active').attr('data');
+	   		var orderType = '';
 	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
-	   		var orderStatus = $('.selectOrderStatus li.active').attr('data');
+	   		// var orderStatus = $('.selectOrderStatus li.active').attr('data');
+	   		var orderStatus = '';
 	   		ajaxLoanItem(orderType,orderDateRange,orderStatus);
 	   })
 	});
