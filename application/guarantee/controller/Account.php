@@ -277,7 +277,7 @@ class Account extends Baseness {
 				$arr = array(
 					'uid'=>$uids['id'],
 					'type'=>1,
-					'order_id'=>-2
+					'order_id'=>-2,
 					'bank_account_id'=>$data['CardNumber'],
 					'bank_account_name'=>$data['RealName'],
 					'create_time'=>time(),
