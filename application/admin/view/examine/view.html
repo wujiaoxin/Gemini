@@ -290,11 +290,27 @@
 				            	</select>
 						    </div>
 						</div>
-						<div class="form-group" id="examine_limit-block" style="display: none;">
-						    <label class="col-sm-2 control-label">审批额度</label>
-						    <div class="col-sm-2 pt5">
-						      	<input type="number" id="examine_limit">
-						    </div>
+						<div id="examine_limit-block" style="display: none;">
+							<div class="form-group">
+							    <label class="col-sm-2 control-label">审批额度</label>
+							    <div class="col-sm-2 pt5">
+							      	<input type="number" id="examine_limit">
+							    </div>
+							</div>
+							<div class="form-group">
+							    <label class="col-sm-2 control-label">费用类型</label>
+							    <div class="col-sm-2 pt5">
+							      	<select id="fee_type">
+							      		<option value="1">GPS费用</option>
+							      	</select>
+							    </div>
+							</div>
+							<div class="form-group">
+							    <label class="col-sm-2 control-label">费用金额</label>
+							    <div class="col-sm-2 pt5">
+							      	<input type="number" id="fee">
+							    </div>
+						  	</div>
 					  	</div>
 						<div class="form-group" id="reject_reason" style="display: none;">
 							<label class="col-sm-2 control-label">拒绝原因</label>
@@ -367,9 +383,9 @@
 	        }
 	    }
 	});
-	$('span[name="credit_score"]').text(info['credit_info']['credit_score']);
-	$('span[name="credit_level"]').text(info['credit_info']['credit_level']);
-	$('span[name="credit_result"]').text(g_creditResult[info['credit_info']['credit_result']]);
+	// $('span[name="credit_score"]').text(info['credit_info']['credit_score']);
+	// $('span[name="credit_level"]').text(info['credit_info']['credit_level']);
+	// $('span[name="credit_result"]').text(g_creditResult[info['credit_info']['credit_result']]);
 	$('span[name="bankcard"]').text(info['member_info']['bankcard']);
 	$('span[name="score"]').text(info['member_info']['score']);
 
@@ -540,24 +556,27 @@ $(function(){
 	$('span[name="city_addr"]').text(city_addr);
 
 	$('#orderRevokeBtn').click(function(){
-		confirm('确认撤回订单');
-		ajax_jquery({
-	        url: apiUrl +'/admin/examine/delete',
-	        data:{
-	        	'id': id,
-	        },
-	        success:function(resp){
-	            if (resp.code == "1" ) {
-	            	ui_alert("撤销成功","success");
-	            	window.location.href = apiUrl + "/admin/examine/application.html";
-	            } else {
-	                if (typeof(resp.msg) == 'string') {
-	                    ui_alert(resp.msg);
-	                    return false;
-	                }
-	            }
-	        }
-		});
+		if(confirm('确认撤回订单')){
+			ajax_jquery({
+		        url: apiUrl +'/admin/examine/delete',
+		        data:{
+		        	'id': id,
+		        },
+		        success:function(resp){
+		            if (resp.code == "1" ) {
+		            	ui_alert("撤销成功","success");
+		            	window.location.href = apiUrl + "/admin/examine/application.html";
+		            } else {
+		                if (typeof(resp.msg) == 'string') {
+		                    ui_alert(resp.msg);
+		                    return false;
+		                }
+		            }
+		        }
+			});
+		}else{
+			return false;
+		}
 	});
 
 	$('#orderExamineBtn').click(function(){
@@ -571,6 +590,8 @@ $(function(){
 		var id = info['order_info']['id'];
 		var status = $('#examineStatus').val();
 		var examine_limit = $('#examine_limit').val();
+		var fee_type = $('#fee_type').val();
+		var fee = $('#fee').val();
 		var reject_reason = encodeCheckbox('reject_reason');
 		var descr = $('#descr').val().replace(/\n/g,"");
 		ajax_jquery({
@@ -579,6 +600,8 @@ $(function(){
 	        	'id': id,
 	        	'status': status,
 	        	'examine_limit': examine_limit,
+	        	'fee_type': fee_type,
+	        	'fee': fee,
 	        	'reject_reason': reject_reason,
 	        	'descr': descr
 	        },
