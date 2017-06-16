@@ -48,4 +48,37 @@ class Notify extends Base {
 		fclose($handle);
 		echo "SUCCESS";die;
 	}
+
+	/*
+	** 放款异步处理
+	*/
+	public function loan(){
+		$data = input('');
+		/*if (!is_string($data)) {
+			$this->redirect('/');
+		}*/
+		$result = json_decode($data,true);
+		if ($result['SignInfo'] == '88') {
+			/*$arr = array(
+				'moneymoreid'=>$result['MoneymoremoreId'],
+				'status'=>1,
+			);
+			$map = array(
+				'type'=>1,
+				'idcard'=> $result['IdentificationNo']
+			);
+			db('Order')->where($map)->update($arr);*/
+
+		}
+		$filename="loan_log.txt";
+		$handle=fopen($filename,"a+");
+		if($handle){
+			fwrite($handle,"=========双乾放款功能=============\r\n");
+			fwrite($handle, date("Y-m-d h:i:s")."\r\n");
+			fwrite($handle,$data."\r\n");
+			fwrite($handle,"==========================\r\n\r\n");
+		}
+		fclose($handle);
+		echo "SUCCESS";die;
+	}
 }

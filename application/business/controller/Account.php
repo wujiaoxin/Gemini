@@ -86,14 +86,15 @@ class Account extends Baseness {
 	}
 	// 绑卡
 	public function bindCard(){
-		$uid = session('user_auth.uid');
+		$mobile = session("business_mobile");
 		if (request()->isPost()) {
 			$data = input('post.');
 			$map = array('bank_account_id'=>$data['CardNumber'],'type'=>1);
 			$res = db('bankcard')->where($map)->find();
+			$uids = db('Dealer')->field('d.id')->where('mobile',$mobile)->find();
 			if (empty($res)) {
 				$arr = array(
-					'uid'=>$uid,
+					'uid'=>$uids['id'],
 					'type'=>1,
 					'order_id'=>-3,
 					'bank_account_id'=>$data['CardNumber'],

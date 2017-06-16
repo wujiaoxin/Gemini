@@ -37,7 +37,7 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-
+			$res = db('Order')->field('type,mobile,id,sn,create_time,fee,endtime,examine_limit')->where('id',$data['id'])->find();
 			if (isset($data['status'])) {
 
 				$datas = array(
@@ -49,127 +49,168 @@ class Finance extends Admin {
 					'update_time'=>time()
 
 				);
-
 				if ($data['status'] == '1') {
+					
+					if ($res['type'] == '2' || $res['type'] == '4') {
 
-					$money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.id',$data['id'])->find();
+						$sta = db('Order')->alias('o')->field('c.status,c.moneymoreid')->join('__BANKCARD__ c','o.dealer_id = c.uid')->find();
+					}else{
+						$stall = db('Order')->alias('o')->field('o.examine_limit,m.uid')->join('__MEMBER__ m','m.mobile = o.mobile')->find();
+						$sta = db('Bankcard')->field('status,moneymoreid')->where('uid',$stall['uid'])->find();
+						$sta['examine_limit'] = $stall['examine_limit'];
+					}
+					$stas = empty($sta['status'])? '-5' : $sta['status'];
+					if ($stas < '-2') {
 
-					$result = db('order')->field('fee,loan_limit,examine_limit,type,mobile,sn,endtime')->where('id',$data['id'])->find();
-					if ($result['type'] == '2' || $result['type'] == '4') {
+						$resp['code'] = 0;
 
-						if ($money['lock_money'] >= $result['fee']) {//判断冻结金额和订单费用
-						
+						$resp['msg'] = '没有绑卡,无法放款';
+
+						return json($resp);
+
+					}elseif ($stas['status'] == '1'){
+						// $money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.id',$data['id'])->find();
+
+						// $result = db('order')->field('fee,loan_limit,examine_limit,type,mobile,sn,endtime')->where('id',$data['id'])->find();
+
+						if ($result['type'] == '2' || $result['type'] == '4') {
+
+							// if ($money['lock_money'] >= $result['fee']) {//判断冻结金额和订单费用
+							
 							$datas['finance'] = '3';
 
 							//可用额度设置
 
-							$lines_result = $money['lines_ky'] - $result['examine_limit'];//最终可用额度
+								// $lines_result = $money['lines_ky'] - $result['examine_limit'];//最终可用额度
 
-							if ($lines_result < '0') {
+								// if ($lines_result < '0') {
 
-								$resp['code'] = 0;
+								// 	$resp['code'] = 0;
 
-								$resp['msg'] = '可用额度不足，请提醒用户充值！';
+								// 	$resp['msg'] = '可用额度不足，请提醒用户充值！';
 
-								return json($resp);
-							}
-						
-							$lock_money_result = $money['lock_money'] - $result['fee'];//剩余冻结金额
+								// 	return json($resp);
+								// }
+							
+								// $lock_money_result = $money['lock_money'] - $result['fee'];//剩余冻结金额
 
-							$moeny_result = array(
+								// $moeny_result = array(
 
-								'lock_money' => $lock_money_result,
+								// 	'lock_money' => $lock_money_result,
 
-								'lines_ky' =>$lines_result,
+								// 	'lines_ky' =>$lines_result,
 
+								// 	);
 
+								// db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变资金流水
 
-								);
+							
 
-							db('dealer')->where('mobile',$money['mobile'])->update($moeny_result);//改变资金流水
+							//生成还款计划表
+								$rest = db('order')->where('id',$data['id'])->update($datas);//更新订单状态	
+								$resl = model('Repay')->set_repay($data['id']);
+
+								if ($resl && $rest) {
+
+									$resp['code'] = 1;
+
+									$resp['msg'] = '放款审核成功!';
+
+								}else{
+
+									$resp['code'] = 0;
+
+									$resp['msg'] = '还款计划异常';
+								}
+								
+
+							// }else{
+							// 	$resp['code'] = 0;
+
+							// 	$resp['msg'] = '冻结资金异常!';
+							// }
+
+						}else{
+
+							$datas['finance'] = '4';
+
+							$datas['descr'] = $data['descr'];
 
 							db('order')->where('id',$data['id'])->update($datas);//更新订单状态
 
-							//生成还款计划表
-							
-							$res = model('Repay')->set_repay($data['id']);
+							//等额本息
 
-							if ($res) {
+							// $res = model('Repay')->make_plan($data['id']);//
 
-								$resp['code'] = 1;
-
-								$resp['msg'] = '放款审核成功!';
-
+							if ($res['endtime'] < 500) {
+								$llment = '12';
+							}elseif ($res['endtime'] >500 && $res['endtime']< 1000) {
+								$llment = '24';
 							}else{
-
-								$resp['code'] = 0;
-
-								$resp['msg'] = '还款计划异常';
+								$llment = '36';
 							}
-							
 
-						}else{
-							$resp['code'] = 0;
-
-							$resp['msg'] = '冻结资金异常!';
-						}
-
-					}else{
-
-						$datas['finance'] = '4';
-
-						$datas['descr'] = $data['descr'];
-
-						db('order')->where('id',$data['id'])->update($datas);//更新订单状态
-
-						//等额本息
-
-						// $res = model('Repay')->make_plan($data['id']);//
-						$res = model('Repay')->make_interest($data['id']);
-
-						if ($res) {
-
-							//放款成功加入客户签约
-							$customer_info = db('member')->where('mobile',$result['mobile'])->find();
-							$b_map = array(
-									'uid'=>$customer_info['uid'],
-									'order_id'=>$data['id']
+							//乾多多放款
+							$datainfo = array(
+								'PayMoneymoremore'=>$sta['moneymoreid'],
+								'Amount'=>$sta['examine_limit'],
+								'OrderNo'=>$res['sn'],
+								'Installment'=>$llment,
+								'BatchNo'=>$res['id'],
+								'RepaymentDate'=>date('Y-m-d',time()+30*24*60*60),
+								'NotifyURL'=>url('pay/notify/loan'),
+							);
+							$epay = new \epay\Epay();
+							$ret = $epay::loan($datainfo);
+					        if (empty($ret)) {
+					        	$resp['code'] = '0';
+					        	$resp['msg'] = '放款异常,请联系客服';
+					        	return json($resp);
+					        }
+					        $ret  = json_decode($ret,true);
+					        if ($ret['ResultCode'] == '88') {
+					        	$resp['code']='1';
+					        	$resp['msg'] = '放款成功';
+					        	model('Repay')->make_interest($data['id']);
+					        	//放款成功加入客户签约
+								$customer_info = db('member')->where('mobile',$result['mobile'])->find();
+								$b_map = array(
+										'uid'=>$customer_info['uid'],
+										'order_id'=>$data['id']
 								);
-							$bank_name = db('bankcard')->where($b_map)->find();
-							if (!$bank_name) {
-								$bank_name['bank_account_id'] = '';
-							}
-							$totalperiod = floor($result['endtime']/30);
-							$cus_data = array(
-									'uid'=>$customer_info['uid'],
-									'mobile'=>$result['mobile'],
-									'order_id'=>$data['id'],
-									'idcard_num'=>$customer_info['idcard'],
-									'bankcard'=>$bank_name['bank_account_id'],
-									'signstatus'=>'0',
-									'papercontract'=>$result['sn'],
-									'product_name'=>'90贷',
-									'product_price'=>$result['examine_limit'],
-									'money'=>$result['examine_limit'],
-									'create_time'=>time(),
-									'total_times'=>$totalperiod,
-									'repay_type'=>'SELF_REPAY',
-									'other_rate'=>0,
-									'first_repaydate'=>time()+30*3600*24
+								$bank_name = db('bankcard')->where($b_map)->find();
+								if (!$bank_name) {
+									$bank_name['bank_account_id'] = '';
+								}
+								$totalperiod = floor($result['endtime']/30);
+								$cus_data = array(
+										'uid'=>$customer_info['uid'],
+										'mobile'=>$result['mobile'],
+										'order_id'=>$data['id'],
+										'idcard_num'=>$customer_info['idcard'],
+										'bankcard'=>$bank_name['bank_account_id'],
+										'signstatus'=>'0',
+										'papercontract'=>$result['sn'],
+										'product_name'=>'90贷',
+										'product_price'=>$result['examine_limit'],
+										'money'=>$result['examine_limit'],
+										'create_time'=>time(),
+										'total_times'=>$totalperiod,
+										'repay_type'=>'SELF_REPAY',
+										'other_rate'=>0,
+										'first_repaydate'=>time()+30*3600*24
 
-								);
-							db('member_withhold')->insert($cus_data);
-							$resp['code'] = 1;
+									);
+								db('member_withhold')->insert($cus_data);
+					        }else{
+					        	$resp['code'] = '0';
+					        	$resp['msg'] = $ret['Message'];
+					        }
 
-							$resp['msg'] = '放款审核成功!';
-
-						}else{
-
-							$resp['code'] = 0;
-
-							$resp['msg'] = '还款计划异常';
 						}
+						
 					}
+
 					
 				}else{
 
@@ -178,21 +219,37 @@ class Finance extends Admin {
 					$resp['code'] = -1;
 
 					$resp['msg'] = '放款审核失败!';
-
 				}
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			}else{
-
-				// $result = db('order')->alias('o')->field('o.*,d.name as dealer_name')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->where('o.id',$data['id'])->find();
-				$result = db('order')->alias('o')->field('o.*')->join('__DEALER__ d','d.id = o.dealer_id','LEFT')->where('o.id',$data['id'])->find();
-				$resp['code'] = 1;
-
-				$resp['msg'] = '查询成功';
-
-				$resp['data'] = $result;
+				//垫资
+				if ($res['type'] == '2' || $res['type'] == '4') {
+					$map = array(
+						'o.id'=>$data['id'],
+					);
+					$result = db('order')->alias('o')->field('o.*,d.name as dealer_name,c.bank_account_name,c.bank_account_id as dealer_bankcard,c.moneymoreid as qdd_mark')->join('__DEALER__ d','d.id = o.dealer_id','LEFT')->join('__BANKCARD__ c','c.uid = o.dealer_id','LEFT')->where($map)->order('c.create_time DESC')->fetchSql(false)->find();
+					
+				}else{
+				//贷款
+					$restinfo = db('Member')->alias('m')->field('m.realname as name,c.bank_account_name,c.bank_account_id as dealer_bankcard,c.moneymoreid as qdd_mark')->join('__BANKCARD__ c','c.uid = m.uid','LEFT')->where('mobile',$res['mobile'])->find();
+					$result =  array_merge($res,$restinfo);
 
 				}
+				if ($result) {
+					$result['loan_money'] = $result['fee']+$result['examine_limit'];
+					$result['repay_time'] = date('Y-m-d H:i:s',time()+30*24*60*60);
+					$resp['code'] = 1;
+
+					$resp['msg'] = '查询成功';
+
+					$resp['data'] = $result;
+				}else{
+					$resp['code'] = 0;
+
+					$resp['msg'] = '查询失败';
+				}
 				
+			}
 			return json($resp);
 
 		}else{

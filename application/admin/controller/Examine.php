@@ -170,7 +170,7 @@ class examine extends Admin {
 					$infos = array(
 							'status' => '1',
 							'examine_limit' =>$data['examine_limit'],
-							'descr'=>$data['descr']
+							'descr'=>$data['descr'],
 						);
 
 					$result = db('order')->where('id',$data['id'])->update($infos);

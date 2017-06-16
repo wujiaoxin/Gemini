@@ -261,14 +261,21 @@ class Account extends Baseness {
 	}
 
 	public function bindCard(){
+		$mobile = session('business_mobile');
 		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if ($role != '18') {
+			$uids = db('member')->field('dealer_id as id')->where('uid',$uid)->find();
+		}else{
+			$uids = db('Dealer')->field('id')->where('mobile',$mobile)->find();
+		}
 		if (IS_POST) {
 			$data = input('post.');
 			$map = array('bank_account_id'=>$data['CardNumber'],'type'=>1);
 			$res = db('bankcard')->where($map)->find();
 			if (empty($res)) {
 				$arr = array(
-					'uid'=>$uid,
+					'uid'=>$uids['id'],
 					'type'=>1,
 					'order_id'=>-2
 					'bank_account_id'=>$data['CardNumber'],
