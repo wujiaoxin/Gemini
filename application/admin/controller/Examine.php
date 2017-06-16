@@ -142,7 +142,7 @@ class examine extends Admin {
 			
 		}else{
 
-			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where('status','3')->order('create_time DESC')->select();
+			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where('o.status','3')->order('create_time DESC')->select();
 		
 			
 			$data = array(
@@ -177,22 +177,35 @@ class examine extends Admin {
 
 					if ($result) {
 
-						$info = db('order')->field('examine_limit,endtime,type')->where('id',$data['id'])->find();
+						// $info = db('order')->field('examine_limit,endtime,type')->where('id',$data['id'])->find();
 
-						if ($info['type'] == '2' || $info['type'] == '4') {
+						// if ($info['type'] == '2' || $info['type'] == '4') {
 
-							$fee = fee_money($info['endtime'],$info['examine_limit']);
+						// 	$fee = fee_money($info['endtime'],$info['examine_limit']);
 
-							$fee1['fee'] = $fee;
-							$fee1['finance'] = '2';
-							db('order')->where('id',$data['id'])->update($fee1);
+						// 	$fee1['fee'] = $fee;
+						// 	$fee1['finance'] = '2';
+						// 	db('order')->where('id',$data['id'])->update($fee1);
+						// }else{
+
+						// 	db('order')->where('id',$data['id'])->setField('finance','2');
+						// }
+
+						$res = db('order')->where('id',$data['id'])->setField('finance','2');
+
+						if ($res) {
+							$resp['code'] = 1;
+
+							$resp['msg'] = '提交成功';
+							
 						}else{
 
-							db('order')->where('id',$data['id'])->setField('finance','2');
-						}
-						$resp['code'] = 1;
+							$resp['code'] = 0;
 
-						$resp['msg'] = '提交成功';
+							$resp['msg'] = '提交异常';
+						}
+
+						
 
 					}else{
 
@@ -200,7 +213,6 @@ class examine extends Admin {
 
 						$resp['msg'] = '提交失败';
 
-						return json($resp);
 					}
 				}else{
 
@@ -242,7 +254,7 @@ class examine extends Admin {
 
 		}else{
 			
-			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where('status','4')->order('create_time')->select();
+			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where('o.status','4')->order('create_time')->select();
 
 
 			$data = array(

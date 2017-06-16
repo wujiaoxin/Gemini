@@ -183,8 +183,8 @@ class Finance extends Admin {
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			}else{
 
-				$result = db('order')->alias('o')->field('o.*,d.name as dealer_name')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->where('o.id',$data['id'])->find();
-
+				// $result = db('order')->alias('o')->field('o.*,d.name as dealer_name')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->where('o.id',$data['id'])->find();
+				$result = db('order')->alias('o')->field('o.*')->join('__DEALER__ d','d.id = o.dealer_id','LEFT')->where('o.id',$data['id'])->find();
 				$resp['code'] = 1;
 
 				$resp['msg'] = '查询成功';

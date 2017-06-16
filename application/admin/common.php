@@ -184,12 +184,12 @@ function serch_realname($uid){
 	return $result['realname'];
 }
 	/*
-** 计算支付费用
-** time 借款时间
-** money 借款金额
-** 利率为日利率
+	** 计算支付费用
+	** time 借款时间
+	** money 借款金额
+	** 利率为日利率
 	*/
-	function fee_money($time, $money){
+	/*function fee_money($time, $money){
 
 		if ($time <= 5 && $time >=1 ) {
 
@@ -216,7 +216,7 @@ function serch_realname($uid){
 		$result = $money * $interest_rate * $time;
 
 		return $result;
-	}
+	}*/
 
 	
 /*设备信息*/
