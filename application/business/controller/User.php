@@ -137,7 +137,7 @@ use app\business\controller\Baseness;
 		
 		$num = db('order')->field('o.mid,o.uid,count(o.id) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
 		$avg = db('order')->field('o.mid,o.uid,avg(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
-		
+		$forms = db('Dealer')->field('forms')->where('mobile',$mobile)->find();
 		if (IS_POST) {
 			$data = input('post.');
 			//一个月内每天的订单数量
@@ -173,6 +173,7 @@ use app\business\controller\Baseness;
 					'money'=>$result,
 					'num'=>$num,
 					'avg'=>$avg,
+					'forms'=>$forms['forms'],
 				);
 			$data = array(
 					'info'=>$info,
