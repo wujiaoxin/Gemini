@@ -132,49 +132,57 @@ use app\business\controller\Baseness;
 			'o.status'=>1
 
 			);
-
 		//分组统计
 		$result = db('order')->field('o.mid,o.uid,sum(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
 		
 		$num = db('order')->field('o.mid,o.uid,count(o.id) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
 		$avg = db('order')->field('o.mid,o.uid,avg(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
 		
-		//一个月内每天的订单数量
-		$begin = date('Y-m-d',strtotime("-1 month"));//30天前
-        $begin =strtotime($begin);
-        $end =strtotime(date('Y-m-d'))+86399;
-        $map['create_time'] = array(array('gt',$begin),array('lt',$end));
-        $map['mid'] =$uid;
-        $map['status'] = '1';
-        $res =db('order')->field("COUNT(*) as tnum,sum(examine_limit) as total_money, FROM_UNIXTIME(create_time,'%Y-%m-%d') as time")->where($map)->group('time')->select();
-        $tnum =0;
-        $tamount=0;
-        foreach ($res as $val){
-            $arr[$val['time']] = $val['tnum'];
-            $brr[$val['time']] = $val['total_money'];
-            $tnum += $val['tnum'];
-            $tamount += $val['total_money'];
-        }
-        
-        for($i=$begin;$i<=$end;$i=$i+24*3600){
-            $tmp_num = empty($arr[date('Y-m-d',$i)]) ? 0 : $arr[date('Y-m-d',$i)];
-            $tmp_amount = empty($brr[date('Y-m-d',$i)]) ? 0 : $brr[date('Y-m-d',$i)];               
-            $date = date('Y-m-d',$i);
-            $list[] = array('time'=>$date,'num'=>$tmp_num,'total_money'=>$tmp_amount);
+		if (IS_POST) {
+			$data = input('post.');
+			//一个月内每天的订单数量
+			$res = $data['term']/30;
+			$begin = date('Y-m-d',strtotime("-{$res} month"));//30天前
+	        $begin =strtotime($begin);
+	        $end =strtotime(date('Y-m-d'))+86399;
+	        $map['create_time'] = array(array('gt',$begin),array('lt',$end));
+	        $map['mid'] =$uid;
+	        $map['status'] = '1';
+	        $res =db('order')->field("COUNT(*) as tnum,sum(examine_limit) as total_money, FROM_UNIXTIME(create_time,'%Y-%m-%d') as time")->where($map)->group('time')->select();
+	        $tnum =0;
+	        $tamount=0;
+	        foreach ($res as $val){
+	            $arr[$val['time']] = $val['tnum'];
+	            $brr[$val['time']] = $val['total_money'];
+	            $tnum += $val['tnum'];
+	            $tamount += $val['total_money'];
+	        }
+	        
+	        for($i=$begin;$i<=$end;$i=$i+24*3600){
+	            $tmp_num = empty($arr[date('Y-m-d',$i)]) ? 0 : $arr[date('Y-m-d',$i)];
+	            $tmp_amount = empty($brr[date('Y-m-d',$i)]) ? 0 : $brr[date('Y-m-d',$i)];               
+	            $date = date('Y-m-d',$i);
+	            $list[] = array('time'=>$date,'num'=>$tmp_num,'total_money'=>$tmp_amount);
+	        }
+	        $resp['code'] = '1';
+	        $resp['data'] = $list;
+	        return json($resp);
+		}else{
+			$list = (empty($list)) ? '' : $list;
+			$info = array(
+					'money'=>$result,
+					'num'=>$num,
+					'avg'=>$avg,
+				);
+			$data = array(
+					'info'=>$info,
+					'infoStr'=>json_encode($info)
+				);
 
-        }
-		$info = array(
-				'money'=>$result,
-				'num'=>$num,
-				'avg'=>$avg,
-				'time'=>$list
-			);
-		$data = array(
-				'info'=>$info,
-				'infoStr'=>json_encode($info)
-			);
-		$this->assign($data);
-		return $this->fetch('myShop');
+			$this->assign($data);
+			return $this->fetch('myShop');
+		}
+		
 	}
 
 	public function loanItem() {

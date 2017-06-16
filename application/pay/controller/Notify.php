@@ -20,11 +20,15 @@ class Notify extends Base {
 	public function bangCard(){
 	
 		$data = input('');
+		/*if (!is_string($data)) {
+			$this->redirect('/');
+		}*/
 		$result = json_decode($data,true);
 
 		if ($result['SignInfo'] == '88') {
 			$arr = array(
-				'moneymoreid'=>$result['MoneymoremoreId']
+				'moneymoreid'=>$result['MoneymoremoreId'],
+				'status'=>1,
 			);
 			$map = array(
 				'type'=>1,
