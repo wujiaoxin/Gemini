@@ -83,8 +83,8 @@ class Epay {
 		
 		$loanList = array();
 		$loanList[0]['PayMoneymoremore'] = self::$PlatformMoneymoremore;
-		$loanList[0]['Amount'] = $data['repay_money'];
-		$loanList[0]['OrderNo'] = $data['orderid'];
+		$loanList[0]['Amount'] = $data['Amount'];
+		$loanList[0]['Amount'] = $data['Amount'];
 
 		$postData = array();
 		$postData['LoanJsonList'] = json_encode($loanList);
