@@ -254,9 +254,8 @@
 									<label class="control-label">操作</label>
 									<div class="controls">
 										<select id="examineStatus">
-											<option value=""></option>
-											<option value="14">自主放款</option>
 											<option value="3">申请垫资</option>
+											<option value="14">自主放款</option>
 										</select>
 									</div>
 								</div>
@@ -268,7 +267,7 @@
 										<input type="number" disabled="disabled" name="bankcard">
 									</div>
 								</div>
-								<div id="application" style="display: none;">
+								<div id="application">
 									<div class="control-group">
 										<label class="control-label">还款方式</label>
 										<div class="controls">
@@ -498,13 +497,13 @@
 	};
 	btnSentUploader("guarantee_pic");
 
-	$('#examineStatus').change(function(){
-		if($(this).val() == 3){
-			$('#application').slideDown();
-		}else{
-			$('#application').slideUp();
-		}
-	});
+	// $('#examineStatus').change(function(){
+	// 	if($(this).val() == 3){
+	// 		$('#application').slideDown();
+	// 	}else{
+	// 		$('#application').slideUp();
+	// 	}
+	// });
 
 	$('#loan_term').keyup(function(){
 		var inputdata = $(this).val().replace(/\D/g, '');
