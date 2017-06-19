@@ -240,11 +240,11 @@
   <!-- BEGIN PAGE LEVEL SCRIPTS -->
   <script src="/public/business/js/app.js"></script>
   <script>
-  if(typeof(localStorage.getItem('username')) == 'string'){
-          $('#nav-username').text(localStorage.getItem('username'));
-        }
+    if(typeof(localStorage.getItem('username')) == 'string'){
+        $('#nav-username').text(localStorage.getItem('username'));
+    }
     jQuery(document).ready(function() {
-       App.init();
+        App.init();
     });
   </script>
   {block name="script"}{/block}
