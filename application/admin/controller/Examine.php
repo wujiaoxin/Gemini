@@ -42,19 +42,7 @@ class examine extends Admin {
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
 		if($uid > 0){
-			if ($role == 10) {
-
-				$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->order('create_time DESC')->where('uid',$uid)->order('create_time DESC')->select();
-
-			}elseif($role == 11){
-
-				$result = db('member')->field('dealer_id')->where('uid',$uid)->find();
-
-				$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->order('create_time DESC')->where('dealer_id',$result['dealer_id'])->select();
-
-			}else{
-				$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->order('create_time DESC')->select();
-			}
+			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->order('create_time DESC')->select();
 
 		}else{
 			return $this->error('请重新登录');
