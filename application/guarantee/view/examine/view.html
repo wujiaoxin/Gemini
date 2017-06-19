@@ -422,7 +422,7 @@
 
 	var ajaxUrl = '';
 	var referrer = window.document.referrer;
-	if(referrer.indexOf('dataReview') != '-1' && info['order_info']['status'] == '11'){
+	if(referrer.indexOf('creditReview') != '-1' && info['order_info']['status'] == '11'){
 		$('#examine_limit_block').hide();
 		$('#examinePass').val('12');
 		$('#loan_limit').val(checkLimit(info['order_info']['loan_limit']));
@@ -476,7 +476,7 @@ $(function(){
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	ui_alert("审核通过","success");
-	            	window.location.href = apiUrl + "/guarantee/examine/loanLimit";
+	            	setTimeout('window.location.href = apiUrl + "/guarantee/examine/loanLimit";',2000);
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);
