@@ -23,11 +23,8 @@ class assetchannel extends Admin {
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
 		if($uid > 0){
-			if ($role == 10 || $role == 11) {
-				$list = db('Dealer')->alias('d')->join('__MEMBER__ m','m.dealer_id = d.id')->where('uid',$uid)->select();
-			}else{
-				$list  = db('Dealer')->where($map)->order($order)->select();
-			}
+			
+			$list  = db('Dealer')->where($map)->order($order)->select();
 
 		}else{
 			return $this->error('请重新登录');
