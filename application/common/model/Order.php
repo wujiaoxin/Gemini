@@ -219,6 +219,7 @@ class Order extends \app\common\model\Base {
 	}
 	//保存订单
 	public function save_order($uid, $data){
+
 		$data1 =array(
 			'loan_limit' => $data['loan_limit'],
 			'endtime' => $data['loan_term'],
@@ -226,6 +227,12 @@ class Order extends \app\common\model\Base {
 			);
 		if (isset($data['type'])) {
 			$data1['type'] = $data['type'];
+		}
+		$status = db('order')->alias('o')->field('d.guarantee_id')->join('__DEALER__ d','o.dealer_id = d.id')->find();
+		if (isset($status['guarantee_id'])) {
+			$data1['status']  = '11';
+		}else{
+			$data1['status'] = '3';
 		}
 		$data1['id'] = $uid;
 		$result = $this->save($data1,['id'=>$data1['id']]);
