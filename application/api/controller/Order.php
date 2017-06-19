@@ -143,7 +143,7 @@ class Order extends Api {
 		$orderModel = model('Order');
 		if ($_POST) {
 			$data = input('post.');
-			unset($data['type']);
+			// unset($data['type']);
 			$list = $orderModel->save_order($uid,$data);
 			if ($list) {
 				$data["id"] = $data['id'];

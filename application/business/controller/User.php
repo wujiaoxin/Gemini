@@ -127,7 +127,6 @@ use app\business\controller\Baseness;
 		$uid =session('user_auth.uid');
 		$mobile = session('business_mobile');
 		$where = array(
-
 			'o.mid' => $uid,
 
 			'o.status'=>1
@@ -139,6 +138,10 @@ use app\business\controller\Baseness;
 		$num = db('order')->field('o.mid,o.uid,count(o.id) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
 		$avg = db('order')->field('o.mid,o.uid,avg(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
 		$forms = db('Dealer')->field('guarantee_id')->where('mobile',$mobile)->find();
+		$is_success = db('Dealer')->field('priv_bank_name')->where('mobile',$mobile)->find();
+		if(!isset($is_success)){
+			$this->redirect(url('/business/user/guide'));
+		}
 		if (IS_POST) {
 			$data = input('post.');
 			//一个月内每天的订单数量
@@ -169,10 +172,7 @@ use app\business\controller\Baseness;
 	        $resp['data'] = $list;
 	        return json($resp);
 		}else{
-			$is_success = db('Dealer')->field('priv_bank_name')->where('mobile',$mobile)->find();
-			if(isset($is_success)){
-				$this->redirect(url('/business/user/guide'));
-			}
+
 			$list = (empty($list)) ? '' : $list;
 			$info = array(
 					'money'=>$result,
