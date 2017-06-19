@@ -65,6 +65,9 @@ var Login = function () {
 		                		}else if(resp.data == 2){
 		                			ui_alert("登录成功","success");
 		                			window.location.href = "/business/user/myShop";
+		                		}else if(resp.data == 3){
+		                			ui_alert("登录成功","success");
+		                			window.location.href = "/fund/examine/application";
 		                		}else{
 		                			ui_alert("权限错误,请联系客服");
 		                		}
