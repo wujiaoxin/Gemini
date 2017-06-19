@@ -219,14 +219,16 @@ class Order extends \app\common\model\Base {
 	}
 	//保存订单
 	public function save_order($uid, $data){
-		$data =array(
+		$data1 =array(
 			'loan_limit' => $data['loan_limit'],
 			'endtime' => $data['loan_term'],
 			'status'=>'3',
-			'type'=>$data['type']
 			);
-		$data['id'] = $uid;
-		$result = $this->save($data,['id'=>$data['id']]);
+		if (isset($data['type'])) {
+			$data1['type'] = $data['type'];
+		}
+		$data1['id'] = $uid;
+		$result = $this->save($data1,['id'=>$data1['id']]);
 		return $result;
 	}
 

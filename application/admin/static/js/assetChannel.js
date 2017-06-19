@@ -188,6 +188,7 @@ $(function(){
         var priv_bank_account_id = $("#priv_bank_account_id").val();
         var priv_bank_branch = $("#priv_bank_branch").val();
         var status = $('#status').val();
+        var guarantee_id = $('#guarantee_id').val();
         var descr = $('#descr').val().replace(/\n/g,"");
 
         if(name == ""){
@@ -303,7 +304,8 @@ $(function(){
                 'priv_bank_account_id': priv_bank_account_id,
                 'priv_bank_branch': priv_bank_branch,
                 'status': status,
-                'descr': descr
+                'descr': descr,
+                'guarantee_id':guarantee_id
             },
             success:function(resp){
                 if (resp.code == "1" ) {
