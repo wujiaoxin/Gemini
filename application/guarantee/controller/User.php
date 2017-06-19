@@ -626,6 +626,9 @@ use app\guarantee\controller\Baseness;
 		if ($role == 13) {
 			$this->error('没有权限新增渠道');
 		}
+		if ($role == 17) {
+			
+		}
 		$link = model('Dealer');
 		if (IS_POST) {
 			$data = input('post.');
@@ -666,4 +669,44 @@ use app\guarantee\controller\Baseness;
 			return $this->fetch('newChannel');
 		}
 	}
+
+	//修改
+	public function editChannel() {
+		$link = model('Dealer');
+		$id   = input('id', '', 'trim,intval');
+		if (IS_POST) {
+			$data = input('post.');
+			if ($data) {
+				//$data['status'] = 1;
+				if ($data['status'] == 1) {
+					$data['lines'] = '1000000';
+					$data['b_money'] = '1';
+					$data['money_level'] = '1000000';
+					$data['lines_ky'] = '1000000';
+				}
+				$result = $link->save($data, array('id' => $data['id']));
+				if ($result) {
+					return $this->success("修改成功！", url('assetchannel/index'));
+				} else {
+					return $this->error("修改失败！");
+				}
+			} else {
+				return $this->error($link->getError());
+			}
+		} else {
+			$map  = array('id' => $id);
+			$info = db('Dealer')->where($map)->find();
+			$sales = db('member')->alias('m')->field('m.*')->join('__DEALER__ d','m.dealer_id = d.id')->where('d.id',$id)->order('id DESC')->select();
+			$info['sales'] = $sales;
+			$data = array(
+				'keyList' => $link->keyList,
+				'info'    => $info,
+				'infoStr' => json_encode($info),
+			);
+			$this->assign($data);
+			$this->setMeta("车商审核");
+			return $this->fetch();
+		}
+	}
+
 }

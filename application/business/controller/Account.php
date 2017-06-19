@@ -91,7 +91,7 @@ class Account extends Baseness {
 			$data = input('post.');
 			$map = array('bank_account_id'=>$data['CardNumber'],'type'=>1);
 			$res = db('bankcard')->where($map)->find();
-			$uids = db('Dealer')->field('d.id')->where('mobile',$mobile)->find();
+			$uids = db('Dealer')->field('id')->where('mobile',$mobile)->find();
 			if (empty($res)) {
 				$arr = array(
 					'uid'=>$uids['id'],
