@@ -311,6 +311,14 @@
 							      	<input type="number" id="fee">
 							    </div>
 						  	</div>
+						  	<div class="form-group">
+							    <label class="col-sm-2 control-label">资金方</label>
+							    <div class="col-sm-2 pt5">
+							      	<select id="fund_provider">
+							      		<option value=""></option>
+							      	</select>
+							    </div>
+						  	</div>
 					  	</div>
 						<div class="form-group" id="reject_reason" style="display: none;">
 							<label class="col-sm-2 control-label">拒绝原因</label>
@@ -592,6 +600,7 @@ $(function(){
 		var examine_limit = $('#examine_limit').val();
 		var fee_type = $('#fee_type').val();
 		var fee = $('#fee').val();
+		var fund_provider = $('#fund_provider').val();
 		var reject_reason = encodeCheckbox('reject_reason');
 		var descr = $('#descr').val().replace(/\n/g,"");
 		ajax_jquery({
@@ -602,6 +611,7 @@ $(function(){
 	        	'examine_limit': examine_limit,
 	        	'fee_type': fee_type,
 	        	'fee': fee,
+	        	'fund_provider':fund_provider,
 	        	'reject_reason': reject_reason,
 	        	'descr': descr
 	        },

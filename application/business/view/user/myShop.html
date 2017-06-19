@@ -166,6 +166,11 @@
 	}
 
 	jQuery(document).ready(function() {
+		if(info.username){
+			localStorage.setItem('username',info.username);
+			localStorage.setItem('guarantee_id',guarantee_id);
+			$('#nav-username').text(info.username);
+		}
 	   // App.init();
 	   	getOrderTotal(30);
 		$("#orderTermBtn").on('click',function(){
