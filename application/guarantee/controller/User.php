@@ -10,17 +10,6 @@
 namespace app\guarantee\controller;
 use app\guarantee\controller\Baseness;
  class User extends Baseness {
- 	
- 	/*public function _initialize(){
- 		parent::_initialize();
- 		$role = session('user_auth.role');
- 		$mobile = session('business_mobile');
- 		if ($role == '17') {
- 			$ids = db('member')->field('dealer_id')->where('mobile',$mobile)->find();
- 			session('guarantee_id',$dis['dealer_id']);
- 		}
- 	}*/
-
 	public function myStaff() {
 		//担保公司员工
 		$uid = session('user_auth.uid');
@@ -114,7 +103,80 @@ use app\guarantee\controller\Baseness;
 		}
 	}
 
+
 	public function myShop() {
+		$uid =session('user_auth.uid');
+		$role =session('user_auth.role');
+		$mobile = session('business_mobile');
+		if ($role != 18) {
+			$mobile = db('dealer')->alias('d')->field('d.mobile')->join('__MEMBER__ m','m.dealer_id = d.id')->where('m.uid',$uid)->find();
+			$uids = db('member')->field('uid')->where('mobile',$mobile['mobile'])->find();
+			$uid = $uids['uid'];
+			$mobile = $mobile['mobile'];
+		}
+		$where = array(
+
+			'o.mid' => $uid,
+
+			'o.status'=>1
+
+			);
+		//分组统计
+		$result = db('order')->field('o.mid,o.uid,sum(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
+		
+		$num = db('order')->field('o.mid,o.uid,count(o.id) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
+		$avg = db('order')->field('o.mid,o.uid,avg(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
+		$forms = db('Dealer')->field('guarantee_id')->where('mobile',$mobile)->find();
+
+		if (IS_POST) {
+			$data = input('post.');
+			//一个月内每天的订单数量
+			$res = $data['term']/30;
+			$begin = date('Y-m-d',strtotime("-{$res} month"));//30天前
+	        $begin =strtotime($begin);
+	        $end =strtotime(date('Y-m-d'))+86399;
+	        $map['create_time'] = array(array('gt',$begin),array('lt',$end));
+	        $map['mid'] =$uid;
+	        $map['status'] = '1';
+	        $res =db('order')->field("COUNT(*) as tnum,sum(examine_limit) as total_money, FROM_UNIXTIME(create_time,'%Y-%m-%d') as time")->where($map)->group('time')->select();
+	        $tnum =0;
+	        $tamount=0;
+	        foreach ($res as $val){
+	            $arr[$val['time']] = $val['tnum'];
+	            $brr[$val['time']] = $val['total_money'];
+	            $tnum += $val['tnum'];
+	            $tamount += $val['total_money'];
+	        }
+	        
+	        for($i=$begin;$i<=$end;$i=$i+24*3600){
+	            $tmp_num = empty($arr[date('Y-m-d',$i)]) ? 0 : $arr[date('Y-m-d',$i)];
+	            $tmp_amount = empty($brr[date('Y-m-d',$i)]) ? 0 : $brr[date('Y-m-d',$i)];               
+	            $date = date('Y-m-d',$i);
+	            $list[] = array('time'=>$date,'num'=>$tmp_num,'total_money'=>$tmp_amount);
+	        }
+	        $resp['code'] = '1';
+	        $resp['data'] = $list;
+	        return json($resp);
+		}else{
+			$list = (empty($list)) ? '' : $list;
+			$info = array(
+					'money'=>$result,
+					'num'=>$num,
+					'avg'=>$avg,
+					'guarantee_id'=>$forms['guarantee_id'],
+				);
+			$data = array(
+					'info'=>$info,
+					'infoStr'=>json_encode($info)
+				);
+
+			$this->assign($data);
+			return $this->fetch('myShop');
+		}
+		
+	}
+
+	/*public function myShop() {
 		$uid =session('user_auth.uid');
 		$role =session('user_auth.role');
 		$mobile = session('business_mobile');
@@ -180,7 +242,7 @@ use app\guarantee\controller\Baseness;
 			);
 		$this->assign($data);
 		return $this->fetch('myShop');
-	}
+	}*/
 
 	public function loanItem() {
 		$uid = session('user_auth.uid');
@@ -192,7 +254,7 @@ use app\guarantee\controller\Baseness;
 				$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
 				$uid = $res['uid'];
 			}
-			$resl = db('Dealer')->field('id')->where('guarantee_id',$uid)->select();
+			// $resl = db('Dealer')->field('id')->where('guarantee_id',$uid)->select();
 			/*$arr = array();
 			foreach ($resl as $k => $v) {
 				$ids = db('member')->field('uid')->where('dealer_id',$v['id'])->find();
@@ -200,41 +262,24 @@ use app\guarantee\controller\Baseness;
 			}
 			$list = array();*/
 			
+			$map = array('d.guarantee_id'=>$uid);
 			if ($data['type']) {
-				$map['type'] = $data['type'];
+				$map['o.type'] = $data['type'];
 			}
-			if (isset($data['status'])) {
+			/*if (isset($data['status'])) {
 				if ($data['status'] != '') {
 	    			$map['status'] = $data['status'];
 	    		}
-			}
-			$map['credit_status'] = '3';
+			}*/
+			$map['o.credit_status'] = '3';
 			if ($data['dateRange']) {
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
-				// $result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
-				if (!empty($resl)) {
-					foreach ($resl as $vl) {
-						$map['dealer_id'] =$vl['id'];
-						$result = db('Order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('create_time DESC')->select();
-					}
-				}else{
-				}
-			}else{
-				// $result = db('order')->where($map)->select();
-				if (!empty($resl)) {
-					foreach ($resl as $vl) {
 
-						$map['dealer_id'] =$vl['id'];
-						$result = db('Order')->where($map)->order('create_time DESC')->select();
-					}
-				}
-			}
-			if (!empty($result)) {
-				foreach ($result as $k => $v) {
-					$result[$k]['realname'] = serch_real($v['uid']);
-				}
+				$result = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->whereTime('o.create_time','between',["$endtime","$begintime"])->order('create_time DESC')->select();
+			}else{
+				$result = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
 			}
 			
 			if ($result) {
@@ -315,7 +360,7 @@ use app\guarantee\controller\Baseness;
 					$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
 					$uid = $res['uid'];
 				}
-				$resl = db('Dealer')->field('id')->where('guarantee_id',$uid)->select();
+				// $resl = db('Dealer')->field('id')->where('guarantee_id',$uid)->select();
 				// $map['o.dealer_id'] =$dealer_id['id'];
 				if ($data['type']) {
 					$map['d.type'] = $data['type'];
@@ -325,35 +370,21 @@ use app\guarantee\controller\Baseness;
 				}*/
 				if (isset($data['status'])) {
 					if ($data['status'] != '') {
-		    			$map['status'] = $data['status'];
+		    			$map['o.status'] = $data['status'];
 		    		}
 				}
+				$map = array('d.guarantee_id'=>$uid);
 				if ($data['dateRange']) {
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
 
-					if (!empty($resl)) {
-						foreach ($resl as $vl) {
-							$map['o.dealer_id'] =$vl['id'];
-							$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
-						}
-					}
 
+					$order_repay = db('order_repay')->alias('o')->field('o.*,d.name as dealername,m.realname as yewu_realname')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->whereTime('o.create_time','between',["$endtime","$begintime"])->order('create_time DESC')->select();
 					
 				}else{
-					if (!empty($resl)) {
-						foreach ($resl as $vl) {
-							$map['o.dealer_id'] =$vl['id'];
-							$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
-						}
-					}
+					$order_repay = db('order_repay')->alias('o')->field('o.*,d.name as dealername,m.realname as yewu_realname')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->order('create_time DESC')->select();
 					
-				}
-				if (!empty($order_repay)) {
-					foreach ($order_repay as $k => $v) {
-						$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
-					}
 				}
 				if ($order_repay) {
 					$resp['code'] = '1';
@@ -376,7 +407,7 @@ use app\guarantee\controller\Baseness;
 		return $this->fetch('repayItem');
 	}
 
-	public function payItem() {
+	/*public function payItem() {
 
 		$uid =session('user_auth.uid');
 
@@ -495,7 +526,7 @@ use app\guarantee\controller\Baseness;
 			$this->assign($data);
 		}
 		return $this->fetch('payItem');
-	}
+	}*/
 
 	//设置交易密码
 	public function setpay(){

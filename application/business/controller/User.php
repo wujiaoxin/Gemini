@@ -10,6 +10,7 @@
 namespace app\business\controller;
 use app\business\controller\Baseness;
  class User extends Baseness {
+
 	public function guide() {
 		$mobile = session("business_mobile");
 		$modelDealer = model('Dealer');
@@ -168,6 +169,10 @@ use app\business\controller\Baseness;
 	        $resp['data'] = $list;
 	        return json($resp);
 		}else{
+			$is_success = db('Dealer')->field('priv_bank_name')->where('mobile',$mobile)->find();
+			if(isset($is_success)){
+				$this->redirect(url('/business/user/guide'));
+			}
 			$list = (empty($list)) ? '' : $list;
 			$info = array(
 					'money'=>$result,
