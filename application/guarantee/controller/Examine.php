@@ -208,8 +208,12 @@ class Examine extends Baseness {
 	public function finance() {
 		$role =session('user_auth.role');
 		$uid =session('user_auth.uid');
-		if (IS_POST){
-
+		if ($role != '18') {
+			$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+			$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
+			$uid = $res['uid'];
+		}
+		if (IS_POST) {
 			$data = input('post.');
 			if (isset($data['status'])) {
 				$info = array(
@@ -239,39 +243,19 @@ class Examine extends Baseness {
 
 				$resp['msg'] = '提交失败';
 			}
-
+			
+			// var_dump($resp);die;
 			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
-
 			return json($resp);
-
+			
 		}else{
 			
-			if ($role != '18') {
-				$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
-				$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
-				$uid = $res['uid'];
-			}
-			$resl = db('Dealer')->field('id')->where('guarantee_id',$uid)->select();
-			if (!empty($resl)) {
-				foreach ($resl as $vl) {
-					$map['dealer_id'] =$vl['id'];
-					$map['status'] = '13';
-					$list = db('Order')->where($map)->order('create_time DESC')->select();
-				}
-			}
 
-			if (!empty($list)) {
-				foreach ($list as $k => $v) {
-					$list[$k]['salesman'] = serch_realname($v['uid']);
-
-					$name = serch_name($v['dealer_id']);
-
-					$list[$k]['dealername'] = $name['dealer_name'];
-				}
-			}else{
-				$list = '';
-			}
-
+			$map = array(
+				'o.status'=>13,
+				'd.guarantee_id'=>$uid
+			);
+			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
 
 			$data = array(
 
@@ -283,6 +267,7 @@ class Examine extends Baseness {
 			$this->setMeta('查看审核');
 
 		}
+
 
 		$this->setMeta('财务审核');
 
