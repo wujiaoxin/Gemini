@@ -156,8 +156,10 @@ class Examine extends Baseness {
 			$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
 			$uid = $res['uid'];
 		}
+		/*if ($role != '14' || $role != '18') {
+			return $this->error('无权限访问');
+		}*/
 		if (IS_POST) {
-
 			$data = input('post.');
 			if (isset($data['status'])) {
 				$res = db('Order')->field('status')->where('id',$data['id'])->find();
@@ -405,51 +407,79 @@ class Examine extends Baseness {
 	}
 
 	public function fview() {
-		
-		$id   = input('id', '', 'trim,intval');
 
-		$order_info = db('order')->alias('o')->field('o.*,m.realname as salesman,m.mobile as salesmobile')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where('id', $id)->find();
+		if (IS_POST) {
+			$data = input('post.');
+			var_dump($data);die;
+			if ($data['status'] == '3') {
+				$info = array(
+					'status'=>$data['status'],
+					'endtime'=>$data['loan_term']
+				);
+				$res = model('Order')->save($data,['id'=>$data['id']]);
+				if ($res) {
+					$resp['code'] = 1;
+					$resp['msg'] = '申请垫资成功！';
+				}else{
+					$resp['code'] = 0;
+					$resp['msg'] = '申请垫资失败！';
+				}
+				return json($resp);
+			}else{
+				$resp['code'] = 0;
+				$resp['msg'] = '无法放款';
+				return json($resp);
+			}
+		}else{
 
-		$member_info = db('member')->alias('m')->field('m.*,c.credit_result,c.credit_level,c.credit_score')->join('__CREDIT__ c','c.uid = m.uid','LEFT')->where('m.mobile', $order_info['mobile'])->find();
+			$id   = input('id', '', 'trim,intval');
 
-		$examine_log  =db('examine_log')->alias('l')->field('l.*,m.username as operator')->join('__MEMBER__ m','m.uid = l.uid','LEFT')->where('l.record_id',$id)->select();
+			$order_info = db('order')->alias('o')->field('o.*,m.realname as salesman,m.mobile as salesmobile')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where('id', $id)->find();
 
-		foreach ($examine_log as $k => $v) {
+			$member_info = db('member')->alias('m')->field('m.*,c.credit_result,c.credit_level,c.credit_score')->join('__CREDIT__ c','c.uid = m.uid','LEFT')->where('m.mobile', $order_info['mobile'])->find();
 
-			$examine_log[$k]['params'] = json_decode($v['param']);
+			$examine_log  =db('examine_log')->alias('l')->field('l.*,m.username as operator')->join('__MEMBER__ m','m.uid = l.uid','LEFT')->where('l.record_id',$id)->select();
 
-			unset($examine_log[$k]['param']);
-		}
+			foreach ($examine_log as $k => $v) {
+
+				$examine_log[$k]['params'] = json_decode($v['param']);
+
+				unset($examine_log[$k]['param']);
+			}
 
 
-		$fileFilter['order_id'] = $id;
+			$fileFilter['order_id'] = $id;
 
-		$fileFilter['status'] = 1;//有效文件
+			$fileFilter['status'] = 1;//有效文件
 
-		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($fileFilter)->order('create_time DESC')->limit(100)->select();
+			$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($fileFilter)->order('create_time DESC')->limit(100)->select();
 
-		$list = array(
+			$list = array(
 
-			'order_info' => $order_info,//订单信息
+				'order_info' => $order_info,//订单信息
 
-			'member_info' => $member_info,//客户信息
-			
-			'files'   => $files,//附件资料
+				'member_info' => $member_info,//客户信息
+				
+				'files'   => $files,//附件资料
 
-			'examine_log'   => $examine_log,//审核历史
+				'examine_log'   => $examine_log,//审核历史
 
+				);
+
+			$data = array(
+
+				'infoStr' =>json_encode($list)
 			);
 
-		$data = array(
+			$this->assign($data);
 
-			'infoStr' =>json_encode($list)
-		);
+			$this->setMeta('财务审核');
 
-		$this->assign($data);
+			return $this->fetch();
 
-		$this->setMeta('财务审核');
-
-		return $this->fetch();
+		}
+		
+		
 	}
 
 	public function delete(){

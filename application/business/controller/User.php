@@ -133,10 +133,10 @@ use app\business\controller\Baseness;
 
 			);
 		//分组统计
-		$result = db('order')->field('o.mid,o.uid,sum(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
+		$result = db('order')->field('o.mid,o.uid,sum(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(10)->select();
 		
-		$num = db('order')->field('o.mid,o.uid,count(o.id) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
-		$avg = db('order')->field('o.mid,o.uid,avg(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
+		$num = db('order')->field('o.mid,o.uid,count(o.id) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(10)->select();
+		$avg = db('order')->field('o.mid,o.uid,avg(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(10)->select();
 		$forms = db('Dealer')->field('guarantee_id')->where('mobile',$mobile)->find();
 		$is_success = db('Dealer')->field('priv_bank_name')->where('mobile',$mobile)->find();
 		if(!isset($is_success)){
@@ -196,26 +196,24 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
-			if ($data['type']) {
+			/*if ($data['type']) {
 				$map['type'] = $data['type'];
-			}
-			if (isset($data['status'])) {
+			}*/
+			/*if (isset($data['status'])) {
 				if ($data['status'] != '') {
 	    			$map['status'] = $data['status'];
 	    		}
-			}
+			}*/
 			$map['credit_status'] = '3';
 			if ($data['dateRange']) {
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
-				$result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+				$result = db('order')->alias('o')->field('o.*,m.realname')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
 			}else{
-				$result = db('order')->where($map)->select();
+				$result = db('order')->alias('o')->field('o.*,m.realname')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
 			}
-			foreach ($result as $k => $v) {
-				$result[$k]['realname'] = serch_real($v['uid']);
-			}
+			
 			if ($result) {
 				$resp['code'] = '1';
 				$resp['msg'] = '数据正常';
