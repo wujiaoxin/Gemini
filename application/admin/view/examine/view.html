@@ -435,7 +435,6 @@
 	}
 	$('#examine-history tbody').html(historyTpl(info.examine_log));
 
-
 	var keyList = [
         {
             form_key:"orderSupplement_pic_1",
@@ -531,6 +530,18 @@
 	}
 	$('#tab_1_6 .pic-container').html(picTpl(info.files));
 	$("#documentInfo").lightGallery();
+
+	// 资金方
+	function historyFund(data){
+		var html = '';
+		if(typeof(data) =='object'){
+			for(var index = 0; index < data.length; index++){
+			  	html += '<option value="'+ data[index].uid+'">'+ data[index].name +'</option>'
+			}
+		}
+		return html;
+	}
+	$('#fund_provider').html(historyFund(info.fund));
 
 	$('#examine_limit').val(info['order_info']['loan_limit']);
 	$('#examineStatus').change(function(){
