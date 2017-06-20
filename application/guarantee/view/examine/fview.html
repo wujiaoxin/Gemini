@@ -264,7 +264,7 @@
 								<div class="control-group">
 									<label class="control-label">打款账户</label>
 									<div class="controls">
-										<input type="number" disabled="disabled" name="bankcard">
+										<input type="number" disabled="disabled" name="bankcard" value="6230580000094045239">
 									</div>
 								</div>
 								<div id="application">
@@ -513,10 +513,14 @@
             inputdata = 15;
         }
         $(this).val(inputdata);
-        if(inputdata < 10){
-        	$('#loan_rate').val('3');
-        }else{
-        	$('#loan_rate').val('2');
+        if(inputdata >= 3 && inputdata <= 5){
+        	$('#loan_rate').val('0.8');
+        }else if(inputdata >= 6 && inputdata <= 9){
+        	$('#loan_rate').val('1');
+        }else if(inputdata >= 10 && inputdata <= 12){
+        	$('#loan_rate').val('1.2');
+        }else if(inputdata >= 13 && inputdata <= 15){
+        	$('#loan_rate').val('1.5');
         };
 	});
 
@@ -536,6 +540,9 @@ $(function(){
 			if(loan_term == ''){
 				ui_alert("请输入垫资天数");
 				return false;
+			}else if(loan_term < 3 || loan_term > 15){
+				ui_alert("垫资天数需在3和15之间");
+				return false;
 			}else if(field_guarantee_pic == ''){
 				ui_alert("请上传担保函照片");
 				return false;
@@ -552,7 +559,7 @@ $(function(){
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	ui_alert("审核通过","success");
-	            	window.location.href = apiUrl + "/guarantee/examine/loanLimit";
+	            	window.location.href = apiUrl + "/guarantee/examine/finance";
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);
