@@ -85,15 +85,8 @@ class Examine extends Baseness {
 			$uid = $res['uid'];
 		}
 		if (IS_POST) {
-
 			$data = input('post.');
 			if (isset($data['status'])) {
-				$res = db('Order')->field('status')->where('id',$data['id'])->find();
-				if ($res['status'] != '11') {
-					$resp['code'] = 0;
-
-					$resp['msg'] = '已审核!';
-				}
 				$info = array(
 
 					'status'=>$data['status'],
@@ -102,22 +95,18 @@ class Examine extends Baseness {
 
 					'descr'=>$data['descr']
 				);
-				
-				if ($res['status'] == '11') {
-					$info['status'] = '12';//信审
-				}
 				$result = db('order')->where('id',$data['id'])->update($info);
 				if ($result) {
 
-						$resp['code'] = 1;
+					$resp['code'] = 1;
 
-						$resp['msg'] = '提交成功';
-					}else{
+					$resp['msg'] = '提交成功';
+				}else{
 
-						$resp['code'] = 0;
+					$resp['code'] = 0;
 
-						$resp['msg'] = '提交失败';
-					}
+					$resp['msg'] = '提交失败';
+				}
 			}else{
 
 				$resp['code'] = 0;
@@ -156,19 +145,9 @@ class Examine extends Baseness {
 			$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
 			$uid = $res['uid'];
 		}
-		/*if ($role != '14' || $role != '18') {
-			return $this->error('无权限访问');
-		}*/
 		if (IS_POST) {
 			$data = input('post.');
 			if (isset($data['status'])) {
-				$res = db('Order')->field('status')->where('id',$data['id'])->find();
-				if ($res['status'] != '12') {
-
-					$resp['code'] = 0;
-
-					$resp['msg'] = '已审核!';
-				}
 				$info = array(
 
 					'status'=>$data['status'],
@@ -178,21 +157,18 @@ class Examine extends Baseness {
 					'descr'=>$data['descr']
 				);
 				
-				if ($res['status'] == '12') {
-					$info['status'] = '13';//信审
-				}
 				$result = db('order')->where('id',$data['id'])->update($info);
 				if ($result) {
 
-						$resp['code'] = 1;
+					$resp['code'] = 1;
 
-						$resp['msg'] = '提交成功';
-					}else{
+					$resp['msg'] = '提交成功';
+				}else{
 
-						$resp['code'] = 0;
+					$resp['code'] = 0;
 
-						$resp['msg'] = '提交失败';
-					}
+					$resp['msg'] = '提交失败';
+				}
 			}else{
 
 				$resp['code'] = 0;
@@ -236,76 +212,32 @@ class Examine extends Baseness {
 
 			$data = input('post.');
 			if (isset($data['status'])) {
+				$info = array(
 
-				if ($data['status'] == '1') {
+					'status'=>$data['status'],
 
-					$infos = array(
-							'status' => '1',
-							'examine_limit' =>$data['examine_limit'],
-							'descr'=>$data['descr']
-						);
+					'examine_limit'=>$data['examine_limit'],
 
-					$result = db('order')->where('id',$data['id'])->update($infos);
+					'descr'=>$data['descr']
+				);
+				
+				$result = db('order')->where('id',$data['id'])->update($info);
+				if ($result) {
 
-					if ($result) {
+					$resp['code'] = 1;
 
-						$info = db('order')->field('examine_limit,endtime,type')->where('id',$data['id'])->find();
-
-						if ($info['type'] == '2' || $info['type'] == '4') {
-
-							$fee = fee_money($info['endtime'],$info['examine_limit']);
-
-							$fee1['fee'] = $fee;
-							$fee1['finance'] = '1';
-							db('order')->where('id',$data['id'])->update($fee1);
-						}else{
-
-							db('order')->where('id',$data['id'])->setField('finance','2');
-						}
-						$resp['code'] = 1;
-
-						$resp['msg'] = '提交成功';
-
-					}else{
-
-						$resp['code'] = 0;
-
-						$resp['msg'] = '提交失败';
-
-						return json($resp);
-					}
+					$resp['msg'] = '提交成功';
 				}else{
 
-					$info_s = array(
+					$resp['code'] = 0;
 
-						'reject_reason' => $data['descr'],
-
-						'status' =>$data['status'],
-
-						'examine_limit' =>$data['examine_limit']
-
-						);
-					$result = db('order')->where('id',$data['id'])->update($info_s);
-					if ($result) {
-
-						$resp['code'] = 1;
-
-						$resp['msg'] = '提交成功';
-					}else{
-
-						$resp['code'] = 0;
-
-						$resp['msg'] = '提交失败';
-
-					}
-
+					$resp['msg'] = '提交失败';
 				}
-
 			}else{
 
 				$resp['code'] = 0;
 
-				$resp['msg'] = '提交异常';
+				$resp['msg'] = '提交失败';
 			}
 
 			examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
@@ -410,7 +342,6 @@ class Examine extends Baseness {
 
 		if (IS_POST) {
 			$data = input('post.');
-			var_dump($data);die;
 			if ($data['status'] == '3') {
 				$info = array(
 					'status'=>$data['status'],

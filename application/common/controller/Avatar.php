@@ -16,7 +16,7 @@ class Files {
 	 */
 	public function upload() {
 
-		$config = config('order_files_upload');
+		$config = config('avatar_upload');
 		$file = request()->file('file');
 		$fileType = input('fileType', 'image', 'trim');
 		if($fileType == 'video'){
@@ -43,10 +43,10 @@ class Files {
 		$uid = session('user_auth.uid');
 		$file           = $this->parseFile($file);
 		$dbname         = 'Member';
-		$id             = db($dbname)->insertGetId($file);
+		$id             = db($dbname)->where('uid',$uid)->update($file);
 		if ($id) {
-			$data = db($dbname)->where(array('id' => $id))->find();
-			return $data;
+			// $data = db($dbname)->where(array('id' => $id))->find();
+			return $id;
 		} else {
 			return false;
 		}
