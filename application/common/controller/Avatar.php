@@ -24,55 +24,25 @@ class Files {
 		}else{
 			$info = $file->validate(['ext'=>'jpg,jpeg,png,gif'])->move($config['rootPath'], true, false);
 		}
-		$infoExtend['order_id'] = input('order_id', '0', 'trim');
-		$infoExtend['form_key'] = input('form_key', '', 'trim');
-		$infoExtend['form_label'] = input('form_label', '', 'trim');
 		if ($info) {
-			$return['status'] = 1;
 			$return['code'] = 1;
-			// $return['info']   = $this->save($config, $info, $infoExtend);
-			$return['data']   = $this->save($config, $info, $infoExtend);
+			$return['data']   = $this->save($config, $info);
 		} else {
-			$return['status'] = 0;
 			$return['code'] = 0;
-			// $return['info']   = $file->getError();
 			$return['data']   = $file->getError();
 		}
 
 		echo json_encode($return);
 	}
-
-	public function delete() {
-		//TODO: remove local file & check uid
-		$id   = input('id', '', 'trim,intval');
-		$uid  =  session('user_auth.uid');
-		$resp['status'] = 1;//TODO 标准化返回参数	
-		$data['status'] = -1;
-		if($id == ''){
-			//return $this->error("缺少参数");
-			$resp['status'] = 0;
-			$resp['info'] = "缺少参数";
-		}else{
-			$resp['code'] = db("OrderFiles")->where(array('id' => $id,'uid' => $uid))->update($data);
-		}		
-		echo json_encode($resp);
-	}
-
 	/**
 	 * 保存上传的信息到数据库
 	 * @var view
 	 * @access public
 	 */
 	public function save($config, $file, $infoExtend) {
+		$uid = session('user_auth.uid');
 		$file           = $this->parseFile($file);
-		$file['status'] = 1;
-		$file['uid'] = session('user_auth.uid');
-		$file['storage_mode'] = 1;
-		$file['descr']  = '';
-		$file['order_id']    = $infoExtend['order_id']; //订单ID
-		$file['form_key']    = $infoExtend['form_key']; //表单中文件字段
-		$file['form_label']  = $infoExtend['form_label']; //表单中文件标签
-		$dbname         = 'OrderFiles';
+		$dbname         = 'Member';
 		$id             = db($dbname)->insertGetId($file);
 		if ($id) {
 			$data = db($dbname)->where(array('id' => $id))->find();
@@ -148,19 +118,7 @@ class Files {
 	}
 	
 	protected function parseFile($info) {
-		$data['create_time'] = $info->getATime(); //最后访问时间
-		$data['savename']    = $info->getBasename(); //获取无路径的basename
-		$data['c_time']      = $info->getCTime(); //获取inode修改时间
-		$data['ext']         = $info->getExtension(); //文件扩展名
-		$data['name']        = $info->getFilename(); //获取文件名
-		$data['m_time']      = $info->getMTime(); //获取最后修改时间
-		$data['owner']       = $info->getOwner(); //文件拥有者
-		$data['savepath']    = $info->getPath(); //不带文件名的文件路径
-		$data['path']        = str_replace("\\", '/', substr($info->getPathname(), 1)); //全路径
-		$data['url']         = '/mobile/files/getFile?path='.$data['path'];
-		$data['size']        = $info->getSize(); //文件大小，单位字节
-		$data['md5']         = md5_file($info->getPathname());
-		$data['sha1']        = sha1_file($info->getPathname());
+		$data['headerimgurl']        = str_replace("\\", '/', substr($info->getPathname(), 1)); //全路径
 		return $data;
 	}
 }

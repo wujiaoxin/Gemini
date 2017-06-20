@@ -151,6 +151,7 @@ class examine extends Admin {
 		if (IS_POST){
 
 			$data = input('post.');
+			var_dump($data);die;
 			if (isset($data['status'])) {
 
 				if ($data['status'] == '1') {
@@ -266,39 +267,21 @@ class examine extends Admin {
 		
 		$id   = input('id', '', 'trim,intval');
 
+
+
 		$order_info = db('order')->where('id', $id)->find();
 
-		$name = serch_name($order_info['dealer_id']);
 
-		$channel_info = db('dealer')->where('name',$name['dealer_name'])->find();
+		$channel_info = db('dealer')->alias('d')->field('d.*,m.realname as salesman,m.mobile as salesmobile')->join('__MEMBER__ m','m.dealer_id =d.id')->where('d.id',$order_info['dealer_id'])->find();
 
-		$yewu = db('member')->field('realname,mobile')->where('uid',$order_info['uid'])->find();
 
-		$channel_info['salesman'] = $yewu['realname'];
 
-		$channel_info['salesmobile'] = $yewu['mobile'];
-
-		$member_info = db('member')->where('mobile', $order_info['mobile'])->find();
-
-		$credit_info = db('credit')->field('credit_result,credit_level,credit_score')->where('mobile', $order_info['mobile'])->order('id desc')->find();
-		
-		$member_info['credit_result'] =$credit_info['credit_result'];
-		
-		$member_info['credit_level'] =$credit_info['credit_level'];
-		
-		$member_info['credit_score'] =$credit_info['credit_score'];
+		$member_info = db('member')->alias('m')->field('m.*,c.credit_result,c.credit_level,c.credit_score')->join('__CREDIT__ c','c.uid = m.uid','LEFT')->where('m.mobile', $order_info['mobile'])->find();
 		
 		$repay_info = db('order_repay')->where('order_id', $order_info['id'])->select();
 
-		$examine_log  =db('examine_log')->where('record_id',$id)->select();
+		$examine_log  =db('examine_log')->alias('e')->field('e.*,m.username as operator')->join('__MEMBER__ m','m.uid = e.uid','LEFT')->where('e.record_id',$id)->select();
 
-		foreach ($examine_log as $k => $v) {
-			
-			$result = db('member')->field('username')->where('uid',$v['uid'])->find();
-			
-			$examine_log[$k]['operator'] =  $result['username'];
-
-		}
 		foreach ($examine_log as $k => $v) {
 
 			$examine_log[$k]['params'] = json_decode($v['param']);
@@ -313,6 +296,7 @@ class examine extends Admin {
 
 		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($fileFilter)->order('create_time DESC')->limit(100)->select();
 
+		$fund = db('member')->field('uid,nickname as name')->where('access_group_id','19')->select();
 		$list = array(
 
 			'order_info' => $order_info,//订单信息
@@ -321,13 +305,13 @@ class examine extends Admin {
 
 			'member_info' => $member_info,//客户信息
 			
-			'credit_info' => $credit_info,
-
 			'repay_info' => $repay_info,//还款信息
 
 			'files'   => $files,//附件资料
 
 			'examine_log'   => $examine_log,//审核历史
+
+			'fund' =>$fund,//资金方
 
 			);
 

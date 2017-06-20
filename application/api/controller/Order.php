@@ -125,9 +125,10 @@ class Order extends Api {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 		$orderModel = model('Order');
-		$data["url"] = "https://t.vpdai.com/api/open/appdl?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
+		// $data["url"] = "https://t.vpdai.com/api/open/appdl?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
+		$data["url"] = url('/api/open/appdl')."?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
 		$data["url"] = urlencode($data["url"]);
-		$data["url"] = "https://pan.baidu.com/share/qrcode?w=512&h=512&url=".$data['url'];
+		$data["url"] = "https://pan.baidu.com/share/qrcode?w=128&h=128&url=".$data['url'];
 		$resp['code'] = 1;
 		$resp['msg'] = '获取成功';
 		$resp['data'] = $data;
@@ -223,7 +224,7 @@ class Order extends Api {
 		//$filter['uid'] = $uid;
 		$filter['order_id'] = $info['id'];
 		$filter['status'] = 1;//有效文件
-		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->order('create_time DESC')->limit(16)->select();
+		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->order('create_time DESC')->limit(200)->select();
 
 		$data = array(
 			'info'    => $info,

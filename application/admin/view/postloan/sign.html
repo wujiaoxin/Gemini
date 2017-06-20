@@ -55,7 +55,7 @@
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 			var opera = '';
-			if(data[index].status == '2'){
+			if(data[index].status == '0'){
 				opera ='<a href="/admin/postloan/signview?id='+ data[index].id + '">审核</a>';
 			}else{
 				opera = '';
