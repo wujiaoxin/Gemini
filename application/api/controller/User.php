@@ -421,7 +421,8 @@ class User extends Api {
 				'bank_account_id'=>$bankcard,
 				'idcard'=>$idcard,
 				'bank_account_name'=>$realname,
-				'create_time'=>time()
+				'create_time'=>time(),
+				'status'=>0,
 				);
 			db('bankcard')->insert($results);
 			$userInfo = db('member')->field('mobile')->where("uid",$uid)->find();
@@ -508,6 +509,14 @@ class User extends Api {
 				}
 			return json($resp);
 		}
+	}
+
+
+	//上传头像文件
+	public function upload($file = null){
+		$controller = controller('common/Avatar');
+		$action     = $this->request->action();
+		return $controller->$action();
 	}
 }
 

@@ -40,7 +40,8 @@ class Epay {
 		$postData['BranchBankName'] = "";
 		$postData['BankCode'] = $data['BankCode'];
 		$postData['Remark'] = "";
-		$postData['NotifyURL'] = url('pay/notify/bangCard');
+		$postData['NotifyURL'] = 'https://t.vpdai.com/pay/notify/bangCard';//作为测试
+		// $postData['NotifyURL'] = url('pay/notify/bangCard');//正式
 		$postData['SignInfo'] =  "";	
 		$dataStr = $postData['PlatformMoneymoremore'].$postData['RealName'].$postData['Mobile'].$postData['IdentificationNo'].$postData['CardNumber'].$postData['Province'].$postData['City'].$postData['BranchBankName'].$postData['BankCode'].$postData['Remark'].$postData['NotifyURL']; 
 		$postData['CardNumber'] = $rsa->encrypt($CardNumber);
