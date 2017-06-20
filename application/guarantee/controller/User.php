@@ -114,18 +114,25 @@ use app\guarantee\controller\Baseness;
 			$uid = $uids['uid'];
 			$mobile = $mobile['mobile'];
 		}
+		$name = array('IN','1,13');
 		$where = array(
 
-			'o.mid' => $uid,
+			'd.guarantee_id' => $uid,
 
-			'o.status'=>1
+			'o.status'=>$name
 
 			);
 		//分组统计
-		$result = db('order')->field('o.mid,o.uid,sum(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
+
+		$dealer =  db('order')->field('o.mid,o.uid,sum(o.examine_limit) as result,d.name as dealer_name')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->where($where)->order('result DESC')->group('o.dealer_id')->limit(10)->select();
+
+
+		$salesman = db('order')->field('o.mid,o.uid,sum(o.examine_limit) as result,m.realname,d.name as dealer_name')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(10)->select();
+
+		// $result = db('order')->field('o.mid,o.uid,sum(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
 		
-		$num = db('order')->field('o.mid,o.uid,count(o.id) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
-		$avg = db('order')->field('o.mid,o.uid,avg(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
+		// $num = db('order')->field('o.mid,o.uid,count(o.id) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
+		// $avg = db('order')->field('o.mid,o.uid,avg(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(5)->select();
 		$forms = db('Dealer')->field('guarantee_id')->where('mobile',$mobile)->find();
 
 		if (IS_POST) {
@@ -135,10 +142,13 @@ use app\guarantee\controller\Baseness;
 			$begin = date('Y-m-d',strtotime("-{$res} month"));//30天前
 	        $begin =strtotime($begin);
 	        $end =strtotime(date('Y-m-d'))+86399;
-	        $map['create_time'] = array(array('gt',$begin),array('lt',$end));
-	        $map['mid'] =$uid;
-	        $map['status'] = '1';
-	        $res =db('order')->field("COUNT(*) as tnum,sum(examine_limit) as total_money, FROM_UNIXTIME(create_time,'%Y-%m-%d') as time")->where($map)->group('time')->select();
+	        $map['o.create_time'] = array(array('gt',$begin),array('lt',$end));
+
+
+	        $map['d.guarantee_id'] =$uid;
+	        $map['o.status'] = $name;
+
+	        $res =db('order')->alias('o')->field("COUNT(*) as tnum,sum(o.examine_limit) as total_money, FROM_UNIXTIME(o.create_time,'%Y-%m-%d') as time")->join('__DEALER__ d','d.id = o.dealer_id','LEFT')->where($map)->group('time')->select();
 	        $tnum =0;
 	        $tamount=0;
 	        foreach ($res as $val){
@@ -160,9 +170,11 @@ use app\guarantee\controller\Baseness;
 		}else{
 			$list = (empty($list)) ? '' : $list;
 			$info = array(
-					'money'=>$result,
-					'num'=>$num,
-					'avg'=>$avg,
+					// 'money'=>$result,
+					// 'num'=>$num,
+					// 'avg'=>$avg,
+					'dealer'=>$dealer,
+					'salesman'=>$salesman,
 					'guarantee_id'=>$forms['guarantee_id'],
 				);
 			$data = array(
@@ -277,9 +289,9 @@ use app\guarantee\controller\Baseness;
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
 
-				$result = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->whereTime('o.create_time','between',["$endtime","$begintime"])->order('create_time DESC')->select();
+				$result = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname ')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->whereTime('o.create_time','between',["$endtime","$begintime"])->order('create_time DESC')->select();
 			}else{
-				$result = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
+				$result = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
 			}
 			
 			if ($result) {
