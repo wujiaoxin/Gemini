@@ -283,6 +283,7 @@ class Yixingtong extends Base {
 				'true_repay_money'=>$data['totalAmount'],
 				// 'true_repay_time'=>strtotime($data['notifyTime']),
 				'true_repay_time'=>time(),
+				'serial_num'=>$data['settleNo'],//加入结算流水号
 				'status'=>1,
 				'has_repay'=>1,
 				);
