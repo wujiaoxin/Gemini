@@ -422,7 +422,7 @@ class User extends Api {
 				'idcard'=>$idcard,
 				'bank_account_name'=>$realname,
 				'create_time'=>time(),
-				'status'=>0,
+				'status'=>2,
 				);
 			db('bankcard')->insert($results);
 			$userInfo = db('member')->field('mobile')->where("uid",$uid)->find();

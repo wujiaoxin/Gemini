@@ -406,7 +406,7 @@
 	            success:function(resp){
 	                if (resp.code == "1" ) {
 	                		ui_alert("银行卡绑定成功","success");
-	                        window.location.href = "/guarantee/account/index";
+	                        window.location.href = "/business/account/index";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 	                        ui_alert(resp.msg);

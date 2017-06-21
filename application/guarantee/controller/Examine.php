@@ -256,7 +256,7 @@ class Examine extends Baseness {
 				'd.guarantee_id'=>$uid
 			);
 			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
-
+			
 			$data = array(
 
 				'infoStr' =>json_encode($list)

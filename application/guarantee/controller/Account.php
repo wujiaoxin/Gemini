@@ -15,6 +15,7 @@ class Account extends Baseness {
 	public function index() {
 		$role =session('user_auth.role');
 		$uid =session('user_auth.uid');
+		$mobile =session('business_mobile');
 		if (IS_POST) {
 			$data = input('post.');
 	      	$mobile = session("business_mobile");
@@ -73,11 +74,15 @@ class Account extends Baseness {
   			}
 		}else{
 			if ($role != '18') {
-				$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile')->where('uid',$uid)->find();
+				$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile,d.id')->where('uid',$uid)->find();
 				$res = db('member')->field('uid')->where('mobile',$uids['mobile'])->find();
 				$uid = $res['uid'];
+			}else{
+				$uids = db('Dealer')->field('id')->where('mobile',$mobile)->find();
 			}
       		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code,d.priv_bank_account_id')->where('m.uid',$uid)->find();
+      		$bindcard = db('bankcard')->field('bank_account_id')->where(['uid' =>$uids['id'],'order_id'=>-2,'status'=>2])->find();
+      		$account['bindcard'] = $bindcard['bank_account_id'];
 	      	if ($account){
 	            
 	            $data = array(
@@ -259,15 +264,15 @@ class Account extends Baseness {
 		$this->assign($data);
 		return $this->fetch();
 	}
-
+	//绑卡
 	public function bindCard(){
 		$mobile = session('business_mobile');
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
 		if ($role != '18') {
-			$uids = db('member')->field('dealer_id as id')->where('uid',$uid)->find();
-		}else{
-			$uids = db('Dealer')->field('id')->where('mobile',$mobile)->find();
+			$uids = db('member')->alias('m')->join("__DEALER__ d","m.dealer_id = d.id")->field('d.mobile,d.id')->where('uid',$uid)->find();
+			$mobile = $uids['mobile'];
+			$uid = $uids['id'];
 		}
 		if (IS_POST) {
 			$data = input('post.');
@@ -275,17 +280,32 @@ class Account extends Baseness {
 			$res = db('bankcard')->where($map)->find();
 			if (empty($res)) {
 				$arr = array(
-					'uid'=>$uids['id'],
+					'uid'=>$uid,
 					'type'=>1,
 					'order_id'=>-2,
 					'bank_account_id'=>$data['CardNumber'],
+					'bank_name'=>$data['BankCode'],
+					'bank_branch'=>$data['Province'].','.$data['City'],
 					'bank_account_name'=>$data['RealName'],
 					'create_time'=>time(),
-					'idcard'=>$data['IdentificationNo']
+					'idcard'=>$data['IdentificationNo'],
+					'status'=>2
 				);
-				db('bankcard')->insert($arr);
+				$result = db('bankcard')->insert($arr);
+				if ($result) {
+					$resp['code']='1';
+	        		$resp['msg'] = '绑卡处理中';
+				}else{
+					$resp['code'] = '0';
+	        		$resp['msg'] = '绑卡异常,请联系客服';
+				}
+			}else{
+				$resp['code'] = '0';
+	        	$resp['msg'] = '绑卡异常,请联系客服';
 			}
-			$epay = new \epay\Epay();
+
+			//乾多多绑卡操作
+			/*$epay = new \epay\Epay();
 			$ret = $epay::bankcard($data);
 	        if (empty($ret)) {
 	        	$resp['code'] = '0';
@@ -299,7 +319,7 @@ class Account extends Baseness {
 	        }else{
 	        	$resp['code'] = '0';
 	        	$resp['msg'] = $ret['Message'];
-	        }
+	        }*/
 	        return json($resp);
 		}
 	}
