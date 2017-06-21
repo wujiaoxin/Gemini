@@ -125,13 +125,16 @@
 	        }
 	    }
 	});
-	$('.select2_bank').val(info['bank']).trigger('change');
-	$('.select2_province').val(info['province']).trigger('change');
-	$('.select2_city').val(info['city']).trigger('change');
+	
 
 </script>
 <script>
 $(function(){
+	if(info['bank_name']){
+		$('.select2_bank').val(info['bank_name']).trigger('change');
+		$('.select2_province').val(info['province']).trigger('change');
+		$('.select2_city').val(info['city']).trigger('change');
+	}
 	var id = getUrlParam('id');
 	$('#bindCardBtn').click(function(){
         var RealName = $('#bank_account_name').val();

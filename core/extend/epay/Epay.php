@@ -42,7 +42,7 @@ class Epay {
 		$postData['Remark'] = "";
 		$postData['NotifyURL'] = 'https://t.vpdai.com/pay/notify/bangCard';//作为测试
 		// $postData['NotifyURL'] = url('pay/notify/bangCard');//正式
-		$postData['SignInfo'] =  "";	
+		$postData['SignInfo'] =  "";
 		$dataStr = $postData['PlatformMoneymoremore'].$postData['RealName'].$postData['Mobile'].$postData['IdentificationNo'].$postData['CardNumber'].$postData['Province'].$postData['City'].$postData['BranchBankName'].$postData['BankCode'].$postData['Remark'].$postData['NotifyURL']; 
 		$postData['CardNumber'] = $rsa->encrypt($CardNumber);
 		$postData['SignInfo'] = self::buildSign($dataStr);
@@ -52,28 +52,29 @@ class Epay {
 	}
 
 
-	//多卡绑卡接口
+	//多卡绑卡接口(测试)
 
-	public static function bangcard($data){
-
+	public static function bindcardag($data){
+		$rsa = new RSA();
 		$postData = array();
 		$postData['PlatformMoneymoremore'] = self::$PlatformMoneymoremore;
-		$postData['BindMoneymoremore'] = "c7";
+		$postData['BindMoneymoremore'] = "c17";
 		$CardNumber = $data['CardNumber'];
 		$postData['CardNumber'] = $CardNumber;
-		$postData['Province'] = $data['province'];
-		$postData['City'] = $data['city'];
-		$postData['BranchBankName'] = $data['BranchBankName'];
-		$postData['BankCode'] = $data['BranchBankName'];
+		$postData['Province'] = $data['Province'];
+		$postData['City'] = $data['City'];
+		$postData['BranchBankName'] = '';
+		$postData['BankCode'] = $data['BankCode'];
 		$postData['Remark'] = '';
-		$postData['NotifyURL'] = $data['NotifyURL'];
+		$postData['NotifyURL'] = 'https://t.vpdai.com/pay/notify/bangCard';//作为测试
+		// $postData['NotifyURL'] = url('pay/notify/bangCard');//正式
 		$postData['SignInfo'] =  "";
 
-		$dataStr = $postData['PlatformMoneymoremore'].$postData['BindMoneymoremore'].$postData['CardNumber'].$postData['Province'].$postData['City'].$postData['BranchBankName'].$postData['BankCode'].$postData['Remark'].$postData['NotifyURL']; 
+		$dataStr = $postData['PlatformMoneymoremore'].$postData['BindMoneymoremore'].$postData['CardNumber'].$postData['Province'].$postData['City'].$postData['BranchBankName'].$postData['BankCode'].$postData['Remark'].$postData['NotifyURL'];
 		$postData['CardNumber'] = $rsa->encrypt($CardNumber);
 
 		$postData['SignInfo'] = self::buildSign($dataStr);
-		$url = self::$service."bindCard.action";
+		$url = self::$service."bindCardAG.action";
 		$resp = self::sendHttpRequest($postData,$url);
 		return $resp;
 	}
@@ -81,11 +82,11 @@ class Epay {
 	//放贷接口
 
 	public static function loan($data){
-		
+		$rsa = new RSA();
 		$loanList = array();
-		$loanList[0]['PayMoneymoremore'] = self::$PlatformMoneymoremore;
+		$loanList[0]['PayMoneymoremore'] =  $data['PayMoneymoremore'];
 		$loanList[0]['Amount'] = $data['Amount'];
-		$loanList[0]['Amount'] = $data['Amount'];
+		$loanList[0]['OrderNo'] = $data['OrderNo'];
 
 		$postData = array();
 		$postData['LoanJsonList'] = json_encode($loanList);
@@ -102,7 +103,7 @@ class Epay {
 		$postData['LoanJsonList'] = urlencode($postData['LoanJsonList']);
 
 		$postData['SignInfo'] = self::buildSign($dataStr);
-		$url = self::$service."bindCard.action";
+		$url = self::$service."payForAnother.action";
 		$resp = self::sendHttpRequest($postData,$url);
 		return $resp;
 	}
@@ -126,7 +127,7 @@ class Epay {
 		$postData['LoanJsonList'] = urlencode($postData['LoanJsonList']);
 		
 		$postData['SignInfo'] = self::buildSign($dataStr);
-		$url = self::$service."bindCard.action";
+		$url = self::$service."repaymentCollect.action";
 		$resp = self::sendHttpRequest($postData,$url);
 		return $resp;
 

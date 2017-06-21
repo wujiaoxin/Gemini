@@ -50,12 +50,12 @@
 <script type="text/javascript">
 	function tpl(data){
 		var html = '';
-		var g_signStatus = {'-1':'绑卡失败','0':'待绑卡','1':'绑卡成功','2':'绑卡中'};
+		var g_signStatus = {'-1':'绑卡失败','0':'待绑卡','1':'绑卡成功','2':'绑卡申请中'};
 		var g_signOrder = {'-1':'C端客户','-2':'担保机构','-3':'担保车商','-4':'资金方'};
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 			var opera = '';
-			if(data[index].status == '0'){
+			if(data[index].status == '2'){
 				opera ='<a href="/admin/postloan/signview?id='+ data[index].id + '">审核</a>';
 			}else{
 				opera = '';

@@ -151,7 +151,6 @@ class examine extends Admin {
 		if (IS_POST){
 
 			$data = input('post.');
-			var_dump($data);die;
 			if (isset($data['status'])) {
 
 				if ($data['status'] == '1') {
@@ -160,6 +159,8 @@ class examine extends Admin {
 							'status' => '1',
 							'examine_limit' =>$data['examine_limit'],
 							'descr'=>$data['descr'],
+							'fee'=>$data['fee'],
+							'fund_id'=>$data['fund_provider'],//加入资金方
 						);
 
 					$result = db('order')->where('id',$data['id'])->update($infos);

@@ -13,6 +13,7 @@ use app\common\model;
 
 class Account extends Baseness {
 	public function index() {
+		$uid =session('user_auth.uid');
 		if (IS_POST) {
 			$data = input('post.');
 	      	$mobile = session("business_mobile");
@@ -69,6 +70,9 @@ class Account extends Baseness {
 		}else{
 			$mobile = session("business_mobile");
       		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code,d.priv_bank_account_id')->where('m.mobile',$mobile)->find();
+      		$uids = db('Dealer')->field('id')->where('mobile',$mobile)->find();
+      		$bindcard = db('bankcard')->field('bank_account_id')->where(['uid' =>$uids['id'],'order_id'=>-3,'status'=>1])->find();
+      		$account['bindcard'] = $bindcard['bank_account_id'];
 	      	if ($account){
 	            $data['infoStr'] = json_encode($account);
 	            $data = array(
@@ -87,24 +91,35 @@ class Account extends Baseness {
 	// 绑卡
 	public function bindCard(){
 		$mobile = session("business_mobile");
+		 $uid = session('user_auth.uid');
 		if (request()->isPost()) {
 			$data = input('post.');
 			$map = array('bank_account_id'=>$data['CardNumber'],'type'=>1);
 			$res = db('bankcard')->where($map)->find();
-			$uids = db('Dealer')->field('id')->where('mobile',$mobile)->find();
 			if (empty($res)) {
 				$arr = array(
-					'uid'=>$uids['id'],
+					'uid'=>$uid,
 					'type'=>1,
 					'order_id'=>-3,
 					'bank_account_id'=>$data['CardNumber'],
 					'bank_account_name'=>$data['RealName'],
 					'create_time'=>time(),
-					'idcard'=>$data['IdentificationNo']
+					'idcard'=>$data['IdentificationNo'],
+					'status'=>2,
 				);
-				db('bankcard')->insert($arr);
+				$result = db('bankcard')->insert($arr);
+				if ($result) {
+					$resp['code']='1';
+	        		$resp['msg'] = '绑卡处理中';
+				}else{
+					$resp['code'] = '0';
+	        		$resp['msg'] = '绑卡异常,请联系客服';
+				}
+			}else{
+				$resp['code'] = '0';
+	        	$resp['msg'] = '绑卡申请中,请联系客服';
 			}
-			$epay = new \epay\Epay();
+			/*$epay = new \epay\Epay();
 			$ret = $epay::bankcard($data);
 	        if (empty($ret)) {
 	        	$resp['code'] = '0';
@@ -118,7 +133,7 @@ class Account extends Baseness {
 	        }else{
 	        	$resp['code'] = '0';
 	        	$resp['msg'] = $ret['Message'];
-	        }
+	        }*/
 	        return json($resp);
 		}
 	}
