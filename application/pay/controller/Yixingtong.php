@@ -274,7 +274,7 @@ class Yixingtong extends Base {
 		if (!$data) {
 			$this->redirect('/');
 		}
-		$res = db('order_repay')->field('status')->where('orderon',$data['orderNo'])->find();
+		$res = db('order_repay')->field('status')->where('orderon',$data['externalOrderNo'])->find();
 		if ($res['status'] == '1') {
 			echo "success";exit();
 		}
@@ -287,14 +287,14 @@ class Yixingtong extends Base {
 				'status'=>1,
 				'has_repay'=>1,
 				);
-			db('order_repay')->where('orderon',$data['orderNo'])->update($info);
+			db('order_repay')->where('orderon',$data['externalOrderNo'])->update($info);
 
 		}elseif ($data['status'] == 'WITHHOLD_FAIL' || $data['status'] == 'CHECK_REJECT') {
 			
 			$info = array('status'=>6,'has_repay'=>6);
 			if ($res['status'] != '1' ||$res['status'] != '-2') {
 
-				db('order_repay')->where('orderon',$data['orderNo'])->update($info);
+				db('order_repay')->where('orderon',$data['externalOrderNo'])->update($info);
 			}
 		}else{
 			$info = array(
@@ -302,7 +302,7 @@ class Yixingtong extends Base {
 				'has_repay'=>-2,
 				);
 			if ($res['status'] != '1') {
-				db('order_repay')->where('orderon',$data['orderNo'])->update($info);
+				db('order_repay')->where('orderon',$data['externalOrderNo'])->update($info);
 			}
 		}
 		echo "success";exit();
