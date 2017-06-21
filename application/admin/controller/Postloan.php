@@ -167,8 +167,9 @@ class Postloan extends Admin {
 			$idcard = $data['IdentificationNo'];
 			$realname = $data['RealName'];
 			$bankcard = $data['CardNumber'];
+			$mobile = $data['Mobile'];
 			$event = new \app\riskmgr\controller\Yinlian();
-			$res = $event->authvalid($idcard,$realname,$bankcard,'',5);
+			$res = $event->authvalid($idcard,$realname,$bankcard,$mobile,5);
 			if (!empty($res)) {
 				if ($res['resCode'] == '0000' && $res['stat'] == '1') {
 					$info = array(

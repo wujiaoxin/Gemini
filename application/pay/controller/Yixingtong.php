@@ -274,22 +274,26 @@ class Yixingtong extends Base {
 		if (!$data) {
 			$this->redirect('/');
 		}
-		$res = db('order_repay')->field('status')->where('orderno',$data['ordenon'])->find();
+		$res = db('order_repay')->field('status')->where('orderon',$data['orderNo'])->find();
+		if ($res['status'] == '1') {
+			echo "success";exit();
+		}
 		if ($data['status'] == 'SUCCESS') {
 			$info = array(
 				'true_repay_money'=>$data['totalAmount'],
-				'true_repay_time'=>strtotime($data['notifyTime']),
+				// 'true_repay_time'=>strtotime($data['notifyTime']),
+				'true_repay_time'=>time(),
 				'status'=>1,
 				'has_repay'=>1,
 				);
-			db('order_repay')->where('ordenon',$data['ordenon'])->update($info);
+			db('order_repay')->where('orderon',$data['orderNo'])->update($info);
 
 		}elseif ($data['status'] == 'WITHHOLD_FAIL' || $data['status'] == 'CHECK_REJECT') {
 			
 			$info = array('status'=>6,'has_repay'=>6);
 			if ($res['status'] != '1' ||$res['status'] != '-2') {
 
-				db('order_repay')->where('ordenon',$data['ordenon'])->update($info);
+				db('order_repay')->where('orderon',$data['orderNo'])->update($info);
 			}
 		}else{
 			$info = array(
@@ -297,7 +301,7 @@ class Yixingtong extends Base {
 				'has_repay'=>-2,
 				);
 			if ($res['status'] != '1') {
-				db('order_repay')->where('ordenon',$data['ordenon'])->update($info);
+				db('order_repay')->where('orderon',$data['orderNo'])->update($info);
 			}
 		}
 		echo "success";exit();
