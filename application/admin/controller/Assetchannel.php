@@ -22,9 +22,10 @@ class assetchannel extends Admin {
 
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
+		$map = 'd.status > 0';
 		if($uid > 0){
 			
-			$list  = db('Dealer')->alias('d')->field('d.*,m.uid')->join('__MEMBER__ m','m.mobile = d.mobile','LEFT')->order($order)->select();
+			$list  = db('Dealer')->alias('d')->field('d.*,m.uid')->join('__MEMBER__ m','m.mobile = d.mobile','LEFT')->where($map)->order($order)->select();
 
 		}else{
 			return $this->error('请重新登录');
@@ -191,7 +192,7 @@ class assetchannel extends Admin {
 		}
 		$link = db('Dealer');
 		$map    = array('id' => array('IN', $id));
-		$result = $link->where($map)->update(['status'=>2]);
+		$result = $link->where($map)->update(['status'=>0]);
 
 		if ($result) {
 			return $this->success("删除成功！");

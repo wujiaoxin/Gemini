@@ -752,4 +752,20 @@ use app\guarantee\controller\Baseness;
 		}
 	}
 
+	//删除
+	public function deletechannel(){
+		$id = $this->getArrayParam('id');
+		if (empty($id)) {
+			return $this->error('非法操作！');
+		}
+		$link = db('Dealer');
+		$map    = array('id' => array('IN', $id));
+		$result = $link->where($map)->update(['status'=>0]);
+		if ($result) {
+			return $this->success("删除成功！");
+		} else {
+			return $this->error("删除失败！");
+		}
+	}
+
 }
