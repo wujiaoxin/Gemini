@@ -231,6 +231,11 @@ class Account extends Baseness {
 		if(IS_POST){
 			$data = input('post.');
 			$paypassword = $data['paypassword'];
+			if (!isset($data['bank_card'])) {
+				$resp['code'] = '3';
+				$resp['msg'] = '未绑定银行卡';
+				return json($resp);
+			}
 			$pay = db('member')->field('paypassword')->where('mobile',$mobile)->find();
 			if (empty($pay['paypassword'])) {
 				$resp['code'] = '2';
