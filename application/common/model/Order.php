@@ -142,7 +142,7 @@ class Order extends \app\common\model\Base {
 
 			if ($status == 3) {
 
-				$name = '1,3,4';
+				$name = '3,4,11,12,13';
 
 				$filter['status'] = array('IN',$name);
 
