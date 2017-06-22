@@ -26,9 +26,11 @@ class Avatar {
 		}
 		if ($info) {
 			$return['code'] = 1;
+			$return['msg'] = '保存成功';
 			$return['data']   = $this->save($config, $info);
 		} else {
 			$return['code'] = 0;
+			$return['msg'] = '上传失败';
 			$return['data']   = $file->getError();
 		}
 
