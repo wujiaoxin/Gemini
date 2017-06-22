@@ -254,7 +254,19 @@ class Account extends Baseness {
 			}
 			return json($resp);
 		}else{
-			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+			// $bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+			$map = array(
+				'uid'=>$uid,
+				'order_id'=>-3,
+			);
+			$bankcard =db('bankcard')->field('bank_account_id,bank_name')->where($map)->find();
+			if (empty($bankcard)) {
+
+				$bankcard = '';
+
+			}elseif ($bankcard['status'] != '1') {
+				$bankcard = '';
+			}
 			$types = '2,4';
 			$map = array(
 			    'o.mid'=>$uid,

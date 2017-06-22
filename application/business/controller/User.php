@@ -178,6 +178,7 @@ use app\business\controller\Baseness;
 					'money'=>$result,
 					'num'=>$num,
 					'avg'=>$avg,
+					'username'=>$forms['username'],
 					'guarantee_id'=>$forms['guarantee_id'],
 				);
 			$data = array(
