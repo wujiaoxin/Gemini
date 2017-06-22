@@ -152,7 +152,7 @@ class Finance extends Admin {
 			}else{
 
 				$result = db('order')->alias('o')->field('o.*,d.name as dealer_name')->join('__DEALER__ d','d.id = o.dealer_id','LEFT')->where('o.id',$data['id'])->find();
-				$result['loan_money'] = $result['examine_limit'] + $result['fee'];
+				$result['loan_money'] = $result['examine_limit'];
 				$resp['code'] = 1;
 
 				$resp['msg'] = '查询成功';
