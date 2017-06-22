@@ -142,13 +142,16 @@
         });
 
         $("#submit").click(function(){
-        	var bank_card = info.bank_card;
+        	var bank_card = info.bankcard.bank_account_id;
         	var payPwd =$('#payPwd').val();
 			var withdrawOrders = [];
 			jQuery('#table-withdraw tbody .checkboxes:checked').each(function (i,n) {
 	            withdrawOrders[i] = $(this).parents('tr').find('.order_id').text();
             });
-            if(withdrawOrders == ''){
+            if(bank_card == ''){
+            	ui_alert('请先绑定银行卡');
+            	return false;
+            }else if(withdrawOrders == ''){
             	ui_alert('请选择提现订单');
             	return false;
             }else if(payPwd == ''){
