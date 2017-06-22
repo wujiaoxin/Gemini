@@ -476,7 +476,7 @@ $(function(){
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	ui_alert("提交成功","success");
-	            	setTimeout('window.location.href = apiUrl + "/guarantee/examine/loanLimit";',2000);
+	            	setTimeout('window.location.href = apiUrl + ajaxUrl;',2000);
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);
