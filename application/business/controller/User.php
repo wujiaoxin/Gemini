@@ -126,6 +126,10 @@ use app\business\controller\Baseness;
 	public function myShop() {
 		$uid =session('user_auth.uid');
 		$mobile = session('business_mobile');
+		$forms = db('Dealer')->field('guarantee_id,priv_bank_name,name')->where('mobile',$mobile)->find();
+		if(empty($forms['priv_bank_name'])){
+			return $this->redirect(url('/business/user/guide'));
+		}
 		$where = array(
 			'o.mid' => $uid,
 
@@ -137,11 +141,7 @@ use app\business\controller\Baseness;
 		
 		$num = db('order')->field('o.mid,o.uid,count(o.id) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(10)->select();
 		$avg = db('order')->field('o.mid,o.uid,avg(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(10)->select();
-		$forms = db('Dealer')->field('guarantee_id')->where('mobile',$mobile)->find();
-		$is_success = db('Dealer')->field('priv_bank_name')->where('mobile',$mobile)->find();
-		if(!isset($is_success)){
-			$this->redirect(url('/business/user/guide'));
-		}
+		
 		if (IS_POST) {
 			$data = input('post.');
 			//一个月内每天的订单数量

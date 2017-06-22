@@ -191,8 +191,8 @@ class assetchannel extends Admin {
 		}
 		$link = db('Dealer');
 		$map    = array('id' => array('IN', $id));
-		$map['status'] = 2;
-		$result = $link->where($map)->delete();
+		$result = $link->where($map)->update(['status'=>2]);
+
 		if ($result) {
 			return $this->success("删除成功！");
 		} else {
