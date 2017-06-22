@@ -126,7 +126,7 @@ use app\business\controller\Baseness;
 	public function myShop() {
 		$uid =session('user_auth.uid');
 		$mobile = session('business_mobile');
-		$forms = db('Dealer')->field('guarantee_id,priv_bank_name,name')->where('mobile',$mobile)->find();
+		$forms = db('Dealer')->field('guarantee_id,priv_bank_name,name as username')->where('mobile',$mobile)->find();
 		if(empty($forms['priv_bank_name'])){
 			return $this->redirect(url('/business/user/guide'));
 		}
