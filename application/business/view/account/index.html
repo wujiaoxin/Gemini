@@ -334,7 +334,7 @@
 			hasNoData('item-creditCode','未设置');
 		}
 
-		if(typeof(info['paypassword']) == 'string'){
+		if(typeof(info['paypassword']) == 'string' && info['paypassword'] != ''){
 			hasData('item-payPwd','已设置');
 		}else{
 			hasNoData('item-payPwd','未设置');
