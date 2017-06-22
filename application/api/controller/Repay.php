@@ -84,7 +84,7 @@ class Repay extends Api {
 		return json($resp);
 	}
 
-	/* TODO 还款表加 orderon 字段
+	/* 
 	** $orderid 订单id
 	** $period  订单期数
 	*/
@@ -99,7 +99,7 @@ class Repay extends Api {
 		$map['repay_period'] = $period;
 
 		$res = db('order_repay')->field('repay_money,repay_time,id,status,has_repay')->where($map)->find();
-		/*
+		
 		//判断是否绑卡
 		$map = array('uid'=>$uid,'order_id'=>$orderid);
 		$withhold = db('member_withhold')->field('signstatus')->where($map)->find();
@@ -119,7 +119,6 @@ class Repay extends Api {
 			return json($resp);
 		}
 		
-		*/
 		switch ($res['status']) {
 			case '-2':
 				$resp['code'] = -2;
@@ -133,6 +132,7 @@ class Repay extends Api {
 
 		$service = "installmentSelfRepay";
 		$orderon = '2007050512345678912' . rand(100000,999999);
+		$externalOrderNo = '20070505123456789' . rand(100000,999999);
     	$data = array(
     		'service' => $service,
     		'signType' =>'MD5',
@@ -140,10 +140,10 @@ class Repay extends Api {
 			// 'notifyUrl' => 'https://t.vpdai.com/pay/yixingtong/notifyurl',
 			'orderNo' => $orderon,
     		'contractNo'=>$contractNo['contractno'],
-    		'externalOrderNo'=>'20070505123456789' . rand(100000,999999),
+    		'externalOrderNo'=>$externalOrderNo,
     		'totalAmount'=>$res['repay_money'],
     		);
-    	db('order_repay')->where('id',$res['id'])->update(['orderon'=>$orderon]);//TODO未生效
+    	db('order_repay')->where('id',$res['id'])->update(['orderon'=>$externalOrderNo]);//TODO未生效
     	$result = \com\Withhold::selfrepay($data);
     	if ($result['resultCode'] == 'EXECUTE_SUCCESS') {
     		$resp['code'] = 1;
