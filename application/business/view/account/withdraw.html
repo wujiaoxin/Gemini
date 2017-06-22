@@ -94,9 +94,10 @@
 <script>
 	//初始化银行卡
 	// $('#availableAssets').text(info.availableAssets);
-	$('#bank_name').text(info.bankcard.bank_name);
-	$('#bank_account_id').text(encryptBankcard(info.bankcard.bank_account_id)).attr('data',info.bankcard.bank_account_id);
-
+	if(typeof(info.bankcard.bank_name) == 'string' && info.bankcard.bank_name != ''){
+		$('#bank_name').text(info.bankcard.bank_name);
+		$('#bank_account_id').text(encryptBankcard(info.bankcard.bank_account_id)).attr('data',info.bankcard.bank_account_id);
+	}
 
 	//初始化订单表
 	function tpl(data){
