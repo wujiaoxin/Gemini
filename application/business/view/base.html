@@ -136,7 +136,7 @@
           <a href="#"><i class="icon-bar-chart"></i><span class="title">我的账户</span><span class="arrow"></span></a>
           <ul class="sub-menu">
             <li><a href="/business/account/index.html"><i class="icon-cog"></i>账户设置</a></li>
-            <li id="withdraw_link" style="display: none;"><a href="/business/account/withdraw.html"><i class="icon-yen"></i>提现</a></li>
+            <li id="withdraw_link"><a href="/business/account/withdraw.html"><i class="icon-yen"></i>提现</a></li>
             <!-- <li>
               <a href="/business/account/balance.html">
                 <i class="icon-yen"></i>充值提现<span class="arrow"></span>
@@ -241,7 +241,7 @@
       $('#nav-username').text(localStorage.getItem('username'));
     }
     if(typeof(localStorage.getItem('guarantee_id')) == ''){
-      $('#withdraw_link').show();
+      $('#withdraw_link').hide();
     }
     jQuery(document).ready(function() {
        App.init();
