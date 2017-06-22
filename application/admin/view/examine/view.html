@@ -417,7 +417,7 @@
 	// 审批历史
 	function historyTpl(data){
 		var html = '';
-		var operate = {'view':'查看','loan':'放款审核','recharge':'充值','withdraw':'提现','receivable':'回款','datareview':'资料审核','loanlimit':'额度审核'};
+		var operate = {'view':'查看','loan':'放款审核','recharge':'充值','withdraw':'提现','receivable':'回款','datareview':'资料审核','loanlimit':'额度审核','creditreview':'信用审核','trial':'初级审核'};
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 			var i = index + 1;
@@ -543,7 +543,7 @@
 	}
 	$('#fund_provider').html(historyFund(info.fund));
 
-	$('#examine_limit').val(info['order_info']['loan_limit']);
+	$('#examine_limit').val(info['order_info']['examine_limit']);
 	$('#examineStatus').change(function(){
 		if($(this).val() == '2'){
 			$('#reject_reason').slideDown('fast');
