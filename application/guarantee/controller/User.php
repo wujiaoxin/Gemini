@@ -748,7 +748,7 @@ use app\guarantee\controller\Baseness;
 			);
 			$this->assign($data);
 			$this->setMeta("车商审核");
-			return $this->fetch();
+			return $this->fetch('editChannel');
 		}
 	}
 

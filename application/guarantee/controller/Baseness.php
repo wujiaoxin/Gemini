@@ -28,23 +28,23 @@ class Baseness extends base{
 		switch ($role) {
 			case '14':
 				if ($action == 'User' || $action == 'Index' ||$action == 'Account'  || $res == 'application' || $res == 'loanlimit' || $res == 'finance') {
-					return $this->redirect(url('examine/creditReview'));
+					return $this->success('无权限操作','examine/creditReview');
 				}
 				break;
 			case '15':
 
 				if ( $action == 'User' || $action == 'Index' ||$action == 'Account'  || $res == 'application' || $res == 'creditreview' || $res == 'finance') {
-					return $this->redirect(url('examine/loanLimit'));
+					return $this->success('无权限操作','examine/loanLimit');
 				}
 				break;
 			case '16':
 				if ( $action == 'Index' ||$action == 'Account'  || $res == 'application' || $res == 'creditreview' || $res == 'loanlimit') {
-					return $this->redirect(url('examine/finance'));
+					return $this->success('无权限操作','examine/finance');
 				}
 				break;
 			case '17':
 				if ( $action == 'Index' ||$action == 'Account'  || $action == 'Examine' || $res == 'loanitem' || $res == 'repayitem' || $res == 'mystaff' || $res == 'myshop') {
-					return $this->redirect(url('user/myChannel'));
+					return $this->success('无权限操作','user/myChannel');
 				}
 				break;
 			default:
