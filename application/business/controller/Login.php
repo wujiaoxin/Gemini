@@ -20,13 +20,18 @@ class Login extends Base {
 				$resp["msg"] = '用户名或者密码不能为空！';
 				return json($resp);
 			}
-			$success = db('member')->alias('m')->field('m.access_group_id,d.status')->join('__DEALER__ d','d.mobile = m.mobile')->where('m.mobile',$mobile)->find();
-			if ($success['status'] <= 0) {
-				$resp["code"] = 0;
-				$resp["msg"] = '用户已禁用';
-				return json($resp);
-			}
+			$success = db('member')->alias('m')->field('access_group_id')->where('mobile',$mobile)->find();
+
 			if ($success['access_group_id'] == '7' || $success['access_group_id'] == '13' || $success['access_group_id'] == '14' ||$success['access_group_id'] == '15' || $success['access_group_id'] == '16' || $success['access_group_id'] == '17' || $success['access_group_id'] == '18' || $success['access_group_id'] == '19') {
+				if ($success['access_group_id'] != '19') {
+					$deal = db('Dealer')->field('status')->where('mobile',$mobile)->find();
+					$success['status'] = $deal['status'];
+				}
+				if ($success['status'] <= 0) {
+					$resp["code"] = 0;
+					$resp["msg"] = '用户已禁用';
+					return json($resp);
+				}
 				$user = model('User');
 				$uid  = $user->login($mobile, $password);
 				if ($uid > 0) {
