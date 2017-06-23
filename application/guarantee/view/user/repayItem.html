@@ -162,7 +162,7 @@
 	function ajaxRepayItem(type,dateRange,status){
 		$('#table-repayItem').dataTable().fnClearTable();//清空原数据
 		ajax_jquery({
-	        url: apiUrl +'/business/user/repayItem',
+	        url: apiUrl +'/guarantee/user/repayItem',
 	        data:{
 	            'type': type,
 	            'dateRange': dateRange,
