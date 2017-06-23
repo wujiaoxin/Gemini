@@ -87,7 +87,7 @@ class Order extends Api {
 
 				}elseif ($status == 1) {
 
-					$map = $map.' and finance = 4';
+					$map = $map.' and finance  in (3,4) ';
 
 				}else{
 
