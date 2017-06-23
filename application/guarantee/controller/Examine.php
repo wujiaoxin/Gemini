@@ -429,4 +429,20 @@ class Examine extends Baseness {
 		$action     = $this->request->action();
 		return $controller->$action();
 	}
+
+	public function deleteFile() {
+		//TODO: remove local file & check uid
+		$id   = input('id', '', 'trim,intval');
+		$uid  =  session('user_auth.uid');
+		$resp['status'] = 1;//TODO 标准化返回参数	
+		$data['status'] = -1;
+		if($id == ''){
+			//return $this->error("缺少参数");
+			$resp['status'] = 0;
+			$resp['info'] = "缺少参数";
+		}else{
+			$resp['code'] = db("OrderFiles")->where(array('id' => $id,'uid' => $uid))->update($data);
+		}		
+		echo json_encode($resp);
+	}
 }
