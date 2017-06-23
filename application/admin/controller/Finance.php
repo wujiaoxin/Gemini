@@ -514,7 +514,6 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-			// var_dump($data);die;
 			if (isset($data['status'])) {
 				
 				$data['update_time'] = time();
@@ -536,10 +535,9 @@ class Finance extends Admin {
 						'platform_account'=>$data['platform_account'],
 
 						);
-
 					if ($carry_info['status'] == '-1') {
 
-						db('carry')->where('sn',$data['id'])->update($data);
+						db('carry')->where('sn',$data['id'])->update($datas);
 
 						db('order')->where('sn',$data['id'])->setField('finance','4');
 
@@ -574,8 +572,7 @@ class Finance extends Admin {
 
 			}else{
 
-				$result = db('carry')->alias('c')->field('c.*,d.name as dealer_name')->join('__DEALER__ d','d.id = c.uid','LEFT')->where('sn',$data['id'])->find();
-
+				$result = db('carry')->alias('c')->field('c.*,d.name as dealer_name,o.type,o.examine_limit,o.create_time,o.fee')->join('__DEALER__ d','d.id = c.uid','LEFT')->join('__ORDER__ o','o.sn = c.sn','LEFT')->where('c.sn',$data['id'])->find();
 				$resp['code'] = 1;
 
 				$resp['msg'] = '查询成功';

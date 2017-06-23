@@ -166,10 +166,10 @@ class Order extends \app\common\model\Base {
 
 		if (empty($ord['loan_limit'])) {
 
-			$ord['loan_limit'] = 0;
+			$ord['loan_limit'] = '0';
 		}
-
-		$total['loan_limit'] = $ord['loan_limit'];
+		$total['order_num'] = (string)$total['order_num'];
+		$total['loan_limit'] = (string)$ord['loan_limit'];
 		
 		return $total;
 	}
@@ -348,13 +348,15 @@ class Order extends \app\common\model\Base {
         $filter['create_time'] = array(array('gt',$begin),array('lt',$end));
         $res = array();
 		$res['loan_num']= $this->where($filter)->where('finance','4')->count();
+		$res['loan_num'] = (string)$res['loan_num'];
 		$results= $this->field('sum(examine_limit) as loan_limit')->where($filter)->where('finance','4')->find();
 		if (empty($results['loan_limit'])) {
-			$results['loan_limit'] = 0;
+			$results['loan_limit'] = '0';
 		}
-		$res['loan_money'] = $results['loan_limit'];
+		$res['loan_money'] = (string)$results['loan_limit'];
 
 		$res['nums'] = $this->where($filter)->count();
+		$res['nums'] = (string)$res['nums'];
 		return $res;
 	}
 
