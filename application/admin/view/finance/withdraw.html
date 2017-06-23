@@ -54,7 +54,7 @@
 	      		<div class="form-group">
 			    	<label class="col-sm-2 control-label">订单编号</label>
 				    <div class="col-sm-4">
-				      	<p class="form-control-static item-info" name="id"></p>
+				      	<p class="form-control-static item-info" name="sn"></p>
 				    </div>
 				    <label class="col-sm-2 control-label">订单类型</label>
 				    <div class="col-sm-4">
@@ -64,7 +64,7 @@
 			  	<div class="form-group">
 			    	<label class="col-sm-2 control-label">放款账户</label>
 				    <div class="col-sm-4">
-				      	<p class="form-control-static item-info" name="dealer_bankcard"></p>
+				      	<p class="form-control-static item-info" name="bank_account"></p>
 				    </div>
 				    <label class="col-sm-2 control-label">审批额度</label>
 				    <div class="col-sm-4">
@@ -104,11 +104,11 @@
 			  	<div class="form-group">
 			  		<label class="col-sm-2 control-label">放款金额</label>
 				    <div class="col-sm-4">
-				      	<p class="form-control-static item-info" name="loan_money"></p>
+				      	<p class="form-control-static item-info" name="examine_limit"></p>
 				    </div>
 				    <label class="col-sm-2 control-label">平台账户</label>
 				    <div class="col-sm-4">
-				      	<p class="form-control-static item-info" name="platform_bankcard"></p>
+				      	<p class="form-control-static item-info" name="platform_account">6230580000094045239</p>
 				    </div>
 			  	</div>
 			  	<div class="form-group">
@@ -184,7 +184,7 @@
 		        success:function(resp){
 		            if (resp.code == "1" ) {
 		            	$('#myModal .item-info').each(function(){
-							var name = $(this).attr('id');
+							var name = $(this).attr('name');
 						    if(typeof(resp.data[name])!='object' && this.tagName == 'P'){
 						        $(this).text(resp.data[name]);
 						    }else if(typeof(resp.data[name])!='' &&  (this.tagName == 'INPUT' || this.tagName == 'TEXTAREA')){
@@ -192,6 +192,8 @@
 						    }
 						    if(name == 'create_time'){
 						    	$(this).text(formatDate(resp.data[name]));
+						    }else if(name == 'type'){
+						    	$(this).text(g_orderType[resp.data[name]]);
 						    }
 						});
 				   		$('#myModal').modal();
@@ -222,6 +224,7 @@
 		        	'id': sn,
 		            'status': examineStatus,
 		            'serial_num':serial_num,
+		            'platform_account':'6230580000094045239',
 		            'descr': descr
 		        },
 		        success:function(resp){
