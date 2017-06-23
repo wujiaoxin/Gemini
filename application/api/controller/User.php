@@ -432,8 +432,16 @@ class User extends Api {
 				if(!empty($mobile)){
 					$orderData['name'] = $realname;
 					$orderData['idcard_num'] = $idcard;					
-					db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);//更新order表					
+					db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);//更新order表
+					$resp["code"] = 1;
+					$resp["msg"] = "更新成功";		
+				}else{
+					$resp["code"] = 0;
+					$resp["msg"] = "更新失败";
 				}
+			}else{
+				$resp["code"] = 0;
+				$resp["msg"] = "未知错误";
 			}
 			return json($resp);
 		}else{

@@ -70,8 +70,7 @@ class Account extends Baseness {
 		}else{
 			$mobile = session("business_mobile");
       		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code,d.priv_bank_account_id')->where('m.mobile',$mobile)->find();
-      		$uids = db('Dealer')->field('id')->where('mobile',$mobile)->find();
-      		$bindcard = db('bankcard')->field('bank_account_id')->where(['uid' =>$uids['id'],'order_id'=>-3,'status'=>1])->find();
+      		$bindcard = db('bankcard')->field('bank_account_id')->where(['uid' =>$uid,'order_id'=>-3,'status'=>1])->find();
       		$account['bindcard'] = $bindcard['bank_account_id'];
 	      	if ($account){
 	            $data['infoStr'] = json_encode($account);
@@ -91,7 +90,7 @@ class Account extends Baseness {
 	// 绑卡
 	public function bindCard(){
 		$mobile = session("business_mobile");
-		 $uid = session('user_auth.uid');
+		$uid = session('user_auth.uid');
 		if (request()->isPost()) {
 			$data = input('post.');
 			$map = array('bank_account_id'=>$data['CardNumber'],'type'=>1);
@@ -103,6 +102,8 @@ class Account extends Baseness {
 					'order_id'=>-3,
 					'bank_account_id'=>$data['CardNumber'],
 					'bank_account_name'=>$data['RealName'],
+					'bank_name'=>$data['BankCode'],
+					'bank_branch'=>$data['Province'].','.$data['City'],
 					'create_time'=>time(),
 					'idcard'=>$data['IdentificationNo'],
 					'status'=>2,
@@ -231,6 +232,11 @@ class Account extends Baseness {
 		if(IS_POST){
 			$data = input('post.');
 			$paypassword = $data['paypassword'];
+			if (!isset($data['bank_card'])) {
+				$resp['code'] = '3';
+				$resp['msg'] = '未绑定银行卡';
+				return json($resp);
+			}
 			$pay = db('member')->field('paypassword')->where('mobile',$mobile)->find();
 			if (empty($pay['paypassword'])) {
 				$resp['code'] = '2';
@@ -259,7 +265,7 @@ class Account extends Baseness {
 				'uid'=>$uid,
 				'order_id'=>-3,
 			);
-			$bankcard =db('bankcard')->field('bank_account_id,bank_name')->where($map)->find();
+			$bankcard =db('bankcard')->field('bank_account_id,bank_name,status')->where($map)->find();
 			if (empty($bankcard)) {
 
 				$bankcard = '';
