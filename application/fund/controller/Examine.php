@@ -36,34 +36,6 @@ class Examine extends Baseness {
 
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
-		/*if($uid > 0){
-			if ($role != 18) {
-				$mobile = db('dealer')->alias('d')->field('d.mobile')->join('__MEMBER__ m','m.dealer_id = d.id')->where('m.uid',$uid)->find();
-				$uids = db('member')->field('uid')->where('mobile',$mobile['mobile'])->find();
-				$uid = $uids['uid'];
-			}
-
-			$resl = db('dealer')->field('id')->where('guarantee_id',$uid)->select();
-			$arr = array();
-			foreach ($resl as $k => $v) {
-				$ids = db('member')->field('uid')->where('dealer_id',$v['id'])->find();
-				$arr[] = $ids['uid'];
-			}
-			$list = array();
-			if (!empty($arr)) {
-				foreach ($arr as $vl) {
-					$list = db('Order')->where('uid',$vl)->order('create_time DESC')->select();
-				}
-			}
-
-		}else{
-			return $this->error('请重新登录');
-		}
-		foreach ($list as $k => $v) {
-			$list[$k]['salesman'] = serch_realname($v['uid']);
-			$name = serch_name($v['dealer_id']);
-			$list[$k]['dealername'] = $name['dealer_name'];
-		}*/
 
 		$list = db('Order')->alias('o')->field('o.*,m.realname as salesman,d.name as dealername')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->join('__DEALER__ d','d.id = o.dealer_id','LEFT')->where('o.fund_id',$uid)->select();
 		$data = array(

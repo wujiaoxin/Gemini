@@ -73,6 +73,11 @@ class Finance extends Admin {
 								$resp['code'] = 1;
 
 								$resp['msg'] = '放款审核成功!';
+								$ress = array(
+									'money'=>$result['examine_limit'],
+									'descr'=>$data['descr'],
+								);
+								money_record($ress,$uid,7,0);
 
 							}else{
 
@@ -130,6 +135,12 @@ class Finance extends Admin {
 							$resp['code'] = 1;
 
 							$resp['msg'] = '放款审核成功!';
+
+							$ress = array(
+								'money'=>$result['examine_limit'],
+								'descr'=>$data['descr'],
+							);
+							money_record($ress,$uid,7,0);
 
 						}else{
 

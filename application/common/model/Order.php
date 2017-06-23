@@ -229,7 +229,7 @@ class Order extends \app\common\model\Base {
 			$data1['type'] = $data['type'];
 		}
 		$status = db('order')->alias('o')->field('d.guarantee_id')->join('__DEALER__ d','o.dealer_id = d.id')->where('o.id',$uid)->find();
-		if (isset($status['guarantee_id'])) {
+		if (!empty($status['guarantee_id'])) {
 			$data1['status']  = '11';
 		}else{
 			$data1['status'] = '3';
