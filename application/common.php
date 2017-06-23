@@ -1490,3 +1490,26 @@ function examine_log($action = null,$controller = null,$param = null , $record_i
 	
 	db('examine_log')->insert($data);
 }
+
+
+/*
+  ** 资金记录
+  ** data array数据
+  ** uid 交易者 
+  ** type 交易类型
+  ** name 交易对象
+  */
+  function money_record($data, $uid, $type = 0, $name){
+    $info = array(
+
+      'uid'=>$uid,
+      'type'=> $type,
+      'deal_other'=>$name,
+      'create_time'=>time(),
+      'account_money'=>$data['money'],
+      'descr'=>$data['descr'],
+      );
+    $result = db('dealer_money')->insert($info);
+    return $result;
+
+  }

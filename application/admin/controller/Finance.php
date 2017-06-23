@@ -53,8 +53,6 @@ class Finance extends Admin {
 				
 				if ($data['status'] == '1') {
 
-					$money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.id',$data['id'])->find();
-
 					$result = db('order')->field('fee,loan_limit,examine_limit,type,mobile,sn,endtime')->where('id',$data['id'])->find();
 					if ($result['type'] == '2' || $result['type'] == '4') {
 						
@@ -500,7 +498,7 @@ class Finance extends Admin {
 				examine_log(ACTION_NAME,CONTROLLER_NAME,json_encode($data),$data['id'], $data['status'],$resp['msg'],$data['descr']);
 			}else{
 
-				$result = db('recharge')>alias('c')->field('c.*,d.name as dealer_name')->join('__DEALER__ d','c.uid = d.id')->where('sn',$data['id'])->find();
+				$result = db('recharge')>alias('c')->field('c.*,d.name as dealer_name')->join('__DEALER__ d','c.uid = d.id')->where('c.sn',$data['id'])->find();
 
 				$resp['code'] = 1;
 
@@ -511,7 +509,7 @@ class Finance extends Admin {
 			
 			return json($resp);
 		}else{
-			$result = db('recharge')->alias('c')->field('c.*,d.name as dealer_name')->join('__DEALER__ d','c.uid = d.id')->order('create_time DESC,status ASC')->select();
+			$result = db('recharge')->alias('c')->field('c.*,d.name as dealer_name')->join('__DEALER__ d','c.uid = d.id','LEFT')->order('c.create_time DESC,status ASC')->select();
 			
 			$data = array(
 				'infoStr' => json_encode($result)
@@ -600,7 +598,7 @@ class Finance extends Admin {
 
 		}else{
 
-			$result = db('carry')->alias('c')->field('c.*,d.name as dealer_name')->join('__DEALER__ d','d.id = c.uid','LEFT')->order('create_time DESC, status ASC')->select();
+			$result = db('carry')->alias('c')->field('c.*,d.name as dealer_name')->join('__DEALER__ d','d.id = c.uid','LEFT')->order('c.create_time DESC, status ASC')->select();
 
 			$data = array(
 				'infoStr' => json_encode($result)
@@ -701,7 +699,7 @@ class Finance extends Admin {
 
 			$order = model('Order');
 
-			$result = db('order_repay')->alias('r')->field('r.*,o.sn,d.name as dealer_name')->join('__ORDER__ o','o.id = r.order_id','LEFT')->join('__DEALER__ d','r.dealer_id = d.id')->where('r.status','-2')->order('status')->select();
+			$result = db('order_repay')->alias('r')->field('r.*,o.sn,d.name as dealer_name')->join('__ORDER__ o','o.id = r.order_id','LEFT')->join('__DEALER__ d','r.dealer_id = d.id','LEFT')->where('r.status','-2')->order('status')->select();
 
 			$data = array(
 
@@ -719,7 +717,7 @@ class Finance extends Admin {
 	// 平台资金记录
 	public function transaction() {
 
-		$result = db('dealer_money')->alias('m')->field('m.*,d.name as dealer_name')->join('__DEALER__ d','d.id = m.uid','LEFT')->order('create_time DESC')->select();
+		$result = db('dealer_money')->alias('m')->field('m.*,d.name as dealer_name')->join('__DEALER__ d','d.id = m.uid','LEFT')->order('m.create_time DESC')->select();
 
 		$data = array(
 				'infoStr' => json_encode($result)
