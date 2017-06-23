@@ -420,4 +420,13 @@ class Examine extends Baseness {
 			return $this->error("删除失败！");
 		}
 	}
+
+	
+
+	//上传订单文件
+	public function upload($type = null, $order_id = null, $form_key = null, $form_label = null, $file = null){
+		$controller = controller('common/Files');
+		$action     = $this->request->action();
+		return $controller->$action();
+	}
 }
