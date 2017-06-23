@@ -25,30 +25,35 @@ class Avatar {
 			$info = $file->validate(['ext'=>'jpg,jpeg,png,gif'])->move($config['rootPath'], true, false);
 		}
 		if ($info) {
+			$return['status'] = 1;
 			$return['code'] = 1;
-			$return['msg'] = '保存成功';
-			$return['data']   = $this->save($config, $info);
+			$res =  $this->save($config, $info);
+			$return['info']   = $res;
+			$return['data']   = $res;
 		} else {
+			$return['status'] = 0;
 			$return['code'] = 0;
-			$return['msg'] = '上传失败';
+			$return['info']   = $file->getError();
 			$return['data']   = $file->getError();
 		}
 
 		echo json_encode($return);
 	}
+
 	/**
 	 * 保存上传的信息到数据库
 	 * @var view
 	 * @access public
 	 */
-	public function save($config, $file) {
-		$uid = session('user_auth.uid');
+	public function save($config, $file, $infoExtend) {
 		$file           = $this->parseFile($file);
+		$uid = session('user_auth.uid');
+		$res['headerimgurl'] = $file['path'];
 		$dbname         = 'Member';
-		$id             = db($dbname)->where('uid',$uid)->update($file);
+		$id             = db($dbname)->where('uid',$uid)->update($res);
 		if ($id) {
-			// $data = db($dbname)->where(array('id' => $id))->find();
-			return '上传成功';
+			$data = db($dbname)->where(array('uid' => $id))->find();
+			return $data;
 		} else {
 			return false;
 		}
@@ -84,7 +89,7 @@ class Avatar {
 		}
 	}
 
-	/*public function getFile() {
+	public function getFile() {
 		$path = input('path', '', 'trim');
 		$fullPath = ROOT_PATH.'/public/wap/images/x.png';		
 		$uid  = session('user_auth.uid');
@@ -117,23 +122,22 @@ class Avatar {
 		$size = readfile($fullPath);
 		header('Content-Length:' . $size);
 		exit;
-	}*/
+	}
 	
 	protected function parseFile($info) {
-		// $data['create_time'] = $info->getATime(); //最后访问时间
-		// $data['savename']    = $info->getBasename(); //获取无路径的basename
-		// $data['c_time']      = $info->getCTime(); //获取inode修改时间
-		// $data['ext']         = $info->getExtension(); //文件扩展名
-		// $data['name']        = $info->getFilename(); //获取文件名
-		// $data['m_time']      = $info->getMTime(); //获取最后修改时间
-		// $data['owner']       = $info->getOwner(); //文件拥有者
-		// $data['savepath']    = $info->getPath(); //不带文件名的文件路径
-		// $data['path']        = str_replace("\\", '/', substr($info->getPathname(), 1)); //全路径
-		$data['headerimgurl']        = str_replace("\\", '/', substr($info->getPathname(), 1)); //全路径
-		// $data['url']         = '/mobile/files/getFile?path='.$data['path'];
-		// $data['size']        = $info->getSize(); //文件大小，单位字节
-		// $data['md5']         = md5_file($info->getPathname());
-		// $data['sha1']        = sha1_file($info->getPathname());
+		$data['create_time'] = $info->getATime(); //最后访问时间
+		$data['savename']    = $info->getBasename(); //获取无路径的basename
+		$data['c_time']      = $info->getCTime(); //获取inode修改时间
+		$data['ext']         = $info->getExtension(); //文件扩展名
+		$data['name']        = $info->getFilename(); //获取文件名
+		$data['m_time']      = $info->getMTime(); //获取最后修改时间
+		$data['owner']       = $info->getOwner(); //文件拥有者
+		$data['savepath']    = $info->getPath(); //不带文件名的文件路径
+		$data['path']        = str_replace("\\", '/', substr($info->getPathname(), 1)); //全路径
+		$data['url']         = '/mobile/files/getFile?path='.$data['path'];
+		$data['size']        = $info->getSize(); //文件大小，单位字节
+		$data['md5']         = md5_file($info->getPathname());
+		$data['sha1']        = sha1_file($info->getPathname());
 		return $data;
 	}
 }
