@@ -168,52 +168,6 @@
     return $result;
   }
 
-
-
-  /*
-  ** 资金记录
-  ** data array数据
-  ** uid 交易者 
-  ** type 交易类型
-  ** name 交易对象
-  */
-  function money_record($data, $uid, $type = 0, $name){
-
-    //冻结资金
-    
-    $dealer_money = db('dealer')->alias('d')->field('money,lock_money')->join('__MEMBER__ m','d.mobile = m.mobile')->where('uid', $uid)->find();
-    
-
-    //待收金额和可用
-    $map =array(
-
-      'finance' => '3',
-
-      'mid'=>$uid
-
-      );
-    $repay_moneys = db('order')->where($map)->sum('examine_limit');
-    //总金额
-    $total_money = $dealer_money['money'] + $dealer_money['lock_money'] + $repay_moneys ;
-
-    $info = array(
-
-      'uid'=>$uid,
-      'type'=> $type,
-      'deal_other'=>$name,
-      'create_time'=>time(),
-      'total_money'=>$total_money,
-      'account_money'=>$data['money'],
-      'use_money'=>$dealer_money['money'],
-      'lock_money'=>$dealer_money['lock_money'],
-      'repay_money'=>$repay_moneys,
-      'descr'=>$data['descr'],
-      );
-    $result = db('dealer_money')->insert($info);
-    return $result;
-
-  }
-
   /*
 **查询车商名称
 */

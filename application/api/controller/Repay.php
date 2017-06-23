@@ -101,8 +101,8 @@ class Repay extends Api {
 		$res = db('order_repay')->field('repay_money,repay_time,id,status,has_repay')->where($map)->find();
 		
 		//判断是否绑卡
-		$map = array('uid'=>$uid,'order_id'=>$orderid);
-		$withhold = db('member_withhold')->field('signstatus')->where($map)->find();
+		$where = array('uid'=>$uid,'order_id'=>$orderid);
+		$withhold = db('member_withhold')->field('signstatus')->where($where)->find();
 		if(!empty($withhold)){
 			if($withhold['signstatus'] != 1){
 				$resp['code'] = 5;
@@ -143,11 +143,12 @@ class Repay extends Api {
     		'externalOrderNo'=>$externalOrderNo,
     		'totalAmount'=>$res['repay_money'],
     		);
-    	db('order_repay')->where('id',$res['id'])->update(['orderon'=>$externalOrderNo]);//TODO未生效
+    	db('order_repay')->where($map)->update(['orderon'=>$externalOrderNo]);//TODO未生效
     	$result = \com\Withhold::selfrepay($data);
     	if ($result['resultCode'] == 'EXECUTE_SUCCESS') {
     		$resp['code'] = 1;
 			$resp['msg'] ='还款成功';
+			db('order_repay')->where($map)->update(['status'=>'-2']);//TODO未生效
 			$ress = array(
 				'money'=>$res['repay_money'],
 				'descr'=>'',

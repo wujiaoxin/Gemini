@@ -192,14 +192,16 @@ class Repay extends \app\common\model\Base {
 	*/
 	function  make_interest($order_id){
 
-		$deal = db('order')->where('id',$order_id)->find();
+		$deal = db('order')->alias('o')->field('o.*,p.vp_rate as rate')->join('__PROGRAMME__ p','o.id = p.order_id')->where('o.id',$order_id)->find();
 
 		$deal['product_name'] = repay_type($deal['type']);
 
 		$totalperiod = floor($deal['endtime']/30);
 
 		//利率
-		$deal['rate'] = get_rate($deal['endtime']);
+		// $deal['rate'] = get_rate($deal['endtime']);
+
+		$deal['rate'] = $deal['rate']/1000;
 
 		$list = array();
 		
