@@ -435,76 +435,7 @@
 	}
 	$('#examine-history tbody').html(historyTpl(info.examine_log));
 
-	var keyList = [
-        {
-            form_key:"orderSupplement_pic_1",
-            form_label:"身份证正面照"
-        },
-        {
-            form_key:"orderSupplement_pic_2",
-            form_label:"身份证反面照"
-        },
-        {
-            form_key:"orderSupplement_pic_3",
-            form_label:"人车合照"
-        },
-        {
-            form_key:"orderSupplement_pic_4",
-            form_label:"合格证"
-        },
-        {
-            form_key:"orderSupplement_pic_5",
-            form_label:"保单证书"
-        },
-        {
-            form_key:"orderSupplement_pic_6",
-            form_label:"购车发票"
-        },
-        {
-            form_key:"orderSupplement_pic_7",
-            form_label:"首付凭证"
-        },
-        {
-            form_key:"orderSupplement_pic_8",
-            form_label:"合同"
-        },
-        {
-            form_key:"orderSupplement_pic_9",
-            form_label:"代扣银行卡"
-        }];
-    var keyList_guarantors = [
-        {
-            form_key:"orderSupplement_pic_1",
-            form_label:"身份证正面照"
-        },
-        {
-            form_key:"orderSupplement_pic_2",
-            form_label:"身份证反面照"
-        },
-        {
-            form_key:"orderSupplement_pic_3",
-            form_label:"车辆照片1"
-        },
-        {
-            form_key:"orderSupplement_pic_4",
-            form_label:"车辆照片2"
-        },
-        {
-            form_key:"orderSupplement_pic_5",
-            form_label:"车辆照片3"
-        },
-        {
-            form_key:"orderSupplement_pic_6",
-            form_label:"车辆照片4"
-        },
-        {
-            form_key:"orderSupplement_pic_7",
-            form_label:"签约照"
-        },
-        {
-            form_key:"orderSupplement_pic_8",
-            form_label:"合同"
-        }];
+	var keyList = g_picList;
 	function picTpl(data){
 		var html = '';
 		if(typeof(data) =='object'){
