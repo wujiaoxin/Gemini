@@ -16,7 +16,7 @@ class Avatar {
 	 */
 	public function upload() {
 
-		$config = config('avatar_upload');
+		$config = config('attachment_upload');
 		$file = request()->file('file');
 		$fileType = input('fileType', 'image', 'trim');
 		if($fileType == 'video'){
@@ -28,12 +28,10 @@ class Avatar {
 			$return['status'] = 1;
 			$return['code'] = 1;
 			$res =  $this->save($config, $info);
-			$return['info']   = $res;
 			$return['data']   = $res;
 		} else {
 			$return['status'] = 0;
 			$return['code'] = 0;
-			$return['info']   = $file->getError();
 			$return['data']   = $file->getError();
 		}
 
@@ -45,14 +43,14 @@ class Avatar {
 	 * @var view
 	 * @access public
 	 */
-	public function save($config, $file, $infoExtend) {
+	public function save($config, $file) {
 		$file           = $this->parseFile($file);
 		$uid = session('user_auth.uid');
 		$res['headerimgurl'] = $file['path'];
 		$dbname         = 'Member';
 		$id             = db($dbname)->where('uid',$uid)->update($res);
 		if ($id) {
-			$data = db($dbname)->where(array('uid' => $id))->find();
+			$data = db($dbname)->where(array('uid' => $uid))->find();
 			return $data;
 		} else {
 			return false;
