@@ -56,7 +56,6 @@ class Finance extends Admin {
 					$money = db('dealer')->alias('d')->field('d.lock_money,d.lines_ky,d.mobile')->join('__MEMBER__ m','d.mobile = m.mobile')->join('__ORDER__ o','m.uid = o.mid')->where('o.id',$data['id'])->find();
 
 					$result = db('order')->field('fee,loan_limit,examine_limit,type,mobile,sn,endtime')->where('id',$data['id'])->find();
-
 					if ($result['type'] == '2' || $result['type'] == '4') {
 						
 							$datas['finance'] = '3';
@@ -96,7 +95,12 @@ class Finance extends Admin {
 						db('order')->where('id',$data['id'])->update($datas);//更新订单状态
 
 						//等额本息
-
+						$programme = db('programme')->where('order_id',$data['id'])->find();
+						if (empty($programme)) {
+							$resp['code'] = 0;
+							$resp['msg'] = '金融方案异常!';
+							return json($resp);
+						}
 						// $res = model('Repay')->make_plan($data['id']);//
 						$res = model('Repay')->make_interest($data['id']);
 
