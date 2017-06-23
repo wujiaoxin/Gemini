@@ -67,6 +67,7 @@ class Fixedrepay extends Api {
     	if ($result['resultCode'] == 'EXECUTE_SUCCESS') {
     		$resp['code'] = 1;
 			$resp['msg'] ='还款成功';
+			money_record($ress,$uid,6,1);
 
     	}elseif ($result['resultCode'] == 'EXECUTE_PROCESSING') {
     		$resp['code'] = -2;

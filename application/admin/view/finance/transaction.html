@@ -26,11 +26,11 @@
 						<th>编号</th>
 						<th>渠道名称</th>
 						<th>类型</th>
-						<th>账户总额</th>
+						<!-- <th>账户总额</th> -->
 						<th>操作金额</th>
-						<th>可用金额</th>
-						<th>冻结金额</th>
-						<th>待收金额</th>
+						<!-- <th>可用金额</th> -->
+						<!-- <th>冻结金额</th> -->
+						<!-- <th>待收金额</th> -->
 						<th>添加时间</th>
 					</tr>
 				</thead>
@@ -55,11 +55,11 @@
 		  		+'<td>' + data[index].id + '</td>'
 		  		+'<td>'+ data[index].dealer_name +'</td>'
 		  		+'<td>'+ g_transactionType[data[index].type]+'</td>'
-		  		+'<td>￥'+ formatAmount(data[index].total_money) +'</td>'
+		  		// +'<td>￥'+ formatAmount(data[index].total_money) +'</td>'
 		  		+'<td>￥'+ formatAmount(data[index].account_money) +'</td>'
-		  		+'<td>￥'+ formatAmount(data[index].use_money) +'</td>'
-		  		+'<td>￥'+ formatAmount(data[index].lock_money) +'</td>'
-		  		+'<td>￥'+ formatAmount(data[index].repay_money) +'</td>'
+		  		// +'<td>￥'+ formatAmount(data[index].use_money) +'</td>'
+		  		// +'<td>￥'+ formatAmount(data[index].lock_money) +'</td>'
+		  		// +'<td>￥'+ formatAmount(data[index].repay_money) +'</td>'
 		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
 		  		 +'</tr>'
 			}

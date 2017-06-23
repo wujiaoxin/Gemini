@@ -169,7 +169,7 @@ class Account extends Baseness {
 	    }
 	}
     /*
-     * 充值
+     * 充值 TODO
      * */
 	public function recharge() {
 		if(IS_POST){
@@ -177,8 +177,7 @@ class Account extends Baseness {
 			$uid = session('user_auth.uid');
 			if (is_numeric($data['money'])){
 				//加入资金记录
-				money_record($data, $uid, 3, 0);
-			    $resp = modify_account($data,$uid,'recharge','INSERT');
+			
 			    return json($resp);
 			}
 		}else{
@@ -231,10 +230,7 @@ class Account extends Baseness {
 			    'type'=> array('IN',$types)
 			  );
 
-			$orders =db('order')->where($map)->select();
-			foreach ($orders as $k => $v) {
-			    $orders[$k]['realname'] = serch_real($v['uid']);
-			}
+			$orders =db('order')->alias('o')->field('o.*,m.realname')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
 			$info = array(
 			    'bankcard'=>$bankcard,
 			    'orders'=>$orders
