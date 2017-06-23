@@ -11,19 +11,16 @@ namespace com;
 
 class Withhold {
 
-	public $is_debug=0;//是否进行测试
 
-	if ($is_debug) {
 		//正式系统
-		public static $partnerId = '17050317540309600003';//商户ID
+		/*public static $partnerId = '17050317540309600003';//商户ID
 		public static $pk = "b54923140dcacba24f8e00bb60c239b6";
-		public static $url = 'https://api.yxtweb.com/gateway.html';
-	}else{
+		public static $url = 'https://api.yxtweb.com/gateway.html';*/
+		
 		//测试系统
 		public static $partnerId = '20160831020000752643';//商户ID
 		public static $pk = "b04fbc6afc77b131c355dd1788215dbb";
 		public static $url = 'http://merchantapi.yijifu.net/gateway.html';
-	}
 
 	//签约分期收款接口
 
