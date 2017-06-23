@@ -76,7 +76,7 @@ class Finance extends Admin {
 									'money'=>$result['examine_limit'],
 									'descr'=>$data['descr'],
 								);
-								money_record($ress,$uid,7,0);
+								money_record($ress,$result['mid'],7,1);
 
 							}else{
 
@@ -144,7 +144,7 @@ class Finance extends Admin {
 								'money'=>$result['examine_limit'],
 								'descr'=>$data['descr'],
 							);
-							money_record($ress,$uid,7,0);
+							money_record($ress,$customer_info['uid'],7,1);
 
 						}else{
 
