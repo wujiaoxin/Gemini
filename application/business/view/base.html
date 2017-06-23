@@ -136,7 +136,8 @@
           <a href="#"><i class="icon-bar-chart"></i><span class="title">我的账户</span><span class="arrow"></span></a>
           <ul class="sub-menu">
             <li><a href="/business/account/index.html"><i class="icon-cog"></i>账户设置</a></li>
-            <li id="withdraw_link"><a href="/business/account/withdraw.html"><i class="icon-yen"></i>提现</a></li>
+            <li class="guarantee_link"><a href="/business/account/withdraw.html"><i class="icon-yen"></i>提现</a></li>
+            <li class="guarantee_link"><a href="/business/account/balance.html"><i class="icon-money"></i>提现记录</a></li>
             <!-- <li>
               <a href="/business/account/balance.html">
                 <i class="icon-yen"></i>充值提现<span class="arrow"></span>
@@ -147,7 +148,7 @@
               </ul>
             </li> -->
             <li><a href="/business/account/bankcard.html"><i class="icon-credit-card"></i>银行卡</a></li>
-            <li><a href="/business/account/transaction.html"><i class="icon-edit"></i>资金记录</a></li>
+            <li class="guarantee_link"><a href="/business/account/transaction.html"><i class="icon-edit"></i>资金记录</a></li>
             <!-- <li><a href="/business/account/lineOfCredit.html"><i class="icon-reorder"></i>信用额度</a></li> -->
             <li><a href="/business/account/info.html"><i class="icon-group"></i>企业信息</a></li>
             <li><a href="/business/account/message.html"><i class="icon-envelope"></i>站内信</a></li>
@@ -241,7 +242,7 @@
       $('#nav-username').text(localStorage.getItem('username'));
     }
     if(typeof(localStorage.getItem('guarantee_id')) == ''){
-      $('#withdraw_link').hide();
+      $('.guarantee_link').hide();
     }
     jQuery(document).ready(function() {
        App.init();

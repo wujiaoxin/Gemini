@@ -97,7 +97,7 @@
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">资金方案</label>
 						    <div class="col-sm-10 pt5">
-						      	<span name="" class="customer-info">平安银行</span>
+						      	<span name="" class="customer-info"></span>
 						    </div>
 						</div>
 					</div>
@@ -567,6 +567,13 @@
 		$('#orderRevokeBtn').hide();
 	}
 
+	var ajaxUrl = '/admin/examine/dataReview';
+	if(info['order_info']['status'] == '3'){
+		$('#examinePass').val('4');
+	}else if(info['order_info']['status'] == '4'){
+		$('#examinePass').val('1');
+		ajaxUrl = '/admin/examine/loanLimit';
+	}
 </script>
 <script>
 $(function(){
@@ -597,15 +604,7 @@ $(function(){
 			return false;
 		}
 	});
-
 	$('#orderExamineBtn').click(function(){
-		var ajaxUrl = '/admin/examine/dataReview';
-		if(info['order_info']['status'] == '3'){
-			$('#examinePass').val('4');
-		}else if(info['order_info']['status'] == '4'){
-			$('#examinePass').val('1');
-			ajaxUrl = '/admin/examine/loanLimit';
-		}
 		var id = info['order_info']['id'];
 		var status = $('#examineStatus').val();
 		var examine_limit = $('#examine_limit').val();
@@ -629,7 +628,7 @@ $(function(){
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	ui_alert("审核通过","success");
-	            	window.location.href = apiUrl + "/admin/examine/loanLimit";
+	            	setTimeout('window.location.href = apiUrl + ajaxUrl',2000);
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);
