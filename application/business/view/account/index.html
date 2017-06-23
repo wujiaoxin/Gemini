@@ -440,7 +440,7 @@
         		return false;
     		}
 	        ajax_jquery({
-	            url: apiUrl +'/guarantee/account/index',
+	            url: apiUrl +'/business/account/index',
 	            data:{
 	            	"smsVerify": smsVerify,
 	            	"newPayPwd": newPayPwd
@@ -448,7 +448,7 @@
 	            success:function(resp){
 	                if (resp.code == "1" ) {
 	                		ui_alert("交易密码修改成功","success");
-	                        window.location.href = "/guarantee/account/index";
+	                        window.location.href = "/business/account/index";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 	                        ui_alert(resp.msg);
@@ -475,7 +475,7 @@
         		return false;
         	}
 	        ajax_jquery({
-	            url: apiUrl +'/guarantee/account/index',
+	            url: apiUrl +'/business/account/index',
 	            data:{
 	            	"smsVerify": smsVerify,
 	            	"newMobile": newMobile
@@ -483,7 +483,7 @@
 	            success:function(resp){
 	                if (resp.code == "1" ) {
 	                		ui_alert("手机号修改成功","success");
-	                        window.location.href = "/guarantee/account/index";
+	                        window.location.href = "/business/account/index";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 	                        ui_alert(resp.msg);
@@ -506,14 +506,14 @@
         		return false;
         	}
 	        ajax_jquery({
-	            url: apiUrl +'/guarantee/account/index',
+	            url: apiUrl +'/business/account/index',
 	            data:{
 	            	"email": email
 	            },
 	            success:function(resp){
 	                if (resp.code == "1" ) {
 	                		ui_alert("邮箱修改成功","success");
-	                        window.location.href = "/guarantee/account/index";
+	                        window.location.href = "/business/account/index";
 	                } else {
 	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
 	                        ui_alert(resp.msg);
