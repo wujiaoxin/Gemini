@@ -25,7 +25,7 @@ class Fixedrepay extends Api {
 
 		$map = array('order_id'=>$orderid);
 
-		$contractNo = db('member_withhold',[],false)->field('contractno')->where($map)->find();
+		$contractNo = db('member_withhold',[],false)->field('contractno,uid')->where($map)->find();
 
 		$map['repay_period'] = $period;
 
@@ -39,7 +39,7 @@ class Fixedrepay extends Api {
 			return;
 		}
 		//判断是否绑卡
-		$where = array('uid'=>$uid,'order_id'=>$orderid);
+		$where = array('uid'=>$contractNo['uid'],'order_id'=>$orderid);
 		$withhold = db('member_withhold')->field('signstatus')->where($where)->find();
 		if(!empty($withhold)){
 			if($withhold['signstatus'] != 1){
@@ -62,12 +62,13 @@ class Fixedrepay extends Api {
     		'externalOrderNo'=>$externalOrderNo,
     		'totalAmount'=>$res['repay_money'],
     		);
-    	db('order_repay')->where('id',$res['id'])->update(['orderon'=>$externalOrderNo]);//TODO未生效
+    	db('order_repay')->where($map)->update(['orderon'=>$externalOrderNo]);//TODO未生效
     	$result = \com\Withhold::selfrepay($data);
     	if ($result['resultCode'] == 'EXECUTE_SUCCESS') {
     		$resp['code'] = 1;
 			$resp['msg'] ='还款成功';
-			money_record($ress,$uid,6,1);
+			db('order_repay')->where($map)->update(['status'=>'-2']);//TODO未生效
+			money_record($ress,$contractNo['uid'],6,1);
 
     	}elseif ($result['resultCode'] == 'EXECUTE_PROCESSING') {
     		$resp['code'] = -2;
