@@ -32,7 +32,7 @@ class Login extends Base {
 					$deal = db('Dealer')->field('status')->where('mobile',$mobile)->find();
 					if (!empty($deal)) {
 						$success['status'] = $deal['status'];
-						if ($success['status'] <= 0) {
+						if ($success['status'] == -1 || $success['status'] == 9) {
 							$resp["code"] = 0;
 							$resp["msg"] = '用户已禁用';
 							return json($resp);
@@ -89,10 +89,10 @@ class Login extends Base {
 		$mobile = session('business_mobile');
 		$res = db('dealer')->field('status,property')->where('mobile',$mobile)->find();
 		if ($res['status'] == '1' && $res['property'] == '3') {
-			$this->redirect(url('/guarantee/index/index'));
+			$this->redirect(url('/business/login/login'));
 		}elseif ($res['status'] == '1' && $res['property'] == '2') {
 			$this->redirect(url('index/index'));
-		}elseif ($res['status'] == '1' && $res['property'] == '2') {
+		}elseif ($res['status'] == '1' && $res['property'] == '1') {
 			$this->redirect(url('index/index'));
 		}else{
 			db('dealer')->where('mobile',$mobile)->setField('status','3');
