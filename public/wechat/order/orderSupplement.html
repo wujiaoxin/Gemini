@@ -276,6 +276,7 @@
                     $(".order-idcardNum").text(resp.data.info.idcard_num);
                     $(".order-date").text(formatDate(resp.data.info.create_time));
                     order_type = resp.data.info.type;
+                    order_type = order_type > 3 ? (order_type-2) : order_type;
                     $('#type-' + order_type).show();
                 }else{
                     if (typeof(resp.msg) == 'string') {
