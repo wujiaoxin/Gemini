@@ -229,9 +229,11 @@ class Postloan extends Admin {
 			return json($resp);
 		}else{
 			$result = db('Bankcard')->alias('b')->field('b.*,m.mobile')->join('__MEMBER__ m','m.uid = b.uid')->where('id',$id)->find();
-			$resl  = explode(',', $result['bank_branch']);
-			$result['province'] = $resl[0];
-			$result['city'] = $resl[1];
+			if (!empty($result['bank_branch'])) {
+				$resl  = explode(',', $result['bank_branch']);
+				$result['province'] = $resl[0];
+				$result['city'] = $resl[1];
+			}
 			$data = array(
 				'infoStr' =>json_encode($result),
 			);

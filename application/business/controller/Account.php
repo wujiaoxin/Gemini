@@ -143,7 +143,8 @@ class Account extends Baseness {
 	    $uid = session('user_auth.uid');
 	    if (IS_POST) {
 	    	$data = input('post.');
-	    	$map['uid'] = $uid;
+	    	$uids = db('Dealer')->field('id')->where('mobile',$mobile)->find();
+	    	$map['uid'] = $uids['id'];
 	    	if (isset($data['status'])) {
 	    		if ($data['status'] != '') {
 	    			$map['status'] = $data['status'];
@@ -169,25 +170,6 @@ class Account extends Baseness {
 				}
 	    	}
 	    	
-	    	if ($data['type'] == '1') {
-	    		if ($data['dateRange']) {
-					$result = to_datetime($data['dateRange']);
-					$endtime =$result['endtime'];
-					$begintime = $result['begintime'];
-					$recharge = db('recharge')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->order('create_time DESC')->select();
-				}else{
-					$recharge = db('recharge')->where($map)->order('create_time DESC')->select();
-				}
-				if ($recharge) {
-					$resp['code'] = '1';
-					$resp['msg'] = '数据正常';
-					$resp['type'] = '1';
-					$resp['data']= $recharge;
-				}else{
-					$resp['code'] = '0';
-					// $resp['msg'] = '未查到数据';
-				}
-	    	}
 			return json($resp);
 	    	
 	    }else{
