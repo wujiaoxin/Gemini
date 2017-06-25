@@ -1,0 +1,113 @@
+{extend name="base"/}
+{block name="body"}
+<!--账户充值-->
+<div class="alert hide">
+  	<a class="close"></a>
+  	<span></span>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+		<div class="portlet box">
+			<div class="portlet-body form">
+				<form class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label">充值金额</label>
+						<div class="controls">
+							<input type="number" id="amount" placeholder="充值金额" class="m-wrap small">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">充值方式</label>
+						<div class="controls">
+							<select id="rechargeMode" class="small m-wrap">
+								<option value="1">线下转账</option>
+								<!-- <option value="2">线下转账2</option> -->
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">充值银行</label>
+						<div class="controls">
+							<label class="radio line">
+								<input type="radio" name="platform_account" value="571909942510701">户名:杭州互纳科技有限公司 开户行:招商银行杭州高新支行 账户:571909942510701
+							</label>
+							<label class="radio line">
+								<input type="radio" name="platform_account" value="6230580000094045239">户名:沈军海 开户行:平安银行西安丈八北路支行 账户:6230580000094045239
+							</label>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">充值备注</label>
+						<div class="controls">
+							<textarea id="desc" class="medium m-wrap" rows="3"></textarea>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">温馨提示:</label>
+						<div class="controls">
+							<ol>
+								<li>充值/提现必须为开通网上银行的借记卡，不支持存折、信用卡充值。</li>
+								<li>充值成功后，可系统中查看充值状态以及可用金额。</li>
+								<li>严禁信用卡套现、虚假交易等行为。</li>
+							</ol>
+						</div>
+					</div>
+					<div class="form-actions">
+						<a id="rechargeBtn" class="btn blue"><i class="icon-ok"></i>确认提交</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript">
+window.location.href = "/guarantee/user/myShop";
+$(function(){
+	$('#rechargeBtn').on('click',function(){
+		var platform_account = $("input[name='platform_account']:checked").val();
+		var amount = $('#amount').val();
+		var rechargeMode = $('#rechargeMode').val();
+		var desc = $('#desc').val();
+		if(amount == ""){
+			ui_alert("请输入充值金额");
+	        return false;
+		}else if(rechargeMode == ""){
+			ui_alert("请选择充值方式");
+	        return false;
+		}else if(platform_account == ""){
+			ui_alert("请选择充值银行");
+	        return false;
+		}
+
+		ajax_jquery({
+	        url: apiUrl +'/business/account/recharge',
+	        data:{
+	        	'money': amount,
+	        	'recharge_type': rechargeMode,
+	        	'platform_account': platform_account,
+	        	'descr': desc
+	        },
+	        success:function(resp){
+	            if (resp.code == "1" ) {
+                    ui_alert("充值成功,等待审核","success");
+                    setTimeout('window.location.reload()',1000);
+	            }else{
+	                if (typeof(resp.msg) == 'string') {
+	                    ui_alert(resp.msg);
+	                    return false;
+	                }
+	            }
+	        }
+	    });
+	})
+})
+</script>
+
+
+
+
+
+
+{/block}

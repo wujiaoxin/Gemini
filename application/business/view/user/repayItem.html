@@ -64,7 +64,7 @@
 					<th>业务员</th>
 					<th>借款金额</th>
 					<th>费用</th>
-					<th>还款期限</th>
+					<th>还款期限/天</th>
 					<th>还款状态</th>
 					<th>操作</th>
 				</tr>
@@ -101,17 +101,17 @@
 					<label class="radio">
 						<div class="radio">
 							<span><input type="radio" name="bankcard" value="bankcard"></span>
-						</div><input type="number" id="bankcard" disabled="disabled">
+						</div><span id="bankcardText"></span><input type="hidden" id="bankcard">
 					</label>
 					<label class="radio line">
 						<div class="radio">
 							<span><input type="radio" name="bankcard" value="priv_bankcard"></span>
-						</div><input type="number" id="priv_bankcard" disabled="disabled">
+						</div><span id="priv_bankcardText"></span><input type="hidden" id="priv_bankcard">
 					</label>
 					<label class="radio">
 						<div class="radio">
 							<span><input type="radio" name="bankcard" value="otherBankcard"></span>
-						</div><input type="number" id="otherBankcard" placeholder="其他银行卡">
+						</div>其他账号<input type="number" id="otherBankcard" placeholder="请输入银行卡号" style="display: none;">
 					</label>
 				</div>
 			</div>
@@ -144,7 +144,7 @@
 				orderOpera = '<a class="orderOpera" data-toggle="modal">还款</a>'
 			}
 		  	html += '<tr class="odd gradex">'
-		  		+'<td class="order_id">' + data[index].order_id + '</td>'
+		  		+'<td class="order_id" data="'+ data[index].order_id +'">' + data[index].sn + '</td>'
 		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
 		  		+'<td>'+ formatDate(data[index].repay_time) +'</td>'
 		  		+'<td>'+ data[index].yewu_realname +'</td>'
@@ -182,11 +182,19 @@
 		});
 	}
 
+	$('#bankcardText').text(info.bank_account_id);
+	$('#priv_bankcardText').text(info.priv_bank_account_id);
 	$('#bankcard').val(info.bank_account_id);
 	$('#priv_bankcard').val(info.priv_bank_account_id);
+	$('input[name="bankcard"]').change(function(){
+		if($(this).val() == 'otherBankcard'){
+			$('#otherBankcard').slideDown();
+		}else{
+			$('#otherBankcard').slideUp();
+		}
+	});
 
 	jQuery(document).ready(function() {
-	   // App.init();
 	   TableManaged.init();
 	   ajaxRepayItem('','','');
 	   $('.selectParm').on('click','li',function(){
@@ -198,7 +206,7 @@
 	   });
 
 	   $('#table-repayItem').on('click','.orderOpera',function(){
-	   		var repay_orderId = $(this).parent('td').siblings('.order_id').text();
+	   		var repay_orderId = $(this).parent('td').siblings('.order_id').attr('data');
 	   		var repay_amount = $(this).parent('td').siblings('.order_loanLimit').attr('data');
 	   		$('#repay_orderId').val(repay_orderId);
 	   		$('#repay_amount').val(repay_amount);
@@ -212,7 +220,7 @@
 	   		var payPwd = $('#payPassword').val();
 	   		var bankcardChecked = $('input[name="bankcard"]:checked').val();
 	   		var bankcard = $('#'+bankcardChecked).val();
-	   		if(bankcard == ''){
+	   		if(typeof bankcard == 'undefined' || bankcard ==''){
 				ui_alert("请选择还款银行卡");
 	            return false;
 	   	 	}else if(payPwd == ''){
@@ -232,7 +240,7 @@
 		        success:function(resp){
 		            if (resp.code == "1" ) {
 		            	ui_alert("还款成功","success");
-		            	ajaxRepayItem('','','');
+		            	setTimeout('window.location.reload()',2000);
 		            } else {
 		                if (typeof(resp.msg) == 'string') {
 		                    ui_alert(resp.msg);

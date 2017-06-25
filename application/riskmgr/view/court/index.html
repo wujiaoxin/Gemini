@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>VP贷-享全款的汽车分期</title>
+    <link href="/public/wap/images/logo-ico.png" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.css">
+    <link rel="stylesheet" href="/public/wap/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/wap/css/my-app.css" media="all">    
+</head>
+<body>
+    
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="#" class="link icon-only">
+                            <img src="/public/wap/images/logo.png" height="100%"/>法院数据查询
+                        </a>
+                    </div>
+                    <div class="right">
+                    </div>
+                </div>
+            </div>
+            <div class="pages navbar-through toolbar-through">
+                <div data-page="appHome" class="page">
+                    <div class="page-content">
+                        <div class="content-block">                                 
+                            <button id="Court_list" class="button button-big button-fill dpblue" style="width:100%">法院公告检索</button>
+                        </div>
+                        <div class="content-block">                                 
+                            <button id="Court_detail" class="button button-big button-fill dpblue" style="width:100%">法院公告详情</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading"></div>
+    <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
+    <script type="text/javascript" src="/public/wap/js/my-app.js"></script>
+    <script type="text/javascript">
+        $("#Court_list").click(function(){
+            location.href = "/riskmgr/Court/lst?type=1";
+        });
+        $("#Court_detail").click(function(){
+            location.href = "/riskmgr/Court/lst?type=2";
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+{extend name="base"/}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css" />
+<link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css" />
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
+{/block}
+
+{block name="body"}
+<div class="portlet box grey">
+	<div class="portlet-title">
+		<div class="caption"><i class="icon-user"></i>我的员工</div>
+		<div class="actions">
+			<a href="/guarantee/user/newStaff.html" class="btn blue"><i class="icon-plus"></i>新增员工</a>
+		</div>
+	</div>
+	<div class="portlet-body">
+		<table class="table table-striped table-bordered table-hover" id="table-myStaff">
+			<thead>
+				<tr>
+					<th>员工编号</th>
+					<th>员工姓名</th>
+					<th>联系电话</th>
+					<th>职位</th>
+					<th>添加时间</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- <tr class="odd gradeX">
+					<td>100001</td>
+					<td>王三</td>
+					<td>13456679797</td>
+					<td>业务员</td>
+					<td>2017-10-12</td>
+					<td>正常</td>
+					<td>停用</td>
+				</tr> -->
+			</tbody>
+		</table>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="/public/guarantee/js/table-managed.js"></script>
+<script>
+	// 按照指定长度为数字前面补零
+	function PrefixInteger(num, length) {
+	 	return (Array(length).join('0') + num).slice(-length);
+	}
+
+	function tpl(data){
+		var html = '';
+		var position = {'13':'总经理','14':'信审','15':'终审','16':'财务','17':'运营'};
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+			var job = position[data[index].access_group_id];
+			var status = '';
+			var opera = '';
+			if(data[index].status){
+				status = '正常';
+				opera = '停用';
+			}else{
+				status = '停用';
+				opera = '启用';
+			}
+
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + PrefixInteger(index+1,6) + '</td>'
+		  		+'<td>'+ data[index].realname +'</td>'
+		  		+'<td>'+ data[index].mobile +'</td>'
+		  		+'<td>'+ job +'</td>'
+		  		+'<td>'+ formatDate(data[index].reg_time) +'</td>'
+		  		+'<td data-status="'+ data[index].status +'">'+ status +'</td>'
+		  		+'<td><a class="updateStatus" data-id="'+ data[index].mobile +'">'+ opera +'</a></td>'
+		  		+'</tr>';
+			}
+		}
+		return html;
+	};
+	$('#table-myStaff tbody').html(tpl(info));
+
+	jQuery(document).ready(function() {
+	   // App.init();
+	   TableManaged.init();
+	   $('#table-myStaff').on('click','.updateStatus',function(){
+	   	    var self = this;
+	   		var mobile = $(this).attr('data-id');
+	   		var statusTd = $(this).parent('td').prev('td');
+	   		var status = $(statusTd).attr('data-status');
+	   		status = status>0?0:1; //更改stautus
+	   		ajax_jquery({
+		        url: apiUrl +'/guarantee/user/editStaff',
+		        data:{
+		            'mobile': mobile,
+		            'status': status
+		        },
+		        success:function(resp){
+		            if (resp.code == "1" ) {
+		            	$(statusTd).attr('data-status',status);
+	                    if(status){
+	                    	$(statusTd).text('正常');
+	                    	$(self).text('停用');
+	                    }else{
+	                    	$(statusTd).text('停用');
+	                    	$(self).text('启用');
+	                    }
+		            } else {
+		                if (typeof(resp.msg) == 'string') {
+		                    ui_alert(resp.msg);
+		                    window.location.reload();
+		                }
+		            }
+		        }
+    		});
+	   });
+
+
+	});
+</script>
+{/block}

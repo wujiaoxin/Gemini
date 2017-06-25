@@ -1,0 +1,152 @@
+{extend name="base"/}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css" />
+{/block}
+{block name="body"}
+<div class="form-horizontal">
+	<h4 class="form-section">新增员工</h4>
+	<div class="alert hide">
+      	<a class="close"></a>
+      	<span></span>
+    </div>
+	<div class="row-fluid">
+		<div class="span4">
+			<div class="control-group">
+				<label class="control-label">姓名*</label>
+				<div class="controls">
+					<input type="text" id="name" class="m-wrap span12" placeholder="请输入真实姓名">
+				</div>
+			</div>
+		</div>
+		<div class="span4">
+			<div class="control-group">
+				<label class="control-label">手机号*</label>
+				<div class="controls">
+					<input type="number" id="mobile" class="m-wrap span12" placeholder="请输入注册手机号">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span4">
+			<div class="control-group">
+				<label class="control-label">密码*</label>
+				<div class="controls">
+					<input type="password" id="password" class="m-wrap span12" placeholder="8-16位英文数字组合">
+				</div>
+			</div>
+		</div>
+		<div class="span4">
+			<div class="control-group">
+				<label class="control-label">确认密码*</label>
+				<div class="controls">
+					<input type="password" id="rePassword" class="m-wrap span12" placeholder="请确认密码">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span4">
+			<div class="control-group">
+				<label class="control-label">职位*</label>
+				<div class="controls">
+					<select  id="job" class="m-wrap span12">
+						<option value="13">总经理</option>
+						<option value="14">信审</option>
+						<option value="15">终审</option>
+						<option value="16">财务</option>
+						<option value="17">运营</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="span4">
+			<div class="control-group">
+				<label class="control-label">固定电话</label>
+				<div class="controls">
+					<input type="number" id="telphone" class="m-wrap span12" placeholder="请输入固定电话">
+					<span class="help-block">eg:0571-87813085</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span8">
+			<div class="control-group">
+				<label class="control-label">备注</label>
+				<div class="controls">
+					<textarea id="remark" class="large m-wrap" rows="3"></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-actions">
+		<button id="newStaffBtn" class="btn blue"><i class="icon-ok"></i>添加</button>
+		<a href="javascript:history.go(-1);" class="btn green"><i class="icon-remove"></i>取消</a>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
+<script>
+	jQuery(document).ready(function() {
+	   // App.init(); // initlayout and core plugins
+	   $("#newStaffBtn").click(function(){
+		   	var name = $("#name").val();
+		   	var mobile = $("#mobile").val();
+		   	var password = $("#password").val();
+		   	var rePassword = $("#rePassword").val();
+		   	var job = $("#job").val();
+		   	var telphone = $("#telphone").val();
+		   	var remark = $("#remark").val();
+		   	if(name == ""){
+		   		ui_alert("请输入员工姓名");
+		   		return;
+		   	}else if(mobile == ""){
+		   		ui_alert("请输入手机号");
+		   		return;
+		   	}else if(!validatePhoneNumber(mobile)){
+		   		ui_alert("请输入正确手机号");
+		   		return;
+		   	}else if(password == ""){
+		   		ui_alert("请输入密码");
+		   		return;
+		   	}else if(!validatePassword(password)){
+		   		ui_alert("请输入8-16位英文数字组合密码");
+		   		return;
+		   	}else if(rePassword == ""){
+		   		ui_alert("请再次输入密码");
+		   		return;
+		   	}else if(rePassword != password){
+		   		ui_alert("两次输入密码不一致");
+		   		return;
+		   	}else if(job == ""){
+		   		ui_alert("请选择员工职位");
+		   		return;
+		   	}
+		   	ajax_jquery({
+	            url: apiUrl +'/guarantee/user/addStaff',
+	            data:{
+	            	"name": name,
+	            	"mobile": mobile,
+	            	"password": password,
+	            	"job": job,
+	            	"telphone": telphone,
+	            	"remark": remark
+	            },
+	            success:function(resp){
+	                if (resp.code == "1" ) {
+	                		ui_alert("新增成功","success");
+	                        window.location.href = "/guarantee/user/myStaff";
+	                } else {
+	                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+	                        ui_alert(resp.msg);
+	                    }
+	                    return false;
+	                }
+	            }
+	        });
+	   })
+	});
+</script>
+{/block}

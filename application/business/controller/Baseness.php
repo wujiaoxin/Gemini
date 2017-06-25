@@ -12,7 +12,7 @@ use app\common\controller\Base;
 class Baseness extends base{
 	public function _initialize(){
 		parent::_initialize();
-		$mobile = session("mobile");
+		$mobile = session("business_mobile");
 		$uid = session("user_auth.uid");
 		if($mobile == null || $uid == null){
 			return $this->redirect("/business/login/login");

@@ -63,16 +63,18 @@ class Index extends \think\Controller{
 	}
 	public function menu() {
 		$menu = & load_wechat('menu');
-		$indexUrl = URL('wechat/index/getOauthRedirect','state=1');
+		//$indexUrl = URL('wechat/index/getOauthRedirect','state=1');
+		$indexUrl = "https://www.vpdai.com/public/wechat/index/index.html";
 		$dealerUrl = URL('mobile/open/dealer');
 		$aboutUrl = URL('mobile/open/aboutus');
-		$userUrl = URL('wechat/index/getOauthRedirect','state=2');
+		//$userUrl = URL('wechat/index/getOauthRedirect','state=2');
+		$userUrl = "https://www.vpdai.com/public/wechat/user/personalCenter.html";
 		$helpUrl = URL('mobile/open/help');
 		$data = json_decode('{
 			"button":[
 				{	
 					"type":"view",
-					"name":"进入VP贷",
+					"name":"进入享贷车",
 					"url":"'.$indexUrl.'"
 				},
 				{	
@@ -100,7 +102,7 @@ class Index extends \think\Controller{
 					},					
 					{
 						"type":"view",
-						"name":"关于VP贷",
+						"name":"关于互纳",
 						"url":"'.$aboutUrl.'"
 					}]
 				}]

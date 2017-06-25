@@ -58,9 +58,19 @@ var Login = function () {
 		            },
 		            success:function(resp){
 		                if (resp.code == "1" ) {
-		                		ui_alert("登录成功","success");
 		                		//localStorage.setItem('token',resp.data.token);
-		                        window.location.href = "/business/index/index";
+		                		if(resp.data == 1){
+		                			ui_alert("登录成功","success");
+		                			window.location.href = "/guarantee/index/index";
+		                		}else if(resp.data == 2){
+		                			ui_alert("登录成功","success");
+		                			window.location.href = "/business/user/myShop";
+		                		}else if(resp.data == 3){
+		                			ui_alert("登录成功","success");
+		                			window.location.href = "/fund/examine/application";
+		                		}else{
+		                			ui_alert("权限错误,请联系客服");
+		                		}
 		                } else {
 		                    if(resp.code == "-2" || resp.code == "1001"){
 		                        isimgverify = 1;
@@ -276,10 +286,10 @@ var Login = function () {
 		if (r != null) return unescape(r[2]); return null;
 	}
 
-	var t = getUrlParam('t');
-	if(t == 1){
-		$('#register-btn').click();
-	}
+	// var t = getUrlParam('t');
+	// if(t == 1){
+	// 	$('#register-btn').click();
+	// }
 	var rememberUsername = localStorage.getItem('rememberUsername');
 	if(rememberUsername){
 		$("#username").val('rememberUsername');

@@ -36,6 +36,18 @@
 						<div class="content-block">									
 							<button id="yinlian" class="button button-big button-fill dpblue" style="width:100%">银联智慧查询</button>
 						</div>
+                        <div class="content-block">                                 
+                            <button id="blacklist" class="button button-big button-fill dpblue" style="width:100%">银联黑名单查询</button>
+                        </div>
+                        <div class="content-block">                                 
+                            <button id="bill" class="button button-big button-fill dpblue" style="width:100%">多笔交易验证接口</button>
+                        </div>
+                        <div class="content-block">                                 
+                            <button id="judgemen" class="button button-big button-fill dpblue" style="width:100%">裁判文书详情查询接口</button>
+                        </div>
+                        <div class="content-block">                                 
+                            <button id="court" class="button button-big button-fill dpblue" style="width:100%">法院公告详情查询接口</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,7 +65,18 @@
 		$("#yinlian").click(function(){
 			location.href = "/riskmgr/yinlian";
 		});
-		
+		$("#blacklist").click(function(){
+            location.href = "/riskmgr/yinlian/blacklist";
+        });
+        $("#court").click(function(){
+            location.href = "/riskmgr/court";
+        });
+        $("#judgemen").click(function(){
+            location.href = "/riskmgr/judgemen";
+        });
+         $("#bill").click(function(){
+            location.href = "/riskmgr/bill";
+        });
     </script>
 
 </body>

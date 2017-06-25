@@ -13,19 +13,26 @@ use app\common\controller\Admin;
 class assetchannel extends Admin {
 
 	public function index() {
-		//define('IS_ROOT', is_administrator());		
+		//define('IS_ROOT', is_administrator());
+
+		//TODO 需要区分商家推广和商家运营	
 		$map = '';
-		if (!IS_ROOT) {
-			$uid = session('user_auth.uid');
-			if($uid > 0){
-				$map = 'uid = '.$uid.' or bank_uid = '.$uid;
-			}else{
-				return $this->error('请重新登录');
-			}
+		
+		$order = "create_time desc";
+
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		$map = 'd.status > 0';
+		if($uid > 0){
+			
+			$list  = db('Dealer')->alias('d')->field('d.*,m.uid')->join('__MEMBER__ m','m.mobile = d.mobile','LEFT')->where($map)->order($order)->select();
+
+		}else{
+			return $this->error('请重新登录');
 		}
-		$order = "id desc";
+
 		// $list  = db('Dealer')->where($map)->order($order)->paginate(10);
-		$list  = db('Dealer')->where($map)->order($order)->select();
+		
 		foreach ($list as $k => $v) {
 			$list[$k]['qrcode_url'] = 'https://pan.baidu.com/share/qrcode?w=512&h=512&url='.url("/public/wechat/user/register").'?authcode='.$v['invite_code'];
 		}
@@ -59,7 +66,13 @@ class assetchannel extends Admin {
 				unset($data['id']);
 				$data['invite_code'] = $link->buildInviteCode();
 				$passwords = 'vpdai'.substr($data['idno'],12,6);
-				model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
+				//加入担保公司
+				if ($data['property'] =='3') {
+					model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'18');
+				}else{
+					model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
+				}
+				
 				$result = $link->save($data);
 				if ($result) {
 					return $this->success("新建成功！", url('assetchannel/index'));
@@ -98,6 +111,10 @@ class assetchannel extends Admin {
 					$data['b_money'] = '1';
 					$data['money_level'] = '1000000';
 					$data['lines_ky'] = '1000000';
+				}
+				if ($data['property'] =='3') {
+					$res =array('access_group_id'=>'18','realname'=>$data['rep'],'idcard'=>$data['idno']);
+					model('User')->save($res,array('mobile'=>$data['mobile']));
 				}
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {
@@ -175,8 +192,8 @@ class assetchannel extends Admin {
 		}
 		$link = db('Dealer');
 		$map    = array('id' => array('IN', $id));
-		$map['status'] = 2;
-		$result = $link->where($map)->delete();
+		$result = $link->where($map)->update(['status'=>0]);
+
 		if ($result) {
 			return $this->success("删除成功！");
 		} else {

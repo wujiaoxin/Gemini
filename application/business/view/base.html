@@ -102,13 +102,13 @@
           <div class="sidebar-toggler hidden-phone"></div>
           <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
         </li>
-        <li class="start">
+        <!-- <li class="start">
           <a href="/business/index/index.html">
             <i class="icon-home"></i>
             <span class="title">账户首页</span>
           </a>
-        </li>
-        <li class="">
+        </li> -->
+        <li class="start">
           <a href="/business/user/myShop.html">
             <i class="icon-sitemap"></i><span class="title">我的商户</span><span class="arrow"></span>
           </a>
@@ -121,15 +121,24 @@
           <a href="#"><i class="icon-file-text"></i><span class="title">我的业务</span><span class="arrow"></span></a>
           <ul class="sub-menu">
             <li><a href="/business/user/loanItem.html"><i class="icon-euro"></i>借款项目</a></li>
-            <li><a href="/business/user/repayItem.html"><i class="icon-dollar"></i>还款项目</a></li>
-            <li><a href="/business/user/payItem.html"><i class="icon-yen"></i>支付项目</a></li>
+          <!--   <li><a href="/business/user/repayItem.html"><i class="icon-dollar"></i>还款项目</a></li>
+            <li><a href="/business/user/payItem.html"><i class="icon-yen"></i>支付项目</a></li> -->
           </ul>
         </li>
+    <!--      <li class="">
+          <a href="#"><i class="icon-sitemap"></i><span class="title">订单审核</span><span class="arrow"></span></a>
+          <ul class="sub-menu">
+            <li><a href="/business/examine/application.html"><i class="icon-file"></i>所有项目</a></li>
+            <li><a href="/business/examine/trial.html"><i class="icon-flickr"></i>初级审核</a></li>
+          </ul>
+        </li> -->
         <li class="last">
           <a href="#"><i class="icon-bar-chart"></i><span class="title">我的账户</span><span class="arrow"></span></a>
           <ul class="sub-menu">
             <li><a href="/business/account/index.html"><i class="icon-cog"></i>账户设置</a></li>
-            <li>
+            <li class="guarantee_link"><a href="/business/account/withdraw.html"><i class="icon-yen"></i>提现</a></li>
+            <li class="guarantee_link"><a href="/business/account/balance.html"><i class="icon-money"></i>提现记录</a></li>
+            <!-- <li>
               <a href="/business/account/balance.html">
                 <i class="icon-yen"></i>充值提现<span class="arrow"></span>
               </a>
@@ -137,9 +146,9 @@
                 <li><a href="/business/account/recharge.html"><i class="icon-table"></i>充值</a></li>
                 <li><a href="/business/account/withdraw.html"><i class="icon-money"></i>提现</a></li>
               </ul>
-            </li>
+            </li> -->
             <li><a href="/business/account/bankcard.html"><i class="icon-credit-card"></i>银行卡</a></li>
-            <li><a href="/business/account/transaction.html"><i class="icon-edit"></i>资金记录</a></li>
+            <li class="guarantee_link"><a href="/business/account/transaction.html"><i class="icon-edit"></i>资金记录</a></li>
             <!-- <li><a href="/business/account/lineOfCredit.html"><i class="icon-reorder"></i>信用额度</a></li> -->
             <li><a href="/business/account/info.html"><i class="icon-group"></i>企业信息</a></li>
             <li><a href="/business/account/message.html"><i class="icon-envelope"></i>站内信</a></li>
@@ -225,13 +234,16 @@
   <script src="/public/business/lib/metronic/js/jquery.uniform.min.js" type="text/javascript" ></script>
   <script src="/public/js/messager.js" type="text/javascript" ></script>
   <!-- END CORE PLUGINS -->
-  <script src="/public/business/js/validate.js" type="text/javascript"></script>
+  <script src="/public/business/js/validate.js?v=1" type="text/javascript"></script>
   <!-- BEGIN PAGE LEVEL SCRIPTS -->
   <script src="/public/business/js/app.js"></script>
   <script>
-  if(typeof(localStorage.getItem('username')) == 'string'){
-          $('#nav-username').text(localStorage.getItem('username'));
-        }
+    if(typeof(localStorage.getItem('username')) == 'string'){
+      $('#nav-username').text(localStorage.getItem('username'));
+    }
+    if(typeof(localStorage.getItem('guarantee_id')) == ''){
+      $('.guarantee_link').hide();
+    }
     jQuery(document).ready(function() {
        App.init();
     });

@@ -72,20 +72,35 @@ class User extends Api {
 		}
 	}
 	
-	public function login($mobile = '', $password = '', $imgverify = null, $sid = null){
+	public function login($mobile = '', $password = '', $imgverify = null, $smsverify=null, $sid = null){
 		$resp["code"] = 0;
 		$resp["msg"] = '未知错误';		
-		if (!$mobile || !$password) {
-			$resp["code"] = 0;
-			$resp["msg"] = '用户名或者密码不能为空！';
-			return json($resp);
-		}		
+				
 		//验证码验证 TODO
 		//$this->checkVerify($verify);
 
 		$user = model('User');
-		$uid  = $user->login($mobile, $password);
+		if ($smsverify) {
+			$uid  = $user->ulogin($mobile, $smsverify);
+			/* 验证验证码 */
+			$storeSmsCode = session('smsCode');
+			if ($smsverify != $storeSmsCode) {
+				return ['code'=>1005,'msg'=>'短信验证码错误'];
+			}
+			$role = session('user_auth.role');
+			if ($role != '1') {
+				return ['code'=>1010,'msg'=>'没有权限登录'];
+			}
+		}else{
+			if (!$mobile || !$password) {
+				$resp["code"] = 0;
+				$resp["msg"] = '用户名或者密码不能为空！';
+				return json($resp);
+			}
+			$uid  = $user->login($mobile, $password);
+		}
 		if ($uid > 0) {
+			
 			
 			//session('uid',$uid);
 			//session('mobile',$mobile);
@@ -101,7 +116,8 @@ class User extends Api {
 				$userInfo['headerimgurl'] = "https://www.vpdai.com/public/images/default_avatar.jpg";
 			}
 			$userInfo['token'] = generateToken($uid, $sid);
-			
+			 
+
 			$resp["code"] = 1;
 			$resp["msg"] = '登录成功';	
 			$resp["data"] = $userInfo;
@@ -160,11 +176,18 @@ class User extends Api {
 	public function userInfo(){
 		
 		$uid  = session('user_auth.uid');
+		$role  = session('user_auth.role');
 		if ($uid > 0) {
+			if ($role  == '0') {
+				$userInfo = db('member')->field('uid,mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
+				$userInfo['roleid']   = $userInfo['access_group_id'];
+				unset($userInfo['access_group_id']);
+			}elseif ($role  == '1') {
+				$userInfo = db('member')->alias('m')->field('m.uid,m.mobile,m.username,m.realname,m.idcard,m.bankcard,m.status,m.access_group_id,m.headerimgurl,d.name as dealer_name')->join('__DEALER__ d','m.dealer_id = d.id')->where('m.uid',$uid)->find();
+			}else{
+				$userinfo = db('member')->alias('m')->field('m.uid,m.mobile,m.username,m.realname,m.idcard,m.bankcard,m.status,m.access_group_id,m.headerimgurl,d.name as dealer_name')->join('__DEALER__ d','m.mobile = d.mobile')->where('m.uid',$uid)->find();
+			}
 			
-			$userInfo = db('member')->field('uid,mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
-			$userInfo['roleid']   = $userInfo['access_group_id'];
-			unset($userInfo['access_group_id']);
 			
 			if(empty($userInfo['headerimgurl'])){
 				$userInfo['headerimgurl'] = "https://www.vpdai.com/public/images/default_avatar.jpg";
@@ -228,13 +251,15 @@ class User extends Api {
 		$smsMsg = '您的验证码为:' . $smsCode;
 		
 		//if(1){
-		if(sendSms($mobile,$smsMsg)){
+		//if(sendSms($mobile,$smsMsg)){
+		if(sendSmsCode($mobile,$smsCode)){
 			session('smsCode',$smsCode);
 			session('mobile',$mobile);
 			session('needImgVerify', 0);
 			session('lastSmsSendTime',time());
 			$resp["code"] = 1;
 			$resp["msg"] = "发送成功！";
+			//$resp["data"] = $smsCode;
 			
 		}else{
 			//session('errorTimes',$errorTimes++);
@@ -351,9 +376,55 @@ class User extends Api {
 			if($idcard!=null){
 				$saveData["bankcard"] = $bankcard;
 			}
+			//银联三要素验证
+			$authvalidTime = session('authvalidTime');
+			if($authvalidTime != null){
+				if($authvalidTime == 1){
+					session('authvalidTime', 2);
+					$resp["code"] = -3;
+					$resp["msg"] = "已验证成功";
+				}
+			}else{
+				$event = new \app\riskmgr\controller\Yinlian();
+				$res = $event->authvalid($idcard,$realname,$bankcard,'',4);
+				if (!empty($res)) {
+					if ($res['resCode'] == '0000' && $res['stat'] == '1') {
+						$resp["code"] = 1;
+						$resp["msg"] = '更新成功';	
+						$resp["data"] = $saveData;
+						session('authvalidTime',1);
+					}elseif ($res['resCode'] == '0000' && $res['stat'] == '2') {
+						$resp["code"] = 4;
+						$resp["msg"] = '实名信息不匹配';	
+						// $resp["data"] = $saveData;
+						return json($resp);
+					}else{
+						$resp["code"] = 5;
+						$resp["msg"] = empty($res['resMsg']) ? '数据异常': $res['resMsg'];;	
+						// $resp["data"] = $saveData;
+						return json($resp);
+					}
+				}else{
+					$resp["code"] = 3;
+					$resp["msg"] = "信息录入异常,请联系客服";
+					return json($resp);
+				}
+			}
 			
 			db('member')->where('uid',$uid)->update($saveData);			
 			
+			//加入绑卡记录
+			$results = array(
+				'uid'=>$uid,
+				'type'=>1,
+				'order_id'=>-1,//C端绑卡判断
+				'bank_account_id'=>$bankcard,
+				'idcard'=>$idcard,
+				'bank_account_name'=>$realname,
+				'create_time'=>time(),
+				'status'=>2,
+				);
+			db('bankcard')->insert($results);
 			$userInfo = db('member')->field('mobile')->where("uid",$uid)->find();
 			
 			if($userInfo != null ){
@@ -361,14 +432,17 @@ class User extends Api {
 				if(!empty($mobile)){
 					$orderData['name'] = $realname;
 					$orderData['idcard_num'] = $idcard;					
-					db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);//更新order表					
+					db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);//更新order表
+					$resp["code"] = 1;
+					$resp["msg"] = "更新成功";		
+				}else{
+					$resp["code"] = 0;
+					$resp["msg"] = "更新失败";
 				}
+			}else{
+				$resp["code"] = 0;
+				$resp["msg"] = "未知错误";
 			}
-			
-			$resp["code"] = 1;
-			$resp["msg"] = '更新成功';	
-			$resp["data"] = $saveData;
-
 			return json($resp);
 		}else{
 			$resp["code"] = 0;
@@ -389,7 +463,68 @@ class User extends Api {
 			$resp["data"] = $data;
 		}
 		return json($resp);
-	}	
+	}
 	
+
+
+	public function urlogin($mobile = '',$smsverify = null, $sid = null){
+		$resp["code"] = 0;
+		$resp["msg"] = '未知错误';
+
+		if (!$mobile) {
+			$resp["code"] = 0;
+			$resp["msg"] = '用户名不能为空！';
+			return json($resp);
+		}
+		$user = model('User');
+		$uid  = $user->ulogin($mobile, $smsverify);
+		if ($uid > 0) {
+			
+			$token = generateToken($uid, $sid);
+			session('token',$token);
+			
+			$userInfo = db('member')->field('uid,mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
+			$userInfo['roleid'] = $userInfo['access_group_id'];
+			unset($userInfo['access_group_id']);
+			
+			if(empty($userInfo['headerimgurl'])){
+				$userInfo['headerimgurl'] = "https://www.vpdai.com/public/images/default_avatar.jpg";
+			}
+			$userInfo['token'] = generateToken($uid, $sid);
+			
+			$resp["code"] = 1;
+			$resp["msg"] = '登录成功';	
+			$resp["data"] = $userInfo;
+			
+			return json($resp);
+		} else {
+			switch ($uid) {
+				case -1:{
+						$resp["code"] = 0;
+						$resp["msg"] = "用户不存在或被禁用！";
+						break; //系统级别禁用
+				}
+				case -2:{
+						$resp["code"] = 1002;
+						$resp["msg"] = "密码错误";
+						break;
+					}
+				default:{
+						$resp["code"] = 0;
+						$resp["msg"] = "登录失败";
+						break; // 0-接口参数错误（调试阶段使用）
+					}
+				}
+			return json($resp);
+		}
+	}
+
+
+	//上传头像文件
+	public function upload($file = null){
+		$controller = controller('common/Avatar');
+		$action     = $this->request->action();
+		return $controller->$action();
+	}
 }
 

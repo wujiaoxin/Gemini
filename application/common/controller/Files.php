@@ -29,10 +29,15 @@ class Files {
 		$infoExtend['form_label'] = input('form_label', '', 'trim');
 		if ($info) {
 			$return['status'] = 1;
-			$return['info']   = $this->save($config, $info, $infoExtend);
+			$return['code'] = 1;
+			$res =  $this->save($config, $info, $infoExtend);
+			$return['info']   = $res;
+			$return['data']   = $res;
 		} else {
 			$return['status'] = 0;
+			$return['code'] = 0;
 			$return['info']   = $file->getError();
+			$return['data']   = $file->getError();
 		}
 
 		echo json_encode($return);

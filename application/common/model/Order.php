@@ -72,6 +72,8 @@ class Order extends \app\common\model\Base {
 			if ($status == 3) {
 				$name = '3,4';
 				$filter['status'] = array('IN',$name);
+			}elseif ($status == 1) {
+				$filter['finance'] = '4';
 			}else{
 				$filter['status'] = $status;
 			}
@@ -128,23 +130,47 @@ class Order extends \app\common\model\Base {
 
 			$filter['uid'] = $uid;
 		}
-		
-		if($status == null){
-			$filter['status'] = ['>',-1];
-		}else{
-			if ($status == 3) {
-				$name = '3,4';
-				$filter['status'] = array('IN',$name);
-			}else{
-				$filter['status'] = $status;
-			}
-		}
 		$total = '';
 		$filter['credit_status'] = '3';
 
+		if($status == null){
+
+			$filter['status'] = ['>',-1];
+			$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+
+		}else{
+
+			if ($status == 3) {
+
+				$name = '3,4,11,12,13';
+
+				$filter['status'] = array('IN',$name);
+
+				$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+			
+			}elseif ($status == 1) {
+
+					$filter['finance']= array('IN','3,4');
+
+					$ord = db('Order')->field('sum(examine_limit) as loan_limit')->where($filter)->find();
+
+			}else{
+
+				$filter['status'] = $status;
+				$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+
+			}
+		}
+
 		$total['order_num'] = db('Order')->where($filter)->count();
-		$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
-		$total['loan_limit'] = $ord['loan_limit'];
+
+		if (empty($ord['loan_limit'])) {
+
+			$ord['loan_limit'] = '0';
+		}
+		$total['order_num'] = (string)$total['order_num'];
+		$total['loan_limit'] = (string)$ord['loan_limit'];
+		
 		return $total;
 	}
 
@@ -170,7 +196,7 @@ class Order extends \app\common\model\Base {
 		if ($is_order['status'] == -2) {
 			$data['car_price'] = $data['price'];
 			$result = $this->allowField(true)->save($data,['id'=>$is_order['id']]);
-			return 111;
+			return $is_order['id'];
 
 		}else{
 			$order_sn = $this->build_order_sn();
@@ -193,13 +219,23 @@ class Order extends \app\common\model\Base {
 	}
 	//保存订单
 	public function save_order($uid, $data){
-		$data =array(
+
+		$data1 =array(
 			'loan_limit' => $data['loan_limit'],
 			'endtime' => $data['loan_term'],
-			'status'=>'3'
+			'status'=>'3',
 			);
-		$data['id'] = $uid;
-		$result = $this->save($data,['id'=>$data['id']]);
+		if (isset($data['type'])) {
+			$data1['type'] = $data['type'];
+		}
+		$status = db('order')->alias('o')->field('d.guarantee_id')->join('__DEALER__ d','o.dealer_id = d.id')->where('o.id',$uid)->find();
+		if (!empty($status['guarantee_id'])) {
+			$data1['status']  = '11';
+		}else{
+			$data1['status'] = '3';
+		}
+		$data1['id'] = $uid;
+		$result = $this->save($data1,['id'=>$data1['id']]);
 		return $result;
 	}
 
@@ -236,6 +272,92 @@ class Order extends \app\common\model\Base {
 				'nums' =>$num_repay
 			);
 		return $result;
+	}
+
+	//客户详情查询
+
+	public function search_detail($id){
+
+		$info = db('order')->where('id',$id)->find();
+
+		$result = db('member')->field('realname,mobile as sales_mobile')->where('uid',$info['uid'])->find();
+
+		$result_one = db('dealer')->alias('d')->join('__MEMBER__ m','m.mobile = d.mobile')->field('name,property')->where('m.uid',$info['mid'])->find();
+		
+		//TODO :空判断
+		if ($result) {
+
+			$info['sales_mobile'] = $result['sales_mobile'];//业务员手机号
+
+			$info['sales_realname'] = $result['realname'];//业务员真实姓名
+
+		}else{
+
+			$info['sales_mobile'] = '';//业务员手机号
+
+			$info['sales_realname'] = '';//业务员真实姓名
+
+		}
+		
+		$info['dealer_name'] = $result_one['name'];//车商名称
+		$info['property'] = $result_one['property'];//车商属性
+		return $info;
+	}
+
+	//获取订单编号
+	public function get_sn($id){
+
+		return $this->field('sn')->find($id);
+
+	}
+
+	//获取订单统计
+	public function get_order_total($uid,$role,$type){
+		$res = array();
+		$res['pending'] = $this->get_all_order_total($uid,$role,'','0');//待提交
+		$res['examine'] = $this->get_all_order_total($uid,$role,'','3');//审核中
+		$res['supplement'] = $this->get_all_order_total($uid,$role,'','5');//补充资料
+		$res['loan'] = $this->get_all_order_total($uid,$role,'','1');//已放款
+		$res['refuse'] = $this->get_all_order_total($uid,$role,'','2');//已拒绝
+		$res['total'] = $this->get_all_order_total($uid,$role,'','');//全部订单
+		$res['every'] = $this->get_orders($uid,$role);
+		return $res;
+	}
+
+	private function get_orders($uid,$role){
+		if ($role == '1') {
+
+			$filter['uid'] = $uid;
+
+		}elseif($role == '7'){
+
+			$filter['mid'] = $uid;
+
+			$filter['uid'] = $uid;
+
+		}else{
+
+			$filter['uid'] = $uid;
+		}
+		$total = '';
+		$filter['credit_status'] = '3';
+		$begin_time = date("Y-m-d H:i:s",mktime(0, 0 , 0,date("m"),date("d")-date("w")+1,date("Y")));
+		$end_time = date("Y-m-d H:i:s",mktime(23,59,59,date("m"),date("d")-date("w")+7,date("Y")));
+		$begin =strtotime($begin_time);
+        $end =strtotime($end_time);
+        $filter['create_time'] = array(array('gt',$begin),array('lt',$end));
+        $res = array();
+		$res['loan_num']= $this->where($filter)->where('finance','4')->count();
+		$res['loan_num'] = (string)$res['loan_num'];
+		$results= $this->field('sum(examine_limit) as loan_limit')->where($filter)->where('finance','4')->find();
+		if (empty($results['loan_limit'])) {
+			$results['loan_limit'] = '0';
+		}
+		$res['loan_money'] = (string)$results['loan_limit'];
+
+		$res['nums'] = $this->where($filter)->count();
+		$res['nums'] = (string)$res['nums'];
+		return $res;
 	}
 
 }

@@ -29,23 +29,29 @@ class Order extends Api {
 		$resp['msg'] = 'OrderAPI';
 		return json($data);
 	}
-	
 	//添加
-	public function add($mobile = null, $price = null) {
+	public function add($mobile = null,$price = null) {
 
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
 		// echo $role;die;
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-		if ($_POST) {
-			$data = input('post.');
-			$orderModel = model('Order');
-			$list = $orderModel->add_order($uid,$role,$data);
-			if (!$list) {
-				$resp['code'] = 0;
-				$resp['msg'] = '提交失败！';
-			}
+		$data =array(
+			'mobile'=>$mobile,
+			'price'=>$price
+		);
+		// $data = input();
+		if (empty($data)) {
+			$resp['code'] = 0;
+			$resp['msg'] = '无法创建订单';
+		}
+		$orderModel = model('Order');
+		$list = $orderModel->add_order($uid,$role,$data);
+		if (!$list) {
+			$resp['code'] = 0;
+			$resp['msg'] = '提交失败！';
+		}else{
 			$data['id'] = $list;
 			$resp['code'] = 1;
 			$resp['msg'] = '提交成功';
@@ -77,7 +83,11 @@ class Order extends Api {
 			}else{
 				if ($status == 3) {
 
-					$map = $map.' and status in (3,4)';
+					$map = $map.' and status in (3,4,11,12,13)';
+
+				}elseif ($status == 1) {
+
+					$map = $map.' and finance  in (3,4) ';
 
 				}else{
 
@@ -92,6 +102,7 @@ class Order extends Api {
 			}*/
 			
 			$sort = "id desc";
+			$map .= ' and credit_status = 3';
 			$list  = db('Order')->where($map)->order($sort)->paginate(15);
 			
 			$resp['code'] = 1;
@@ -114,9 +125,10 @@ class Order extends Api {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 		$orderModel = model('Order');
-		$data["url"] = "https://t.vpdai.com/api/open/appdl?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
+		// $data["url"] = "https://t.vpdai.com/api/open/appdl?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
+		$data["url"] = url('/api/open/appdl')."?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
 		$data["url"] = urlencode($data["url"]);
-		$data["url"] = "https://pan.baidu.com/share/qrcode?w=512&h=512&url=".$data['url'];
+		$data["url"] = "https://pan.baidu.com/share/qrcode?w=128&h=128&url=".$data['url'];
 		$resp['code'] = 1;
 		$resp['msg'] = '获取成功';
 		$resp['data'] = $data;
@@ -124,7 +136,7 @@ class Order extends Api {
 	}
 	
 	
-	public function save($id = null, $type = null, $mobile = null, $idcard = null, $loan_limit = null, $loan_term = null) {
+	public function save($id = null,$type=null, $loan_limit = null, $loan_term = null) {
 		// $uid = session('user_auth.uid');
 		$uid = $id;
 		$resp['code'] = 0;
@@ -132,7 +144,7 @@ class Order extends Api {
 		$orderModel = model('Order');
 		if ($_POST) {
 			$data = input('post.');
-			unset($data['type']);
+			// unset($data['type']);
 			$list = $orderModel->save_order($uid,$data);
 			if ($list) {
 				$data["id"] = $data['id'];
@@ -165,41 +177,59 @@ class Order extends Api {
 		return json($resp);
 	}
 
+
+	//获取订单统计
+	public function getTotal($type = null) {
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		$resp['code'] = 0;
+		$resp['msg'] = '未知错误';
+		$orderModel = model('Order');
+		if ($uid>0) {
+			
+			$data = $orderModel->get_order_total($uid,$role,$type);
+			$resp['code'] = 1;
+			$resp['msg'] = '获取成功!';
+			$resp['data'] = $data;
+		}else{
+			$resp['code'] = 0;
+			$resp['msg'] = '请重新登录!';
+		}
+		
+		return json($resp);
+	}
+
 	//获取订单详情
 	public function detail($id){
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-		$list = db('order')->where('id',$id)->find();
-		$link = model('Order');
-		if($role==1){
-			$info = db('Order')->where('id',$id)->find();
-		}else{
-			$authfilter['order_id'] = $id;
-			$authfilter['auth_uid'] = $uid;
-			$authfilter['auth_role'] = $role;			
-			$auth = db('OrderAuth')->where($authfilter)->find();
-			if($auth != null){
-				$info = db('Order')->where("id",$id)->find();
-			}
+
+		$orderModel = model('Order');
+
+		$info = $orderModel->search_detail($id);
+		
+		if($role==0){
+
+			$resp['code'] = 1;
+
+			$resp['msg'] = '获取成功!';
+
+			$resp['data'] = $info ;
+	 
+			return json($resp);
+
 		}
 		//$filter['uid'] = $uid;
 		$filter['order_id'] = $info['id'];
 		$filter['status'] = 1;//有效文件
-		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->limit(100)->select();
+		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->order('create_time DESC')->limit(200)->select();
 
-		$result = db('member')->field('realname,mobile as sales_mobile')->where('uid',$info['uid'])->find();
-		$result_one = db('dealer')->alias('d')->join('__MEMBER__ m','m.mobile = d.mobile')->field('name')->where('m.uid',$info['mid'])->find();
-		//TODO :空判断
-		$info['sales_mobile'] = $result['sales_mobile'];//业务员手机号
-		$info['sales_realname'] = $result['realname'];//业务员真实姓名
-		$info['dealer_name'] = $result_one['name'];//车商名称
 		$data = array(
-				'info'    => $info,
-				'files'   => $files,
+			'info'    => $info,
+			'files'   => $files,
 		);
-
 		if ($data) {
 			$resp['code'] = 1;
 			$resp['msg'] = '获取成功!';
@@ -219,12 +249,54 @@ class Order extends Api {
 		return $controller->$action();
 	}
 	
-	//更新银行卡信息 TODO
-	public function updateBankInfo($type = null, $bank_name = null, $bank_branch = null, $bank_account_name = null, $bank_account_id = null){
+	//更新还款银行卡信息
+	public function updateBankInfo($type = null, $bank_name = null, $bank_branch = null, $bank_account_name = null, $bank_account_id = ''){
 		$resp = '{
 			"code": 1,
 			"msg": "保存成功"
 		}';
+		if (empty($bank_account_id)) {
+			$resp = '{
+				"code": 0,
+				"msg": "银行卡不能为空"
+			}';
+			$resp = json_decode($resp);
+			return $resp;
+		}
+		$uid = session('user_auth.uid');
+		$creditResult = db('credit')->field('uid,mobile,order_id,credit_status,credit_result')->where("uid",$uid)->order('id desc')->find();
+		
+		if($creditResult['credit_result'] == 1){//授信审核通过
+			//$orderData = $creditResult['order_id'];
+			$orderData['status'] = 0;
+			$results =db('order')->where("id", $creditResult['order_id'])->where("status",-2)->update($orderData);
+			if ($results) {
+				$res = array(
+				'uid'=>$uid,
+				'type'=>5,
+				'order_id'=>$creditResult['order_id'],
+				'bank_account_id'=>$bank_account_id,
+				'create_time'=>time()
+				);
+				db('bankcard')->insert($res);
+
+			}else{
+				$resp = '{
+					"code": 0,
+					"msg": "找不到订单"
+				}';
+			}
+			
+		}else{
+			$resp = '{
+				"code": 0,
+				"msg": "保存失败"
+			}';
+		}
+		
+		
+		
+		
 		$resp = json_decode($resp);
 		return $resp;
 	}

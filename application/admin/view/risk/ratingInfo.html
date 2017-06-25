@@ -3,13 +3,22 @@
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css">
 <link rel="stylesheet" type="text/css" href="/public/business/css/selectArea.css">
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
+<style type="text/css">
+	.form-group div{
+		word-wrap: break-word;
+	}
+	.form-group textarea{
+		resize: both;
+    	min-width: 600px;
+	}
+</style>
 <script type="text/javascript">
 	var info = {};
 	try {
 		info = JSON.parse('{$infoStr}');
 	} catch (e) {
 		alert("数据异常");
-	}	
+	}
 </script>
 {/block}
 {block name="body"}
@@ -32,81 +41,111 @@
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="tab_1_1">
-					<div class="form-horizontal">
+					<div class="form-horizontal" id="basicInfo">
 					  	<div class="form-group">
 						    <label class="col-sm-2 control-label">姓名</label>
 						    <div class="col-sm-2 pt5">
-						     	<span id="realname" class="customer-info">-</span>
+						     	<span id="realname" name="realname" class="customer-info">-</span>
 						    </div>
 						    <label class="col-sm-2 control-label">年龄</label>
 						    <div class="col-sm-2 pt5">
-						      	<span id="" class="customer-info">-</span>
+						      	<span id="year" name="age" class="customer-info">-</span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">身份证号</label>
 						    <div class="col-sm-2 pt5">
-						     	<span id="idcard" class="customer-info">-</span>
+						     	<span id="idcard" name="idcard" class="customer-info">-</span>
 						    </div>
 						    <label class="col-sm-2 control-label">手机号</label>
 						    <div class="col-sm-2 pt5">
-						      	<span id="mobile" class="customer-info">-</span>
+						      	<span id="mobile" name="mobile" class="customer-info">-</span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">籍贯</label>
 						    <div class="col-sm-2 pt5">
-						     	<span id="" class="customer-info">-</span>
+						     	<span id="" name="native_place" class="customer-info">-</span>
 						    </div>
 						    <label class="col-sm-2 control-label">户籍地址</label>
 						    <div class="col-sm-2 pt5">
-						      	<span id="" class="customer-info">-</span>
+						      	<span id="" name="residence_addr" class="customer-info">-</span>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">本次登录手机类型</label>
 						    <div class="col-sm-2 pt5">
-						     	<span id="" class="customer-info">-</span>
+						     	<span id="platform" name="now_platform" class="customer-info">-</span>
 						    </div>
 						    <label class="col-sm-2 control-label">本次登录所在地</label>
 						    <div class="col-sm-2 pt5">
-						      	<span id="" class="customer-info">-</span>
+						      	<span id="addr" name="now_addr" class="customer-info">-</span>
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">是否获取精准所在地</label>
+						    <label class="col-sm-2 control-label">登录手机型号</label>
 						    <div class="col-sm-2 pt5">
-						     	<span id="" class="customer-info">-</span>
+						     	<span id="device" name="device" class="customer-info">-</span>
 						    </div>
-						    <label class="col-sm-2 control-label">本次GPS定位所在地址</label>
+						    <label class="col-sm-2 control-label">本次IP地址</label>
 						    <div class="col-sm-2 pt5">
-						      	<span id="" class="customer-info">-</span>
-						    </div>
-						</div>
-						<div class="form-group">
-						    <label class="col-sm-2 control-label">历史登录城市是否匹配</label>
-						    <div class="col-sm-2 pt5">
-						     	<span id="" class="customer-info">-</span>
-						    </div>
-						    <label class="col-sm-2 control-label">登录设备是否发生变更</label>
-						    <div class="col-sm-2 pt5">
-						      	<span id="" class="customer-info">-</span>
+						      	<span id="wanip" name="wanip" class="customer-info">-</span>
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">安装列表是否正常</label>
+						    <label class="col-sm-2 control-label">登录手机序列号</label>
 						    <div class="col-sm-2 pt5">
-						     	<span id="" class="customer-info">-</span>
+						     	<span id="" name="phone_serial" class="customer-info">-</span>
 						    </div>
-						    <label class="col-sm-2 control-label">登录设备是否存在欺诈</label>
+						    <label class="col-sm-2 control-label">业务员登录手机所在地</label>
 						    <div class="col-sm-2 pt5">
-						      	<span id="" class="customer-info">-</span>
+						      	<span id="" name="salesman_addr" class="customer-info">-</span>
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">安装列表</label>
+						    <label class="col-sm-2 control-label">登录手机名称</label>
 						    <div class="col-sm-2 pt5">
-						     	<span id="" class="customer-info">-</span>
+						     	<span id="" name="phone_name" class="customer-info">-</span>
+						    </div>
+						    <label class="col-sm-2 control-label">业务员提交的车辆金额</label>
+						    <div class="col-sm-2 pt5">
+						      	<span id="" name="salesman_carprice" class="customer-info">-</span>
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label class="col-sm-2 control-label">业务员登录手机序列号</label>
+						    <div class="col-sm-2 pt5">
+						     	<span id="" name="salesman_phoneserial" class="customer-info">-</span>
+						    </div>
+						    <label class="col-sm-2 control-label">银行卡号</label>
+						    <div class="col-sm-2 pt5">
+						      	<span id="bankcard" name="bankcard" class="customer-info">-</span>
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label class="col-sm-2 control-label">业务员登录手机mac地址</label>
+						    <div class="col-sm-2 pt5">
+						     	<span id="" name="salesman_phonemac" class="customer-info">-</span>
+						    </div>
+						    <label class="col-sm-2 control-label">业务员生成二维码时间</label>
+						    <div class="col-sm-2 pt5">
+						      	<span id="salesman_qrcode" name="salesman_qrcode" class="customer-info">-</span>
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label class="col-sm-2 control-label">银行卡4要素匹配结果</label>
+						    <div class="col-sm-2 pt5">
+						     	<span id="" name="bankcard_match" class="customer-info">-</span>
+						    </div>
+						    <label class="col-sm-2 control-label">申请办理的金融产品</label>
+						    <div class="col-sm-2 pt5">
+						      	<span id="" name="financial_product" class="customer-info">-</span>
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label class="col-sm-2 control-label">姓名和身份证号匹配结果</label>
+						    <div class="col-sm-2 pt5">
+						     	<span id="" name="idcard_match" class="customer-info">-</span>
 						    </div>
 						</div>
 					</div>
@@ -354,135 +393,159 @@
 				<div class="tab-pane" id="tab_1_5">
 					<form method="post" class="form-horizontal" id="manualVerification">
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">车型匹配度</label>
+						    <label class="col-sm-2 control-label">月固定收入</label>
 						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						     	<input type="text" name="fixed_income" class="customer-info">
 						    </div>
-						    <label class="col-sm-2 control-label">收入支出比</label>
+						    <label class="col-sm-2 control-label">其他收入</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
-						    </div>
-						</div>
-						<div class="form-group">
-						    <label class="col-sm-2 control-label">车型匹配度</label>
-						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
-						    </div>
-						    <label class="col-sm-2 control-label">收入支出比</label>
-						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
+						      	<input type="text" name="other_income" class="customer-info">
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">已有借款金额</label>
+						    <label class="col-sm-2 control-label">月平均支出</label>
 						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						     	<input type="text" name="avg_expenditure" class="customer-info">
 						    </div>
-						    <label class="col-sm-2 control-label">人工核实短期借款金额</label>
+						    <label class="col-sm-2 control-label">其他支出</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
+						      	<input type="text" name="other_expenditure" class="customer-info">
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">人工核实短期借款金额</label>
+						    <label class="col-sm-2 control-label">信用卡借款金额</label>
 						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						     	<input type="text" name="credit_amount" class="customer-info">
+						    </div>
+						    <label class="col-sm-2 control-label">小贷借款金额</label>
+						    <div class="col-sm-2 pt5">
+						      	<input type="text" name="small_amount" class="customer-info">
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label class="col-sm-2 control-label">银行借款金额</label>
+						    <div class="col-sm-2 pt5">
+						     	<input type="text" name="bank_amount" class="customer-info">
 						    </div>
 						    <label class="col-sm-2 control-label">银行卡余额</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
+						      	<input type="text" name="bank_balance" class="customer-info">
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">人工核实的现金资产</label>
+						    <label class="col-sm-2 control-label">长期借款支出</label>
 						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						     	<input type="text" name="loan_expenditure" class="customer-info">
 						    </div>
-						    <label class="col-sm-2 control-label">人工核实固定资产价值</label>
+						    <label class="col-sm-2 control-label">小贷借款家数</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
+						      	<input type="text" name="loan_num" class="customer-info">
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">信用记录</label>
+						    <label class="col-sm-2 control-label">还款记录说明</label>
 						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						     	<select class="form-control customer-info" name="repay_desc">
+									<option selected="selected" value="0" style='display: none'></option>
+									<option value="1">记录良好,无逾期</option>
+									<option value="2">记录可接受,近期仅信用卡有逾期</option>
+									<option value="3">记录可接受,仅历史有逾期</option>
+									<option value="4">需补充资料说明</option>
+									<option value="5">记录差,但未到拒绝标准</option>
+									<option value="6">信用差,可直接拒绝</option>
+								</select>
 						    </div>
 						    <label class="col-sm-2 control-label">客户职业</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
+						      	<input type="text" name="profession" class="customer-info">
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">工作单位</label>
 						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						     	<input type="text" name="work_unit" class="customer-info">
 						    </div>
 						    <label class="col-sm-2 control-label">该单位/行业工作年限</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
+						      	<input type="text" name="work_time" class="customer-info">
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">是否可核实</label>
+						    <label class="col-sm-2 control-label">对外投资情况</label>
 						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						     	<input type="text" name="investment" class="customer-info">
 						    </div>
 						    <label class="col-sm-2 control-label">是否结婚</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
+						      	<select class="form-control customer-info" name="marry">
+									<option selected="selected" value="0" style='display: none'></option>
+									<option value="1">未婚</option>
+									<option value="2">已婚</option>
+									<option value="3">无法核实</option>
+								</select>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">配偶姓名</label>
 						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						     	<input type="text" name="spouse" class="customer-info">
 						    </div>
 						    <label class="col-sm-2 control-label">配偶联系方式</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
+						      	<input type="text" name="spouse_tel" class="customer-info">
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">是否有小孩子</label>
+						    <label class="col-sm-2 control-label">配偶职业</label>
 						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						     	<input type="text" name="spouse_profession" class="customer-info">
 						    </div>
 						    <label class="col-sm-2 control-label">父母职业</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
+						      	<input type="text" name="parent_profession" class="customer-info">
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">家庭地址</label>
 						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						     	<input type="text" name="address" class="customer-info">
 						    </div>
 						    <label class="col-sm-2 control-label">居住房产</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
+						      	<select class="form-control customer-info" name="house_property">
+									<option selected="selected" value="0" style='display: none'></option>
+									<option value="1">自有</option>
+									<option value="2">租赁</option>
+									<option value="3">无固定住所</option>
+									<option value="4">其他</option>
+									<option value="5">无法核实</option>
+								</select>
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">拥有房屋类型</label>
 						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						     	<select class="form-control customer-info" name="house_type">
+									<option selected="selected" value="0" style='display: none'></option>
+									<option value="1">自建房</option>
+									<option value="2">商品房</option>
+									<option value="3">无房产</option>
+									<option value="4">无法核实</option>
+								</select>
 						    </div>
 						    <label class="col-sm-2 control-label">房产面积</label>
 						    <div class="col-sm-2 pt5">
-						      	<input type="text" name="" id="" value="">
+						      	<input type="text" name="house_area" class="customer-info">
 						    </div>
 						</div>
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">备注</label>
-						    <div class="col-sm-2 pt5">
-						     	<input type="text" name="" id="" value="">
+						    <div class="col-sm-10 pt5">
+						     	<textarea rows="8" cols="20" name="descr" class="customer-info"></textarea>
 						    </div>
 						</div>
-						<div class="form-group">
-							<div class="col-lg-offset-2 col-lg-10">
-								<button class="btn btn-success submit-btn ajax-post" type="submit" target-form="manualVerification">提 交</button>
-							</div>
+						    <div class="form-group text-center">
+							<a type="button" class="btn btn-primary" id="manualVerificationBtn">保存</a>
 						</div>
 					</form>
 				</div>
@@ -501,16 +564,18 @@
 							</tr>
 						</thead>
 						<tbody>
+						{volist name="message" id="message" key="k"}
 							<tr>
-								<td>1</td>
+								<td>{$k}</td>
+								<td>{$message.date}</td>
+								<td>{$message.address}</td>
+								<td>{$message.address}</td>
 								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
+								<td>{$message.body}</td>
 								<td>-</td>
 								<td>-</td>
 							</tr>
+						{/volist}
 						</tbody>
 					</table>
 				</div>
@@ -530,9 +595,58 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">合作金融方案</label>
 						<div class="col-sm-10 pt5">
-							<span class="col-sm-2">银行机构 平安银行</span>
-							<span class="col-sm-2" id="loan_limit">-</span>
-							<!--<span class="col-sm-2">月供 1000*12</span>-->
+							<!-- <span class="col-sm-2">银行机构 平安银行</span>
+							<span class="col-sm-3" id="loan_limit">-</span>
+							<span class="col-sm-2">月供 1000*12</span> -->
+							<table class="table table-bordered text-center" id="table-financialProgram">
+								<tr>
+									<td>银行</td>
+									<td>期限</td>
+									<td>月利率</td>
+									<td>首付比例</td>
+								</tr>
+								<tr>
+									<td>
+										<select class="form-control" id="bank_name">
+											<option value="1" selected="selected">平安银行</option>
+										</select>
+									</td>
+									<td>
+										<select class="form-control" id="bank_term">
+											<option value="12">12个月</option>
+											<option value="24">24个月</option>
+											<option value="36" selected="selected" >36个月</option>
+										</select>
+									</td>
+									<td ><input type="number" value="2" id="bank_rate">‰</td>
+									<td><input type="number" value="30" id="bank_pay">%</td>
+								</tr>
+								<tr>
+									<td>类型</td>
+									<td>期限</td>
+									<td>月利率</td>
+									<td>首付比例</td>
+								</tr>
+								<tr>
+									<td>
+										<select class="form-control" id="vp_type">
+											<option selected="selected" disabled="disabled" style='display: none'></option>
+											<option value="1">VP贷</option>
+											<option value="2">90贷(20%)</option>
+											<option value="3">90贷(90%)</option>
+										</select>
+									</td>
+									<td>
+										<select class="form-control" id="vp_term">
+											<option value="12">12个月</option>
+											<option value="24">24个月</option>
+											<option value="36" >36个月</option>
+										</select>
+									</td>
+									<td><input type="number" value="2" id="vp_rate">‰</td>
+									<td><input type="number" value="10" id="vp_pay">%</td>
+								</tr>
+							</table>
 						</div>
 					</div>
 					<div class="form-group">
@@ -552,8 +666,6 @@
 					    <label class="col-sm-2 control-label">授信评分</label>
 					    <div class="col-sm-2 pt5">
 					      	<input type="number" id="credit_score">
-
-							
 					    </div>
 					</div>
 					<!--<div class="form-group">
@@ -576,7 +688,7 @@
 					    </div>
 					</div>
 					<div class="form-group">
-					    <label class="col-sm-2 control-label">日利率(‰)</label>
+					    <label class="col-sm-2 control-label">月利率(‰)</label>
 					    <div class="col-sm-2 pt5">
 					     	<input type="number" id="dayRate">‰
 					    </div>
@@ -598,6 +710,7 @@
 						<label class="col-sm-2 control-label">拒绝原因</label>
 		            	<div class="col-sm-2 pt5">
 			            	<select id="refuseReason">
+			            		<option value="0">无</option>
 			            		<option value="2">欺诈</option>
 			            		<option value="3">黑名单</option>
 			            		<option value="1">更换资料</option>
@@ -615,8 +728,8 @@
 		            </div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">审核备注</label>
-					    <div class="col-sm-2 pt5">
-					     	<textarea id="descr"></textarea>
+					    <div class="col-sm-10 pt5">
+					     	<textarea rows="8" cols="20" id="descr"></textarea>
 					    </div>
 					</div>
 					<div class="form-group text-center">
@@ -634,18 +747,54 @@
 <script type="text/javascript" src="__JS__/manager.js"></script>
 
 <script>
+	// 基本信息tab初始化
+	if(info.basicInfo){
+		$(".customer-info","#basicInfo").each(function(){
+			var name = $(this).attr('name');
+		    if(typeof(info.basicInfo[name]) != 'object'){
+		        $(this).text(info.basicInfo[name]);
+		        if(name == "salesman_qrcode"){
+		        	$(this).text(formatDate(info.basicInfo[name]));
+		        }
+		    }
+		});
+	}
 
-	if(info){
-		$("#realname").text(info.realname);
-		$("#idcard").text(info.idcard);
-		$("#mobile").text(info.mobile);
-		$("#loan_limit").text('贷款金额：' + (info.car_price * 0.9) + '元');
-		$("#credit_score").val(info.credit_score || "");
-		$("#descr").val(info.descr || "");
- 
-		
+	// 人工核实tab初始化
+	if(info.manualVerification){
+		$(".customer-info","#manualVerification").each(function(){
+			var name = $(this).attr('name');
+		    if(typeof(info.manualVerification[name]) != 'object'){
+		        $(this).val(info.manualVerification[name]);
+		    }
+		});
+	}
+
+	if(info.creditList){
+		$("#realname").text(info.creditList.realname);
+		$("#idcard").text(info.creditList.idcard);
+		$("#mobile").text(info.creditList.mobile);
+		$("#loan_limit").text('贷款金额：' + (info.creditList.car_price * 0.9).toFixed(2) + '元');
+		$("#credit_score").val(info.creditList.credit_score || "");
+		$("#descr").val(info.creditList.descr || "");
+		$("#year").text(info.creditList.year);
+		$("#platform").text(info.creditList.platform);
+		$("#addr").text(info.creditList.addr);
+		$("#wanip").text(info.creditList.wanip);
+		$('#bankcard').text(info.creditList.bankcard);
 	}else{
 		ui_alert("获取数据失败");
+	}
+
+	if(info.programme){
+		$('#bank_name').val(info.programme.bank_name);
+		$('#bank_term').val(info.programme.bank_term);
+		$('#bank_rate').val(info.programme.bank_rate);
+		$('#bank_pay').val(info.programme.bank_pay);
+		$('#vp_type').val(info.programme.vp_type);
+		$('#vp_term').val(info.programme.vp_term);
+		$('#vp_rate').val(info.programme.vp_rate);
+		$('#vp_pay').val(info.programme.vp_pay);
 	}
 	//loan_limit
 	//info.loan_limit
@@ -664,17 +813,64 @@
 			$('#treatmentBlock').slideUp('fast');
 		}
 	});
- 
+
+	// 金融案参数关联
+	// $('#vp_type').change(function(){
+	// 	if($(this).val() == '1'){
+	// 		$('#vp_term').attr('disabled','disabled');
+	// 	}
+	// })
+
+
+	$('#manualVerificationBtn').click(function(){
+		var obj = {};
+		$(".customer-info","#manualVerification").each(function(){
+			var name = $(this).attr('name');
+			var value = $(this).val();
+			if(value == null){
+				value == '';
+			}else{
+				value = value.replace(/\n/g,"");
+			}
+		    obj[name] = value;
+		});
+		var manual_verification = JSON.stringify(obj);
+		ajax_jquery({
+			url: apiUrl +'/admin/risk/manualVerification',
+			data:{
+					"id": info.creditList.id,
+					'manual_verification': manual_verification
+				},
+			success:function(resp){
+				if (resp.code == "1" ) {
+						ui_alert("保存成功","success");
+				} else {
+					if (typeof(resp.msg) == 'string' && resp.msg != '') {
+						ui_alert(resp.msg);
+					}
+					return false;
+				}
+			}
+		});
+	});
 	
 	$('#examineBtn').click(function(){
 		var credit_result = 0;
-		
 		var credit_score = $("#credit_score").val();
-		var credit_level = $("#credit_level").val();		
+		var credit_level = $("#credit_level").val();
 		var examineStatus = $("#examineStatus").val();
-		var refuseReason = $("#refuseReason").val();		
+		var refuseReason = $("#refuseReason").val();
 		var treatment = $("#treatment").val();
 		var descr = $("#descr").val().replace(/\n/g,"");
+
+		var bank_name = $('#bank_name').val();
+		var bank_term = $('#bank_term').val();
+		var bank_rate = $('#bank_rate').val();
+		var bank_pay = $('#bank_pay').val();
+		var vp_type = $('#vp_type').val();
+		var vp_term = $('#vp_term').val();
+		var vp_rate = $('#vp_rate').val();
+		var vp_pay = $('#vp_pay').val();
 
 
 		if(credit_score > 100 || credit_score < 0){
@@ -682,27 +878,69 @@
 			$("#credit_score").focus();
 			return false;
 		}
-		
 		if(examineStatus == 0){
 			credit_result = 1;
-		}else{		
+		}else{
 			if(refuseReason == 1){
 				credit_result = treatment;
 			}else{
 				credit_result = -1;
 			}
 		}
+		if(bank_name == '' || bank_name == null){
+			ui_alert("请选择银行");
+			$("#bank_name").focus();
+			return false;
+		}else if(bank_term == '' || bank_term == null){
+			ui_alert("请选择期限");
+			$("#bank_term").focus();
+			return false;
+		}else if(bank_rate == '' || bank_rate < 0 || bank_rate > 1000 ){
+			ui_alert("月利率输入有误");
+			$("#bank_rate").focus();
+			return false;
+		}else if(bank_pay == '' || bank_pay < 0 || bank_pay > 100){
+			ui_alert("首付比例输入有误");
+			$("#bank_pay").focus();
+			return false;
+		}else if(vp_type == '' || vp_type == null){
+			ui_alert("请选择借款类型");
+			$("#vp_type").focus();
+			return false;
+		}else if(vp_term == '' || vp_term == null){
+			ui_alert("请选择期限");
+			$("#vp_term").focus();
+			return false;
+		}else if(vp_rate == '' || vp_rate < 0 || vp_rate > 1000){
+			ui_alert("月利率输入有误");
+			$("#vp_rate").focus();
+			return false;
+		}else if(vp_pay == '' || vp_pay < 0 || vp_pay > 100){
+			ui_alert("首付比例输入有误");
+			$("#vp_pay").focus();
+			return false;
+		}
 
-		
+
 		ajax_jquery({
 			url: apiUrl +'/admin/risk/ratingInfo',
 			data:{
-					"id": info.id,
-					"mobile":info.mobile,
+					"id": info.creditList.id,
+					"mobile": info.creditList.mobile,
 					"credit_result": credit_result,
 					"credit_level" : credit_level,
 					"credit_score" : credit_score,
-					"descr" : descr
+					"refuse_reason" : refuseReason,
+					"treatment" : treatment,
+					"descr" : descr,
+					'bank_name':bank_name,
+					'bank_term':bank_term,
+					'bank_rate':bank_rate,
+					'bank_pay':bank_pay,
+					'vp_type':vp_type,
+					'vp_term':vp_term,
+					'vp_rate':vp_rate,
+					'vp_pay':vp_pay
 				},
 			success:function(resp){
 				if (resp.code == "1" ) {
@@ -716,7 +954,6 @@
 				}
 			}
 		});
-		
 	})
 </script>
 {/block}

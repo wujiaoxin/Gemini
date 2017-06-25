@@ -1184,3 +1184,332 @@ function PyFirst($zh) {
 	}
 	return $ret;
 }
+
+
+
+
+function sendSmsCode($mobile, $code){
+    $host = "http://sms.market.alicloudapi.com";
+    $path = "/singleSendSms";
+    $method = "GET";
+    $appcode = "37df0a7ab8e242279e1cb8289f8a5988";
+    $headers = array();
+    array_push($headers, "Authorization:APPCODE " . $appcode);
+    $querys = "ParamString={\"code\":\"".$code."\"}&RecNum=".$mobile."&SignName=互纳科技&TemplateCode=SMS_63855615";
+    $bodys = "";
+    $url = $host . $path . "?" . $querys;
+
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_FAILONERROR, false);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_HEADER, true);
+    if (1 == strpos("$".$host, "https://"))
+    {
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    }
+	curl_exec($curl);
+    //var_dump(curl_exec($curl));
+	//TODO: 判断RC;	 METHOD POST ; QUERYS ENCODE;
+	return true;
+
+}
+
+
+function repay_type($type){
+
+	if ($type == '1') {
+
+		$result = '二手车按揭贷款';
+		
+	}elseif ($type == '2') {
+
+		$result = '二手车按揭垫资';
+
+		
+	}elseif ($type == '3') {
+
+		$result = '新车按揭贷款';
+
+		
+	}elseif ($type == '4') {
+
+		$result = '新车按揭垫资';
+
+	}
+	return $result;
+}
+function next_replay_month($time,$m=1){
+	$str_t = to_timespan(to_date($time)." ".$m." month ");
+	return $str_t;
+}
+function to_date($utc_time, $format = 'Y-m-d H:i:s') {
+	if (empty ( $utc_time )) {
+		return '';
+	}
+	$timezone = time();
+	$time = $utc_time + 8 * 3600; 
+	return date ($format, $time );
+}
+function to_timespan($str, $format = 'Y-m-d H:i:s'){
+	$timezone = 8; 
+	$time = intval(strtotime($str));
+	if($time!=0)
+		$time = $time - $timezone * 3600;
+    return $time;
+}
+/**
+ * 等额本息还款计算方式
+ * $money 贷款金额
+ * $rate 月利率
+ * $remoth 还几个月
+ * 返回  每月还款额
+*/
+function pl_it_formula($money,$rate,$remoth){
+	if((pow(1+$rate,$remoth)-1) > 0)
+		return round($money * ($rate*pow(1+$rate,$remoth)/(pow(1+$rate,$remoth)-1)),2);
+
+	else
+		return 0;
+}
+/**
+ * 获取该期本金
+ * int $Idx  第几期
+ * floatval $amount_money 总的借款多少
+ * floatval $month_repay_money 月还本息
+ * floatval $rate 费率
+ */
+function get_self_money($idx,$amount_money,$month_repay_money,$rate){
+	return $month_repay_money - get_benjin($idx,$idx,$amount_money,$month_repay_money,$rate)*$rate/$idx/100;
+
+}
+/**
+ * 获取该期剩余本金
+ * int $Idx  第几期
+ * int $all_idx 总的是几期
+ * floatval $amount_money 总的借款多少
+ * floatval $month_repay_money 月还本息
+ * floatval $rate 费率
+ */
+function get_benjin($idx,$all_idx,$amount_money,$month_repay_money,$rate){
+	//计算剩多少本金
+	$benjin = $amount_money;
+	for($i=1;$i<$idx+1;$i++){
+		$benjin = $benjin - ($month_repay_money - $benjin*$rate/$idx/100);
+	}
+	return $benjin;
+}
+
+
+/*身份证信息*/
+function getIDCardInfo($IDCard) {
+	if (strlen($IDCard) == 18) {
+		$tyear = intval(substr($IDCard, 6, 4));
+		$tmonth = intval(substr($IDCard, 10, 2));
+		$tday = intval(substr($IDCard, 12, 2));
+
+		$res = date('Y')-$tyear;
+		
+	}elseif (strlen($IDCard) == 15) {
+		$tyear = intval("19" . substr($IDCard, 6, 2));
+		$tmonth = intval(substr($IDCard, 8, 2));
+		$tday = intval(substr($IDCard, 10, 2));
+		$res = date('Y')-$tyear;
+	}else{
+		$res = '';
+	}
+
+	return $res;
+}
+/*
+**站内利息获取
+*/
+function get_rate($time){
+
+	$totalperiod = floor($time/30);
+
+	if ($totalperiod == '12') {
+		
+		$rate = 1.1/100;
+
+	}elseif ($totalperiod == '24') {
+		
+		$rate = 1.3/100;
+
+	}elseif ($totalperiod == '36') {
+		
+		$rate = 1.5/100;
+	}
+	return $rate;
+}
+
+/*
+**金融方案 TODO
+*/
+function get_programme($orderid){
+	$res = array();
+	$result = db('programme')->alias('p')->join('__ORDER__ o','p.order_id = o.id')->where('order_id',$orderid)->find();
+	if ($result['vp_type'] == '1') {
+		$res['name'] = 'VP贷';
+		$res['monthpay'] = get_vpmonth($result);
+		$res['avgmonthpay'] = $res['monthpay'];
+		$res['downpay'] = round($result['car_price']*$result['bank_pay']/100);
+		$res['term'] = $result['bank_term'];
+		
+		if ($result['bank_term'] == '12') {
+			$res['firstYear'] = $res['monthpay'];
+			 $res['twoYear'] = 0;
+			 $res['threeYear'] = 0;
+		}elseif ($result['bank_term'] == '24') {
+			$res['firstYear'] = $res['twoYear'] = $res['monthpay'];
+			 $res['threeYear'] = 0;
+		}else{
+			$res['firstYear'] = $res['twoYear'] = $res['threeYear'] = $res['monthpay'];
+		}
+		if (is_array($result)) {
+			$res['rate'] = round(100-$result['vp_pay']-$result['bank_pay']);
+		}
+	}
+	if ($result['vp_type'] == '2') {
+
+		$res['name'] = '90贷';
+
+		//90贷本息
+		$res['monthpay'] = get_monthpay($result,$result['vp_term']);
+		//银行本息
+		$res['bank_monthpay'] = get_vpmonth($result);
+
+		$success = $result['bank_term'] >= $result['vp_term'] ? true :false;
+
+		if ($success) {
+
+			if ($result['bank_term'] == '12'){
+				$res['firstYear'] = $res['monthpay'] +$res['bank_monthpay'];
+				$res['twoYear'] = $res['threeYear'] = 0;
+			}
+
+			if ($result['bank_term'] == '36' && $result['vp_term'] == '12') {
+				$res['firstYear'] = $res['monthpay'] +$res['bank_monthpay'];
+				$res['twoYear'] = $res['threeYear'] =  $res['bank_monthpay'];
+			}
+
+			if ($result['bank_term'] == '24' && $result['vp_term'] == '12') {
+
+				$res['firstYear'] = $res['monthpay'] +$res['bank_monthpay'];
+				$res['twoYear']  =  $res['bank_monthpay'];
+				$res['threeYear'] = 0;
+			}
+
+			if ($result['bank_term'] == '24' && $result['vp_term'] == '24') {
+				$res['firstYear'] = $res['twoYear'] = $res['monthpay'] +$res['bank_monthpay'];
+				$res['threeYear'] = 0;
+			}
+
+			if ($result['bank_term'] == '36' && $result['vp_term'] == '24') {
+				$res['firstYear'] = $res['twoYear'] =  $res['monthpay'] +$res['bank_monthpay'];
+				$res['threeYear'] =  $res['bank_monthpay'];
+			}
+
+			$res['term'] = $result['bank_term'];
+		}else{
+
+			if ($result['bank_term'] == '24' && $result['vp_term'] == '36') {
+				$res['firstYear'] = $res['twoYear'] = $res['monthpay'] +$res['bank_monthpay'];
+				$res['threeYear'] =  $res['monthpay'];
+			}
+
+			if ($result['bank_term'] == '12' && $result['vp_term'] == '36') {
+
+				$res['firstYear'] = $res['monthpay'] + $res['bank_monthpay'];
+				$res['threeYear'] = $res['twoYear'] = $res['monthpay'];
+			}
+
+			if ($result['bank_term'] == '12' && $result['vp_term'] == '24') {
+
+				$res['firstYear'] = $res['monthpay'] + $res['bank_monthpay'];
+				$res['twoYear'] = $res['monthpay'];
+				$res['threeYear'] = 0;
+			}
+
+			$res['term'] = $result['vp_term'];
+		}
+
+		$res['avgmonthpay'] = round(($res['monthpay']*$result['vp_term'] + $res['bank_monthpay']*$result['bank_term'])/$res['term']);
+
+		$res['downpay'] = round($result['car_price']*$result['vp_pay']/100);
+		if (is_array($result)) {
+			$res['rate'] = round(100-$result['vp_pay']);
+		}
+	}
+	return $res;
+}
+
+/*
+** 金融方案90贷月供
+*/
+function get_monthpay($data,$term){
+
+	$res = ceil($data['car_price']*($data['bank_pay']-$data['vp_pay'])*(1+$data['vp_rate']*$data['vp_term']/100)/100/$term);
+	return $res;
+}
+/*
+** VP贷月供
+*/
+function get_vpmonth($data){
+	$res = ceil($data['car_price']*(100-$data['bank_pay'])*(1+$data['bank_rate']*$data['bank_term']/100)/100/$data['bank_term']);
+	return $res;
+}
+
+/**
+ * 记录行为日志，并执行该行为的规则
+ * @param string $action 行为标识
+ * @param string $model 触发行为的模型名
+ * @param int $param 参数
+ * @param int $record_id 触发行为的记录id
+ * @param int $user_id 执行行为的用户id
+ */
+function examine_log($action = null,$controller = null,$param = null , $record_id = null,$status = null , $type, $descr =null) {
+
+	if (empty($user_id)) {
+		$user_id = is_login();
+	}
+	//插入行为日志
+	$data['uid']     = $user_id;
+	$data['ip']   = ip2long(get_client_ip());
+	$data['controller'] = $controller;
+	$data['action'] = $action;
+	$data['param'] = $param;
+	$data['record_id'] = $record_id;
+	$data['status'] = $status;
+	$data['type'] = $type;
+	$data['create_time'] = time();
+	$data['descr'] = $descr;
+	
+	db('examine_log')->insert($data);
+}
+
+
+/*
+  ** 资金记录
+  ** data array数据
+  ** uid 交易者 
+  ** type 交易类型
+  ** name 交易对象
+  */
+  function money_record($data, $uid, $type = 0, $name){
+    $info = array(
+
+      'uid'=>$uid,
+      'type'=> $type,
+      'deal_other'=>$name,
+      'create_time'=>time(),
+      'account_money'=>$data['money'],
+      'descr'=>$data['descr'],
+      );
+    $result = db('dealer_money')->insert($info);
+    return $result;
+
+  }

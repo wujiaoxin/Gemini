@@ -1,0 +1,65 @@
+{extend name="base"/}
+{block name="style"}
+<script type="text/javascript">
+var info = {};
+    try {
+        info = JSON.parse('{$infoStr}');
+    } catch (e) {
+        alert("数据异常");
+    }
+</script>
+{/block}
+{block name="body"}
+<div class="left" style="background-color: #fff">
+    
+        <a href="{:url('/riskmgr/index')}"><img src="/public/wap/images/logo.png" height="100%"/></a>
+        <a href="#" class="link icon-only" id="backbtn" style="font-size: 18px">法院公告查询</a>
+    
+
+</div>
+<div class="portlet box grey">
+    <div class="portlet-body">
+
+        <table class="table-striped table-bordered table-hover dataTable no-footer" id="table-loanItem">
+            <thead>
+                <tr>
+                    <th >公告类型</th> 
+                    <th width="20%">公告人</th> 
+                    <th>当事人</th> 
+                    <th width="20%">公告内容</th> 
+                    <th>公告时间</th> 
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="/public/business/js/table-managed.js"></script>
+<script>
+    function tpl(data){
+        var html = '';
+        if(typeof(data) =='object'){
+        for(var index = 0; index < data.length; index++){
+            html += '<tr class="odd gradex">'
+                +'<td>' + data[index].type + '</td>'
+                +'<td>'+ data[index].announcer +'</td>'
+                +'<td>'+ data[index].litigant +'</td>'
+                +'<td>'+ data[index].content +'</td>'
+                +'<td>'+ data[index].publishDate +'</td>'
+                +'</tr>'
+            }
+        }
+        return html;
+    };
+    $('#table-loanItem tbody').html(tpl(info['data']));
+    $("#backbtn").click(function(){
+        location.href = "/riskmgr/Court";
+    });
+</script>
+{/block}

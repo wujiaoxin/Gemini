@@ -38,12 +38,17 @@ class examine extends Admin {
 	}
 
 	public function application() {
-		$list = db('Order')->order('create_time')->select();
-		foreach ($list as $k => $v) {
-			$list[$k]['salesman'] = serch_realname($v['uid']);
-			$name = serch_name($v['dealer_id']);
-			$list[$k]['dealername'] = $name['dealer_name'];
+
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		if($uid > 0){
+			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->order('create_time DESC')->select();
+
+		}else{
+			return $this->error('请重新登录');
 		}
+		
+		
 		$data = array(
 
 			'infoStr' =>json_encode($list)
@@ -124,16 +129,10 @@ class examine extends Admin {
 			return json($resp);
 			
 		}else{
-			$list = db('Order')->where('status','3')->order('create_time')->select();
 
-			foreach ($list as $k => $v) {
-
-				$list[$k]['salesman'] = serch_realname($v['uid']);
-
-				$name = serch_name($v['dealer_id']);
-
-				$list[$k]['dealername'] = $name['dealer_name'];
-			}
+			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where('o.status','3')->order('create_time DESC')->select();
+		
+			
 			$data = array(
 
 				'infoStr' =>json_encode($list)
@@ -159,29 +158,44 @@ class examine extends Admin {
 					$infos = array(
 							'status' => '1',
 							'examine_limit' =>$data['examine_limit'],
-							'descr'=>$data['descr']
+							'descr'=>$data['descr'],
+							'fee'=>$data['fee'],
+							'fund_id'=>$data['fund_provider'],//加入资金方
 						);
 
 					$result = db('order')->where('id',$data['id'])->update($infos);
 
 					if ($result) {
 
-						$info = db('order')->field('loan_limit,endtime,type')->where('id',$data['id'])->find();
+						// $info = db('order')->field('examine_limit,endtime,type')->where('id',$data['id'])->find();
 
-						if ($info['type'] == '2' || $info['type'] == '4') {
+						// if ($info['type'] == '2' || $info['type'] == '4') {
 
-							$fee = fee_money($info['endtime'],$info['loan_limit']);
+						// 	$fee = fee_money($info['endtime'],$info['examine_limit']);
 
-							$fee1['fee'] = $fee;
-							$fee1['finance'] = '1';
-							db('order')->where('id',$data['id'])->update($fee1);
+						// 	$fee1['fee'] = $fee;
+						// 	$fee1['finance'] = '2';
+						// 	db('order')->where('id',$data['id'])->update($fee1);
+						// }else{
+
+						// 	db('order')->where('id',$data['id'])->setField('finance','2');
+						// }
+
+						$res = db('order')->where('id',$data['id'])->setField('finance','2');
+
+						if ($res) {
+							$resp['code'] = 1;
+
+							$resp['msg'] = '提交成功';
+							
 						}else{
 
-							db('order')->where('id',$data['id'])->setField('finance','2');
-						}
-						$resp['code'] = 1;
+							$resp['code'] = 0;
 
-						$resp['msg'] = '提交成功';
+							$resp['msg'] = '提交异常';
+						}
+
+						
 
 					}else{
 
@@ -189,7 +203,6 @@ class examine extends Admin {
 
 						$resp['msg'] = '提交失败';
 
-						return json($resp);
 					}
 				}else{
 
@@ -231,16 +244,8 @@ class examine extends Admin {
 
 		}else{
 			
-			$list = db('Order')->where('status','4')->order('create_time')->select();
+			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where('o.status','4')->order('create_time')->select();
 
-			foreach ($list as $k => $v) {
-
-				$list[$k]['salesman'] = serch_realname($v['uid']);
-
-				$name = serch_name($v['dealer_id']);
-
-				$list[$k]['dealername'] = $name['dealer_name'];
-			}
 
 			$data = array(
 
@@ -263,33 +268,21 @@ class examine extends Admin {
 		
 		$id   = input('id', '', 'trim,intval');
 
+
+
 		$order_info = db('order')->where('id', $id)->find();
 
-		$name = serch_name($order_info['dealer_id']);
 
-		$channel_info = db('dealer')->where('name',$name['dealer_name'])->find();
+		$channel_info = db('dealer')->alias('d')->field('d.*,m.realname as salesman,m.mobile as salesmobile')->join('__MEMBER__ m','m.dealer_id =d.id')->where('d.id',$order_info['dealer_id'])->find();
 
-		$yewu = db('member')->field('realname,mobile')->where('uid',$order_info['uid'])->find();
 
-		$channel_info['salesman'] = $yewu['realname'];
 
-		$channel_info['salesmobile'] = $yewu['mobile'];
+		$member_info = db('member')->alias('m')->field('m.*,c.credit_result,c.credit_level,c.credit_score')->join('__CREDIT__ c','c.uid = m.uid','LEFT')->where('m.mobile', $order_info['mobile'])->find();
+		
+		$repay_info = db('order_repay')->where('order_id', $order_info['id'])->select();
 
-		$member_info = db('member')->where('uid', $order_info['mid'])->find();
+		$examine_log  =db('examine_log')->alias('e')->field('e.*,m.username as operator')->join('__MEMBER__ m','m.uid = e.uid','LEFT')->where('e.record_id',$id)->select();
 
-		$credit_info = db('credit')->where('mobile', $order_info['mobile'])->order('id desc')->find();
-
-		$repay_info = db('order_repay')->where('order_id', $order_info['sn'])->find();
-
-		$examine_log  =db('examine_log')->where('record_id',$id)->select();
-
-		foreach ($examine_log as $k => $v) {
-			
-			$result = db('member')->field('username')->where('uid',$v['uid'])->find();
-			
-			$examine_log[$k]['operator'] =  $result['username'];
-
-		}
 		foreach ($examine_log as $k => $v) {
 
 			$examine_log[$k]['params'] = json_decode($v['param']);
@@ -302,8 +295,9 @@ class examine extends Admin {
 
 		$fileFilter['status'] = 1;//有效文件
 
-		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($fileFilter)->limit(100)->select();
+		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($fileFilter)->order('create_time DESC')->limit(100)->select();
 
+		$fund = db('member')->field('uid,nickname as name')->where('access_group_id','19')->select();
 		$list = array(
 
 			'order_info' => $order_info,//订单信息
@@ -312,13 +306,13 @@ class examine extends Admin {
 
 			'member_info' => $member_info,//客户信息
 			
-			'credit_info' => $credit_info,
-
 			'repay_info' => $repay_info,//还款信息
 
 			'files'   => $files,//附件资料
 
 			'examine_log'   => $examine_log,//审核历史
+
+			'fund' =>$fund,//资金方
 
 			);
 

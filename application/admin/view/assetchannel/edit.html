@@ -27,6 +27,10 @@
     line-height: 28px;
 }
 
+#tab_1_1 table .bolder-line {
+	border-top: 2px solid;
+}
+
 #tab_1_1 table td[colspan="4"] {
     text-align: center;
     background-color: gray;
@@ -59,6 +63,25 @@
 
 .tabs-wrapper {
 	overflow: scroll;
+}
+
+.select2_bank {
+	width: 154px;
+}
+.select2_province,
+.select2_city{
+	width: 76px;
+}
+.select2-drop {
+    z-index: 10050 !important;
+}
+.select2-search-choice-close {
+    margin-top: 0px !important;
+    right: 20px !important;
+    min-height: 10px;
+}
+.select2-search-choice-close:before {
+    color: black !important;
 }
 </style>
 <script>
@@ -148,7 +171,7 @@ try {
 									<td>开户账号</td>
 									<td><input type="text" id="bank_account_id" name="bank_account_id" value=""></td>
 								</tr>
-								<tr>
+								<tr class="bolder-line">
 									<td>开户银行(私户)</td>
 									<td><input type="text" id="priv_bank_name" name="priv_bank_name" value=""></td>
 									<td>开户网点(私户)</td>
@@ -178,6 +201,12 @@ try {
 										<input type="checkbox" name="forms" value="2"/>二手车按揭垫资
 										<input type="checkbox" name="forms" value="3"/>新车按揭贷款
 										<input type="checkbox" name="forms" value="4"/>新车按揭垫资
+									</td>
+								</tr>
+								<tr>
+									<td>所属担保公司</td>
+									<td colspan="3">
+										<input type="text" id="guarantee_id" name="guarantee_id" value="">
 									</td>
 								</tr>
 								<tr>
@@ -293,6 +322,7 @@ try {
 						<div class="form-group">
 							<div class="col-lg-offset-2 col-lg-10">
 								<input type="hidden" name="id" value="{$info['id']|default=''}">
+								<a data-toggle="modal" class="btn btn-warning" href="#bankcardModal">绑定银行卡</a>
 								<a class="btn btn-success" id="dealerExamineBtn">确 定</a>
 								<button class="btn btn-danger btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
 							</div>
@@ -328,6 +358,60 @@ try {
 		</div>
 	</div>
 </div>
+
+<!-- 银行卡绑定弹窗 -->
+<div class="modal fade" tabindex="-1" role="dialog" id="bankcardModal">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+        		<h4 class="modal-title">绑定银行卡</h4>
+      		</div>
+      	<div class="modal-body form-horizontal">
+		  	<div class="form-group">
+		    	<label class="col-sm-2 control-label">银行卡号</label>
+			    <div class="col-sm-4">
+			      	<input type="number" class="m-wrap" id="bankcard-account">
+			    </div>
+			    <label class="col-sm-2 control-label">开户银行</label>
+			    <div class="col-sm-4">
+			      	<select class="select2_bank" data-placeholder="请选择开户银行">
+					</select>
+			    </div>
+		  	</div>
+		  	<div class="form-group">
+		    	<label class="col-sm-2 control-label">开户地址</label>
+			    <div class="col-sm-4">
+			      	<select class="select2_province" data-placeholder="省份">
+					</select>
+					<select class="select2_city" data-placeholder="城市">
+						<option value=""></option>
+					</select>
+			    </div>
+			    <label class="col-sm-2 control-label">开户人姓名</label>
+			    <div class="col-sm-4">
+			      	<input type="text" class="m-wrap" id="bankcard-name">
+			    </div>
+		  	</div>
+		  	<div class="form-group">
+		    	<label class="col-sm-2 control-label">开户人手机号</label>
+			    <div class="col-sm-4">
+			      	<input type="number" class="m-wrap" id="bankcard-mobile">
+			    </div>
+			    <label class="col-sm-2 control-label">开户人身份证</label>
+			    <div class="col-sm-4">
+			      	<input type="text" class="m-wrap" id="bankcard-idcard">
+			    </div>
+		  	</div>
+      	</div>
+	    <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <a type="button" class="btn btn-primary" id="bindCardBtn">提交</a>
+	    </div>
+    </div>
+  </div>
+</div>
+
 {/block}
 {block name="script"}
 <script type="text/javascript" src="__PUBLIC__/plugs/webuploader/webuploader.min.js"></script>
@@ -337,8 +421,9 @@ try {
 <script type="text/javascript" src="/public/business/js/selectArea.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
-<script type="text/javascript" src="/public/business/js/validate.js"></script>
+<script type="text/javascript" src="/public/business/js/validate.js?v=1"></script>
 <script type="text/javascript" src="__JS__/table-managed.js"></script>
 <script type="text/javascript" src="__JS__/manager.js"></script>
-<script type="text/javascript" src="__JS__/assetChannel.js"></script>
+<script type="text/javascript" src="__JS__/assetChannel.js?20170613"></script>
+<script type="text/javascript" src="/public/guarantee/js/selectBankInfo.js" ></script>
 {/block}

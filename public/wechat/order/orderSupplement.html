@@ -49,15 +49,53 @@
             },
             {
                 form_key:"orderSupplement_pic_8",
-                form_label:"垫资合同"
+                form_label:"合同"
+            },
+            {
+                form_key:"orderSupplement_pic_9",
+                form_label:"代扣银行卡"
             }];
 
-            for(var i=0 ; i<keyList.length;i++){
-            if(typeof(orderData[keyList[i].form_key]) == "object" ){
-                picList.push(orderData[keyList[i].form_key]);
-                keyList[i].has = 1;
-            }
-        }
+        var keyList_guarantors = [
+            {
+                form_key:"orderSupplement_pic_1",
+                form_label:"身份证正面照"
+            },
+            {
+                form_key:"orderSupplement_pic_2",
+                form_label:"身份证反面照"
+            },
+            {
+                form_key:"orderSupplement_pic_3",
+                form_label:"车辆照片1"
+            },
+            {
+                form_key:"orderSupplement_pic_4",
+                form_label:"车辆照片2"
+            },
+            {
+                form_key:"orderSupplement_pic_5",
+                form_label:"车辆照片3"
+            },
+            {
+                form_key:"orderSupplement_pic_6",
+                form_label:"车辆照片4"
+            },
+            {
+                form_key:"orderSupplement_pic_7",
+                form_label:"签约照"
+            },
+            {
+                form_key:"orderSupplement_pic_8",
+                form_label:"合同"
+            }];
+
+            // for(var i=0 ; i<keyList.length;i++){
+            //     if(typeof(orderData[keyList[i].form_key]) == "object" ){
+            //         picList.push(orderData[keyList[i].form_key]);
+            //         keyList[i].has = 1;
+            //     }
+            // }
     </script>
     <style type="text/css">
         .order-item {
@@ -89,7 +127,7 @@
             <div class="pages navbar-through">
                 <div class="page">
                     <div class="page-content">
-                        <div class="list-block">
+                        <div class="list-block mt10">
                             <ul>
                                 <li class="accordion-item">
                                     <a href="#" class="item-content item-link">
@@ -213,7 +251,7 @@
     <script type="text/javascript" src="/public/wap/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/framework7.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/my-app.js?v=1"></script>
-    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.0.16.min.js"></script>
+    <script type="text/javascript" src="/public/plugs/webuploader/webuploader.min.js"></script>
     <script type="text/javascript" src="/public/wap/js/webuploader.gemini.js"></script>
     <script type="text/javascript" src="/public/wap/js/order.js"></script>
     <script type="text/javascript">
@@ -225,8 +263,12 @@
             data: {
                 'id':order_id
             },
+            async:false,
             success: function(resp) { // data 保存提交后返回的数据，一般为 json 数据
                 if(resp.code == 1){
+                    if(resp.data.info.property == '3'){
+                        keyList = keyList_guarantors;
+                    }
                     $(".order-sn").text(resp.data.info.sn);
                     $(".order-type").text(g_orderType[resp.data.info.type]);
                     $(".order-loaner").text(resp.data.info.name);

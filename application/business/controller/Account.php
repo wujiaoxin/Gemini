@@ -13,9 +13,10 @@ use app\common\model;
 
 class Account extends Baseness {
 	public function index() {
+		$uid =session('user_auth.uid');
 		if (IS_POST) {
 			$data = input('post.');
-	      	$mobile = session("mobile");
+	      	$mobile = session("business_mobile");
 			if (isset($data['smsVerify'])) {
 				$storeSmsCode = session('smsCode');
 				if($data['smsVerify'] != $storeSmsCode){
@@ -56,7 +57,6 @@ class Account extends Baseness {
 			//修改邮箱
 			if (isset($data['email'])) {
 				$result = db('member')->where('mobile',$mobile)->setField('email', $data['email']);
-				// var_dump($result);die;
 				if ($result) {
 					$resp['code'] = '1';
 					$resp['msg'] = '邮箱添加成功';
@@ -68,9 +68,10 @@ class Account extends Baseness {
 				}
   			}
 		}else{
-			$mobile = session("mobile");
-      		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code')->where('m.mobile',$mobile)->find();
-      		// var_dump($account);die;
+			$mobile = session("business_mobile");
+      		$account = db('dealer')->alias('d')->join('__MEMBER__ m','d.mobile = m.mobile')->field('d.rep,d.idno,d.credit_code,m.password,d.mobile,m.email,d.name,m.paypassword,d.credit_code,d.priv_bank_account_id')->where('m.mobile',$mobile)->find();
+      		$bindcard = db('bankcard')->field('bank_account_id')->where(['uid' =>$uid,'order_id'=>-3,'status'=>1])->find();
+      		$account['bindcard'] = $bindcard['bank_account_id'];
 	      	if ($account){
 	            $data['infoStr'] = json_encode($account);
 	            $data = array(
@@ -86,9 +87,59 @@ class Account extends Baseness {
 			return $this->fetch();
 		}
 	}
-	
+	// 绑卡
+	public function bindCard(){
+		$mobile = session("business_mobile");
+		$uid = session('user_auth.uid');
+		if (request()->isPost()) {
+			$data = input('post.');
+			$map = array('bank_account_id'=>$data['CardNumber'],'type'=>1);
+			$res = db('bankcard')->where($map)->find();
+			if (empty($res)) {
+				$arr = array(
+					'uid'=>$uid,
+					'type'=>1,
+					'order_id'=>-3,
+					'bank_account_id'=>$data['CardNumber'],
+					'bank_account_name'=>$data['RealName'],
+					'bank_name'=>$data['BankCode'],
+					'bank_branch'=>$data['Province'].','.$data['City'],
+					'create_time'=>time(),
+					'idcard'=>$data['IdentificationNo'],
+					'status'=>2,
+				);
+				$result = db('bankcard')->insert($arr);
+				if ($result) {
+					$resp['code']='1';
+	        		$resp['msg'] = '绑卡处理中';
+				}else{
+					$resp['code'] = '0';
+	        		$resp['msg'] = '绑卡异常,请联系客服';
+				}
+			}else{
+				$resp['code'] = '0';
+	        	$resp['msg'] = '绑卡申请中,请联系客服';
+			}
+			/*$epay = new \epay\Epay();
+			$ret = $epay::bankcard($data);
+	        if (empty($ret)) {
+	        	$resp['code'] = '0';
+	        	$resp['msg'] = '绑卡异常,请联系客服';
+	        	return json($resp);
+	        }
+	        $ret  = json_decode($ret,true);
+	        if ($ret['ResultCode'] == '88') {
+	        	$resp['code']='1';
+	        	$resp['msg'] = '绑卡成功';
+	        }else{
+	        	$resp['code'] = '0';
+	        	$resp['msg'] = $ret['Message'];
+	        }*/
+	        return json($resp);
+		}
+	}
 	public function balance() {
-	    $mobile = session('mobile');
+	    $mobile = session('business_mobile');
 	    $uid = session('user_auth.uid');
 	    if (IS_POST) {
 	    	$data = input('post.');
@@ -144,11 +195,9 @@ class Account extends Baseness {
 	      $info = get_money($uid,'money');
 	      
 	      $dealer_money = db('dealer')->alias('d')->field('money as total_money')->join('__MEMBER__ m','d.mobile = m.mobile')->where('m.uid',$uid)->find();
-	      // var_dump($dealer_money);
-	      // var_dump($info);die;
+	      
 	      $info['money'] = $dealer_money['total_money'] + $info['available_money'];
 	      
-	      // var_dump($info);die;
 	      $data = array(
 	          'info' => $info,
 	          'infoStr'=>json_encode($info)
@@ -158,18 +207,15 @@ class Account extends Baseness {
 	    }
 	}
     /*
-     * 充值
+     * 充值 TODO
      * */
 	public function recharge() {
 		if(IS_POST){
 			$data = input('post.');
 			$uid = session('user_auth.uid');
-			// var_dump($data);die;
 			if (is_numeric($data['money'])){
-
 				//加入资金记录
-				money_record($data, $uid, 3, 0);
-			    $resp = modify_account($data,$uid,'recharge','INSERT');
+				
 			    return json($resp);
 			}
 		}else{
@@ -180,12 +226,16 @@ class Account extends Baseness {
      * 提现
      * */
   	public function withdraw() {
-		$mobile = session('mobile');
+		$mobile = session('business_mobile');
 		$uid = session('user_auth.uid');
 		if(IS_POST){
 			$data = input('post.');
-			// var_dump($data);die;
 			$paypassword = $data['paypassword'];
+			if (!isset($data['bank_card'])) {
+				$resp['code'] = '3';
+				$resp['msg'] = '未绑定银行卡';
+				return json($resp);
+			}
 			$pay = db('member')->field('paypassword')->where('mobile',$mobile)->find();
 			if (empty($pay['paypassword'])) {
 				$resp['code'] = '2';
@@ -209,15 +259,27 @@ class Account extends Baseness {
 			}
 			return json($resp);
 		}else{
-			$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
+			// $bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 			$map = array(
-			    'mid'=>$uid,
-			    'finance'=>'3'
-			  );
-			$orders =db('order')->where($map)->select();
-			foreach ($orders as $k => $v) {
-			    $orders[$k]['realname'] = serch_real($v['uid']);
+				'uid'=>$uid,
+				'order_id'=>-3,
+			);
+			$bankcard =db('bankcard')->field('bank_account_id,bank_name,status')->where($map)->find();
+			if (empty($bankcard)) {
+
+				$bankcard = '';
+
+			}elseif ($bankcard['status'] != '1') {
+				$bankcard = '';
 			}
+			$types = '2,4';
+			$map = array(
+			    'o.mid'=>$uid,
+			    'o.finance'=>'3',
+			    'o.type'=> array('IN',$types)
+			  );
+
+			$orders =db('order')->alias('o')->field('o.*,m.realname')->join('__MEMBER__ m','m.uid = o.uid')->where($map)->select();
 			$info = array(
 			    'bankcard'=>$bankcard,
 			    'orders'=>$orders
@@ -232,7 +294,7 @@ class Account extends Baseness {
     }
 
 	public function bankcard() {
-		$mobile = session('mobile');
+		$mobile = session('business_mobile');
 		$uid = session('user_auth.uid');
 		$bankcard =db('dealer')->field('bank_account_id,bank_name,priv_bank_account_id,priv_bank_name')->where('mobile',$mobile)->find();
 		$data = array(
@@ -271,7 +333,7 @@ class Account extends Baseness {
 		return $this->fetch();
 	}
 	public function lineOfCredit() {
-		$mobile = session('mobile');
+		$mobile = session('business_mobile');
 		$credit_code = db('dealer')->field('lines_ky')->where('mobile',$mobile)->find();
 		if (IS_POST) {
 			$data = input('post.');
@@ -301,15 +363,13 @@ class Account extends Baseness {
 		return $this->fetch('creditRecord');
 	}
   	public function info() {
-		$mobile = session('mobile');
+		$mobile = session('business_mobile');
 		$deals = db('dealer')->field('name,credit_code,addr,city,forms,idno,rep,rep_idcard_pic,dealer_lic_pic,invite_code')->where('mobile',$mobile)->find();
 		if($deals){
 			$deals['qrcode_url'] = 'https://pan.baidu.com/share/qrcode?w=512&h=512&url='.url("/public/wechat/user/register").'?authcode='.$deals['invite_code'];
-			// var_dump($deals);die;
 			$data['code'] = '1';
 			$data['info']=$deals;
 			$data['infoStr'] = json_encode($deals);
-			// var_dump($data);die;
 			$this->assign($data);
 		}
 		return $this->fetch();

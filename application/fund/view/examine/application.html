@@ -1,0 +1,84 @@
+{extend name="base"/}
+{block name="style"}
+<link rel="stylesheet" href="/public/business/lib/metronic/css/select2_metro.css">
+<link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css">
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
+{/block}
+{block name="body"}
+<div class="portlet box grey">
+	<div class="portlet-title">
+		<div class="caption"><i class="icon-file"></i>所有项目</div>
+	</div>
+	<div class="portlet-body">
+		<table class="table table-striped table-bordered table-hover" id="table-orderExamine">
+			<thead>
+				<tr>
+					<th>项目编号</th>
+					<th>项目类型</th>
+					<th>订单状态</th>
+					<th>财务状态</th>
+					<th>客户姓名</th>
+					<th>客户证件号</th>
+					<th>业务员</th>
+					<th>渠道名称</th>
+					<th>借款金额</th>
+					<th>借款期限</th>
+					<th>借款费用</th>
+					<th>项目状态</th>
+					<th>申请时间</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="/application/admin/static/js/manager.js"></script>
+<script type="text/javascript" src="/public/guarantee/js/table-managed.js"></script>
+<script type="text/javascript">
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + data[index].sn + '</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
+		  		+'<td>'+ g_orderStatus[data[index].status] +'</td>'
+		  		+'<td>'+ g_financeStatus[data[index].finance] +'</td>'
+		  		+'<td>'+ data[index].name +'</td>'
+		  		+'<td>'+ data[index].idcard_num +'</td>'
+		  		+'<td>'+ data[index].salesman +'</td>'
+		  		+'<td>'+ data[index].dealername +'</td>'
+		  		+'<td>￥'+ data[index].loan_limit +'</td>'
+		  		+'<td>'+ data[index].endtime +'天</td>'
+		  		+'<td>'+ data[index].fee +'</td>'
+		  		+'<td>'+ '正常' +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
+		  		+'<td><a href="/fund/examine/view?id='+ data[index].id + '">查看</a></td>'
+		  		 +'</tr>'
+			}
+		}
+		return html;
+
+	};
+	$('#table-orderExamine tbody').html(tpl(info));
+
+    $(function(){
+    	TableManaged.init();
+    });
+</script>
+
+{/block}

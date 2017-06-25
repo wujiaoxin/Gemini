@@ -21,7 +21,7 @@
 {block name="body"}
 <!--充值提现-->
 <div>
-	<div class="row-fluid balance">
+	<!-- <div class="row-fluid balance">
 		<div class="span6">
 			<div class="span4 text-center">
 				<div>账户总额</div>
@@ -38,17 +38,17 @@
 		</div>
 		<a class="btn blue span2" href="/business/account/recharge.html">充值</a>
 		<a class="btn green span2" href="/business/account/withdraw.html">提现</a>
-	</div>
+	</div> -->
 	<div class="row-fluid">
 		<div class="span12 no-padding">
 			<div class="tabbable tabbable-custom">
 				<ul class="nav nav-tabs">
-					<li class="active"><a href="#tab_1_1" data-toggle="tab">充值记录</a></li>
+					<!-- <li class="active"><a href="#tab_1_1" data-toggle="tab">充值记录</a></li> -->
 					<li><a href="#tab_1_2" data-toggle="tab">提现记录</a></li>
 				</ul>
 				<div class="tab-content">
-					<!--充值记录-->
-					<div class="tab-pane active" id="tab_1_1" data='1'>
+					<!-- 充值记录
+					<div class="tab-pane" id="tab_1_1" data='1'>
 						<div>
 							<div class="select-block">
 								<span class="selectParm-title">日期范围:</span>
@@ -81,6 +81,7 @@
 											<th>充值方式</th>
 											<th>支付方式</th>
 											<th>充值金额（元）</th>
+											<th>到账金额（元）</th>
 											<th>状态</th>
 											<th>充值备注</th>
 										</tr>
@@ -90,9 +91,9 @@
 								</table>
 							</div>
 						</div>
-					</div>
+					</div> -->
 					<!--提现记录-->
-					<div class="tab-pane" id="tab_1_2" data='2'>
+					<div class="tab-pane active" id="tab_1_2" data='2'>
 						<div>
 							<div class="select-block">
 								<span class="selectParm-title">日期范围:</span>
@@ -154,6 +155,7 @@
 		  		+'<td>线下充值</td>' //充值方式data[index].payment_type
 		  		+'<td>银行卡</td>'//支付方式data[index].pay_type
 		  		+'<td>￥'+ formatAmount(data[index].money) +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].actual_amount) +'</td>'
 		  		+'<td>'+ rechargeStatus[data[index].status] +'</td>'
 		  		+'<td>'+ data[index].descr +'</td>'
 		  		 +'</tr>'
@@ -180,7 +182,7 @@
 		return html;
 	};
 	function ajaxBalance(type,dateRange,status){
-		$('#table-recharge tbody').html('');
+		$('#tab_1_'+ type +' table tbody').empty();
 		ajax_jquery({
 	        url: apiUrl +'/business/account/balance',
 	        data:{
@@ -208,13 +210,13 @@
 		$('#totalAccount').text(formatAmount(info['money']));
 		$('#availableAssets').text(formatAmount(info['available_money']));
 		$('#pendingAssets').text(formatAmount(info['repay_money']));
-		ajaxBalance('1','0','');
-		ajaxBalance('2','0','');
+		ajaxBalance('1','','');
+		ajaxBalance('2','','');
 		$('.selectParm').on('click','li',function(){
 	   		$(this).addClass('active').siblings('li').removeClass('active');
 	   		var type = $('.tab-pane.active').attr('data');
-	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
-	   		var orderStatus = $('.selectOrderStatus li.active').attr('data');
+	   		var orderDateRange = $('.tab-pane.active').find('.selectOrderDate li.active').attr('data');
+	   		var orderStatus = $('.tab-pane.active').find('.selectOrderStatus li.active').attr('data');
 	   		ajaxBalance(type,orderDateRange,orderStatus);
 	   })
 	});

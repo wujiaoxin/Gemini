@@ -1,0 +1,238 @@
+{extend name="base"/}
+{block name="style"}
+<link rel="stylesheet" href="/public/business/lib/metronic/css/select2_metro.css">
+<link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css">
+<link rel="stylesheet" href="/public/business/css/myItem.css">
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
+{/block}
+
+{block name="body"}
+<div class="alert hide">
+	<a class="close"></a>
+	<span></span>
+</div>
+<div>
+	<div class="select-block">
+		<span class="selectParm-title">业务类型:</span>
+		<ul class="selectParm selectOrderType">
+			<li data='' class="active" >全部</li>
+			<li data='1'>二手车按揭贷款</li>
+			<li data='2'>二手车按揭垫资</li>
+			<li data='3'>新车按揭贷款</li>
+			<li data='4'>新车按揭垫资</li>
+		</ul>
+	</div>
+	<div class="select-block">
+		<span class="selectParm-title">日期范围:</span>
+		<ul class="selectParm selectOrderDate">
+			<li data='' class="active">全部</li>
+			<li data='1'>今天</li>
+			<li data='2'>最近7天</li>
+			<li data='3'>1个月</li>
+			<li data='4'>2个月</li>
+			<li data='5'>3个月</li>
+		</ul>
+	</div>
+	<div class="select-block">
+		<span class="selectParm-title">交易状态:</span>
+		<ul class="selectParm selectOrderStatus">
+			<li data='' class="active">全部</li>
+			<li data='1'>待支付</li>
+			<li data='2'>已支付</li>
+		</ul>
+	</div>
+</div>
+<div class="portlet box grey">
+	<div class="portlet-title">
+		<div class="caption">支付项目</div>
+	</div>
+	<div class="portlet-body">
+		<table class="table table-striped table-bordered table-hover" id="table-payItem">
+			<thead>
+				<tr>
+					<th>订单编号</th>
+					<th>订单类型</th>
+					<th>借款时间</th>
+					<th>业务员</th>
+					<th>借款金额</th>
+					<th>借款期限/天</th>
+					<th>费用</th>
+					<th>支付状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- 支付弹窗 -->
+<div id="payOrderModal" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<h3>订单支付页</h3>
+		<div class="alert hide">
+			<a class="close"></a>
+			<span></span>
+		</div>
+	</div>
+	<div class="modal-body">
+		<div class="form-horizontal">
+			<input type="hidden" id="pay_orderId">
+			<input type="hidden" id="pay_amount">
+			<div class="control-group">
+				<label class="control-label">支付金额</label>
+				<div class="controls">
+					<span class="text" id="modal-payAmount"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">可用余额</label>
+				<div class="controls">
+					<span class="text" id="modal-availbaleAmount"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">剩余金额</label>
+				<div class="controls">
+					<span class="text" id="modal-remainingAmount"></span>
+				</div>
+			</div>
+			<input type="hidden" id="payOrder">
+			<div class="control-group">
+				<label class="control-label">交易密码</label>
+				<div class="controls">
+					<input id="payPassword" type="password" class="m-wrap" maxlength="6">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" data-dismiss="modal" class="btn">关闭</button>
+		<a type="button" class="btn red" id="payOrderBtn">确认支付</a>
+	</div>
+</div>
+
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/select2.min.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="/public/guarantee/js/table-managed.js"></script>
+<script>
+	function tpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+			var orderOpera = '';
+			if(data[index].finance == '1'){
+				orderOpera = '<a class="orderOpera" data-toggle="modal">支付</a>'
+			}
+		  	html += '<tr class="odd gradex">'
+		  		+'<td class="order_sn">' + data[index].sn + '</td>'
+		  		+'<td>'+ g_orderType[data[index].type] +'</td>'
+		  		+'<td>'+ formatDate(data[index].create_time) +'</td>'
+		  		+'<td>'+ data[index].realname +'</td>'
+		  		+'<td>￥'+ formatAmount(data[index].examine_limit) +'</td>'
+		  		+'<td>'+ data[index].endtime +'</td>'
+		  		+'<td class="order_fee" data="'+ data[index].fee +'">￥'+ formatAmount(data[index].fee) +'</td>'
+		  		+'<td>'+ g_financeStatus[data[index].finance] +'</td>'
+		  		+'<td>'+ orderOpera +'</td>'
+		  		 +'</tr>';
+			}
+		}
+		return html;
+	};
+
+	function ajaxPayItem(type,dateRange,status){
+		$('#table-payItem').dataTable().fnClearTable();//清空原数据
+		ajax_jquery({
+	        url: apiUrl +'/business/user/payItem',
+	        data:{
+	            'type': type,
+	            'dateRange': dateRange,
+	            'status': status
+	        },
+	        success:function(resp){
+	            if (resp.code == "1" ) {
+	            	$('#table-payItem tbody').html(tpl(resp.data));
+	            	$('#table-payItem').dataTable({"bDestroy":true});
+	            } else {
+	                if (typeof(resp.msg) == 'string') {
+	                    ui_alert(resp.msg);
+	                    return false;
+	                }
+	            }
+	        }
+		});
+	}
+
+	jQuery(document).ready(function() {
+	   	// App.init();
+	   	TableManaged.init();
+	   	ajaxPayItem('','','');
+
+	   	$('.selectParm').on('click','li',function(){
+	   		$(this).addClass('active').siblings('li').removeClass('active');
+	   		var orderType = $('.selectOrderType li.active').attr('data');
+	   		var orderDateRange = $('.selectOrderDate li.active').attr('data');
+	   		var orderStatus = $('.selectOrderStatus li.active').attr('data');
+	   		ajaxPayItem(orderType,orderDateRange,orderStatus);
+	   	})
+
+	   	$('#table-payItem').on('click','.orderOpera',function(){
+	   		var pay_orderId = $(this).parent('td').siblings('.order_sn').text();
+	   		var pay_amount = $(this).parent('td').siblings('.order_fee').attr('data');
+	   		var remainingAmount =Number(info['money'])-Number(pay_amount);
+	   		$('#pay_orderId').val(pay_orderId);
+	   		$('#pay_amount').val(pay_amount);
+	   		$('#modal-payAmount').text(formatAmount(pay_amount));
+	   		$('#modal-availbaleAmount').text(formatAmount(info['money']));
+	   		$('#modal-remainingAmount').text(formatAmount(remainingAmount));
+	   		$('#payOrderModal').modal();
+	   	});
+
+	   	$('#payOrderBtn').click(function(){
+	   	 	var payPwd = $('#payPassword').val();
+	   	 	var payOrder = $('#pay_orderId').val();
+	   	 	if(payPwd == ''){
+	   	 		ui_alert("请输入交易密码");
+	            return false;
+	   	 	}else if(payOrder == ""){
+	   	 		ui_alert("未获取订单号，请重试");
+	            return false;
+	   	 	}
+	   	 	ajax_jquery({
+		        url: apiUrl +'/business/user/payItem',
+		        data:{
+		            'payPwd': payPwd,
+		            'payOrder': payOrder
+		        },
+		        success:function(resp){
+		            if (resp.code == "1" ) {
+		            	ui_alert("支付成功","success");
+		            	setTimeout('window.location.reload()',2000);
+		            }else if (resp.code == "2" ) {
+		            	ui_alert("请设置交易密码");
+		            	setTimeout('window.location.href="/business/account/index"',2000);
+		            }else {
+		                if (typeof(resp.msg) == 'string') {
+		                    ui_alert(resp.msg);
+		                    return false;
+		                }
+		            }
+		        }
+			});
+	   	})
+
+	});
+</script>
+{/block}

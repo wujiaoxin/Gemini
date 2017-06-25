@@ -272,51 +272,115 @@ class Credit extends Api {
 			if($creditResult['credit_result'] == 1){//TODO 获取金融方案
 			
 				$order_id = $creditResult['order_id'];
-				$orderData = db('order')->field('id,car_price,loan_limit,credit_status')->where("id",$order_id)->order('id desc')->find();
-				$car_price = $orderData['car_price'];
-				
-				$downpay = round((int)$car_price * 0.1);
-				$loan = round((int)$car_price * 0.9);
-				
-				$avgmonthpay = round($loan*1.1/36);
-				
-				$bankrepay = round($loan*0.7*1.1/36);
-				
-				$firstYear = round($loan*0.2*1.1/12) + $bankrepay;
+				$orderData = db('order')->field('id,car_price,loan_limit,status,credit_status')->where("id",$order_id)->order('id desc')->find();
 
+				$car_price = $orderData['car_price'];
+
+				$order_id = $orderData['id'];
+
+				$order_status = $orderData['status'];
 				
-				//TODO 利息计算修正
-				
-				$respStr = '{
-					"code": 1,
-					"msg": "获取成功！",
-					"data": {
-						"resultcode": 1,
-						"resultmsg": "授信通过",
-						"name": "90贷",
-						"month": 36,
-						"downpay": '.$downpay.',
-						"loan": '.$loan.',
-						"avgmonthpay": '.$avgmonthpay.',
-						"repay": [
-							{
-								"plan": "第一年",
-								"period": "1-12",
-								"monthpay": '.$firstYear.'
-							},
-							{
-								"plan": "第二年",
-								"period": "13-24",
-								"monthpay": '.$bankrepay.'
-							},
-							{
-								"plan": "第三年",
-								"period": "25-36",
-								"monthpay": '.$bankrepay.'
-							}
-						]
-					}
-				}';
+				$res = get_programme($orderData['id']);
+
+				if (!empty($res)) {
+
+					$downpay = $res['downpay'];
+
+					$loan = round((int)$car_price * $res['rate']/100);
+					
+					$avgmonthpay = $res['avgmonthpay'];
+					
+					$firstYear = $res['firstYear'];
+
+					$twoYear = $res['twoYear'];
+
+					$threeYear = $res['threeYear'];
+
+					$term = $res['term'];
+
+					$name = $res['name'];
+
+					$respStr = '{
+						"code": 1,
+						"msg": "获取成功！",
+						"data": {
+							"resultcode": 1,
+							"resultmsg": "授信通过",
+							"name": "'.$name.'",
+							"month": '.$term.',
+							"downpay": '.$downpay.',
+							"loan": '.$loan.',
+							"avgmonthpay": '.$avgmonthpay.',
+							"order_id": '.$order_id.',
+							"order_status": '.$order_status.',
+							"repay": [
+								{
+									"plan": "第一年",
+									"period": "1-12",
+									"monthpay": '.$firstYear.'
+								},
+								{
+									"plan": "第二年",
+									"period": "13-24",
+									"monthpay": '.$twoYear.'
+								},
+								{
+									"plan": "第三年",
+									"period": "25-36",
+									"monthpay": '.$threeYear.'
+								}
+							]
+						}
+					}';
+
+				}else{
+
+					$downpay = round((int)$car_price * 0.1);
+					$loan = round((int)$car_price * 0.9);
+					
+					$avgmonthpay = round($loan*1.1/36);
+					
+					$bankrepay = round($loan*0.7*1.1/36);
+					
+					$firstYear = round($loan*0.2*1.1/12) + $bankrepay;
+
+					//TODO 利息计算修正
+					
+					$respStr = '{
+						"code": 1,
+						"msg": "获取成功！",
+						"data": {
+							"resultcode": 1,
+							"resultmsg": "授信通过",
+							"name": "90贷",
+							"month": 36,
+							"downpay": '.$downpay.',
+							"loan": '.$loan.',
+							"avgmonthpay": '.$avgmonthpay.',
+							"order_id": '.$order_id.',
+							"order_status": '.$order_status.',
+							"repay": [
+								{
+									"plan": "第一年",
+									"period": "1-12",
+									"monthpay": '.$firstYear.'
+								},
+								{
+									"plan": "第二年",
+									"period": "13-24",
+									"monthpay": '.$bankrepay.'
+								},
+								{
+									"plan": "第三年",
+									"period": "25-36",
+									"monthpay": '.$bankrepay.'
+								}
+							]
+						}
+					}';
+
+				}
+
 			}
 			
 			$resp = json_decode($respStr); 
@@ -359,12 +423,12 @@ class Credit extends Api {
 		$data['update_time'] = time();
 		
 		$orderData = db('order')->field('id,credit_status')->where("mobile",$mobile)->where("status",-2)->order('id desc')->find();		
-		if($orderData != null){			
+		if($orderData != null){//TODO 未关联订单错误提示
 			$data['order_id'] = $orderData['id'];
 		}
 		
 		$creditResult = db('credit')->field('id')->where("uid",$uid)->order('id desc')->find();
-		if($creditResult == null){//TODO 未关联订单错误提示
+		if($creditResult == null){
 			$data['create_time'] = time();
 			$result = db('credit')->insert($data);			
 		}else{
@@ -372,7 +436,7 @@ class Credit extends Api {
 		}
 		
 		$orderData['credit_status'] = $credit_status;
-		db('order')->where("mobile",$mobile)->update($orderData);
+		db('order')->where("id",$orderData['id'])->update($orderData);
 		
 		return $result;
 

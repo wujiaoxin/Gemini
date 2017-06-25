@@ -1,15 +1,26 @@
 {extend name="public/base"/}
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
+<link rel="stylesheet" type="text/css" href="__STATIC__/lib/lightGallery/css/lightgallery.css"/>
 <link rel="stylesheet" type="text/css" href="/public/business/css/selectArea.css">
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
 <style type="text/css">
-	.pic-block{
-		padding: 5px;
-	}
-	.pic-block img{
-		width: 100%;
-	}
+.pic-container {
+ 	padding: 0;
+}
+.pic-container li div {
+  	line-height: 240px;
+  	height: 240px;
+  	margin: 10px 0;
+  	overflow: hidden;
+  	min-width: 100px;
+  	border: 5px solid #dedede;
+  	border-radius: 5px;
+}
+.pic-container li img {
+  	width: 100%;
+  	border-radius: 3px;
+}
 </style>
 <script type="text/javascript">
 	var info = {};
@@ -60,7 +71,7 @@
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label class="col-sm-2 control-label">借款金额</label>
+						    <label class="col-sm-2 control-label">申请金额</label>
 						    <div class="col-sm-10 pt5">
 						      	<span name="loan_limit" class="customer-info"></span>
 						    </div>
@@ -86,7 +97,7 @@
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">资金方案</label>
 						    <div class="col-sm-10 pt5">
-						      	<span name="" class="customer-info">平安银行 36期</span>
+						      	<span name="" class="customer-info"></span>
 						    </div>
 						</div>
 					</div>
@@ -195,14 +206,14 @@
 						<div class="form-group">
 						    <label class="col-sm-2 control-label">用户状态</label>
 						    <div class="col-sm-10 pt5">
-						     	<span name="credit_status" class="customer-info"></span>
+						     	<span name="credit_result" class="customer-info"></span>
 						    </div>
 						</div>
 					</div>
 				</div>
 				<div class="tab-pane" id="tab_1_4">
 				<!-- todo -->
-					<table class="table table-hover" id="repay">
+					<table class="table table-hover" id="repay-table">
 						<caption>还款计划</caption>
 						<thead>
 							<tr>
@@ -213,12 +224,6 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -255,10 +260,8 @@
 					</table>
 				</div>
 				<div class="tab-pane" id="tab_1_6">
-					<div class="form-horizontal">
-						<div class="form-group pic-container">
-						</div>
-					</div>
+					<ul class="pic-container" id="documentInfo">
+					</ul>
 				</div>
 				<div class="tab-pane" id="tab_1_7">
 					<table class="table table-hover" id="examine-history">
@@ -287,11 +290,35 @@
 				            	</select>
 						    </div>
 						</div>
-						<div class="form-group" id="examine_limit-block" style="display: none;">
-						    <label class="col-sm-2 control-label">审批额度</label>
-						    <div class="col-sm-2 pt5">
-						      	<input type="number" id="examine_limit">
-						    </div>
+						<div id="examine_limit-block" style="display: none;">
+							<div class="form-group">
+							    <label class="col-sm-2 control-label">审批额度</label>
+							    <div class="col-sm-2 pt5">
+							      	<input type="number" id="examine_limit">
+							    </div>
+							</div>
+							<div class="form-group">
+							    <label class="col-sm-2 control-label">费用类型</label>
+							    <div class="col-sm-2 pt5">
+							      	<select id="fee_type">
+							      		<option value="1">GPS费用</option>
+							      	</select>
+							    </div>
+							</div>
+							<div class="form-group">
+							    <label class="col-sm-2 control-label">费用金额</label>
+							    <div class="col-sm-2 pt5">
+							      	<input type="number" id="fee">
+							    </div>
+						  	</div>
+						  	<div class="form-group">
+							    <label class="col-sm-2 control-label">资金方</label>
+							    <div class="col-sm-2 pt5">
+							      	<select id="fund_provider">
+							      		<option value=""></option>
+							      	</select>
+							    </div>
+						  	</div>
 					  	</div>
 						<div class="form-group" id="reject_reason" style="display: none;">
 							<label class="col-sm-2 control-label">拒绝原因</label>
@@ -347,6 +374,8 @@
 <script type="text/javascript" src="/public/business/lib/metronic/js/chosen.jquery.min.js"></script>
 <script type="text/javascript" src="/public/business/js/selectArea.js"></script>
 <script type="text/javascript" src="__JS__/manager.js"></script>
+<script type="text/javascript" src="__STATIC__/lib/lightGallery/js/lightgallery.js"></script>
+<script type="text/javascript" src="__STATIC__/lib/lightGallery/js/lg-zoom.js"></script>
 <script>
 	$(".customer-info").each(function(){
 		var name = $(this).attr('name');
@@ -362,12 +391,33 @@
 	        }
 	    }
 	});
+	// $('span[name="credit_score"]').text(info['credit_info']['credit_score']);
+	// $('span[name="credit_level"]').text(info['credit_info']['credit_level']);
+	// $('span[name="credit_result"]').text(g_creditResult[info['credit_info']['credit_result']]);
 	$('span[name="bankcard"]').text(info['member_info']['bankcard']);
 	$('span[name="score"]').text(info['member_info']['score']);
 
+	// 还款计划
+	function repayTpl(data){
+		var html = '';
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+		  	html +='<tr>'
+		  		+'<td>'+ data[index].repay_period +'</td>'
+		  		+'<td>'+ formatDate(data[index].repay_time) +'</td>'
+		  		+'<td>'+ formatAmount(data[index].repay_money) +'</td>'
+		  		+'<td>'+ g_repayStatus[data[index].status] +'</td>'
+		  		 +'</tr>';
+			}
+		}
+		return html;
+	}
+	$('#repay-table tbody').html(repayTpl(info.repay_info));
+
+	// 审批历史
 	function historyTpl(data){
 		var html = '';
-		var operate = {'view':'查看','loan':'放款审核','recharge':'充值','withdraw':'提现','receivable':'回款','datareview':'资料审核','loanlimit':'额度审核'};
+		var operate = {'view':'查看','loan':'放款审核','recharge':'充值','withdraw':'提现','receivable':'回款','datareview':'资料审核','loanlimit':'额度审核','creditreview':'信用审核','trial':'初级审核'};
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
 			var i = index + 1;
@@ -385,40 +435,7 @@
 	}
 	$('#examine-history tbody').html(historyTpl(info.examine_log));
 
-
-	var keyList = [
-            {
-                form_key:"orderSupplement_pic_1",
-                form_label:"身份证正面照"
-            },
-            {
-                form_key:"orderSupplement_pic_2",
-                form_label:"身份证反面照"
-            },
-            {
-                form_key:"orderSupplement_pic_3",
-                form_label:"人车合照"
-            },
-            {
-                form_key:"orderSupplement_pic_4",
-                form_label:"合格证"
-            },
-            {
-                form_key:"orderSupplement_pic_5",
-                form_label:"保单证书"
-            },
-            {
-                form_key:"orderSupplement_pic_6",
-                form_label:"购车发票"
-            },
-            {
-                form_key:"orderSupplement_pic_7",
-                form_label:"首付凭证"
-            },
-            {
-                form_key:"orderSupplement_pic_8",
-                form_label:"垫资合同"
-            }];
+	var keyList = g_picList;
 	function picTpl(data){
 		var html = '';
 		if(typeof(data) =='object'){
@@ -426,9 +443,11 @@
 				var form_key = this.form_key;
 				for(var index = 0; index < data.length; index++){
 					if(form_key == data[index].form_key){
-						html +='<div class="pic-block col-sm-3">'
-					  		+'<img src="' + data[index].path + '">'
-					  		+'</div>';
+						html +=  '<li data-src="' + data[index].path + '" class="col-xs-4 col-md-3">'
+			                      	+'<div>'
+			                        	+ '<a href="#"><img src="' + data[index].path + '"></a>'
+			                      	+'</div>'
+			                    +'</li>';
 					  	break;
 					}
 				}
@@ -437,10 +456,25 @@
 		}
 		return html;
 	}
-
+	if(info.channel_info.property == 3){
+		keyList = keyList_guarantors;
+	}
 	$('#tab_1_6 .pic-container').html(picTpl(info.files));
+	$("#documentInfo").lightGallery();
 
-	$('#examine_limit').val(info['order_info']['loan_limit']);
+	// 资金方
+	function historyFund(data){
+		var html = '';
+		if(typeof(data) =='object'){
+			for(var index = 0; index < data.length; index++){
+			  	html += '<option value="'+ data[index].uid+'">'+ data[index].name +'</option>'
+			}
+		}
+		return html;
+	}
+	$('#fund_provider').html(historyFund(info.fund));
+
+	$('#examine_limit').val(info['order_info']['examine_limit']);
 	$('#examineStatus').change(function(){
 		if($(this).val() == '2'){
 			$('#reject_reason').slideDown('fast');
@@ -464,6 +498,13 @@
 		$('#orderRevokeBtn').hide();
 	}
 
+	var ajaxUrl = '/admin/examine/dataReview';
+	if(info['order_info']['status'] == '3'){
+		$('#examinePass').val('4');
+	}else if(info['order_info']['status'] == '4'){
+		$('#examinePass').val('1');
+		ajaxUrl = '/admin/examine/loanLimit';
+	}
 </script>
 <script>
 $(function(){
@@ -472,37 +513,35 @@ $(function(){
 	$('span[name="city_addr"]').text(city_addr);
 
 	$('#orderRevokeBtn').click(function(){
-		confirm('确认撤回订单');
-		ajax_jquery({
-	        url: apiUrl +'/admin/examine/delete',
-	        data:{
-	        	'id': id,
-	        },
-	        success:function(resp){
-	            if (resp.code == "1" ) {
-	            	ui_alert("撤销成功","success");
-	            	window.location.href = apiUrl + "/admin/examine/application.html";
-	            } else {
-	                if (typeof(resp.msg) == 'string') {
-	                    ui_alert(resp.msg);
-	                    return false;
-	                }
-	            }
-	        }
-		});
-	})
-
-	$('#orderExamineBtn').click(function(){
-		var ajaxUrl = '/admin/examine/dataReview';
-		if(info['order_info']['status'] == '3'){
-			$('#examinePass').val('4');
-		}else if(info['order_info']['status'] == '4'){
-			$('#examinePass').val('1');
-			ajaxUrl = '/admin/examine/loanLimit';
+		if(confirm('确认撤回订单')){
+			ajax_jquery({
+		        url: apiUrl +'/admin/examine/delete',
+		        data:{
+		        	'id': id,
+		        },
+		        success:function(resp){
+		            if (resp.code == "1" ) {
+		            	ui_alert("撤销成功","success");
+		            	window.location.href = apiUrl + "/admin/examine/application.html";
+		            } else {
+		                if (typeof(resp.msg) == 'string') {
+		                    ui_alert(resp.msg);
+		                    return false;
+		                }
+		            }
+		        }
+			});
+		}else{
+			return false;
 		}
+	});
+	$('#orderExamineBtn').click(function(){
 		var id = info['order_info']['id'];
 		var status = $('#examineStatus').val();
 		var examine_limit = $('#examine_limit').val();
+		var fee_type = $('#fee_type').val();
+		var fee = $('#fee').val();
+		var fund_provider = $('#fund_provider').val();
 		var reject_reason = encodeCheckbox('reject_reason');
 		var descr = $('#descr').val().replace(/\n/g,"");
 		ajax_jquery({
@@ -511,13 +550,16 @@ $(function(){
 	        	'id': id,
 	        	'status': status,
 	        	'examine_limit': examine_limit,
+	        	'fee_type': fee_type,
+	        	'fee': fee,
+	        	'fund_provider':fund_provider,
 	        	'reject_reason': reject_reason,
 	        	'descr': descr
 	        },
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	ui_alert("审核通过","success");
-	            	window.location.href = apiUrl + "/admin/examine/loanLimit";
+	            	setTimeout('window.location.href = apiUrl + ajaxUrl',2000);
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);
