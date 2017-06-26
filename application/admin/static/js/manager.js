@@ -46,8 +46,80 @@ var g_picList = [
             form_label:"代扣银行卡"
         },
         {
-            form_key:"outContract_pic_1",
-            form_label:"借款合同"
+            form_key:"guarantee_pic_1",
+            form_label:"担保函"
+        },
+    // 贷款 新车
+        {
+            form_key:"newcar_qualified_pic_1",
+            form_label:"合格证"
+        },
+        //二手车
+        {
+            form_key:"secondcar_pic_1",
+            form_label:"二手车"
+        },
+        {
+            form_key:"secondcar_pic_2",
+            form_label:"二手车"
+        },
+        {
+            form_key:"secondcar_pic_3",
+            form_label:"二手车"
+        },
+        {
+            form_key:"secondcar_pic_4",
+            form_label:"二手车"
+        },
+        {
+            form_key:"secondcar_pic_5",
+            form_label:"二手车"
+        },
+        {
+            form_key:"secondcar_pic_6",
+            form_label:"二手车"
+        },
+        {
+            form_key:"secondcar_pic_7",
+            form_label:"二手车"
+        },
+        {
+            form_key:"secondcar_pic_8",
+            form_label:"二手车"
+        },
+        //个人
+        {
+            form_key:"secondcar_idcard_face_1",
+            form_label:"身份证正面照"
+        },
+        {
+            form_key:"secondcar_idcard_back_1",
+            form_label:"身份证反面照"
+        },
+        {
+            form_key:"bankcard_pic_1",
+            form_label:"银行卡"
+        },
+        //交易
+        {
+            form_key:"carRegister_pic_1",
+            form_label:"车辆登记证"
+        },
+        {
+            form_key:"drivingLicense_pic_1",
+            form_label:"车辆行驶证"
+        },
+        {
+            form_key:"evidence_of_payment_1",
+            form_label:"付款凭证"
+        },
+        {
+            form_key:"ourContract_pic_1",
+            form_label:"合同"
+        },
+        {
+            form_key:"signContract_pic_1",
+            form_label:"签约照片"
         },
         {
             form_key:"bankExamine_pic_1",
@@ -56,22 +128,10 @@ var g_picList = [
         {
             form_key:"bankExamine_pic_2",
             form_label:"银行审批证明2"
-        },
+        }];
         {
             form_key:"bankExamine_pic_3",
             form_label:"银行审批证明3"
-        },
-        {
-            form_key:"signContract_pic_1",
-            form_label:"签约照片"
-        },
-        {
-            form_key:"carRegister_pic_1",
-            form_label:"车辆行驶证"
-        },
-        {
-            form_key:"drivingLicense_pic_1",
-            form_label:"车辆登记证"
         },
         {
             form_key:"propertyCertificate_pic_1",
@@ -89,45 +149,66 @@ var g_picList = [
             form_key:"otherMaterial_pic_1",
             form_label:"其他"
         },
+    // 垫资
         {
-            form_key:"propertyCertificate_pic_1",
-            form_label:"资产证明"
+            form_key:"newcar_idcard_face_1",
+            form_label:"身份证正面"
         },
         {
-            form_key:"incomeCertificate_pic_1",
-            form_label:"收入证明"
+            form_key:"newcar_idcard_back_1",
+            form_label:"身份证反面"
         },
         {
-            form_key:"secondcar1",
-            form_label:"身份证正面照"
+            form_key:"newcar_bankcard_pic_1",
+            form_label:"银行卡"
         },
         {
-            form_key:"secondcar2",
-            form_label:"身份证反面照"
+            form_key:"newcar_Qualified_1",
+            form_label:"车辆合格证"
         },
         {
-            form_key:"secondcar3",
-            form_label:"人车合照"
+            form_key:"newcar_borrowcontract_1",
+            form_label:"借款合同"
         },
         {
-            form_key:"secondcar4",
-            form_label:"合格证"
+            form_key:"newcar_bankExamine_pic_1",
+            form_label:"银行贷款协议1"
         },
         {
-            form_key:"secondcar5",
-            form_label:"保单证书"
+            form_key:"newcar_bankExamine_pic_2",
+            form_label:"银行贷款协议2"
         },
         {
-            form_key:"secondcar6",
-            form_label:"购车发票"
+            form_key:"newcar_signContract_pic_1",
+            form_label:"签约照片"
         },
         {
-            form_key:"secondcar7",
-            form_label:"首付凭证"
+            form_key:"secondcar_bankcard_pic_1",
+            form_label:"银行卡"
         },
         {
-            form_key:"secondcar8",
-            form_label:"合同"
+            form_key:"secondcar_carRegister_pic_1",
+            form_label:"车辆行驶证"
+        },
+        {
+            form_key:"secondcar_drivingLicense_pic_1",
+            form_label:"车辆登记证"
+        },
+        {
+            form_key:"secondcar_borrowContract_pic1",
+            form_label:"借款合同"
+        },
+        {
+            form_key:"secondcar_bankExamine_pic_1",
+            form_label:"银行贷款协议1"
+        },
+        {
+            form_key:"secondcar_bankExamine_pic_2",
+            form_label:"银行贷款协议2"
+        },
+        {
+            form_key:"secondcar_signContract_pic_1",
+            form_label:"签约照片"
         }
 ];
 var apiUrl ='';
