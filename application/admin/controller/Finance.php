@@ -717,7 +717,8 @@ class Finance extends Admin {
 	// 平台资金记录
 	public function transaction() {
 
-		$result = db('dealer_money')->alias('m')->field('m.*,d.name as dealer_name')->join('__DEALER__ d','d.id = m.uid','LEFT')->order('m.create_time DESC')->select();
+		// $result = db('dealer_money')->alias('m')->field('m.*,d.name as dealer_name')->join('__DEALER__ d','d.id = m.uid','LEFT')->order('m.create_time DESC')->select();
+		$result = db('dealer_money')->alias('m')->field('m.*,d.username as dealer_name')->join('__MEMBER__ d','d.uid = m.uid','LEFT')->order('m.create_time DESC')->select();
 
 		$data = array(
 				'infoStr' => json_encode($result)
