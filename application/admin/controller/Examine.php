@@ -272,8 +272,7 @@ class examine extends Admin {
 
 		$order_info = db('order')->where('id', $id)->find();
 
-
-		$channel_info = db('dealer')->alias('d')->field('d.*,m.realname as salesman,m.mobile as salesmobile')->join('__MEMBER__ m','m.dealer_id =d.id')->where('d.id',$order_info['dealer_id'])->find();
+		$channel_info = db('dealer')->alias('d')->field('d.*,m.realname as salesman,m.mobile as salesmobile')->join('__MEMBER__ m','m.mobile =d.mobile')->where('d.id',$order_info['dealer_id'])->find();
 
 
 

@@ -116,13 +116,18 @@ class User extends Api {
 				$userInfo['headerimgurl'] = "https://www.vpdai.com/public/images/default_avatar.jpg";
 			}
 			$userInfo['token'] = generateToken($uid, $sid);
-			 
-
-			$resp["code"] = 1;
-			$resp["msg"] = '登录成功';	
-			$resp["data"] = $userInfo;
-			
+			$role  = session('user_auth.role');
+			if ($role  == '0' || $role == '1' || $role == '7') {
+				$resp["code"] = 1;
+				$resp["msg"] = '登录成功';	
+				$resp["data"] = $userInfo;
+				
+			}else{
+				$resp["code"] = 0;
+				$resp["msg"] = '没有权限登录';	
+			}
 			return json($resp);
+			
 		} else {
 			switch ($uid) {
 				case -1:{
@@ -183,16 +188,15 @@ class User extends Api {
 				$userInfo['roleid']   = $userInfo['access_group_id'];
 				unset($userInfo['access_group_id']);
 			}elseif ($role  == '1') {
-				$userInfo = db('member')->alias('m')->field('m.uid,m.mobile,m.username,m.realname,m.idcard,m.bankcard,m.status,m.access_group_id,m.headerimgurl,d.name as dealer_name')->join('__DEALER__ d','m.dealer_id = d.id')->where('m.uid',$uid)->find();
+				$userInfo = db('member')->alias('m')->field('m.uid,m.mobile,m.username,m.realname,m.idcard,m.bankcard,m.status,m.access_group_id,m.headerimgurl,d.name as dealer_name')->join('__DEALER__ d','m.dealer_id = d.id','LEFT')->where('m.uid',$uid)->find();
 			}else{
-				$userinfo = db('member')->alias('m')->field('m.uid,m.mobile,m.username,m.realname,m.idcard,m.bankcard,m.status,m.access_group_id,m.headerimgurl,d.name as dealer_name')->join('__DEALER__ d','m.mobile = d.mobile')->where('m.uid',$uid)->find();
+				$userInfo = db('member')->alias('m')->field('m.uid,m.mobile,m.username,m.realname,m.idcard,m.bankcard,m.status,m.access_group_id,m.headerimgurl,d.name as dealer_name')->join('__DEALER__ d','m.mobile = d.mobile','LEFT')->where('m.uid',$uid)->find();
 			}
 			
 			
 			if(empty($userInfo['headerimgurl'])){
 				$userInfo['headerimgurl'] = "https://www.vpdai.com/public/images/default_avatar.jpg";
 			}
-			
 			$resp["code"] = 1;
 			$resp["msg"] = '获取成功';	
 			$resp["data"] = $userInfo;
