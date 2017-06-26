@@ -27,12 +27,14 @@
       if ($priv_bank_account_id) {
         $datas['dealer_bank'] = $priv_bank_account_id['priv_bank_name'];
         $datas['dealer_bank_branch'] = $priv_bank_account_id['priv_bank_branch'];
-      }
+        $did = $priv_bank_account_id['id'];
+              }
       if ($bank_account_id) {
          $datas['dealer_bank'] = $bank_account_id['bank_name'];
          $datas['dealer_bank_branch'] = $bank_account_id['bank_branch'];
+         $did = $bank_account_id['id'];
       }
-      modify_account($datas,$uid,'4','1','withdraw','INSERT');
+      modify_account($datas,$did,'4','1','withdraw','INSERT');
 
       //提现资金记录
 

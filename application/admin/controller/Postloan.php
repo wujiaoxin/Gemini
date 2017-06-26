@@ -162,7 +162,6 @@ class Postloan extends Admin {
 	public function signview($id=null) {
 		if (IS_POST) {
 			$data = input('post.');
-
 			//四要素验证绑卡
 			$idcard = $data['IdentificationNo'];
 			$realname = $data['RealName'];
@@ -176,7 +175,7 @@ class Postloan extends Admin {
 						'status'=>1,
 						'update_time'=>time(),
 					);
-					db('bankcard')->where('id',$data['id'])->update($info);
+					db('bankcard')->where('id',$id)->update($info);
 					$resp["code"] = 1;
 					$resp["msg"] = '绑卡成功';
 				}elseif ($res['resCode'] == '0000' && $res['stat'] == '2') {
@@ -229,9 +228,11 @@ class Postloan extends Admin {
 			return json($resp);
 		}else{
 			$result = db('Bankcard')->alias('b')->field('b.*,m.mobile')->join('__MEMBER__ m','m.uid = b.uid')->where('id',$id)->find();
-			$resl  = explode(',', $result['bank_branch']);
-			$result['province'] = $resl[0];
-			$result['city'] = $resl[1];
+			if (!empty($result['bank_branch'])) {
+				$resl  = explode(',', $result['bank_branch']);
+				$result['province'] = $resl[0];
+				$result['city'] = $resl[1];
+			}
 			$data = array(
 				'infoStr' =>json_encode($result),
 			);

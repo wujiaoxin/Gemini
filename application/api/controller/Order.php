@@ -128,7 +128,7 @@ class Order extends Api {
 		// $data["url"] = "https://t.vpdai.com/api/open/appdl?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
 		$data["url"] = url('/api/open/appdl')."?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
 		$data["url"] = urlencode($data["url"]);
-		$data["url"] = "https://pan.baidu.com/share/qrcode?w=128&h=128&url=".$data['url'];
+		$data["url"] = "https://pan.baidu.com/share/qrcode?w=328&h=328&url=".$data['url'];
 		$resp['code'] = 1;
 		$resp['msg'] = '获取成功';
 		$resp['data'] = $data;

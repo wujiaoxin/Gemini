@@ -53,7 +53,7 @@ class Finance extends Admin {
 				
 				if ($data['status'] == '1') {
 
-					$result = db('order')->field('fee,loan_limit,examine_limit,type,mobile,sn,endtime')->where('id',$data['id'])->find();
+					$result = db('order')->field('fee,loan_limit,examine_limit,type,mobile,sn,endtime,mid')->where('id',$data['id'])->find();
 					if ($result['type'] == '2' || $result['type'] == '4') {
 						
 							$datas['finance'] = '3';

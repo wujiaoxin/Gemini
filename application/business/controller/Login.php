@@ -21,17 +21,26 @@ class Login extends Base {
 				return json($resp);
 			}
 			$success = db('member')->alias('m')->field('access_group_id,status')->where('mobile',$mobile)->find();
-
 			if ($success['access_group_id'] == '7' || $success['access_group_id'] == '13' || $success['access_group_id'] == '14' ||$success['access_group_id'] == '15' || $success['access_group_id'] == '16' || $success['access_group_id'] == '17' || $success['access_group_id'] == '18' || $success['access_group_id'] == '19') {
-				if ($success['access_group_id'] != '19') {
+				if ($success['access_group_id'] == '19') {
+					if ($success['status'] <= 0) {
+						$resp["code"] = 0;
+						$resp["msg"] = '用户已禁用';
+						return json($resp);
+					}
+				}else{
 					$deal = db('Dealer')->field('status')->where('mobile',$mobile)->find();
-					$success['status'] = $deal['status'];
+					if (!empty($deal)) {
+						$success['status'] = $deal['status'];
+						if ($success['status'] == -1 || $success['status'] == 9) {
+							$resp["code"] = 0;
+							$resp["msg"] = '用户已禁用';
+							return json($resp);
+						}
+					}
 				}
-				if ($success['status'] <= 0) {
-					$resp["code"] = 0;
-					$resp["msg"] = '用户已禁用';
-					return json($resp);
-				}
+				
+				
 				$user = model('User');
 				$uid  = $user->login($mobile, $password);
 				if ($uid > 0) {
@@ -80,10 +89,10 @@ class Login extends Base {
 		$mobile = session('business_mobile');
 		$res = db('dealer')->field('status,property')->where('mobile',$mobile)->find();
 		if ($res['status'] == '1' && $res['property'] == '3') {
-			$this->redirect(url('/guarantee/index/index'));
+			$this->redirect(url('/business/login/login'));
 		}elseif ($res['status'] == '1' && $res['property'] == '2') {
 			$this->redirect(url('index/index'));
-		}elseif ($res['status'] == '1' && $res['property'] == '2') {
+		}elseif ($res['status'] == '1' && $res['property'] == '1') {
 			$this->redirect(url('index/index'));
 		}else{
 			db('dealer')->where('mobile',$mobile)->setField('status','3');
