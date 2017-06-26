@@ -19,17 +19,7 @@ class Postloan extends Admin {
 
 		$result = $repay->select();
 
-		foreach ($result as $k => $v) {
-
-			$sercher = serch_name($v['dealer_id']);
-			
-			$order_sn = $order->get_sn($v['order_id']);
-			
-			$result[$k]['dealer_name'] = $sercher['dealer_name'];
-
-			$result[$k]['sn'] = $order_sn['sn'];
-
-		}
+		$result = db('order_repay')->alias('r')->field('r.*,d.name as dealer_name,o.sn')->join('__DEALER__ d','r.dealer_id = d.id','LEFT')->join('__ORDER__ o','o.id = r.order_id','LEFT')->select();
 		$data = array(
 
 			'infoStr' => json_encode($result)
@@ -44,16 +34,28 @@ class Postloan extends Admin {
 
 	public function withhold() {
 		
-		$result = db('member_withhold')->select();
-		foreach ($result as $k => $v) {
-			$name = serch_realname($v['uid']);
-			$result[$k]['realname'] = $name;
-		}
+		$result = db('member_withhold')->alias('w')->field('w.*,m.realname')->join('__MEMBER__ m','w.uid = m.uid','LEFT')->select();
 		$data = array(
 			'infoStr' =>json_encode($result),
 		);
 		$this->assign($data);
 		$this->setMeta('代扣审核');
+		return $this->fetch();
+	}
+
+	public function sign() {
+		$map = array(
+			'type'=>1
+		);
+		$result = db('Bankcard')->where($map)->select();
+		$data = array(
+
+			'infoStr' => json_encode($result)
+		);
+
+		$this->assign($data);
+
+		$this->setMeta('客户签约');
 		return $this->fetch();
 	}
 
@@ -140,21 +142,99 @@ class Postloan extends Admin {
 			
 			return json($resp);
 		}else{
-			$result = db('member_withhold')->find(input('id'));
+			$result = db('member_withhold')->alias('w')->field('w.*,o.examine_limit as loan_limit,o.type,r.repay_money,m.realname')->join('__ORDER__ o','w.order_id = o.id','LEFT')->join('__ORDER_REPAY__ r','w.order_id = r.order_id','LEFT')->join('__MEMBER__ m','w.uid = m.uid','LEFT')->find(input('id'));
+
 			$files = db('order_files')->where('order_id',$result['order_id'])->limit(9)->order('create_time DESC')->select();
-			$repay = db('order')->field('examine_limit,type')->where('id',$result['order_id'])->find();
-			$order_repay = db('order_repay')->field('repay_money')->where('order_id',$result['order_id'])->find();
-			$result['loan_limit'] = $repay['examine_limit'];
-			$result['repay_money'] = $order_repay['repay_money'];
-			$name = serch_realname($result['uid']);
-			$result['realname'] = $name;
-			$result['type'] = $repay['type'];
+			
 			$res =array(
 				'data'=>$result,
 				'files'=>$files
 				);
 			$data = array(
 				'infoStr' =>json_encode($res),
+			);
+			$this->assign($data);
+			$this->setMeta('审核查看');
+			return $this->fetch();
+		}
+	}
+
+	public function signview($id=null) {
+		if (IS_POST) {
+			$data = input('post.');
+			//四要素验证绑卡
+			$idcard = $data['IdentificationNo'];
+			$realname = $data['RealName'];
+			$bankcard = $data['CardNumber'];
+			$mobile = $data['Mobile'];
+			$event = new \app\riskmgr\controller\Yinlian();
+			$res = $event->authvalid($idcard,$realname,$bankcard,$mobile,5);
+			if (!empty($res)) {
+				if ($res['resCode'] == '0000' && $res['stat'] == '1') {
+					$info = array(
+						'status'=>1,
+						'update_time'=>time(),
+					);
+					db('bankcard')->where('id',$id)->update($info);
+					$resp["code"] = 1;
+					$resp["msg"] = '绑卡成功';
+				}elseif ($res['resCode'] == '0000' && $res['stat'] == '2') {
+					$resp["code"] = 4;
+					$resp["msg"] = '实名信息不匹配';	
+					// $resp["data"] = $saveData;
+					return json($resp);
+				}else{
+					$resp["code"] = 5;
+					$resp["msg"] = empty($res['resMsg']) ? '数据异常': $res['resMsg'];;	
+					// $resp["data"] = $saveData;
+					return json($resp);
+				}
+			}else{
+				$resp["code"] = 3;
+				$resp["msg"] = "绑卡异常,请联系客服";
+				return json($resp);
+			}
+
+
+			
+			/* //乾多多绑卡
+			$epay = new \epay\Epay();
+			$ret = $epay::bankcard($data);//单卡绑定
+			// $ret = $epay::bindcardag($data);//多卡绑定
+	        if (empty($ret)) {
+	        	$resp['code'] = '0';
+	        	$resp['msg'] = '绑卡异常,请联系客服';
+	        	return json($resp);
+	        }
+	        $ret  = json_decode($ret,true);
+	        if ($ret['ResultCode'] == '88') {
+	        	
+	        	$arr = array(
+					'moneymoreid'=>$result['MoneymoremoreId'],
+					'status'=>1,
+				);
+				$map = array(
+					'order_id'=>-1,
+					'type'=>1,
+					'idcard'=> $result['IdentificationNo'],
+				);
+				db('bankcard')->where($map)->update($arr);
+				$resp['code']='1';
+	        	$resp['msg'] = '绑卡成功';
+	        }else{
+	        	$resp['code'] = '0';
+	        	$resp['msg'] = $ret['Message'];
+	        }*/
+			return json($resp);
+		}else{
+			$result = db('Bankcard')->alias('b')->field('b.*,m.mobile')->join('__MEMBER__ m','m.uid = b.uid')->where('id',$id)->find();
+			if (!empty($result['bank_branch'])) {
+				$resl  = explode(',', $result['bank_branch']);
+				$result['province'] = $resl[0];
+				$result['city'] = $resl[1];
+			}
+			$data = array(
+				'infoStr' =>json_encode($result),
 			);
 			$this->assign($data);
 			$this->setMeta('审核查看');

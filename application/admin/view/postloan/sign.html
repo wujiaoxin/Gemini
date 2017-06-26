@@ -1,0 +1,85 @@
+{extend name="public/base"/}
+{block name="style"}
+
+<!-- <link type="text/css" href="__PUBLIC__/css/libs/bootstrap-editable.css"> -->
+<link rel="stylesheet" type="text/css" href="__CSS__/metronic.css"/>
+<link rel="stylesheet" type="text/css" href="__CSS__/DT_bootstrap.css"/>
+<script type="text/javascript">
+	var info = {};
+	try {
+		info = JSON.parse('{$infoStr}');
+	} catch (e) {
+		alert("数据异常");
+	}
+</script>
+{/block}
+{block name="body"}
+<div class="main-box clearfix">
+	<header class="main-box-header clearfix">
+		<div class="pull-left">
+			<h2>{$meta_title}</h2>
+		</div>
+	</header>
+	<div class="main-box-body clearfix">
+		<div class="clearfix">
+			<table class="table table-hover" id="table-postloan-sign">
+				<thead>
+					<tr>
+						<th>客户ID</th>
+						<th>用户类型</th>
+						<th>真实姓名</th>
+						<th>身份证号</th>
+						<th>银行卡号</th>
+						<th>绑卡时间</th>
+						<th>绑卡状态</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" src="/public/business/lib/metronic/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/public/business/lib/metronic/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="__JS__/table-managed.js"></script>
+<script type="text/javascript" src="__JS__/manager.js"></script>
+<script type="text/javascript">
+	function tpl(data){
+		var html = '';
+		var g_signStatus = {'-1':'绑卡失败','0':'待绑卡','1':'绑卡成功','2':'绑卡申请中'};
+		var g_signOrder = {'-1':'C端客户','-2':'担保机构','-3':'担保车商','-4':'资金方'};
+		if(typeof(data) =='object'){
+		for(var index = 0; index < data.length; index++){
+			var opera = '';
+			if(data[index].status == '2'){
+				opera ='<a href="/admin/postloan/signview?id='+ data[index].id + '">审核</a>';
+			}else{
+				opera = '';
+			}
+
+		  	html += '<tr class="odd gradex">'
+		  		+'<td>' + data[index].id + '</td>'
+		  		+'<td>' + g_signOrder[data[index].order_id] + '</td>'
+		  		+'<td>'+ data[index].bank_account_name +'</td>'
+		  		+'<td>'+ data[index].idcard +'</td>'
+		  		+'<td>'+ data[index].bank_account_id +'</td>'
+		  		+'<td>'+ formatDate(data[index].update_time) +'</td>'
+		  		+'<td>'+ g_signStatus[data[index].status] +'</td>'
+		  		+'<td>'+ opera +'</td>'
+		  		 +'</tr>'
+			}
+		}
+		return html;
+	};
+	$('#table-postloan-sign tbody').html(tpl(info));
+
+    $(function(){
+    	TableManaged.init();
+    });
+</script>
+
+{/block}

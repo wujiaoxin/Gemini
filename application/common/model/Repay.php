@@ -75,7 +75,7 @@ class Repay extends \app\common\model\Base {
 	    if ($order) {
 
 	      $repay_time = time()+$order['endtime']*24*60*60;
-
+	      $repay_money  = $order['examine_limit'] + $order['fee'];
 	      $order_repay = array(
 
 	          'order_id'=>$order_id,
@@ -84,7 +84,7 @@ class Repay extends \app\common\model\Base {
 
 	          'dealer_id'=> $order['dealer_id'],
 
-	          'repay_money'=>$order['examine_limit'],
+	          'repay_money'=>$repay_money,
 
 	          'manage_money'=>'0',
 
@@ -192,14 +192,16 @@ class Repay extends \app\common\model\Base {
 	*/
 	function  make_interest($order_id){
 
-		$deal = db('order')->where('id',$order_id)->find();
+		$deal = db('order')->alias('o')->field('o.*,p.vp_rate as rate')->join('__PROGRAMME__ p','o.id = p.order_id')->where('o.id',$order_id)->find();
 
 		$deal['product_name'] = repay_type($deal['type']);
 
 		$totalperiod = floor($deal['endtime']/30);
 
 		//利率
-		$deal['rate'] = get_rate($deal['endtime']);
+		// $deal['rate'] = get_rate($deal['endtime']);
+
+		$deal['rate'] = $deal['rate']/1000;
 
 		$list = array();
 		
@@ -208,6 +210,9 @@ class Repay extends \app\common\model\Base {
 		$repay_day = time();
 
 		$uids = db('member')->field('uid')->where('mobile',$deal['mobile'])->find();
+
+		//放款金额
+		$deal['examine_limit'] = $deal['examine_limit'] + $deal['fee'];
 
 		for($i=1; $i <= $totalperiod; $i++){
 

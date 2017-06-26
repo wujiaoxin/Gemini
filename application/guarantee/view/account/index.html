@@ -126,7 +126,7 @@
 	      	<a class="close"></a>
 	      	<span></span>
 	    </div>
-	    <div class="form-horizontal payPwd">
+	    <div class="form-horizontal">
 	    	<div class="control-group">
 		        <label class="control-label">银行卡号</label>
 		        <div class="controls">
@@ -334,7 +334,7 @@
 			hasNoData('item-creditCode','未设置');
 		}
 
-		if(typeof(info['paypassword']) == 'string'){
+		if(typeof(info['paypassword']) == 'string' && info['paypassword'] != ''){
 			hasData('item-payPwd','已设置');
 		}else{
 			hasNoData('item-payPwd','未设置');

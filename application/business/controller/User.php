@@ -10,6 +10,7 @@
 namespace app\business\controller;
 use app\business\controller\Baseness;
  class User extends Baseness {
+
 	public function guide() {
 		$mobile = session("business_mobile");
 		$modelDealer = model('Dealer');
@@ -125,64 +126,70 @@ use app\business\controller\Baseness;
 	public function myShop() {
 		$uid =session('user_auth.uid');
 		$mobile = session('business_mobile');
+		$forms = db('Dealer')->field('guarantee_id,priv_bank_name,name as username')->where('mobile',$mobile)->find();
+		if(empty($forms['priv_bank_name'])){
+			return $this->redirect(url('/business/user/guide'));
+		}
 		$where = array(
+			'o.mid' => $uid,
 
-			'mid' => $uid,
-
-			'status'=>1
+			'o.status'=>1
 
 			);
-
 		//分组统计
-		$result = db('order')->field('mid,uid,sum(examine_limit) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
-		foreach ($result as $k => $v) {
-			$result[$k]['realname'] = serch_real($v['uid']);
-		}
-		$num = db('order')->field('mid,uid,count(id) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
-		foreach ($num as $k => $v) {
-			$num[$k]['realname'] = serch_real($v['uid']);
-		}
-		$avg = db('order')->field('mid,uid,avg(examine_limit) as result')->where($where)->order('result DESC')->group('uid')->limit(5)->select();
-		foreach ($num as $k => $v) {
-			$avg[$k]['realname'] = serch_real($v['uid']);
+		$result = db('order')->field('o.mid,o.uid,sum(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(10)->select();
+		
+		$num = db('order')->field('o.mid,o.uid,count(o.id) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(10)->select();
+		$avg = db('order')->field('o.mid,o.uid,avg(o.examine_limit) as result,m.realname')->alias('o')->join('__MEMBER__ m','o.uid = m.uid','LEFT')->where($where)->order('result DESC')->group('o.uid')->limit(10)->select();
+		
+		if (IS_POST) {
+			$data = input('post.');
+			//一个月内每天的订单数量
+			$res = $data['term']/30;
+			$begin = date('Y-m-d',strtotime("-{$res} month"));//30天前
+	        $begin =strtotime($begin);
+	        $end =strtotime(date('Y-m-d'))+86399;
+	        $map['create_time'] = array(array('gt',$begin),array('lt',$end));
+	        $map['mid'] =$uid;
+	        $map['status'] = '1';
+	        $res =db('order')->field("COUNT(*) as tnum,sum(examine_limit) as total_money, FROM_UNIXTIME(create_time,'%Y-%m-%d') as time")->where($map)->group('time')->select();
+	        $tnum =0;
+	        $tamount=0;
+	        foreach ($res as $val){
+	            $arr[$val['time']] = $val['tnum'];
+	            $brr[$val['time']] = $val['total_money'];
+	            $tnum += $val['tnum'];
+	            $tamount += $val['total_money'];
+	        }
+	        
+	        for($i=$begin;$i<=$end;$i=$i+24*3600){
+	            $tmp_num = empty($arr[date('Y-m-d',$i)]) ? 0 : $arr[date('Y-m-d',$i)];
+	            $tmp_amount = empty($brr[date('Y-m-d',$i)]) ? 0 : $brr[date('Y-m-d',$i)];               
+	            $date = date('Y-m-d',$i);
+	            $list[] = array('time'=>$date,'num'=>$tmp_num,'total_money'=>$tmp_amount);
+	        }
+	        $resp['code'] = '1';
+	        $resp['data'] = $list;
+	        return json($resp);
+		}else{
+
+			$list = (empty($list)) ? '' : $list;
+			$info = array(
+					'money'=>$result,
+					'num'=>$num,
+					'avg'=>$avg,
+					'username'=>$forms['username'],
+					'guarantee_id'=>$forms['guarantee_id'],
+				);
+			$data = array(
+					'info'=>$info,
+					'infoStr'=>json_encode($info)
+				);
+
+			$this->assign($data);
+			return $this->fetch('myShop');
 		}
 		
-		//一个月内每天的订单数量
-		$begin = date('Y-m-d',strtotime("-1 month"));//30天前
-        $begin =strtotime($begin);
-        $end =strtotime(date('Y-m-d'))+86399;
-        $map['create_time'] = array(array('gt',$begin),array('lt',$end));
-        $map['mid'] =$uid;
-        $map['status'] = '1';
-        $res =db('order')->field("COUNT(*) as tnum,sum(examine_limit) as total_money, FROM_UNIXTIME(create_time,'%Y-%m-%d') as time")->where($map)->group('time')->select();
-        $tnum =0;
-        $tamount=0;
-        foreach ($res as $val){
-            $arr[$val['time']] = $val['tnum'];
-            $brr[$val['time']] = $val['total_money'];
-            $tnum += $val['tnum'];
-            $tamount += $val['total_money'];
-        }
-        
-        for($i=$begin;$i<=$end;$i=$i+24*3600){
-            $tmp_num = empty($arr[date('Y-m-d',$i)]) ? 0 : $arr[date('Y-m-d',$i)];
-            $tmp_amount = empty($brr[date('Y-m-d',$i)]) ? 0 : $brr[date('Y-m-d',$i)];               
-            $date = date('Y-m-d',$i);
-            $list[] = array('time'=>$date,'num'=>$tmp_num,'total_money'=>$tmp_amount);
-
-        }
-		$info = array(
-				'money'=>$result,
-				'num'=>$num,
-				'avg'=>$avg,
-				'time'=>$list
-			);
-		$data = array(
-				'info'=>$info,
-				'infoStr'=>json_encode($info)
-			);
-		$this->assign($data);
-		return $this->fetch('myShop');
 	}
 
 	public function loanItem() {
@@ -190,26 +197,24 @@ use app\business\controller\Baseness;
 		if (IS_POST) {
 			$data = input('post.');
 			$map['mid'] =$uid;
-			if ($data['type']) {
+			/*if ($data['type']) {
 				$map['type'] = $data['type'];
-			}
-			if (isset($data['status'])) {
+			}*/
+			/*if (isset($data['status'])) {
 				if ($data['status'] != '') {
 	    			$map['status'] = $data['status'];
 	    		}
-			}
+			}*/
 			$map['credit_status'] = '3';
 			if ($data['dateRange']) {
 				$result = to_datetime($data['dateRange']);
 				$endtime =$result['endtime'];
 				$begintime = $result['begintime'];
-				$result = db('order')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
+				$result = db('order')->alias('o')->field('o.*,m.realname')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->whereTime('create_time','between',["$endtime","$begintime"])->select();
 			}else{
-				$result = db('order')->where($map)->select();
+				$result = db('order')->alias('o')->field('o.*,m.realname')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
 			}
-			foreach ($result as $k => $v) {
-				$result[$k]['realname'] = serch_real($v['uid']);
-			}
+			
 			if ($result) {
 				$resp['code'] = '1';
 				$resp['msg'] = '数据正常';
@@ -299,13 +304,11 @@ use app\business\controller\Baseness;
 					$result = to_datetime($data['dateRange']);
 					$endtime =$result['endtime'];
 					$begintime = $result['begintime'];
-					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
+					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn,m.realname as yewu_realname')->join('__ORDER__ d',' d.id = o.order_id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->whereTime('repay_time','between',["$endtime","$begintime"])->order('o.status ASC')->select();
 				}else{
-					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn')->join('__ORDER__ d',' d.id = o.order_id')->where($map)->order('o.status ASC')->select();
+					$order_repay = db('order_repay')->alias('o')->field('o.*,d.type,d.uid,d.sn,m.realname as yewu_realname')->join('__ORDER__ d',' d.id = o.order_id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->order('o.status ASC')->select();
 				}
-				foreach ($order_repay as $k => $v) {
-					$order_repay[$k]['yewu_realname'] = serch_real($v['uid']);
-				}
+				
 				if ($order_repay) {
 					$resp['code'] = '1';
 					$resp['msg'] = '数据正常';

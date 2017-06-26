@@ -23,9 +23,9 @@
 		<span class="selectParm-title">业务类型:</span>
 		<ul class="selectParm selectOrderType">
 			<li data='' class="active" >全部</li>
-			<li data='1'>二手车按揭贷款</li>
+			<!-- <li data='1'>二手车按揭贷款</li> -->
 			<li data='2'>二手车按揭垫资</li>
-			<li data='3'>新车按揭贷款</li>
+			<!-- <li data='3'>新车按揭贷款</li> -->
 			<li data='4'>新车按揭垫资</li>
 		</ul>
 	</div>
@@ -162,7 +162,7 @@
 	function ajaxRepayItem(type,dateRange,status){
 		$('#table-repayItem').dataTable().fnClearTable();//清空原数据
 		ajax_jquery({
-	        url: apiUrl +'/business/user/repayItem',
+	        url: apiUrl +'/guarantee/user/repayItem',
 	        data:{
 	            'type': type,
 	            'dateRange': dateRange,
@@ -171,7 +171,12 @@
 	        success:function(resp){
 	            if (resp.code == "1" ) {
 	            	$('#table-repayItem tbody').html(tpl(resp.data));
-	            	$('#table-repayItem').dataTable({"bDestroy":true});
+	            	$('#table-repayItem').dataTable({
+	            		"bDestroy":true,
+	            		"aaSorting": [
+		                    [ 0, "desc" ]
+		                ]
+	            	});
 	            } else {
 	                if (typeof(resp.msg) == 'string') {
 	                    ui_alert(resp.msg);

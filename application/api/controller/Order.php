@@ -30,14 +30,17 @@ class Order extends Api {
 		return json($data);
 	}
 	//添加
-	public function add() {
+	public function add($mobile = null,$price = null) {
 
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
 		// echo $role;die;
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
-		$data = input('post.');
+		$data =array(
+			'mobile'=>$mobile,
+			'price'=>$price
+		);
 		// $data = input();
 		if (empty($data)) {
 			$resp['code'] = 0;
@@ -57,7 +60,7 @@ class Order extends Api {
 		return json($resp);
 	}
 	
-	public function getList($status = null, $type = null,$page = 15) {
+	public function getList($status = null, $type = null) {
 		$map = '';
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
@@ -80,11 +83,11 @@ class Order extends Api {
 			}else{
 				if ($status == 3) {
 
-					$map = $map.' and status in (1,3,4)';
+					$map = $map.' and status in (3,4,11,12,13)';
 
 				}elseif ($status == 1) {
 
-					$map = $map.' and finance = 4';
+					$map = $map.' and finance  in (3,4) ';
 
 				}else{
 
@@ -100,7 +103,7 @@ class Order extends Api {
 			
 			$sort = "id desc";
 			$map .= ' and credit_status = 3';
-			$list  = db('Order')->where($map)->order($sort)->paginate($page);
+			$list  = db('Order')->where($map)->order($sort)->paginate(15);
 			
 			$resp['code'] = 1;
 			$resp['msg'] = 'OK';
@@ -109,7 +112,7 @@ class Order extends Api {
 		}else{
 			$Order = model('Order');
 
-			$list = $Order->get_order_list($uid, $role, $type, $status,$page);
+			$list = $Order->get_order_list($uid, $role, $type, $status);
 			$resp['code'] = 1;
 			$resp['msg'] = 'OK';
 			$resp['data'] = $list;
@@ -122,9 +125,10 @@ class Order extends Api {
 		$resp['code'] = 0;
 		$resp['msg'] = '未知错误';
 		$orderModel = model('Order');
-		$data["url"] = "https://t.vpdai.com/api/open/appdl?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
+		// $data["url"] = "https://t.vpdai.com/api/open/appdl?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
+		$data["url"] = url('/api/open/appdl')."?mobile=".$mobile."&order_id=".$id."&from=dealer&price=".$price;
 		$data["url"] = urlencode($data["url"]);
-		$data["url"] = "https://pan.baidu.com/share/qrcode?w=512&h=512&url=".$data['url'];
+		$data["url"] = "https://pan.baidu.com/share/qrcode?w=328&h=328&url=".$data['url'];
 		$resp['code'] = 1;
 		$resp['msg'] = '获取成功';
 		$resp['data'] = $data;
@@ -132,7 +136,7 @@ class Order extends Api {
 	}
 	
 	
-	public function save($id = null, $type = null, $mobile = null, $idcard = null, $loan_limit = null, $loan_term = null) {
+	public function save($id = null,$type=null, $loan_limit = null, $loan_term = null) {
 		// $uid = session('user_auth.uid');
 		$uid = $id;
 		$resp['code'] = 0;
@@ -140,7 +144,7 @@ class Order extends Api {
 		$orderModel = model('Order');
 		if ($_POST) {
 			$data = input('post.');
-			unset($data['type']);
+			// unset($data['type']);
 			$list = $orderModel->save_order($uid,$data);
 			if ($list) {
 				$data["id"] = $data['id'];
@@ -220,7 +224,7 @@ class Order extends Api {
 		//$filter['uid'] = $uid;
 		$filter['order_id'] = $info['id'];
 		$filter['status'] = 1;//有效文件
-		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->order('create_time DESC')->limit(16)->select();
+		$files = db('OrderFiles')->field('id,path,size,create_time,form_key,form_label')->where($filter)->order('create_time DESC')->limit(200)->select();
 
 		$data = array(
 			'info'    => $info,

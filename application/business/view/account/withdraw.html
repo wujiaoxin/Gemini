@@ -30,11 +30,8 @@
 					<span class="bank_name" id="bank_name"></span>
 					<span class="card_num" id="bank_account_id"></span>
 				</div>
-				<div class="card horizontal">
-					<span class="bank_name" id="priv_bank_name"></span>
-					<span class="card_num" id="priv_bank_account_id"></span>
-				</div>
 			</div>
+<!-- 			<div>可提现金额 <span id="availableAssets"></span>元</div> -->
 		</div>
 		<div class="portlet">
 			<div class="form-horizontal">
@@ -96,11 +93,11 @@
 <script src="/public/business/js/table-managed.js"></script>
 <script>
 	//初始化银行卡
-	$('#bank_name').text(info.bankcard.bank_name);
-	$('#bank_account_id').text(encryptBankcard(info.bankcard.bank_account_id)).attr('data',info.bankcard.bank_account_id);
-	$('#priv_bank_name').text(info.bankcard.priv_bank_name);
-	$('#priv_bank_account_id').text(encryptBankcard(info.bankcard.priv_bank_account_id)).attr('data',info.bankcard.priv_bank_account_id);
-
+	// $('#availableAssets').text(info.availableAssets);
+	if(typeof(info.bankcard.bank_account_id) == 'string' && info.bankcard.bank_account_id != ''){
+		$('#bank_name').text(bankChoice[info.bankcard.bank_name]);
+		$('#bank_account_id').text(encryptBankcard(info.bankcard.bank_account_id)).attr('data',info.bankcard.bank_account_id);
+	}
 
 	//初始化订单表
 	function tpl(data){
@@ -126,10 +123,10 @@
 		TableManaged.init();
 
 		//点击选择银行卡
-		$('.card').click(function () {
-		  	$(this).addClass('card_selected')
-		  		.siblings().removeClass('card_selected');
-		});
+		// $('.card').click(function () {
+		//   	$(this).addClass('card_selected')
+		//   		.siblings().removeClass('card_selected');
+		// });
 
 		//checkbox选择统计交易金额
 		jQuery('#table-withdraw tbody').on('change','.checkboxes',function () {
@@ -145,14 +142,14 @@
         });
 
         $("#submit").click(function(){
-        	var bank_card = $('.card.card_selected > .card_num').attr('data');
+        	var bank_card = info.bankcard.bank_account_id;
         	var payPwd =$('#payPwd').val();
 			var withdrawOrders = [];
 			jQuery('#table-withdraw tbody .checkboxes:checked').each(function (i,n) {
 	            withdrawOrders[i] = $(this).parents('tr').find('.order_id').text();
             });
-            if(typeof bank_card == 'undefined' || bank_card == ''){
-            	ui_alert('请选择提现银行卡');
+            if(bank_card == ''){
+            	ui_alert('请先绑定银行卡');
             	return false;
             }else if(withdrawOrders == ''){
             	ui_alert('请选择提现订单');

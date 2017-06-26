@@ -20,16 +20,37 @@ class Login extends Base {
 				$resp["msg"] = '用户名或者密码不能为空！';
 				return json($resp);
 			}
-			$success = db('member')->field('access_group_id')->where('mobile',$mobile)->find();
-			if ($success['access_group_id'] == '7' || $success['access_group_id'] == '13' || $success['access_group_id'] == '14' ||$success['access_group_id'] == '15' || $success['access_group_id'] == '16' || $success['access_group_id'] == '17' || $success['access_group_id'] == '18') {
+			$success = db('member')->alias('m')->field('access_group_id,status')->where('mobile',$mobile)->find();
+			if ($success['access_group_id'] == '7' || $success['access_group_id'] == '13' || $success['access_group_id'] == '14' ||$success['access_group_id'] == '15' || $success['access_group_id'] == '16' || $success['access_group_id'] == '17' || $success['access_group_id'] == '18' || $success['access_group_id'] == '19') {
+				if ($success['access_group_id'] == '19') {
+					if ($success['status'] <= 0) {
+						$resp["code"] = 0;
+						$resp["msg"] = '用户已禁用';
+						return json($resp);
+					}
+				}else{
+					$deal = db('Dealer')->field('status')->where('mobile',$mobile)->find();
+					if (!empty($deal)) {
+						$success['status'] = $deal['status'];
+						if ($success['status'] == -1 || $success['status'] == 9) {
+							$resp["code"] = 0;
+							$resp["msg"] = '用户已禁用';
+							return json($resp);
+						}
+					}
+				}
+				
+				
 				$user = model('User');
 				$uid  = $user->login($mobile, $password);
 				if ($uid > 0) {
 					$resp["code"] = 1;
 					$resp["msg"] = '登录成功！';
 					session("business_mobile", $mobile);
-					if ($success['access_group_id'] == '13' || $success['access_group_id'] == '14' ||$success['access_group_id'] == '15' || $success['access_group_id'] == '16' || $success['access_group_id'] == '17' || $success['access_group_id'] == '18') {
+					if ($success['access_group_id'] == '13' || $success['access_group_id'] == '14' ||$success['access_group_id'] == '15' || $success['access_group_id'] == '16' || $success['access_group_id'] == '17' || $success['access_group_id'] == '18' ) {
 						$resp['data'] ='1';
+					}elseif ($success['access_group_id'] == '19') {
+						$resp['data'] = '3';
 					}else{
 						$resp['data'] = '2';
 					}
@@ -68,10 +89,10 @@ class Login extends Base {
 		$mobile = session('business_mobile');
 		$res = db('dealer')->field('status,property')->where('mobile',$mobile)->find();
 		if ($res['status'] == '1' && $res['property'] == '3') {
-			$this->redirect(url('/guarantee/index/index'));
+			$this->redirect(url('/business/login/login'));
 		}elseif ($res['status'] == '1' && $res['property'] == '2') {
 			$this->redirect(url('index/index'));
-		}elseif ($res['status'] == '1' && $res['property'] == '2') {
+		}elseif ($res['status'] == '1' && $res['property'] == '1') {
 			$this->redirect(url('index/index'));
 		}else{
 			db('dealer')->where('mobile',$mobile)->setField('status','3');

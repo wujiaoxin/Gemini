@@ -2,6 +2,15 @@
 {block name="style"}
 <link rel="stylesheet" type="text/css" href="/public/business/lib/metronic/css/select2_metro.css">
 <link rel="stylesheet" href="/public/business/lib/metronic/css/DT_bootstrap.css">
+<style type="text/css">
+	.actions select{
+		width: 40px;
+		height: 28px;
+		margin:0;
+		margin-top: -13px;
+		padding: 0;
+	}
+</style>
 <script>
 	var info = {};
 	try {
@@ -15,7 +24,16 @@
 {block name="body"}
 <div class="portlet box red">
 	<div class="portlet-title">
-		<div class="caption"><i class="icon-reorder"></i>近30天订单金额走势图</div>
+		<div class="caption"><i class="icon-reorder"></i>近__个月订单金额走势图
+		</div>
+		<div class="actions">
+			<select id="orderTerm">
+				<option value="30">1</option>
+				<option value="60">2</option>
+				<option value="90">3</option>
+			</select>
+			<a href="#" class="btn blue" id="orderTermBtn"><i class="icon-search"></i>搜索</a>
+		</div>
 	</div>
 	<div class="portlet-body">
 		<div id="chart_orderTotal" class="chart"></div>
@@ -123,14 +141,42 @@
 	$('#table-orderAverage-top10 tbody').html(tpl(info.avg,1));
 
 	var orderTotal = [];
-	$.each(info['time'], function(i, n) {
-    	orderTotal[i] = [i+1,n.total_money,n.num,n.time];
-	});
+	function getOrderTotal(term){
+		ajax_jquery({
+            url: apiUrl +'/business/user/myShop',
+            data:{
+            	"term": term
+            },
+            success:function(resp){
+                if (resp.code == "1" ) {
+                	$.each(resp.data, function(i, n) {
+				    	orderTotal[i] = [i+1,n.total_money,n.num,n.time];
+					});
+					Charts.initCharts();
+                } else {
+                    if (typeof(resp.msg) == 'string' && resp.msg != '') {
+                        ui_alert(resp.msg);
+                    } else {
+                        ui_alert("登录失败，请重试!");
+                    }
+                    return false;
+                }
+            }
+        });
+	}
 
 	jQuery(document).ready(function() {
+		if(info.username){
+			localStorage.setItem('username',info.username);
+			localStorage.setItem('guarantee_id',info.guarantee_id);
+			$('#nav-username').text(info.username);
+		}
 	   // App.init();
-
-	   Charts.initCharts();
+	   	getOrderTotal(30);
+		$("#orderTermBtn").on('click',function(){
+			var term = $('#orderTerm').val();
+			getOrderTotal(term);
+		})
 	});
 </script>
 {/block}

@@ -1,4 +1,4 @@
-﻿<?php  
+<?php  
 /** 
  * RSA算法类 
  * 签名及密文编码：base64字符串/十六进制字符串/二进制字符串流 
@@ -10,7 +10,8 @@
  * @author: linvo 
  * @version: 1.0.0 
  * @date: 2013/1/23 
- */  
+ */ 
+namespace epay;
 class RSA
 {
   
@@ -86,7 +87,6 @@ class RSA
     public function verify($data, $sign, $code = 'base64'){
         $ret = false;
         $sign = $this->_decode($sign, $code);
-		
         if ($sign !== false) {
             switch (openssl_verify($data, $sign, $this->pubKey)){
                 case 1: $ret = true; break;

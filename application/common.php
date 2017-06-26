@@ -1490,3 +1490,63 @@ function examine_log($action = null,$controller = null,$param = null , $record_i
 	
 	db('examine_log')->insert($data);
 }
+
+
+/*
+  ** 资金记录
+  ** data array数据
+  ** uid 交易者 
+  ** type 交易类型
+  ** name 交易对象
+  */
+  function money_record($data, $uid, $type = 0, $name){
+    $info = array(
+
+      'uid'=>$uid,
+      'type'=> $type,
+      'deal_other'=>$name,
+      'create_time'=>time(),
+      'account_money'=>$data['money'],
+      'descr'=>$data['descr'],
+      );
+    $result = db('dealer_money')->insert($info);
+    return $result;
+
+  }
+
+  /*
+  ** 操作资金
+  ** name 操作类型(数字)
+  ** money_type 操作金额
+  ** type 操作类型
+  ** momod 操作方法
+  */
+  function modify_account($data,$uid,$name=0,$money_type=0,$type=0,$memod=0){
+    if(isset($data['money']) && $memod == 'INSERT'){
+        if ($type == 'withdraw') {
+          $data_moneys = array(
+                'uid'=>$uid,
+                'sn'=>$data['sn'],
+                'status'=>'-1',
+                'money'=>$data['money'],
+                'type'=>'0',
+                'bank_account'=>$data['bank_name'],
+                'dealer_bank'=>$data['dealer_bank'],
+                'dealer_bank_branch'=>$data['dealer_bank_branch'],
+                'create_time'=>time()
+            );
+          $result = db('carry')->insert($data_moneys);
+          // echo $result;die;
+          if ($result){
+                $resp["code"] = 1;
+                $resp["msg"] = '处理中';
+                return json_encode($resp);
+            }else{
+                $resp["code"] = 0;
+                $resp["msg"] = '提现失败';
+                return json_encode($resp);
+            }
+        }
+    }
+   
+  }

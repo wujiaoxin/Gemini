@@ -4,76 +4,6 @@
     $real = db('member')->where('uid',$uid)->find();
     return $real['realname'];
   }
-  /*
-  ** 操作资金
-  ** name 操作类型(数字)
-  ** money_type 操作金额
-  ** type 操作类型
-  ** momod 操作方法
-  */
-  function modify_account($data,$uid,$name=0,$money_type=0,$type=0,$memod=0){
-    if(isset($data['money']) && $memod == 'INSERT'){
-        if($type == 'recharge'){
-           $sn = date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
-           $rec_money = array(
-                'uid'=>$uid,
-                'sn'=>$sn,
-                'status'=>'-1',
-                'money'=>$data['money'],
-                'recharge_type'=>$data['recharge_type'],
-                'descr'=>$data['descr'],
-                'platform_account'=>$data['platform_account'],
-                'create_time'=>time()
-            );
-            $result = db('recharge')->insert($rec_money);
-            if ($result){
-                $resp["code"] = 1;
-                $resp["msg"] = '处理中';
-                return $resp;
-            }else{
-                $resp["code"] = 0;
-                $resp["msg"] = '充值失败';
-                return $resp;
-            }
-        }
-        if ($type == 'withdraw') {
-          $data_moneys = array(
-                'uid'=>$uid,
-                'sn'=>$data['sn'],
-                'status'=>'-1',
-                'money'=>$data['money'],
-                'type'=>'0',
-                'bank_account'=>$data['bank_name'],
-                'dealer_bank'=>$data['dealer_bank'],
-                'dealer_bank_branch'=>$data['dealer_bank_branch'],
-                'create_time'=>time()
-            );
-          $result = db('carry')->insert($data_moneys);
-          if ($result){
-                $resp["code"] = 1;
-                $resp["msg"] = '处理中';
-                return json_encode($resp);
-            }else{
-                $resp["code"] = 0;
-                $resp["msg"] = '提现失败';
-                return json_encode($resp);
-            }
-        }
-    }
-    if (isset($data['fee']) && $memod == 'INSERT') {
-      $fee_money = array(
-          'uid'=>$uid,
-          'account_money'=>$data['fee'],
-          'desc'=>'冻结订单为'.$data['order_id'].'的资金',
-          'type'=>$name,
-          'deal_other'=>'0',
-          'create_time'=>time()
-      );
-
-      $result = db('dealer_money')->insert($fee_money);
-      return $result;
-    }
-  }
   
   /*
   **订单处理
@@ -202,23 +132,6 @@
     return $data;
   }
   /*
-  ** status 订单状态
-  ** type 业务类型
-  */ 
-  function get_orders($uid,$status=0,$type){
-    if ($type == 'order_repay') {
-        $ids = db('dealer')->field('id')->where('mobile',$uid)->find();
-        $map = 'loantime <20';
-        $data = db('order_repay')->where('dealer_id',$ids['id'])->where($map)->select();
-        foreach ($data as $k => $v) {
-          $type = db('order')->field('type')->where('id',$v['order_id'])->find();
-          $data[$k]['type'] = $type['type'];
-        }
-    }
-    return $data;
-  }
-
-  /*
   **时间类型
   */
   function to_datetime($dateRange){
@@ -253,52 +166,6 @@
       'begintime'=>$begintime
       );
     return $result;
-  }
-
-
-
-  /*
-  ** 资金记录
-  ** data array数据
-  ** uid 交易者 
-  ** type 交易类型
-  ** name 交易对象
-  */
-  function money_record($data, $uid, $type = 0, $name){
-
-    //冻结资金
-    
-    $dealer_money = db('dealer')->alias('d')->field('money,lock_money')->join('__MEMBER__ m','d.mobile = m.mobile')->where('uid', $uid)->find();
-    
-
-    //待收金额和可用
-    $map =array(
-
-      'finance' => '3',
-
-      'mid'=>$uid
-
-      );
-    $repay_moneys = db('order')->where($map)->sum('examine_limit');
-    //总金额
-    $total_money = $dealer_money['money'] + $dealer_money['lock_money'] + $repay_moneys ;
-
-    $info = array(
-
-      'uid'=>$uid,
-      'type'=> $type,
-      'deal_other'=>$name,
-      'create_time'=>time(),
-      'total_money'=>$total_money,
-      'account_money'=>$data['money'],
-      'use_money'=>$dealer_money['money'],
-      'lock_money'=>$dealer_money['lock_money'],
-      'repay_money'=>$repay_moneys,
-      'descr'=>$data['descr'],
-      );
-    $result = db('dealer_money')->insert($info);
-    return $result;
-
   }
 
   /*

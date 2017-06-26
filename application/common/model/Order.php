@@ -51,7 +51,7 @@ class Order extends \app\common\model\Base {
 	}
 	
 	
-	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null,$page = 15){
+	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null){
 		if ($role == '0') {
 			$ids = db('member')->field('mobile')->where('uid',$uid)->find();
 			$filter['mobile'] = $ids['mobile'];
@@ -80,7 +80,7 @@ class Order extends \app\common\model\Base {
 		}
 		$sort = "id desc";
 		$filter['credit_status'] = '3';
-		$list = db('Order')->where($filter)->order($sort)->paginate($page);
+		$list = db('Order')->where($filter)->order($sort)->paginate(15);
 		// $list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
 		return $list;
 	}
@@ -142,7 +142,7 @@ class Order extends \app\common\model\Base {
 
 			if ($status == 3) {
 
-				$name = '1,3,4';
+				$name = '3,4,11,12,13';
 
 				$filter['status'] = array('IN',$name);
 
@@ -150,7 +150,7 @@ class Order extends \app\common\model\Base {
 			
 			}elseif ($status == 1) {
 
-					$filter['finance']= '4';
+					$filter['finance']= array('IN','3,4');
 
 					$ord = db('Order')->field('sum(examine_limit) as loan_limit')->where($filter)->find();
 
@@ -166,10 +166,10 @@ class Order extends \app\common\model\Base {
 
 		if (empty($ord['loan_limit'])) {
 
-			$ord['loan_limit'] = 0;
+			$ord['loan_limit'] = '0';
 		}
-
-		$total['loan_limit'] = $ord['loan_limit'];
+		$total['order_num'] = (string)$total['order_num'];
+		$total['loan_limit'] = (string)$ord['loan_limit'];
 		
 		return $total;
 	}
@@ -219,13 +219,23 @@ class Order extends \app\common\model\Base {
 	}
 	//保存订单
 	public function save_order($uid, $data){
-		$data =array(
+
+		$data1 =array(
 			'loan_limit' => $data['loan_limit'],
 			'endtime' => $data['loan_term'],
-			'status'=>'3'
+			'status'=>'3',
 			);
-		$data['id'] = $uid;
-		$result = $this->save($data,['id'=>$data['id']]);
+		if (isset($data['type'])) {
+			$data1['type'] = $data['type'];
+		}
+		$status = db('order')->alias('o')->field('d.guarantee_id')->join('__DEALER__ d','o.dealer_id = d.id')->where('o.id',$uid)->find();
+		if (!empty($status['guarantee_id'])) {
+			$data1['status']  = '11';
+		}else{
+			$data1['status'] = '3';
+		}
+		$data1['id'] = $uid;
+		$result = $this->save($data1,['id'=>$data1['id']]);
 		return $result;
 	}
 
@@ -338,13 +348,15 @@ class Order extends \app\common\model\Base {
         $filter['create_time'] = array(array('gt',$begin),array('lt',$end));
         $res = array();
 		$res['loan_num']= $this->where($filter)->where('finance','4')->count();
+		$res['loan_num'] = (string)$res['loan_num'];
 		$results= $this->field('sum(examine_limit) as loan_limit')->where($filter)->where('finance','4')->find();
 		if (empty($results['loan_limit'])) {
-			$results['loan_limit'] = 0;
+			$results['loan_limit'] = '0';
 		}
-		$res['loan_money'] = $results['loan_limit'];
+		$res['loan_money'] = (string)$results['loan_limit'];
 
 		$res['nums'] = $this->where($filter)->count();
+		$res['nums'] = (string)$res['nums'];
 		return $res;
 	}
 

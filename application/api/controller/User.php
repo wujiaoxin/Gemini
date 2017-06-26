@@ -176,11 +176,18 @@ class User extends Api {
 	public function userInfo(){
 		
 		$uid  = session('user_auth.uid');
+		$role  = session('user_auth.role');
 		if ($uid > 0) {
+			if ($role  == '0') {
+				$userInfo = db('member')->field('uid,mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
+				$userInfo['roleid']   = $userInfo['access_group_id'];
+				unset($userInfo['access_group_id']);
+			}elseif ($role  == '1') {
+				$userInfo = db('member')->alias('m')->field('m.uid,m.mobile,m.username,m.realname,m.idcard,m.bankcard,m.status,m.access_group_id,m.headerimgurl,d.name as dealer_name')->join('__DEALER__ d','m.dealer_id = d.id')->where('m.uid',$uid)->find();
+			}else{
+				$userinfo = db('member')->alias('m')->field('m.uid,m.mobile,m.username,m.realname,m.idcard,m.bankcard,m.status,m.access_group_id,m.headerimgurl,d.name as dealer_name')->join('__DEALER__ d','m.mobile = d.mobile')->where('m.uid',$uid)->find();
+			}
 			
-			$userInfo = db('member')->field('uid,mobile,username,realname,idcard,bankcard,status,access_group_id,headerimgurl')->where('uid',$uid)->find();
-			$userInfo['roleid']   = $userInfo['access_group_id'];
-			unset($userInfo['access_group_id']);
 			
 			if(empty($userInfo['headerimgurl'])){
 				$userInfo['headerimgurl'] = "https://www.vpdai.com/public/images/default_avatar.jpg";
@@ -410,8 +417,12 @@ class User extends Api {
 			$results = array(
 				'uid'=>$uid,
 				'type'=>1,
+				'order_id'=>-1,//C端绑卡判断
 				'bank_account_id'=>$bankcard,
-				'create_time'=>time()
+				'idcard'=>$idcard,
+				'bank_account_name'=>$realname,
+				'create_time'=>time(),
+				'status'=>2,
 				);
 			db('bankcard')->insert($results);
 			$userInfo = db('member')->field('mobile')->where("uid",$uid)->find();
@@ -421,8 +432,16 @@ class User extends Api {
 				if(!empty($mobile)){
 					$orderData['name'] = $realname;
 					$orderData['idcard_num'] = $idcard;					
-					db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);//更新order表					
+					db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);//更新order表
+					$resp["code"] = 1;
+					$resp["msg"] = "更新成功";		
+				}else{
+					$resp["code"] = 0;
+					$resp["msg"] = "更新失败";
 				}
+			}else{
+				$resp["code"] = 0;
+				$resp["msg"] = "未知错误";
 			}
 			return json($resp);
 		}else{
@@ -498,6 +517,14 @@ class User extends Api {
 				}
 			return json($resp);
 		}
+	}
+
+
+	//上传头像文件
+	public function upload($file = null){
+		$controller = controller('common/Avatar');
+		$action     = $this->request->action();
+		return $controller->$action();
 	}
 }
 

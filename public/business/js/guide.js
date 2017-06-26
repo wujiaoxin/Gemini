@@ -30,7 +30,7 @@ var guide = function () {
                         }else if(credit_code == ""){
                             ui_alert("请输入企业信用代码");
                             return false;
-                        }else if(!loc_province || !loc_city || !loc_town){
+                        }else if(!loc_province || !loc_city){
                             ui_alert("请选择单位所在地");
                             return false;
                         }else if(addr == ""){

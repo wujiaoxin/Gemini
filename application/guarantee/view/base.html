@@ -5,7 +5,7 @@
 <!-- BEGIN HEAD -->
 <head>
   <meta charset="utf-8" />
-  <title>车商管理后台</title>
+  <title>担保公司管理后台</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <meta content="" name="description" />
   <meta content="" name="author" />
@@ -102,13 +102,13 @@
           <div class="sidebar-toggler hidden-phone"></div>
           <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
         </li>
-        <li class="start">
+       <!--  <li class="start">
           <a href="/guarantee/index/index.html">
             <i class="icon-home"></i>
             <span class="title">账户首页</span>
           </a>
-        </li>
-        <li class="">
+        </li> -->
+        <li class="start">
           <a href="/guarantee/user/myShop.html">
             <i class="icon-sitemap"></i><span class="title">我的商户</span><span class="arrow"></span>
           </a>
@@ -131,7 +131,7 @@
           <a href="#"><i class="icon-sitemap"></i><span class="title">订单审核</span><span class="arrow"></span></a>
           <ul class="sub-menu">
             <li><a href="/guarantee/examine/application.html"><i class="icon-file"></i>所有项目</a></li>
-            <li><a href="/guarantee/examine/dataReview.html"><i class="icon-flickr"></i>信用审核</a></li>
+            <li><a href="/guarantee/examine/creditReview.html"><i class="icon-flickr"></i>信用审核</a></li>
             <li><a href="/guarantee/examine/loanLimit.html"><i class="icon-gittip"></i>额度审核</a></li>
             <li><a href="/guarantee/examine/finance.html"><i class="icon-archive"></i>财务审核</a></li>
           </ul>
@@ -140,7 +140,7 @@
           <a href="#"><i class="icon-bar-chart"></i><span class="title">我的账户</span><span class="arrow"></span></a>
           <ul class="sub-menu">
             <li><a href="/guarantee/account/index.html"><i class="icon-cog"></i>账户设置</a></li>
-            <li>
+           <!--  <li>
               <a href="/guarantee/account/balance.html">
                 <i class="icon-yen"></i>充值提现<span class="arrow"></span>
               </a>
@@ -148,9 +148,9 @@
                 <li><a href="/guarantee/account/recharge.html"><i class="icon-table"></i>充值</a></li>
                 <li><a href="/guarantee/account/withdraw.html"><i class="icon-money"></i>提现</a></li>
               </ul>
-            </li>
+            </li> -->
             <li><a href="/guarantee/account/bankcard.html"><i class="icon-credit-card"></i>银行卡</a></li>
-            <li><a href="/guarantee/account/transaction.html"><i class="icon-edit"></i>资金记录</a></li>
+            <!-- <li><a href="/guarantee/account/transaction.html"><i class="icon-edit"></i>资金记录</a></li> -->
             <!-- <li><a href="/guarantee/account/lineOfCredit.html"><i class="icon-reorder"></i>信用额度</a></li> -->
             <li><a href="/guarantee/account/info.html"><i class="icon-group"></i>企业信息</a></li>
             <li><a href="/guarantee/account/message.html"><i class="icon-envelope"></i>站内信</a></li>
@@ -240,11 +240,11 @@
   <!-- BEGIN PAGE LEVEL SCRIPTS -->
   <script src="/public/business/js/app.js"></script>
   <script>
-  if(typeof(localStorage.getItem('username')) == 'string'){
-          $('#nav-username').text(localStorage.getItem('username'));
-        }
+    if(typeof(localStorage.getItem('username')) == 'string'){
+        $('#nav-username').text(localStorage.getItem('username'));
+    }
     jQuery(document).ready(function() {
-       App.init();
+        App.init();
     });
   </script>
   {block name="script"}{/block}

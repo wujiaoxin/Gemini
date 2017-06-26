@@ -22,43 +22,147 @@ class Epay {
 	**正式系统
 	*/
 	/*public static $PlatformMoneymoremore = '';
-	public static $service = 'https:// xd.95epay.com/sloan/';*/
+	public static $service = 'https://xd.95epay.com/sloan/';*/
 
 
-	public static function  sendHttpRequest($params, $url) {
-		$ch = curl_init();
-		$ssl = substr($url, 0, 8) == "https://" ? TRUE : FALSE;
-		$opt = array(
-				CURLOPT_URL     => $url,
-				CURLOPT_POST    => 1,
-				CURLOPT_HEADER  => 0,
-				CURLOPT_POSTFIELDS => http_build_query($params),
-				CURLOPT_RETURNTRANSFER  => 1,
-				CURLOPT_HTTPHEADER =>array ('Content-type:application/x-www-form-urlencoded;charset=UTF-8')
-				//CURLOPT_TIMEOUT         => $timeout,
-				);
-		if ($ssl)
-		{
-			$opt[CURLOPT_SSL_VERIFYHOST] = FALSE;
-			$opt[CURLOPT_SSL_VERIFYPEER] = FALSE;
-		}
-		curl_setopt_array($ch, $opt);
-		$resp = curl_exec($ch);
-		curl_close($ch);		
+	//绑卡接口
+	public static function bankcard($data){
+		$rsa = new RSA();
+		$postData = array();
+		$postData['PlatformMoneymoremore'] = self::$PlatformMoneymoremore;
+		$postData['RealName'] = $data['RealName'];
+		$postData['Mobile'] = $data['Mobile'];
+		$postData['IdentificationNo'] = $data['IdentificationNo'];
+		$CardNumber = $data['CardNumber'];
+		$postData['CardNumber'] = $CardNumber;
+		$postData['Province'] = $data['Province'];
+		$postData['City'] = $data['City'];
+		$postData['BranchBankName'] = "";
+		$postData['BankCode'] = $data['BankCode'];
+		$postData['Remark'] = "";
+		$postData['NotifyURL'] = 'https://t.vpdai.com/pay/notify/bangCard';//作为测试
+		// $postData['NotifyURL'] = url('pay/notify/bangCard');//正式
+		$postData['SignInfo'] =  "";
+		$dataStr = $postData['PlatformMoneymoremore'].$postData['RealName'].$postData['Mobile'].$postData['IdentificationNo'].$postData['CardNumber'].$postData['Province'].$postData['City'].$postData['BranchBankName'].$postData['BankCode'].$postData['Remark'].$postData['NotifyURL']; 
+		$postData['CardNumber'] = $rsa->encrypt($CardNumber);
+		$postData['SignInfo'] = self::buildSign($dataStr);
+		$url = self::$service."bindCard.action";
+		$resp = self::sendHttpRequest($postData,$url);
 		return $resp;
 	}
 
-	//签名
-	public static function buildSign($data){ 
-		$dataStr = '';
-		foreach($data as $key => $value) {			
-			$dataStr = $dataStr .$key .$value;
-		}
-		$dataStr = $dataStr . self::$pk;
-		$sign = md5($dataStr);
-		$sign = strtoupper($sign);
-		return $sign;
-	} 
 
+	//多卡绑卡接口(测试)
+
+	public static function bindcardag($data){
+		$rsa = new RSA();
+		$postData = array();
+		$postData['PlatformMoneymoremore'] = self::$PlatformMoneymoremore;
+		$postData['BindMoneymoremore'] = "c17";
+		$CardNumber = $data['CardNumber'];
+		$postData['CardNumber'] = $CardNumber;
+		$postData['Province'] = $data['Province'];
+		$postData['City'] = $data['City'];
+		$postData['BranchBankName'] = '';
+		$postData['BankCode'] = $data['BankCode'];
+		$postData['Remark'] = '';
+		$postData['NotifyURL'] = 'https://t.vpdai.com/pay/notify/bangCard';//作为测试
+		// $postData['NotifyURL'] = url('pay/notify/bangCard');//正式
+		$postData['SignInfo'] =  "";
+
+		$dataStr = $postData['PlatformMoneymoremore'].$postData['BindMoneymoremore'].$postData['CardNumber'].$postData['Province'].$postData['City'].$postData['BranchBankName'].$postData['BankCode'].$postData['Remark'].$postData['NotifyURL'];
+		$postData['CardNumber'] = $rsa->encrypt($CardNumber);
+
+		$postData['SignInfo'] = self::buildSign($dataStr);
+		$url = self::$service."bindCardAG.action";
+		$resp = self::sendHttpRequest($postData,$url);
+		return $resp;
+	}
+
+	//放贷接口
+
+	public static function loan($data){
+		$rsa = new RSA();
+		$loanList = array();
+		$loanList[0]['PayMoneymoremore'] =  $data['PayMoneymoremore'];
+		$loanList[0]['Amount'] = $data['Amount'];
+		$loanList[0]['OrderNo'] = $data['OrderNo'];
+
+		$postData = array();
+		$postData['LoanJsonList'] = json_encode($loanList);
+		$postData['PlatformMoneymoremore'] = self::$PlatformMoneymoremore;
+		$postData['BatchNo'] = $data['BatchNo'];
+		$postData['RepaymentDate'] = $data['RepaymentDate'];
+		$postData['Installment'] = $data['Installment'];
+		$postData['Remark'] = "";
+		$postData['NotifyURL'] = $data['NotifyURL'];
+
+		$postData['SignInfo'] = "";     
+		$dataStr = $postData['LoanJsonList'].$postData['PlatformMoneymoremore'].$postData['BatchNo'].$postData['RepaymentDate'].$postData['Installment'].$postData['Remark'].$postData['NotifyURL'];
+
+		$postData['LoanJsonList'] = urlencode($postData['LoanJsonList']);
+
+		$postData['SignInfo'] = self::buildSign($dataStr);
+		$url = self::$service."payForAnother.action";
+		$resp = self::sendHttpRequest($postData,$url);
+		return $resp;
+	}
+
+
+	public static function repayment($data){
+
+		$repay[0]["RepaymentMoneymoremore"] = '';
+		$repay[0]["RepaymentAmount"] = $data['repay_money'];
+		$repay[0]["LoanNo"] = $data['loanno'];
+
+		$fuck[] = $repay;
+		$postData = array();
+		$postData['LoanJsonList'] = json_encode($repay);
+		$postData['PlatformMoneymoremore'] = self::$PlatformMoneymoremore;
+		$postData['Remark'] = "";
+		$postData['NotifyURL'] = $data['NotifyURL'];
+		$postData['SignInfo'] = "";     
+		$dataStr = $postData['LoanJsonList'].$postData['PlatformMoneymoremore'].$postData['Remark'].$postData['NotifyURL'];
+
+		$postData['LoanJsonList'] = urlencode($postData['LoanJsonList']);
+		
+		$postData['SignInfo'] = self::buildSign($dataStr);
+		$url = self::$service."repaymentCollect.action";
+		$resp = self::sendHttpRequest($postData,$url);
+		return $resp;
+
+	}
+
+	//签名
+	public static function buildSign($dataStr){ 
+		$rsa = new RSA();
+		$sign =  $rsa->sign($dataStr);
+		return $sign;
+	}
+
+
+	public static function  sendHttpRequest($postData, $url) {
+		
+		$inputPost = "<form action='".$url."' method='post' id='form_action'>";
+
+		foreach ($postData as $key => $value) {
+			$inputPost.= "<input type='hidden' name='".$key."' value='".$value."'>";
+		}
+		$inputPost .= "<input type='submit'  value='submit'>";
+		$inputPost .= "</form><script>window.onload=function(){document.getElementById('form_actionX').submit();}</script>";
+
+ 		$ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,  false);
+
+        $resp = curl_exec($ch);
+        curl_close($ch);
+		return $resp;
+	}
 	
 }

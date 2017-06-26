@@ -10,13 +10,8 @@ class risk extends Admin {
 	}
 
 	public function rating() {
-		$creditList = db('credit')->alias('c')->field('c.*,o.name as realname,o.idcard_num as idcard,o.dealer_id,o.uid as umid')->join('__ORDER__ o','c.order_id = o.id')->where("c.credit_status",3)->order('id desc')->fetchSQL(false)->select();
-		foreach ($creditList as $k => $v) {
-			$name = model('Dealer')->field('name')->where('id',$v['dealer_id'])->find();
-			$salesname = model('User')->field('realname as u_realname')->where('uid',$v['umid'])->find();
-			$creditList[$k]['dealer_name'] = $name['name'];
-			$creditList[$k]['u_realname'] = $salesname['u_realname'];
-		}
+		$creditList = db('credit')->alias('c')->field('c.*,o.name as realname,o.idcard_num as idcard,o.dealer_id,o.uid as umid,d.name as dealer_name,m.realname as u_realname')->join('__ORDER__ o','c.order_id = o.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->join('__DEALER__ d','d.id = o.dealer_id','LEFT')->where("c.credit_status",3)->order('id desc')->fetchSQL(false)->select();
+		
 		$data = array(
 			'infoStr' =>json_encode($creditList),
 		);

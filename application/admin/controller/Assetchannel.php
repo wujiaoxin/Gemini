@@ -18,16 +18,14 @@ class assetchannel extends Admin {
 		//TODO 需要区分商家推广和商家运营	
 		$map = '';
 		
-		$order = "id desc";
+		$order = "create_time desc";
 
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
+		$map = 'd.status > 0';
 		if($uid > 0){
-			if ($role == 10 || $role == 11) {
-				$list = db('Dealer')->alias('d')->join('__MEMBER__ m','m.dealer_id = d.id')->where('uid',$uid)->select();
-			}else{
-				$list  = db('Dealer')->where($map)->order($order)->select();
-			}
+			
+			$list  = db('Dealer')->alias('d')->field('d.*,m.uid')->join('__MEMBER__ m','m.mobile = d.mobile','LEFT')->where($map)->order($order)->select();
 
 		}else{
 			return $this->error('请重新登录');
@@ -194,8 +192,8 @@ class assetchannel extends Admin {
 		}
 		$link = db('Dealer');
 		$map    = array('id' => array('IN', $id));
-		$map['status'] = 2;
-		$result = $link->where($map)->delete();
+		$result = $link->where($map)->update(['status'=>-1]);
+
 		if ($result) {
 			return $this->success("删除成功！");
 		} else {

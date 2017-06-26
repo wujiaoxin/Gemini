@@ -26,6 +26,7 @@
 	}
 </style>
 <script>
+	window.location.href = "/guarantee/user/myShop";
 	var info = {};
 	try {
 		info = JSON.parse('{$infoStr}');
@@ -43,7 +44,7 @@
 				<div class="availableAsset-title">可用资产:</div>
 				<div><span id="availableAsset"></span><span>元</span></div>
 			</div>
-			<div class="span5">
+			<!-- <div class="span5">
 				<div class="">
 					<span>总信用额度:</span>
 					<span id="creditLine"></span>
@@ -52,7 +53,7 @@
 					<span>可用额度:</span>
 					<span id="availableCreditLine"></span>
 				</div>
-			</div>
+			</div> -->
 			<div class="row-fluid span3">
 				<div><a href="/guarantee/account/recharge.html" class="btn green">充值</a></div>
 				<div><a href="/guarantee/account/withdraw.html" class="btn blue">提现</a></div>
