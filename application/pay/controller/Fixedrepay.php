@@ -1,9 +1,9 @@
 <?php
 
-namespace app\api\controller;
-use app\common\controller\Api;
+namespace app\pay\controller;
+use app\common\controller\Base;
 
-class Fixedrepay extends Api {
+class Fixedrepay extends Base {
 	
 	public function index($start = ""){
 		if ($start != 'koukuan') {
@@ -11,14 +11,16 @@ class Fixedrepay extends Api {
 		}
 		
 		$map = array(
-			"FROM_UNIXTIME(repay_time,'Y-m-d')"=>date("Y-m-d",time())
+			"FROM_UNIXTIME(repay_time,'%Y-%m-%d')"=>date("Y-m-d",time()),
+			'status'=>-1,
+
 
 		);
-		$res = db('order_repay',[],false)->field('id,repay_period,repay_time')->where($map)->select();
+		$res = db('order_repay',[],false)->field('order_id,repay_period,repay_time')->where($map)->select();
 		foreach ($res as $k => $v) {
-			$ra = $this->selfrepay($v['id'],$v['repay_period']);
+			$ra = $this->selfrepay($v['order_id'],$v['repay_period']);
 		}
-		
+		// var_dump($res);die;
 	}
 
 	public function selfrepay($orderid,$period){
@@ -38,6 +40,9 @@ class Fixedrepay extends Api {
 		if ($datatime > $endtime) {
 			return;
 		}
+		if ($res['status'] != -1) {
+			return;
+		}
 		//判断是否绑卡
 		$where = array('uid'=>$contractNo['uid'],'order_id'=>$orderid);
 		$withhold = db('member_withhold')->field('signstatus')->where($where)->find();
@@ -48,7 +53,6 @@ class Fixedrepay extends Api {
 		}else{
 			return;
 		}
-		
 		$service = "installmentSelfRepay";
 		$orderon = '2007050512345678912' . rand(100000,999999);
 		$externalOrderNo = '20070505123456789' . rand(100000,999999);
@@ -68,7 +72,11 @@ class Fixedrepay extends Api {
     		$resp['code'] = 1;
 			$resp['msg'] ='还款成功';
 			db('order_repay')->where($map)->update(['status'=>'-2']);//TODO未生效
-			money_record($ress,$contractNo['uid'],6,1);
+			$ress = array(
+				'money'=>$res['repay_money'],
+				'descr'=>'',
+			);
+			money_record($ress,$contractNo['uid'],6,0);
 
     	}elseif ($result['resultCode'] == 'EXECUTE_PROCESSING') {
     		$resp['code'] = -2;

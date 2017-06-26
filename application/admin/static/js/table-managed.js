@@ -256,10 +256,6 @@ var TableManaged = function () {
                     null,
                     null,
                     null,
-                    null,
-                    null,
-                    null,
-                    null,
                     { "bSortable": false }
                 ],
                 "aaSorting": [

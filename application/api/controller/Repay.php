@@ -153,7 +153,7 @@ class Repay extends Api {
 				'money'=>$res['repay_money'],
 				'descr'=>'',
 			);
-			money_record($ress,$uid,6,1);
+			money_record($ress,$uid,6,0);
 
     	}elseif ($result['resultCode'] == 'EXECUTE_PROCESSING') {
     		$resp['code'] = -2;
