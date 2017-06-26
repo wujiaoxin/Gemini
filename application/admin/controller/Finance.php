@@ -38,7 +38,6 @@ class Finance extends Admin {
 		if (IS_POST) {
 
 			$data = input('post.');
-
 			if (isset($data['status'])) {
 
 				$datas = array(
@@ -85,7 +84,16 @@ class Finance extends Admin {
 							
 
 					}else{
-
+						$map = array(
+							'm.mobile'=>$result['mobile'],
+							'b.status'=>1
+						);
+						$bankcard = db('bankcard')->alias('b')->field('b.bank_account_id as dealer_bankcard')->join('__MEMBER__ m','m.uid = b.uid','LEFT')->where($map)->find();
+						if (empty($bankcard)) {
+							$resp['code'] = 0;
+							$resp['msg'] = '需要先绑定银行卡!';
+							return json($resp);
+						}
 						$datas['finance'] = '4';
 
 						$datas['descr'] = $data['descr'];
@@ -166,6 +174,16 @@ class Finance extends Admin {
 
 				$result = db('order')->alias('o')->field('o.*,d.name as dealer_name')->join('__DEALER__ d','d.id = o.dealer_id','LEFT')->where('o.id',$data['id'])->find();
 				$result['loan_money'] = $result['examine_limit'];
+				if ($result['type'] == '1' || $result['type'] == '3' ) {
+					$map = array(
+						'm.mobile'=>$result['mobile'],
+						'b.status'=>1
+					);
+					$bankcard = db('bankcard')->alias('b')->field('b.bank_account_id as dealer_bankcard')->join('__MEMBER__ m','m.uid = b.uid','LEFT')->where($map)->find();
+					$result['dealer_bankcard'] = $bankcard['dealer_bankcard'];
+				}else{
+
+				}
 				$resp['code'] = 1;
 
 				$resp['msg'] = '查询成功';
