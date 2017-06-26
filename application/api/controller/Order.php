@@ -55,7 +55,7 @@ class Order extends Api {
 			$data['id'] = $list;
 			$resp['code'] = 1;
 			$resp['msg'] = '提交成功';
-			$resp['data'] = $data;
+			// $resp['data'] = $data;
 		}
 		return json($resp);
 	}

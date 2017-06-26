@@ -14,9 +14,9 @@ class Fixedrepay extends Base {
 			"FROM_UNIXTIME(repay_time,'%Y-%m-%d')"=>date("Y-m-d",time())
 
 		);
-		$res = db('order_repay',[],false)->field('id,repay_period,repay_time')->where($map)->select();
+		$res = db('order_repay',[],false)->field('order_id,repay_period,repay_time')->where($map)->select();
 		foreach ($res as $k => $v) {
-			$ra = $this->selfrepay($v['id'],$v['repay_period']);
+			$ra = $this->selfrepay($v['order_id'],$v['repay_period']);
 		}
 		// var_dump($res);die;
 	}
@@ -48,7 +48,6 @@ class Fixedrepay extends Base {
 		}else{
 			return;
 		}
-		
 		$service = "installmentSelfRepay";
 		$orderon = '2007050512345678912' . rand(100000,999999);
 		$externalOrderNo = '20070505123456789' . rand(100000,999999);
