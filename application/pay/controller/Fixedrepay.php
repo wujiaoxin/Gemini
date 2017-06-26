@@ -11,7 +11,9 @@ class Fixedrepay extends Base {
 		}
 		
 		$map = array(
-			"FROM_UNIXTIME(repay_time,'%Y-%m-%d')"=>date("Y-m-d",time())
+			"FROM_UNIXTIME(repay_time,'%Y-%m-%d')"=>date("Y-m-d",time()),
+			'status'=>-1,
+
 
 		);
 		$res = db('order_repay',[],false)->field('order_id,repay_period,repay_time')->where($map)->select();
@@ -36,6 +38,9 @@ class Fixedrepay extends Base {
 		$datatime = date('Y-m',$res['repay_time']);
 		$endtime = date('Y-m',time());
 		if ($datatime > $endtime) {
+			return;
+		}
+		if ($res['status'] != -1) {
 			return;
 		}
 		//判断是否绑卡
