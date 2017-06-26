@@ -147,6 +147,7 @@
             },
             success:function(resp){
                 if (resp.code == "1" ) {
+                	orderTotal = [];
                 	$.each(resp.data, function(i, n) {
 				    	orderTotal[i] = [i+1,n.total_money,n.num,n.time];
 					});
