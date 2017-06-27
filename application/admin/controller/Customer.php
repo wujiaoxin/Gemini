@@ -16,15 +16,14 @@ class Customer extends Admin {
 		
 		$map = array(
 
-			'm.access_group_id'  => '0',
-
+			'access_group_id'  => '0',
 			// 'm.idcard' => 'o.idcard_num',
 
 			// 'm.mobile'=> 'o.mobile'
 			
 			);
 
-		$list = db('member')->alias('m')->field('m.*,count(o.id) as loan_num')->join('__ORDER__ o','m.mobile = o.mobile')->where($map)->select();
+		$list = db('member')->where($map)->select();
 
 		// var_dump($list);die;
 
