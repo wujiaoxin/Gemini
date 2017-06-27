@@ -70,7 +70,7 @@ class Order extends \app\common\model\Base {
 			$filter['status'] = ['>',-1];
 		}else{
 			if ($status == 3) {
-				$name = '3,4';
+				$name = '3,4,11,12,13';
 				$filter['status'] = array('IN',$name);
 			}elseif ($status == 1) {
 				$filter['finance'] = '4';
@@ -80,7 +80,14 @@ class Order extends \app\common\model\Base {
 		}
 		$sort = "id desc";
 		$filter['credit_status'] = '3';
-		$list = db('Order')->where($filter)->order($sort)->paginate(15);
+		
+
+		if ($status == 3) {
+			$list = db('Order')->where($filter)->whereOr('finance','2')->order($sort)->paginate(15);
+		}else{
+			$list = db('Order')->where($filter)->order($sort)->paginate(15);
+		}
+
 		// $list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
 		return $list;
 	}
