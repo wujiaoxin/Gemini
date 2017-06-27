@@ -201,7 +201,7 @@
 	   		var serial_num = $('#serial_num').val();
 	   	 	var examineStatus = $('#examineStatus').val();
 	   	 	var actual_amount = $('#actual_amount').val();
-	   	 	var descr = $('#descr').val().replace(/\n/g,"");
+	   	 	var descr = $('#descr').val().replace(/\n/g,"").replace(/\s+/g, "");
 	   	 	if(examineStatus == ''){
 	   	 		ui_alert("请选择审核结果");
 	            return false;

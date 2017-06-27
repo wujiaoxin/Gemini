@@ -266,7 +266,7 @@
             async:false,
             success: function(resp) { // data 保存提交后返回的数据，一般为 json 数据
                 if(resp.code == 1){
-                    if(resp.data.info.property == '3'){
+                    if(resp.data.info.type == '2' || resp.data.info.type == '4' ){
                         keyList = keyList_guarantors;
                     }
                     $(".order-sn").text(resp.data.info.sn);

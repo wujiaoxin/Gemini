@@ -382,7 +382,7 @@ $(function(){
 		var status = $('#examineStatus').val();
 		var proposal_limit = $('#proposal_limit').val();
 		var examine_limit = $('#examine_limit').val();
-		var descr = $('#descr').val().replace(/\n/g,"");
+		var descr = $('#descr').val().replace(/\n/g,"").replace(/\s+/g, "");
 		if(info['order_info']['status'] == '11' && proposal_limit == ''){
 			ui_alert('请输入建议金额');
 			return false;

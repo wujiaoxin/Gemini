@@ -210,7 +210,7 @@
 	   	$('#examineBtn').click(function(){
 	   		var serial_num = $('#serial_num').val();
 	   	 	var examineStatus = $('#examineStatus').val();
-	   	 	var descr = $('#descr').val().replace(/\n/g,"");
+	   	 	var descr = $('#descr').val().replace(/\n/g,"").replace(/\s+/g, "");
 	   	 	if(serial_num == ''){
 	   	 		ui_alert("请输入流水号");
 	            return false;
