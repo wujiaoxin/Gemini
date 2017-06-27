@@ -161,8 +161,11 @@ class Order extends \app\common\model\Base {
 
 			}
 		}
-
-		$total['order_num'] = db('Order')->where($filter)->count();
+		if ($status == 3) {
+			$total['order_num'] = db('Order')->where($filter)->whereOr('finance','2')->count();
+		}else{
+			$total['order_num'] = db('Order')->where($filter)->count();
+		}
 
 		if (empty($ord['loan_limit'])) {
 
