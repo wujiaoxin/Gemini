@@ -54,7 +54,6 @@ class assetchannel extends Admin {
 		$link = model('Dealer');
 		if (IS_POST) {
 			$data = input('post.');
-			// var_dump($data);die;
 			$uid = session('user_auth.uid');
 			if ($data['status'] == '1') {
 				$data['lines'] = '1000000';
@@ -68,11 +67,13 @@ class assetchannel extends Admin {
 				$passwords = 'vpdai'.substr($data['idno'],12,6);
 				//加入担保公司
 				if ($data['property'] =='3') {
-					model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'18');
+					$res = model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'18');
 				}else{
-					model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
+					$res = model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
 				}
-				
+				if (!$res) {
+					return $this->error("用户已存在，请联系客服");;
+				}
 				$result = $link->save($data);
 				if ($result) {
 					return $this->success("新建成功！", url('assetchannel/index'));
@@ -114,7 +115,21 @@ class assetchannel extends Admin {
 				}
 				if ($data['property'] =='3') {
 					$res =array('access_group_id'=>'18','realname'=>$data['rep'],'idcard'=>$data['idno']);
-					model('User')->save($res,array('mobile'=>$data['mobile']));
+					$resl = model('User')->save($res,array('mobile'=>$data['mobile']));
+					if (!$resl) {
+						return $this->error('修改担保机构失败');
+					}
+				}
+				$ids = array('d.id' => $data['id']);
+				$rest = db('Member')->alias('m')->field('m.mobile,m.uid')->join('__DEALER__ d','d.mobile = m.mobile')->where($ids)->find();
+				if ($data['mobile'] != $rest['mobile']) {
+					$mobile = array(
+						'mobile'=>$data['mobile']
+					);
+					$restl = model('User')->save($mobile,array('uid'=>$rest['uid']));
+					if (!$restl) {
+						return $this->error('修改手机号失败');
+					}
 				}
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {

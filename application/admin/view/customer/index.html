@@ -52,21 +52,23 @@
 		var html = '';
 		if(typeof(data) =='object'){
 		for(var index = 0; index < data.length; index++){
+			var status = data[index].status ? '正常':'禁用';
 		  	html += '<tr class="odd gradex">'
 		  		+'<td>' + data[index].uid + '</td>'
 		  		+'<td>'+ data[index].realname +'</td>'
 		  		+'<td>'+ data[index].idcard +'</td>'
 		  		+'<td>'+ formatDate(data[index].reg_time) +'</td>'
-		  		+'<td>'+ data[index].loan_num +'</td>'
-		  		+'<td>'+ data[index].status +'</td>'
+		  		+'<td>'+ '' +'</td>'
+		  		+'<td>'+ status +'</td>'
 		  		+'<td>'+ data[index].score +'</td>'
-		  		+'<td><a href="/admin/customer/view?id='+ data[index].uid + '">查看</a></td>'
+		  		+'<td>'+ '' +'</td>'
+		  		// +'<td><a href="/admin/customer/view?id='+ data[index].uid + '">查看</a></td>'
 		  		 +'</tr>'
 			}
 		}
 		return html;
 	};
-	$('#table-customer tbody').html(tpl(info.data));
+	$('#table-customer tbody').html(tpl(info));
 
     $(function(){
     	TableManaged.init();

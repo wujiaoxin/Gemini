@@ -14,11 +14,13 @@ use app\guarantee\controller\Baseness;
 		//担保公司员工
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
-		if ($role == 13) {
+
+		if ($role != 18) {
 			$mobile = db('dealer')->alias('d')->field('d.mobile')->join('__MEMBER__ m','m.dealer_id = d.id')->where('m.uid',$uid)->find();
 			$uids = db('member')->field('uid')->where('mobile',$mobile['mobile'])->find();
 			$uid = $uids['uid'];
 		}
+	
 		$result = db('member')->alias('m')->join('__DEALER__ d','m.mobile = d.mobile')->field('d.id')->where('m.uid',$uid)->order('id DESC')->find();
 		$members = db('member')->where('dealer_id',$result['id'])->select();
 		$data = array(
@@ -669,9 +671,6 @@ use app\guarantee\controller\Baseness;
 		if ($role == 13) {
 			$this->error('没有权限新增渠道');
 		}
-		if ($role == 17) {
-			
-		}
 		$link = model('Dealer');
 		if (IS_POST) {
 			$data = input('post.');
@@ -688,7 +687,10 @@ use app\guarantee\controller\Baseness;
 				unset($data['id']);
 				$data['invite_code'] = $link->buildInviteCode();
 				$passwords = 'vpdai'.substr($data['idno'],12,6);
-				model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
+				$res = model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
+				if (!$res) {
+					return $this->error("用户已存在，请联系客服");;
+				}
 				$result = $link->save($data);
 				if ($result) {
 					return $this->success("新建成功！", url('guarantee/index'));
@@ -727,6 +729,19 @@ use app\guarantee\controller\Baseness;
 					$data['money_level'] = '1000000';
 					$data['lines_ky'] = '1000000';
 				}
+
+				$ids = array('d.id' => $data['id']);
+				$rest = db('Member')->alias('m')->field('m.mobile,m.uid')->join('__DEALER__ d','d.mobile = m.mobile')->where($ids)->find();
+				if ($data['mobile'] != $rest['mobile']) {
+					$mobile = array(
+						'mobile'=>$data['mobile']
+					);
+					$restl = model('User')->save($mobile,array('uid'=>$rest['uid']));
+					if (!$restl) {
+						return $this->error('修改手机号失败');
+					}
+				}
+
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {
 					return $this->success("修改成功！", url('assetchannel/index'));

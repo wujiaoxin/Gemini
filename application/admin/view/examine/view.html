@@ -543,7 +543,7 @@ $(function(){
 		var fee = $('#fee').val();
 		var fund_provider = $('#fund_provider').val();
 		var reject_reason = encodeCheckbox('reject_reason');
-		var descr = $('#descr').val().replace(/\n/g,"");
+		var descr = $('#descr').val().replace(/\n/g,"").replace(/\s+/g, "");
 		ajax_jquery({
 	        url: apiUrl + ajaxUrl,
 	        data:{

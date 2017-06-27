@@ -861,7 +861,7 @@
 		var examineStatus = $("#examineStatus").val();
 		var refuseReason = $("#refuseReason").val();
 		var treatment = $("#treatment").val();
-		var descr = $("#descr").val().replace(/\n/g,"");
+		var descr = $("#descr").val().replace(/\n/g,"").replace(/\s+/g, "");
 
 		var bank_name = $('#bank_name').val();
 		var bank_term = $('#bank_term').val();
