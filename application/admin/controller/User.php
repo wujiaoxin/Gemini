@@ -24,7 +24,7 @@ class User extends Admin {
 		} else {
 			$map['nickname'] = array('like', '%' . (string) $nickname . '%');
 		}
-
+		$map['access_group_id'] =array('neq',0);
 		$order = "uid desc";
 		$list  = model('User')->where($map)->order($order)->paginate(15);
 

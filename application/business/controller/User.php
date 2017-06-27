@@ -21,7 +21,7 @@ use app\business\controller\Baseness;
 				unset($data['id']);
 				unset($data['status']);
 				unset($data['mobile']);
-				$result = $modelDealer->save($data, array('mobile' => $mobile));
+				$result = $modelDealer->save($data, array('mobile' => $mobile,'status'=>1));
 				if ($result) {
 					return $this->success("修改成功！", url(''));
 				} else {
@@ -31,7 +31,9 @@ use app\business\controller\Baseness;
 				return $this->error($modelDealer->getError());
 			}
 		} else {
-			$info = db('Dealer')->where(array('mobile' => $mobile))->find();			
+			$ress['mobile']=$mobile;
+			$ress['status']=1;
+			$info = db('Dealer')->where($ress)->find();			
 			if(!$info){
 				$data['mobile'] = $mobile;
 				$data['invite_code'] = $modelDealer->buildInviteCode();

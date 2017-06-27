@@ -54,7 +54,6 @@ class assetchannel extends Admin {
 		$link = model('Dealer');
 		if (IS_POST) {
 			$data = input('post.');
-			// var_dump($data);die;
 			$uid = session('user_auth.uid');
 			if ($data['status'] == '1') {
 				$data['lines'] = '1000000';
@@ -68,11 +67,13 @@ class assetchannel extends Admin {
 				$passwords = 'vpdai'.substr($data['idno'],12,6);
 				//加入担保公司
 				if ($data['property'] =='3') {
-					model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'18');
+					$res = model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'18');
 				}else{
-					model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
+					$res = model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
 				}
-				
+				if (!$res) {
+					return $this->error("注册失败！！");;
+				}
 				$result = $link->save($data);
 				if ($result) {
 					return $this->success("新建成功！", url('assetchannel/index'));
