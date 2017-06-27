@@ -220,7 +220,7 @@
 			'3':'orderExaming.png',
 			'4':'orderExaming.png',
 			'5':'orderSupplying.png',
-			'9':'record.png'};
+		};
 	  	var loading = false;  // 加载flag
 		var current_page = 1;
 		var status = getUrlParam('status');
@@ -234,10 +234,17 @@
 			var html = '';
 			if(typeof(data) =='object'){
 			for(var index = 0; index < data.length; index++){
-				var orderStatus = data[index].status;
-				if(orderStatus < 0 || orderStatus > 5){
-					orderStatus = 9;
-				}
+				var _status = data[index].status;
+				var _finance = data[index].finance;
+				var orderStatus = _status;
+				if(_status == 1 && _finance > 2){
+                    orderStatus = 1;
+                }else if(_status == 1 && _finance <= 2){
+                	orderStatus = 3;
+                }else if(_status > 5){
+                	orderStatus = 3;
+                }
+
 			  	html += '<li class="order-list" data="' + data[index].id + '">'
 							+'<div class="order-list-info">'
 								+'<div class="order-sn">' + data[index].sn + '</div>'
