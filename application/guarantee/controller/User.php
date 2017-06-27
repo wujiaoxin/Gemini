@@ -14,11 +14,13 @@ use app\guarantee\controller\Baseness;
 		//担保公司员工
 		$uid = session('user_auth.uid');
 		$role = session('user_auth.role');
-		if ($role == 13) {
+
+		if ($role != 18) {
 			$mobile = db('dealer')->alias('d')->field('d.mobile')->join('__MEMBER__ m','m.dealer_id = d.id')->where('m.uid',$uid)->find();
 			$uids = db('member')->field('uid')->where('mobile',$mobile['mobile'])->find();
 			$uid = $uids['uid'];
 		}
+	
 		$result = db('member')->alias('m')->join('__DEALER__ d','m.mobile = d.mobile')->field('d.id')->where('m.uid',$uid)->order('id DESC')->find();
 		$members = db('member')->where('dealer_id',$result['id'])->select();
 		$data = array(
