@@ -99,7 +99,7 @@
 	   	$('#examineBtn').click(function(){
 	   		var orderId = $('#orderId').val();
 	   	 	var examineStatus = $('#examineStatus').val();
-	   	 	var descr = $('#descr').val();
+	   	 	var descr = $('#descr').val().replace(/\n/g,"").replace(/\s+/g, "");
 	   	 	if(examineStatus == ''){
 	   	 		ui_alert("请选择审核结果");
 	            return false;

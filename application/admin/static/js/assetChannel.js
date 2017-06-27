@@ -189,7 +189,7 @@ $(function(){
         var priv_bank_branch = $("#priv_bank_branch").val();
         var status = $('#status').val();
         var guarantee_id = $('#guarantee_id').val();
-        var descr = $('#descr').val().replace(/\n/g,"");
+        var descr = $('#descr').val().replace(/\n/g,"").replace(/\s+/g, "");
 
         if(name == ""){
             ui_alert("请输入企业名称");

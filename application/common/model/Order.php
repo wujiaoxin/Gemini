@@ -54,39 +54,39 @@ class Order extends \app\common\model\Base {
 	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null){
 		if ($role == '0') {
 			$ids = db('member')->field('mobile')->where('uid',$uid)->find();
-			$filter['mobile'] = $ids['mobile'];
+			$filter  = '(mobile = '.$ids['mobile'].')';
 		}elseif($role == '7'){
-			$filter['mid'] = $uid;
-			$filter['uid'] = $uid;
+			$filter = '(uid = '.$uid.' and mid = '.$uid.')';
 		}else{
-			$filter['uid'] = $uid;
+			$map = '(uid = '.$uid.')';
 		}
 		if($type == 3){
-			$filter['type'] = $type;
+			
+			$map = $map.' and type ='.$type;
 		}else{
-			$filter['type'] =['<',3];
+			$map = $map.' and type < 3 ';
 		}
 		if($status == null){
-			$filter['status'] = ['>',-1];
+			
+			$map = $map.' and status > -1';
 		}else{
+
 			if ($status == 3) {
-				$name = '3,4,11,12,13';
-				$filter['status'] = array('IN',$name);
-			}elseif ($status == 1) {
-				$filter['finance']= array('IN','3,4');
+				
+				$map = $map.' and (status in (3,4,11,12,13) or finance = 2)';
+
+			}elseif ($status == 1) 
+			{
+				$map = $map.' and finance  in (3,4) ';
+				
 			}else{
-				$filter['status'] = $status;
+				$map = $map.' and status ='.(int)$status;
 			}
 		}
 		$sort = "id desc";
-		$filter['credit_status'] = '3';
-		
+		$map .= ' and credit_status = 3';
 
-		if ($status == 3) {
-			$list = db('Order')->where($filter)->whereOr('finance','2')->order($sort)->paginate(15);
-		}else{
-			$list = db('Order')->where($filter)->order($sort)->paginate(15);
-		}
+		$list  = db('Order')->where($map)->order($sort)->paginate(15);
 
 		// $list = db('OrderAuth')->alias('a')->join('Order b','a.order_id = b.id','LEFT')->where($filter)->order($sort)->paginate(15);
 		return $list;
@@ -124,55 +124,48 @@ class Order extends \app\common\model\Base {
 
 		if ($role == '1') {
 
-			$filter['uid'] = $uid;
-
+			$filter = '(uid = '.$uid.')';
 		}elseif($role == '7'){
 
-			$filter['mid'] = $uid;
-
-			$filter['uid'] = $uid;
+			$filter = '(uid = '.$uid.' and mid = '.$uid.')';
 
 
+		}elseif ($role == '0') {
+			$ids = db('member')->field('mobile')->where('uid',$uid)->find();
+			$filter  = '(mobile = '.$ids['mobile'].')';
 		}else{
-
-			$filter['uid'] = $uid;
+			$filter = '(uid = '.$uid.')';
 		}
 		$total = '';
-		$filter['credit_status'] = '3';
-
+		$filter .= ' and credit_status = 3'; 
 		if($status == null){
 
-			$filter['status'] = ['>',-1];
+			$filter = $filter.' and status > -1';
 			$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
 
 		}else{
 
 			if ($status == 3) {
 
-				$name = '3,4,11,12,13';
-
-				$filter['status'] = array('IN',$name);
+				$filter = $filter.' and (status in (3,4,11,12,13) or finance = 2)';
 
 				$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->whereOr('finance','2')->find();
 			
 			}elseif ($status == 1) {
 
-					$filter['finance']= array('IN','3,4');
+					$filter = $filter.' and finance  in (3,4) ';
 
 					$ord = db('Order')->field('sum(examine_limit) as loan_limit')->where($filter)->find();
 
 			}else{
 
-				$filter['status'] = $status;
+				$filter = $filter.' and status ='.(int)$status;
 				$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
 
 			}
 		}
-		if ($status == 3) {
-			$total['order_num'] = db('Order')->where($filter)->whereOr('finance','2')->count();
-		}else{
-			$total['order_num'] = db('Order')->where($filter)->count();
-		}
+		
+		$total['order_num'] = db('Order')->where($filter)->count();
 
 		if (empty($ord['loan_limit'])) {
 
