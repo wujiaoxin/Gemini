@@ -377,13 +377,16 @@
                     $(".order-idcardNum").text(resp.data.info.idcard_num);
 
                     var status = resp.data.info.status;
-                    if(status == 1){
+                    var finance = resp.data.info.finance;
+                    if(status == 1 && finance > 2){
                         stepbarShow(4);
                     }else if(status == 2){
                         stepbarShow(1);
                         $('.stepShow .num_circle').eq(0).text('已退回');
-                    }else if(status == 4){
+                    }else if(status > 3 || finance == 2){
                         stepbarShow(3);
+                    }else if(status  == 3){
+                        stepbarShow(2);
                     }else{
                         stepbarShow(2);
                     }
