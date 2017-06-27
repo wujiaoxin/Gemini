@@ -146,7 +146,7 @@ class Order extends \app\common\model\Base {
 
 				$filter['status'] = array('IN',$name);
 
-				$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->find();
+				$ord = db('Order')->field('sum(loan_limit) as loan_limit')->where($filter)->whereOr('finance','2')->find();
 			
 			}elseif ($status == 1) {
 
