@@ -72,7 +72,7 @@ class assetchannel extends Admin {
 					$res = model('User')->registeraddStaff($data['mobile'],$passwords,$passwords,false,'7');
 				}
 				if (!$res) {
-					return $this->error("注册失败！！");;
+					return $this->error("用户已存在，请联系客服");;
 				}
 				$result = $link->save($data);
 				if ($result) {
@@ -115,7 +115,21 @@ class assetchannel extends Admin {
 				}
 				if ($data['property'] =='3') {
 					$res =array('access_group_id'=>'18','realname'=>$data['rep'],'idcard'=>$data['idno']);
-					model('User')->save($res,array('mobile'=>$data['mobile']));
+					$resl = model('User')->save($res,array('mobile'=>$data['mobile']));
+					if (!$resl) {
+						return $this->error('修改担保机构失败');
+					}
+				}
+				$ids = array('d.id' => $data['id']);
+				$rest = db('Member')->alias('m')->field('m.mobile,m.uid')->join('__DEALER__ d','d.mobile = m.mobile')->where($ids)->find();
+				if ($data['mobile'] != $rest['mobile']) {
+					$mobile = array(
+						'mobile'=>$data['mobile']
+					);
+					$restl = model('User')->save($mobile,array('uid'=>$rest['uid']));
+					if (!$restl) {
+						return $this->error('修改手机号失败');
+					}
 				}
 				$result = $link->save($data, array('id' => $data['id']));
 				if ($result) {

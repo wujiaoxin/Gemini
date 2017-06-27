@@ -19,7 +19,6 @@ use app\business\controller\Baseness;
 			$data = input('post.');
 			if ($data) {
 				unset($data['id']);
-				unset($data['status']);
 				unset($data['mobile']);
 				$result = $modelDealer->save($data, array('mobile' => $mobile,'status'=>1));
 				if ($result) {
@@ -36,6 +35,7 @@ use app\business\controller\Baseness;
 			$info = db('Dealer')->where($ress)->find();			
 			if(!$info){
 				$data['mobile'] = $mobile;
+				$data['status']=1;
 				$data['invite_code'] = $modelDealer->buildInviteCode();
 				$result = $modelDealer->save($data);
 				$info = db('Dealer')->where(array('mobile' => $mobile))->find();
