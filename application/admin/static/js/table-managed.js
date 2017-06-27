@@ -71,7 +71,7 @@ var TableManaged = function () {
                     { "bSortable": false }
                 ],
                 "aaSorting": [
-                    [ 1, "desc" ]
+                    [ 6, "desc" ]
                 ],
                 configData
             });
