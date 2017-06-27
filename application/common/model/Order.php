@@ -73,7 +73,7 @@ class Order extends \app\common\model\Base {
 				$name = '3,4,11,12,13';
 				$filter['status'] = array('IN',$name);
 			}elseif ($status == 1) {
-				$filter['finance'] = '4';
+				$filter['finance']= array('IN','3,4');
 			}else{
 				$filter['status'] = $status;
 			}
