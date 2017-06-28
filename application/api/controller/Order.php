@@ -52,7 +52,7 @@ class Order extends Api {
 			$resp['code'] = 0;
 			$resp['msg'] = '提交失败！';
 		}else{
-			$data['id'] = $list;
+			$data['id'] = (string)$list;
 			$resp['code'] = 1;
 			$resp['msg'] = '提交成功';
 			$resp['data'] = $data;

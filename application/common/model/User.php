@@ -32,6 +32,7 @@ class User extends Base{
 		array('name'=>'password','title'=>'密码','type'=>'password','help'=>'为空时则不修改'),
 		array('name'=>'sex','title'=>'性别','type'=>'select','option'=>array('0'=>'保密','1'=>'男','2'=>'女'),'help'=>''),
 		array('name'=>'addr','title'=>'地址','type'=>'text','help'=>'地址信息，用于签约地址'),
+		array('name'=>'dealer_id','title'=>'担保公司id','type'=>'text','help'=>'车商did,为空时则不修改'),
 		array('name'=>'status','title'=>'状态','type'=>'select','option'=>array('0'=>'禁用','1'=>'启用'),'help'=>''),
 	);
 
@@ -306,6 +307,9 @@ class User extends Base{
 				unset($data['password']);
 			}else{
 				$data['salt'] = rand_string(6);
+			}
+			if ($data['dealer_id'] == '') {
+				unset($data['dealer_id']);
 			}
 			$result = $this->validate('member.edit')->save($data, array('uid'=>$data['uid']));
 			if ($result) {
