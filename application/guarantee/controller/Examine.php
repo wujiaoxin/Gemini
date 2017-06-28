@@ -52,17 +52,12 @@ class Examine extends Baseness {
 			$list = array();
 			if (!empty($arr)) {
 				foreach ($arr as $vl) {
-					$list = db('Order')->where('uid',$vl)->order('create_time DESC')->select();
+					$list = db('Order',[],false)->alias('o')->field('o.*,d.name as dealername,m.realname as salesman')->join('__DEALER__ d','d.id = o.dealer_id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where('o.uid',$vl)->order('create_time DESC')->select();
 				}
 			}
 
 		}else{
 			return $this->error('请重新登录');
-		}
-		foreach ($list as $k => $v) {
-			$list[$k]['salesman'] = serch_realname($v['uid']);
-			$name = serch_name($v['dealer_id']);
-			$list[$k]['dealername'] = $name['dealer_name'];
 		}
 		$data = array(
 
