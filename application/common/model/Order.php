@@ -54,9 +54,9 @@ class Order extends \app\common\model\Base {
 	public function get_order_list($uid = 0, $role = 0, $type = 0, $status = null){
 		if ($role == '0') {
 			$ids = db('member')->field('mobile')->where('uid',$uid)->find();
-			$filter  = '(mobile = '.$ids['mobile'].')';
+			$map  = '(mobile = '.$ids['mobile'].')';
 		}elseif($role == '7'){
-			$filter = '(uid = '.$uid.' and mid = '.$uid.')';
+			$map = '(uid = '.$uid.' and mid = '.$uid.')';
 		}else{
 			$map = '(uid = '.$uid.')';
 		}
@@ -64,7 +64,7 @@ class Order extends \app\common\model\Base {
 			
 			$map = $map.' and type ='.$type;
 		}else{
-			$map = $map.' and type < 3 ';
+			$map = $map.' and type < 5 ';
 		}
 		if($status == null){
 			
