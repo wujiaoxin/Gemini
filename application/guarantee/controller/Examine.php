@@ -43,26 +43,14 @@ class Examine extends Baseness {
 				$uid = $uids['uid'];
 			}
 
-			$resl = db('dealer')->field('id')->where('guarantee_id',$uid)->select();
-			$arr = array();
-			foreach ($resl as $k => $v) {
-				$ids = db('member')->field('uid')->where('dealer_id',$v['id'])->find();
-				$arr[] = $ids['uid'];
-			}
-			$list = array();
-			if (!empty($arr)) {
-				foreach ($arr as $vl) {
-					$list = db('Order')->where('uid',$vl)->order('create_time DESC')->select();
-				}
-			}
+			$map = array('d.guarantee_id'=>$uid);
+
+			$map['o.credit_status'] = '3';
+
+			$list = db('Order')->alias('o')->field('o.*,d.name as dealername,m.realname')->join('__DEALER__ d','o.dealer_id = d.id','LEFT')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where($map)->select();
 
 		}else{
 			return $this->error('请重新登录');
-		}
-		foreach ($list as $k => $v) {
-			$list[$k]['salesman'] = serch_realname($v['uid']);
-			$name = serch_name($v['dealer_id']);
-			$list[$k]['dealername'] = $name['dealer_name'];
 		}
 		$data = array(
 
