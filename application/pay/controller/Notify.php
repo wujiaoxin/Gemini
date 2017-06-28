@@ -20,9 +20,9 @@ class Notify extends Base {
 	public function bangCard(){
 	
 		$data = input('');
-		/*if (!is_string($data)) {
+		if (!is_string($data)) {
 			$this->redirect('/');
-		}*/
+		}
 		$result = json_decode($data,true);
 
 		if ($result['SignInfo'] == '88') {
