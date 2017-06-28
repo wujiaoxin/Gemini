@@ -276,8 +276,8 @@ function formatDatetime(timeStr){
     var timeStr = timeStr*1000;
     var now =new Date(timeStr);
     var year=now.getFullYear();
-    var month=now.getMonth()+1;
-    var date=now.getDate();
+    var month=fillZero(now.getMonth()+1);
+    var date=fillZero(now.getDate());
     var hour=fillZero(now.getHours());
     var minute=fillZero(now.getMinutes());
     var second=fillZero(now.getSeconds());
