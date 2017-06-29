@@ -446,7 +446,7 @@ class User extends Api {
 
 					if ($price['type'] == 2 || $price['type'] == 4) {
 
-						if ($price['car_price'] < 2000000) {
+						if ($price['car_price'] < 200000) {
 
 							$info['uid'] = $uid;
 
@@ -463,13 +463,33 @@ class User extends Api {
 
 							$info['create_time'] = time();
 
-							$result = db('credit')->insert($info);			
+							$map = array(
+								'uid'=>$uid,
+								'order_id'=>$price['id'],
+							);
+
+							$creditResult = db('credit')->field('id')->where($map)->order('id desc')->find();
+
+							if($creditResult == null){
+
+								$result = db('credit')->insert($info);
+
+							}else{
+
+								$infol['update_time'] = time();
+
+								$result = db('credit')->where('id', $creditResult['id'])->update($infol);
+							}
+							$datainfo = true;
 						}
 					}
-					
+					if (!$datainfo) {
+						$datainfo = false;
+					}
 
 					$resp["code"] = 1;
-					$resp["msg"] = "更新成功";		
+					$resp["msg"] = "更新成功";
+					$resp['data'] = $datainfo;
 				}else{
 					$resp["code"] = 0;
 					$resp["msg"] = "更新失败";
