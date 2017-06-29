@@ -480,11 +480,11 @@ class User extends Api {
 
 								$result = db('credit')->where('id', $creditResult['id'])->update($infol);
 							}
-							$datainfo = true;
+							$datainfo = '1';
 						}
 					}
 					if (!$datainfo) {
-						$datainfo = false;
+						$datainfo = '2';
 					}
 
 					$resp["code"] = 1;
