@@ -523,7 +523,7 @@
 		method: 'POST', //文件上传方式，POST或者GET。
 		sendAsBinary: false, //是否已二进制的流的方式发送文件，这样整个上传内容php://input都为文件内容， 其他参数在$_GET数组中。
 		fileNumLimit: undefined, //验证文件总数量, 超出则不允许加入队列。
-		fileSizeLimit: 20*1024*1024, //验证文件总大小是否超出限制, 超出则不允许加入队列。以字节为单位
+		fileSizeLimit: 50*1024*1024, //验证文件总大小是否超出限制, 超出则不允许加入队列。以字节为单位
 		fileSingleSizeLimit: undefined, //验证单个文件大小是否超出限制, 超出则不允许加入队列。以字节为单位
 		duplicate: undefined, //去重， 根据文件名字、文件大小和最后修改时间来生成hash Key.
 		disableWidgets: undefined, //默认所有 Uploader.register 了的 widget 都会被加载，如果禁用某一部分，请通过此 option 指定黑名单。 
