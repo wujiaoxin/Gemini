@@ -12,6 +12,15 @@
 {/block}
 
 {block name="body"}
+
+<script type="text/javascript">
+  var info = {};
+  try {
+    info = JSON.parse('{$infoStr}');
+  } catch (e) {
+    alert("数据异常");
+  }
+</script>
 <div class="row-fluid">
   <div class="span12 text-center">
       <img src="/public/business/img/waitingPage.gif">
