@@ -435,8 +435,39 @@ class User extends Api {
 				$mobile = $userInfo['mobile'];
 				if(!empty($mobile)){
 					$orderData['name'] = $realname;
-					$orderData['idcard_num'] = $idcard;					
-					db('order')->where("mobile",$mobile)->where("status",-2)->update($orderData);//更新order表
+					$orderData['idcard_num'] = $idcard;
+					$where = array(
+						'mobile'=>$mobile,
+						'status'=>-2
+					);
+					db('order')->where($where)->update($orderData);//更新order表
+					
+					$price = db('order')->field('type,car_price,id')->where($where)->find();
+
+					if ($price['type'] == 2 || $price['type'] == 4) {
+
+						if ($price['car_price'] < 20) {
+
+							$info['uid'] = $uid;
+
+							$info['mobile'] = $mobile;
+
+							$info['order_id'] = $price['id'];
+
+							$info['mobile_password'] = "";
+							
+							
+							$info['credit_status'] = 3;
+							$info['mobile_collect_token'] = '';
+							$info['update_time'] = time();
+
+							$info['create_time'] = time();
+
+							$result = db('credit')->insert($info);			
+						}
+					}
+					
+
 					$resp["code"] = 1;
 					$resp["msg"] = "更新成功";		
 				}else{
