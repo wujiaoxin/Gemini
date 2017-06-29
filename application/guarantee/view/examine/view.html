@@ -351,12 +351,12 @@
 
 	var ajaxUrl = '';
 	var referrer = window.document.referrer;
-	if(info['order_info']['status'] == '11'){
+	if(referrer.indexOf('creditReview') != '-1' && info['order_info']['status'] == '11'){
 		$('#examine_limit_block').hide();
 		$('#examinePass').val('12');
 		$('#loan_limit').val(checkLimit(info['order_info']['loan_limit']));
 		ajaxUrl = '/guarantee/examine/creditReview';
-	}else if(info['order_info']['status'] == '12'){
+	}else if(referrer.indexOf('loanLimit') != '-1' && info['order_info']['status'] == '12'){
 		$('#proposal_limit').attr('disabled','disabled');
 		$('#examinePass').val('13');
 		$('#loan_limit').val(checkLimit(info['order_info']['loan_limit']));

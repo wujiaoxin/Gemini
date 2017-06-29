@@ -433,4 +433,9 @@ class Examine extends Baseness {
 		}		
 		echo json_encode($resp);
 	}
+
+	public function welcome(){
+		
+		return $this->fetch();
+	}
 }
