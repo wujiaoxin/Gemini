@@ -480,6 +480,8 @@ class User extends Api {
 
 								$result = db('credit')->where('id', $creditResult['id'])->update($infol);
 							}
+							$orderData['credit_status'] = 3;
+							db('order')->where($where)->update($orderData);
 							$datainfo = array('name'=>'1');
 						}
 					}
