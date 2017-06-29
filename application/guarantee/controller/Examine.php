@@ -435,7 +435,21 @@ class Examine extends Baseness {
 	}
 
 	public function welcome(){
-		
+		//担保公司员工
+		$uid = session('user_auth.uid');
+		$role = session('user_auth.role');
+		$mobile = session('business_mobile');
+		if ($role != 18) {
+			$name = db('member')->field('realname as username')->where('uid',$uid)->find();
+		}else{
+			$name = db('Dealer')->field('name as username')->where('mobile',$mobile)->find();
+		}
+
+		$data = array(
+				'info'    => $name,
+				'infoStr' => json_encode($name),
+		);
+		$this->assign($data);
 		return $this->fetch();
 	}
 }
