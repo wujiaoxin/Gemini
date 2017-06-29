@@ -272,11 +272,13 @@ class Credit extends Api {
 			if($creditResult['credit_result'] == 1){//TODO 获取金融方案
 			
 				$order_id = $creditResult['order_id'];
-				$orderData = db('order')->field('id,car_price,loan_limit,status,credit_status')->where("id",$order_id)->order('id desc')->find();
+				$orderData = db('order')->field('id,car_price,loan_limit,status,credit_status,type')->where("id",$order_id)->order('id desc')->find();
 
 				$car_price = $orderData['car_price'];
 
 				$order_id = $orderData['id'];
+
+				$types = $orderData['type'];
 
 				$order_status = $orderData['status'];
 				
@@ -310,6 +312,7 @@ class Credit extends Api {
 							"month": '.$term.',
 							"downpay": '.$downpay.',
 							"loan": '.$loan.',
+							"type": "'.$types.'",
 							"avgmonthpay": '.$avgmonthpay.',
 							"order_id": '.$order_id.',
 							"order_status": '.$order_status.',
@@ -356,6 +359,7 @@ class Credit extends Api {
 							"month": 36,
 							"downpay": '.$downpay.',
 							"loan": '.$loan.',
+							"type": "'.$types.'",
 							"avgmonthpay": '.$avgmonthpay.',
 							"order_id": '.$order_id.',
 							"order_status": '.$order_status.',
