@@ -74,6 +74,9 @@ var TableManaged = function () {
                     null,
                     null
                 ],
+                "aaSorting": [
+                    [ 3, "desc" ]
+                ],
                 config
             });
             jQuery('#table-loanItem_wrapper .dataTables_filter input').addClass("m-wrap medium");

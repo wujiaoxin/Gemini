@@ -241,7 +241,7 @@
     if(typeof(localStorage.getItem('username')) == 'string'){
       $('#nav-username').text(localStorage.getItem('username'));
     }
-    if(typeof(localStorage.getItem('guarantee_id')) == ''){
+    if(localStorage.getItem('guarantee_id') == 'null'){
       $('.guarantee_link').hide();
     }
     jQuery(document).ready(function() {
