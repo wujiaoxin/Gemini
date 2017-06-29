@@ -61,7 +61,7 @@ var Login = function () {
 		                		//localStorage.setItem('token',resp.data.token);
 		                		if(resp.data == 1){
 		                			ui_alert("登录成功","success");
-		                			window.location.href = "/guarantee/index/index";
+		                			window.location.href = "/guarantee/examine/welcome";
 		                		}else if(resp.data == 2){
 		                			ui_alert("登录成功","success");
 		                			window.location.href = "/business/user/myShop";
