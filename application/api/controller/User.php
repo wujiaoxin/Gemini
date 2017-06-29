@@ -446,7 +446,7 @@ class User extends Api {
 
 					if ($price['type'] == 2 || $price['type'] == 4) {
 
-						if ($price['car_price'] < 20) {
+						if ($price['car_price'] < 2000000) {
 
 							$info['uid'] = $uid;
 
