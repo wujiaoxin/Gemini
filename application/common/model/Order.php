@@ -220,8 +220,11 @@ class Order extends \app\common\model\Base {
 				$result = $this->allowField(true)->save($data);
 			}
 		}
-		
-		return $this->id;
+		if (empty($result)) {
+			return false;
+		}else{
+			return $this->id;
+		}
 	}
 	//保存订单
 	public function save_order($uid, $data){
