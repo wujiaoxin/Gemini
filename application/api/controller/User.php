@@ -483,7 +483,7 @@ class User extends Api {
 							$datainfo = '1';
 						}
 					}
-					if (isset($datainfo)) {
+					if (empty($datainfo)) {
 						$datainfo = '2';
 					}
 
