@@ -202,20 +202,23 @@ class Order extends \app\common\model\Base {
 			return $is_order['id'];
 
 		}else{
+			
 			$order_sn = $this->build_order_sn();
 
-			$data =array(
-				'uid'=>$uid,
-				'mid'=>$mid['uid'],
-				'dealer_id'=>$dealer_mobile['id'],
-				'mobile'=>$data['mobile'],
-				'car_price'=>$data['price'],
-				'sn' =>$order_sn,
-				'status'=>-2,
-				'type' =>$dealer_mobile['forms']
+			if (!empty($dealer_mobile) || !empty($mid)) {
+				$data =array(
+					'uid'=>$uid,
+					'mid'=>$mid['uid'],
+					'dealer_id'=>$dealer_mobile['id'],
+					'mobile'=>$data['mobile'],
+					'car_price'=>$data['price'],
+					'sn' =>$order_sn,
+					'status'=>-2,
+					'type' =>$dealer_mobile['forms']
 				);
 
-			$result = $this->allowField(true)->save($data);
+				$result = $this->allowField(true)->save($data);
+			}
 		}
 		
 		return $this->id;
