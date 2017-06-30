@@ -468,7 +468,6 @@ class User extends Api {
 
 							$map = array(
 								'uid'=>$uid,
-								'order_id'=>$price['id'],
 							);
 
 							$creditResult = db('credit')->field('id')->where($map)->order('id desc')->find();
