@@ -469,7 +469,6 @@ class User extends Api {
 							$map = array(
 								'uid'=>$uid,
 							);
-
 							$creditResult = db('credit')->field('id')->where($map)->order('id desc')->find();
 
 							if($creditResult == null){
@@ -477,7 +476,6 @@ class User extends Api {
 								$result = db('credit')->insert($info);
 
 							}else{
-
 								$infol['update_time'] = time();
 
 								$result = db('credit')->where('id', $creditResult['id'])->update($infol);

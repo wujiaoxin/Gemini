@@ -276,7 +276,12 @@ class examine extends Admin {
 
 
 
-		$member_info = db('member')->alias('m')->field('m.*,c.credit_result,c.credit_level,c.credit_score')->join('__CREDIT__ c','c.uid = m.uid','LEFT')->where('m.mobile', $order_info['mobile'])->find();
+		$maps = array(
+			'm.mobile'=>$order_info['mobile'],
+			'c.credit_status'=>3,
+
+		);
+		$member_info = db('member')->alias('m')->field('m.*,c.credit_result,c.credit_level,c.credit_score')->join('__CREDIT__ c','c.uid = m.uid','LEFT')->where($maps)->find();
 		
 		$repay_info = db('order_repay')->where('order_id', $order_info['id'])->select();
 
