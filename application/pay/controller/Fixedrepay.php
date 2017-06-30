@@ -71,7 +71,7 @@ class Fixedrepay extends Base {
     	if ($result['resultCode'] == 'EXECUTE_SUCCESS') {
     		$resp['code'] = 1;
 			$resp['msg'] ='还款成功';
-			db('order_repay')->where($map)->update(['status'=>'-2']);//TODO未生效
+			db('order_repay')->where($map)->update(['status'=>'-2','has_repay'=>'-2']);//TODO未生效
 			$ress = array(
 				'money'=>$res['repay_money'],
 				'descr'=>'',
