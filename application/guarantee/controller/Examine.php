@@ -269,7 +269,12 @@ class Examine extends Baseness {
 
 		$order_info = db('order')->alias('o')->field('o.*,m.realname as salesman,m.mobile as salesmobile')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where('id', $id)->find();
 
-		$member_info = db('member')->alias('m')->field('m.*,c.credit_result,c.credit_level,c.credit_score')->join('__CREDIT__ c','c.uid = m.uid','LEFT')->where('m.mobile', $order_info['mobile'])->find();
+		$maps = array(
+			'm.mobile'=>$order_info['mobile'],
+			'c.credit_status'=>3,
+
+		);
+		$member_info = db('member')->alias('m')->field('m.*,c.credit_result,c.credit_level,c.credit_score')->join('__CREDIT__ c','c.uid = m.uid','LEFT')->where($maps)->find();
 
 		$examine_log  =db('examine_log')->alias('l')->field('l.*,m.username as operator')->join('__MEMBER__ m','m.uid = l.uid','LEFT')->where('l.record_id',$id)->select();
 
@@ -340,7 +345,12 @@ class Examine extends Baseness {
 
 			$order_info = db('order')->alias('o')->field('o.*,m.realname as salesman,m.mobile as salesmobile')->join('__MEMBER__ m','m.uid = o.uid','LEFT')->where('id', $id)->find();
 
-			$member_info = db('member')->alias('m')->field('m.*,c.credit_result,c.credit_level,c.credit_score')->join('__CREDIT__ c','c.uid = m.uid','LEFT')->where('m.mobile', $order_info['mobile'])->find();
+			$maps = array(
+				'm.mobile'=>$order_info['mobile'],
+				'c.credit_status'=>3,
+
+			);
+			$member_info = db('member')->alias('m')->field('m.*,c.credit_result,c.credit_level,c.credit_score')->join('__CREDIT__ c','c.uid = m.uid','LEFT')->where($maps)->find();
 
 			$examine_log  =db('examine_log')->alias('l')->field('l.*,m.username as operator')->join('__MEMBER__ m','m.uid = l.uid','LEFT')->where('l.record_id',$id)->select();
 

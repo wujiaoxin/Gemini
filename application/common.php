@@ -1452,14 +1452,14 @@ function get_programme($orderid){
 */
 function get_monthpay($data,$term){
 
-	$res = ceil($data['car_price']*($data['bank_pay']-$data['vp_pay'])*(1+$data['vp_rate']*$data['vp_term']/100)/100/$term);
+	$res = ceil($data['car_price']*($data['bank_pay']-$data['vp_pay'])*(1+$data['vp_rate']*$data['vp_term']/1000)/100/$term);
 	return $res;
 }
 /*
 ** VP贷月供
 */
 function get_vpmonth($data){
-	$res = ceil($data['car_price']*(100-$data['bank_pay'])*(1+$data['bank_rate']*$data['bank_term']/100)/100/$data['bank_term']);
+	$res = ceil($data['car_price']*(100-$data['bank_pay'])*(1+$data['bank_rate']*$data['bank_term']/1000)/100/$data['bank_term']);
 	return $res;
 }
 
